@@ -16,6 +16,7 @@ The resolved source graph is pinned by `Cargo.lock`. The public interface remain
 | wgpu-core / wgpu-types | 29.0.1 / 29.0.1 | One native resource registry shared with these JS bindings |
 | wgpu-hal / naga | 29.0.4 / 29.0.4 | Resolved native backends and shader processing |
 | tokio | 1.49.0 | Current-thread async execution |
+| winit / raw-window-handle | 0.30.13 / 0.6.2 | OS event loop and native surface handles |
 
 The integration was compiled and run using Rust 1.93.0 on macOS arm64. See the
 [dated runtime evidence](validation/2026-09-17-rust-runtime.md) for executable
@@ -27,11 +28,17 @@ executable and never supplies resources to the embedded host. Do not solve versi
 mismatches by passing pointers between these instances. The runtime links the
 wgpu-core version exported by deno_webgpu, avoiding a separately selected device.
 
-No upstream patches or vendored forks are needed for the offscreen integration.
-Its bootstrap is owned 3JSN code using pinned extension exports. Deno's public
-surface/context types are available, but its default adapter request does not
-consider a presentation surface. M1 must validate adapter/surface selection and
-texture expiry before claiming native presentation.
+No upstream patches or vendored forks are needed for the current integration.
+Its bootstrap is owned 3JSN code using pinned extension exports. A narrow native
+canvas adapter selects a surface-compatible GPU and owns texture acquisition,
+expiry and transient surface handling. These operations use the same GPU registry
+as Deno's JavaScript objects. The [window contract](native-window.md) distinguishes
+implemented behavior from pending presentation evidence.
+
+Extension JavaScript is [embedded at compile time](validation/runtime-embedding-notes.md).
+The matched Deno extensions are also build dependencies so their declared source
+files can be collected without hard-coded registry paths. This increases build
+cost; it avoids a release executable reading JavaScript from its build machine.
 
 ## Why this amount of reuse
 

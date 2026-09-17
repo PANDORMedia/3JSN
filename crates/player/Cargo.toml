@@ -8,3 +8,4 @@ license.workspace = true
 [dependencies]
 threejs-native-runtime = { path = "../runtime" }
 tokio.workspace = true
+winit.workspace = true

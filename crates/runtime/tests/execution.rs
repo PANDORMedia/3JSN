@@ -8,6 +8,10 @@ async fn modules_web_globals_and_errors() {
         .execute_module(&fixture.join("modules.mjs"))
         .await
         .unwrap();
+    Runtime::new()
+        .execute_module(&fixture.join("animation.mjs"))
+        .await
+        .unwrap();
     let thrown = Runtime::new()
         .execute_module(&fixture.join("throws.mjs"))
         .await
@@ -49,4 +53,21 @@ async fn modules_web_globals_and_errors() {
             .await,
         Err(RuntimeError::ModulePath { .. })
     ));
+
+    let runtime = Runtime::new();
+    let interrupt = runtime.interrupt_handle();
+    let worker_interrupt = interrupt.clone();
+    let interrupter = std::thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(50));
+        assert!(worker_interrupt.terminate());
+    });
+    assert!(matches!(
+        runtime.execute_module(&fixture.join("infinite.mjs")).await,
+        Err(RuntimeError::Cancelled)
+    ));
+    interrupter.join().unwrap();
+    assert!(
+        !interrupt.terminate(),
+        "disposed isolates reject further interrupts safely"
+    );
 }

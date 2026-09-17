@@ -5,9 +5,9 @@
 An open-source native runtime and build tool for existing Three.js web games.
 The goal is **unchanged game source → `3jsn build` → native desktop applications**.
 
-**Status: Rust-hosted JavaScript/WebGPU offscreen runtime and research probes.
-The build CLI and native-window game runtime are not implemented. No platform or
-unchanged-project compatibility is certified.**
+**Status: Rust-hosted Three.js/WebGPU offscreen rendering, a native-window adapter
+under validation, and compatibility experiments. The build CLI is not implemented.
+No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
 projects and dynamic HTML/CSS interfaces are part of the target, alongside WebGPU.
@@ -43,6 +43,8 @@ npm test
 npm run doctor
 npm run probe:gpu
 npm run probe:runtime
+npm run probe:three
+npm run probe:window-lifecycle
 
 cargo run --locked -p threejs-native-gpu-probe
 cargo run --locked -p threejs-native-player -- examples/runtime/offscreen.mjs
@@ -61,9 +63,16 @@ verifies triangle pixels on real hardware, and records dependency/adapter/binary
 evidence in `artifacts/rust-runtime/report.json`. See the
 [Rust integration validation](docs/validation/2026-09-17-rust-runtime.md).
 
+`probe:three` bundles the unchanged shared scene, runs upstream Three.js r186 in
+Rust-hosted V8, verifies changing pixels, and saves captures plus input/binary
+identities to `artifacts/rust-three/`. Readback is for verification only. The
+[recorded hardware evidence](docs/validation/2026-09-18-native-host.md) covers the
+scene, texture expiry, GPU frame retention and error cleanup. The
+[native-window adapter](docs/native-window.md) has separate presentation and
+lifecycle gates; offscreen rendering does not certify a visible window.
+
 The original Rust diagnostic independently opens a `wgpu` adapter and device.
-It does not execute JS. The Node/Dawn Three.js scene remains a separate reference;
-the Rust player does not present a Three.js scene in a native window yet.
+It does not execute JS. The Node/Dawn scene remains a separate reference.
 
 The [WebGL/ANGLE experiment](experiments/native-webgl/README.md) and
 [HTML investigation](docs/investigations/html-dom.md) record working paths and
@@ -71,7 +80,9 @@ concrete upstream compatibility failures. They are not adopted shipping backends
 
 Follow-on experiments now verify [ANGLE-to-wgpu Metal texture sharing](experiments/native-webgl-wgpu/README.md)
 without CPU image transport and [V8-to-Blitz DOM behavior](experiments/html-v8/README.md)
-with one authoritative DOM. The [public compatibility corpus](fixtures/README.md)
+with one authoritative DOM. [Native HTML painting](experiments/html-paint/README.md)
+now carries that document's JavaScript mutations through layout, text shaping and
+Vello GPU rasterization, with pixel and DPI evidence. The [public compatibility corpus](fixtures/README.md)
 has browser references for WebGL/DOM, workers/Wasm, offline audio/worklets and
 fetch/WebSocket reconnection. These isolated results do not yet constitute an
 integrated unchanged-game runtime.

@@ -1,4 +1,5 @@
 import { core } from "ext:core/mod.js";
+import { initializeWindow } from "./window.js";
 
 const webidl = core.loadExtScript("ext:deno_webidl/00_webidl.js");
 const events = core.loadExtScript("ext:deno_web/02_event.js");
@@ -39,3 +40,4 @@ events.saveGlobalThisReference(globalThis);
 events.setEventTargetData(globalThis);
 performance.setTimeOrigin();
 Object.defineProperty(globalThis, "navigator", { value: Object.freeze({ gpu: webgpu.gpu }) });
+initializeWindow();

@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-09-17T22:39:00.129Z",
+  "kind": "native-canvas-lifecycle",
+  "target": "aarch64-apple-darwin",
+  "compiler": "rustc 1.93.0 (254b59607 2026-01-19)",
+  "runtime": "3JSN 0.0.0 / V8 15.0.245.2-rusty / metal / macos-aarch64",
+  "binary": {
+    "bytes": 74867264,
+    "sha256": "155741733b353531145b797f6ad0b35bd104413faf09dacf3758f9d3f110ffec"
+  },
+  "inputs": [
+    {
+      "path": "examples/runtime/window-lifecycle.mjs",
+      "sha256": "8cdbb9a13d313974eec87650a921dc2dc5f39b4d079b74a3951162fb5b5d786f"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "00f447264f10ae8f04a25bc76d50492be4308d02bfedbd3a073d2db9542750ff"
+    }
+  ],
+  "runs": [
+    {
+      "attempt": 1,
+      "exitCode": 1,
+      "expectedSentinel": true,
+      "metalValidation": true,
+      "nativeLifecycle": true,
+      "cycles": 12,
+      "errors": [],
+      "adapter": "Apple M1 Pro"
+    },
+    {
+      "attempt": 2,
+      "exitCode": 1,
+      "expectedSentinel": true,
+      "metalValidation": true,
+      "nativeLifecycle": true,
+      "cycles": 12,
+      "errors": [],
+      "adapter": "Apple M1 Pro"
+    },
+    {
+      "attempt": 3,
+      "exitCode": 1,
+      "expectedSentinel": true,
+      "metalValidation": true,
+      "nativeLifecycle": true,
+      "cycles": 12,
+      "errors": [],
+      "adapter": "Apple M1 Pro"
+    }
+  ],
+  "limitations": [
+    "Executes outside RAF and also works with an occluded window.",
+    "No visible presentation, display pacing, device-loss recovery or platform certification.",
+    "Exit code 1 is expected only after all assertions and the completion sentinel; ordinary errors fail this probe."
+  ]
+}

@@ -38,9 +38,12 @@ service locator to bypass these directions.
 | Service operation | Named service owns a bounded queue and a cancellation handle | Complete once with a value, typed failure or cancellation; never call a disposed realm |
 | Frame dispatch | Player requests one frame; runtime dispatches callbacks with one monotonic timestamp | Snapshot callbacks, allow cancellation during dispatch, defer new callbacks until another frame; report exceptions without losing later callbacks |
 
-The initial offscreen player drains referenced async work. Interactive cancellation,
-surface ownership and bounded service queues are subsequent implementation gates,
-not properties inferred from this document.
+The offscreen player drains referenced async work. The interactive adapter now
+uses one current-thread reactor on a dedicated worker, a coalescing OS-state
+channel, and thread-safe V8 cancellation. Its surface and window ownership is
+described in [the native-window contract](native-window.md). Visible presentation
+and lifecycle hardware gates remain open. General service queues are still a
+subsequent implementation gate.
 
 ## Errors and capabilities
 

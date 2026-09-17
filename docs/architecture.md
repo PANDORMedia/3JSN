@@ -1,7 +1,7 @@
 # Proposed runtime architecture
 
-Status: the offscreen JS/WebGPU runtime is implemented; window presentation and
-the wider engine remain proposed. [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
+Status: the offscreen JS/WebGPU runtime is implemented; the native-window adapter
+is under validation and the wider engine remains proposed. [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
 WebGL projects and dynamic HTML/CSS support too.
 
 ## Responsibility boundaries
@@ -14,7 +14,7 @@ WebGL projects and dynamic HTML/CSS support too.
 | Rust host | Windows, events, scheduling, services, shutdown, GPU surface integration | A reimplementation of Three.js |
 | wgpu-core / native backend | GPU resources, validation, command submission, platform API translation | Game objects or HTML layout |
 
-The offscreen WebGPU prototype embeds V8 via `deno_core` and reuses a matching
+The WebGPU prototype embeds V8 via `deno_core` and reuses a matching
 `deno_webgpu` extension with its bootstrap dependencies. This is library reuse,
 not a decision to launch the Deno CLI. Its [dependency record](dependencies.md)
 and [validation](validation/2026-09-17-rust-runtime.md) establish the initial graph

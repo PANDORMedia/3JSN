@@ -1,0 +1,363 @@
+{
+  "status": "pass",
+  "fixture": "same-realm-v8-blitz-vello-paint",
+  "blitzRevision": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+  "versions": {
+    "denoCore": "0.412.0",
+    "v8": "15.0.245.2-rusty",
+    "anyrenderVello": "0.14.0",
+    "vello": "0.10.0",
+    "wgpu": "29.0.4",
+    "wgpuCore": "29.0.4",
+    "wgpuTypes": "29.0.4"
+  },
+  "adapter": {
+    "name": "Apple M1 Pro",
+    "backend": "Metal",
+    "deviceType": "IntegratedGpu",
+    "wgpuValidation": true,
+    "velloUseCpu": false
+  },
+  "originalFixtureMessages": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": [
+        "capture",
+        "target",
+        "bubble"
+      ],
+      "detachedIdentity": true,
+      "classListSameObject": true,
+      "inputPrototype": true,
+      "canvasContextType": "undefined",
+      "serviceTypes": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
+      ]
+    },
+    {
+      "frames": [
+        100,
+        116.6666666667
+      ]
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "71652cd06c3c06919e1d447280a61c14f47c7b750575c5a5f62bbb33bb01e66d",
+    "originalFixtureSha256": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "mutationSha256": "1eb7fa42d969c95226bc6f99d0ce7c80a2b4ca022e739ce89be152553e21e55c",
+    "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+    "systemFonts": false
+  },
+  "textOnlyChangedPixels": 798,
+  "frames": [
+    {
+      "name": "initial",
+      "file": "2026-09-18-html-gpu-paint/initial.png",
+      "width": 384,
+      "height": 192,
+      "scale": 1,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 120.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 104.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 7,
+      "glyphRuns": 1,
+      "whiteTextPixels": 237,
+      "rootSample": [
+        200,
+        40,
+        60,
+        255
+      ],
+      "expandedSample": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "rgbaSha256": "714d85f0478c169918d4e6535e908b6eb70a5d5ffc09d7899aa9c5ee372e41c5",
+      "pngSha256": "719ba2bff877ea9aabef0d0019e3448201de333f99e757b2db15314bd754e186"
+    },
+    {
+      "name": "after-original",
+      "file": "2026-09-18-html-gpu-paint/after-original.png",
+      "width": 384,
+      "height": 192,
+      "scale": 1,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 8,
+      "glyphRuns": 1,
+      "whiteTextPixels": 405,
+      "rootSample": [
+        200,
+        40,
+        60,
+        255
+      ],
+      "expandedSample": [
+        200,
+        40,
+        60,
+        255
+      ],
+      "rgbaSha256": "0bd3ca21f2237ac15ee610e05462ff185f2fe447825d8f65c45b6bbae9537142",
+      "pngSha256": "3515996abc3b71cbada17013fd1e7adbe986a2be67d805a7f3168af15d2a4059"
+    },
+    {
+      "name": "after-mutation",
+      "file": "2026-09-18-html-gpu-paint/after-mutation.png",
+      "width": 384,
+      "height": 192,
+      "scale": 1,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "glyphRuns": 1,
+      "whiteTextPixels": 331,
+      "rootSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "expandedSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "rgbaSha256": "3dcaee0f80cb53ab703aad0bc6d4bb2f3cf164cc8b9c030e07cc1a40a76a58ed",
+      "pngSha256": "6b37c6a5f271ac984b9b3eeb674a3c1b3f83482b04c44bc3a66a9f6fe3d82ac7"
+    },
+    {
+      "name": "without-text",
+      "file": "2026-09-18-html-gpu-paint/without-text.png",
+      "width": 384,
+      "height": 192,
+      "scale": 1,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 0,
+      "glyphRuns": 0,
+      "whiteTextPixels": 0,
+      "rootSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "expandedSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "rgbaSha256": "642f47fe6c87e4a8be974152768188afcab92fe6c7cc2c44c1dbb7892bf4800d",
+      "pngSha256": "c2bc8e2d3ed30b03564da546081c0b4282cd0a4e9a6be9765570f09268697c32"
+    },
+    {
+      "name": "restored-text",
+      "file": "2026-09-18-html-gpu-paint/restored-text.png",
+      "width": 384,
+      "height": 192,
+      "scale": 1,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "glyphRuns": 1,
+      "whiteTextPixels": 331,
+      "rootSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "expandedSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "rgbaSha256": "3dcaee0f80cb53ab703aad0bc6d4bb2f3cf164cc8b9c030e07cc1a40a76a58ed",
+      "pngSha256": "6b37c6a5f271ac984b9b3eeb674a3c1b3f83482b04c44bc3a66a9f6fe3d82ac7"
+    },
+    {
+      "name": "scaled-2x",
+      "file": "2026-09-18-html-gpu-paint/scaled-2x.png",
+      "width": 768,
+      "height": 384,
+      "scale": 2,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "glyphRuns": 1,
+      "whiteTextPixels": 1924,
+      "rootSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "expandedSample": [
+        32,
+        160,
+        96,
+        255
+      ],
+      "rgbaSha256": "572e1d38f1c0e940724a3033d7cf0eaca7d60ab09d45fbecca028b402a58076b",
+      "pngSha256": "e3dfb02793b6ba7f3bc0f619e536cf22d26bba4e19393e4ed78abd957203d357"
+    }
+  ],
+  "validationErrors": [],
+  "limits": [
+    "Offscreen Metal only; no native window or input.",
+    "One shared Rust DOM with the bounded V8 adapter, not complete DOM/CSS conformance.",
+    "Independent wgpu29.0.4 device; no Three.js/ANGLE canvas or runtime GPU registry sharing.",
+    "GPU readback is for assertions and PNG evidence, not a display transport.",
+    "One pinned font and simple opaque backgrounds/text; no filters, complex text, IME or accessibility certification.",
+    "Manual capture stages and RAF timestamps; no frame pacing or performance claim."
+  ],
+  "capturedAt": "2026-09-17T22:27:47.363827+00:00",
+  "host": {
+    "platform": "macOS",
+    "version": "26.1",
+    "build": "25B78",
+    "architecture": "arm64",
+    "rustc": "rustc 1.93.0 (254b59607 2026-01-19)"
+  },
+  "metalApiValidation": {
+    "requested": true,
+    "observed": true,
+    "diagnostic": "Metal API Validation Enabled"
+  },
+  "sourceInputs": [
+    {
+      "path": "docs/investigations/html-dom/fixture.js",
+      "sha256": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed"
+    },
+    {
+      "path": "experiments/html-paint/Cargo.lock",
+      "sha256": "eb4583a77c1116623cc067167df7e94d127d5e880104792e3c2aaca7b2edc32f"
+    },
+    {
+      "path": "experiments/html-paint/Cargo.toml",
+      "sha256": "67b9d9880c257bd5f9a7fff2e3972f0c600ac499077dc776814ec59ee4633410"
+    },
+    {
+      "path": "experiments/html-paint/fixture.html",
+      "sha256": "71652cd06c3c06919e1d447280a61c14f47c7b750575c5a5f62bbb33bb01e66d"
+    },
+    {
+      "path": "experiments/html-paint/mutate.js",
+      "sha256": "1eb7fa42d969c95226bc6f99d0ce7c80a2b4ca022e739ce89be152553e21e55c"
+    },
+    {
+      "path": "experiments/html-paint/src/dom_bridge.rs",
+      "sha256": "d0c6ba5761f1891db4baa991c882eb787a1e8761f788684fdb1a4949c6befa73"
+    },
+    {
+      "path": "experiments/html-paint/src/main.rs",
+      "sha256": "5be01eb4fce23be0bab05ba9ee7178924e2e19b248454b633c21745718588378"
+    },
+    {
+      "path": "experiments/html-v8/src/bindings.js",
+      "sha256": "1d38425d73c62479d07312028c7799f77f84b1f0c280d989d3aa6e3eea779eb3"
+    },
+    {
+      "path": "experiments/html-v8/src/main.rs",
+      "sha256": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb"
+    }
+  ],
+  "fontProvenance": {
+    "family": "DejaVu Sans",
+    "version": "2.37",
+    "source": "https://github.com/DioxusLabs/blitz/blob/9d92719b37c801b8b41c81b799a2a474db8b3936/examples/wasm_hello/assets/DejaVuSans.woff2",
+    "license": "https://dejavu-fonts.github.io/License.html",
+    "embeddedCopyrightNotices": [
+      "Bitstream, Inc., 2003",
+      "Tavmjong Bah, 2006",
+      "DejaVu changes are in public domain"
+    ],
+    "embeddedLicenseChecked": true,
+    "fontFilePublished": false
+  }
+}

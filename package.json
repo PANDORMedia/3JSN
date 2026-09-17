@@ -13,6 +13,8 @@
     "test": "node --test scripts/compatibility/*.test.mjs",
     "probe:gpu": "node --expose-gc experiments/native-webgpu/probe.mjs",
     "probe:runtime": "node scripts/probe-runtime.mjs",
+    "probe:three": "node scripts/probe-three.mjs",
+    "probe:window-lifecycle": "node scripts/probe-window-lifecycle.mjs",
     "doctor": "node scripts/doctor.mjs"
   },
   "dependencies": {
