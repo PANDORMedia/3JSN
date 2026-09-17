@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-reference",
+  "capturedAt": "2026-09-17T21:57:16.981Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.48",
+    "revision": "@199a3a541d76237379e353b348e64045584db057",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/harness.mjs",
+      "sha256": "89e0001c6cfe44275f8a69807e61fc052cbb779f1871bd2a50012e802ef3c0a2"
+    },
+    {
+      "path": "fixtures/network/fixture.mjs",
+      "sha256": "b36c7a701c4c8f1af4449016ed58e429d64a3e5e15bc9f2688c3d8e00747f301"
+    },
+    {
+      "path": "fixtures/network/index.html",
+      "sha256": "5ac488a42b9aeab010061a9f9106a9ce54c017a21816fa0071aadbd86333d2e2"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    }
+  ],
+  "result": {
+    "schemaVersion": 1,
+    "fixture": "network",
+    "status": "passed",
+    "environment": {
+      "transport": "loopback HTTP and WebSocket",
+      "reconnect": "explicit application behavior after forced disconnect",
+      "tlsAndCredentials": "not tested",
+      "gameServices": "not contacted"
+    },
+    "checks": [
+      {
+        "name": "Relative fetch resolves the application origin",
+        "passed": true
+      },
+      {
+        "name": "Fetch exposes headers and independent cloned bodies",
+        "passed": true
+      },
+      {
+        "name": "Reading a response marks bodyUsed",
+        "passed": true
+      },
+      {
+        "name": "JSON POST preserves request payload",
+        "passed": true
+      },
+      {
+        "name": "Fetch returns exact binary bytes",
+        "passed": true
+      },
+      {
+        "name": "HTTP error remains a response instead of a rejected fetch",
+        "passed": true
+      },
+      {
+        "name": "Reference server refuses paths outside the public fixture allowlist",
+        "passed": true
+      },
+      {
+        "name": "AbortController cancels a pending request",
+        "passed": true,
+        "observed": "AbortError"
+      },
+      {
+        "name": "WebSocket opens and receives a connection identity",
+        "passed": true
+      },
+      {
+        "name": "WebSocket text echo retains payload and connection identity",
+        "passed": true
+      },
+      {
+        "name": "WebSocket binaryType and bytes survive an echo",
+        "passed": true
+      },
+      {
+        "name": "Server interruption produces an abnormal close",
+        "passed": true,
+        "observed": {
+          "code": 1006,
+          "wasClean": false
+        }
+      },
+      {
+        "name": "Application reconnect opens a new connection",
+        "passed": true
+      },
+      {
+        "name": "Messages resume after explicit reconnect",
+        "passed": true
+      },
+      {
+        "name": "Normal client shutdown preserves close code and reason",
+        "passed": true
+      }
+    ]
+  }
+}

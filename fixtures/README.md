@@ -7,13 +7,17 @@ behaviors; they do not certify native support or replace the full acceptance gam
 Capture a bounded headless Chrome/Chromium reference using an installed browser:
 
 ```sh
-node scripts/compatibility/browser-reference.mjs /path/to/chrome
+node scripts/compatibility/browser-reference.mjs /path/to/chrome all
 ```
 
 The runner creates a disposable browser profile and loopback-only server that
-serves fixture files and the pinned Three.js build. It waits for completed
+serves fixture files, the pinned Three.js build and original test network services.
+It waits for completed
 assertions and prints a JSON report, returning nonzero on failed assertions or
 timeout. It does not override the selected GPU backend or enable software fallback.
+The final argument selects `webgl-dom`, `workers-wasm`, `audio-worklet`, `network`,
+or `all`; omitting it retains the original `webgl-dom` behavior. Single-fixture
+output is one report; `all` emits a suite containing a `reports` array.
 
 Serve the repository root after `npm ci` and open
 `/fixtures/webgl-dom/index.html`. The import map resolves the exact Three.js package
@@ -28,13 +32,38 @@ Every assertion must pass; a screenshot or a visible canvas alone is insufficien
 The result explicitly distinguishes programmatic events from real pointer,
 keyboard, controller and accessibility validation.
 
+`workers-wasm` exercises module-worker imports, an original Wasm addition module,
+structured cloning, transferred ArrayBuffer ownership, request identity and worker
+termination. SharedArrayBuffer/Atomics and application-specific decoders are not
+covered by this fixture.
+
+`audio-worklet` renders Web Audio offline at a fixed sample rate. It checks exact
+source start/stop frames, gain automation, completion, and a module AudioWorklet's
+sample output, clock and message port. It does not access speakers, microphones or
+real-time audio hardware and does not establish latency or permission behavior.
+
+`network` uses the runner's local HTTP/WebSocket service to check relative fetch,
+JSON POST, binary bodies, response cloning, HTTP failures, abort, WebSocket text
+and binary messages, forced disconnect, application reconnect and clean close.
+The service uses the pinned `ws` development dependency; browser code uses native
+web APIs. It contacts no game service and tests no TLS, credentials or WebRTC.
+Static-only servers cannot run this fixture's service-dependent assertions.
+
 The fixture uses the repository's Three.js r186 baseline, not CtF's pinned r168
-dependency. Broader version compatibility, post-processing, workers, network,
-audio/worklets, media, failure/cancellation and physical input fixtures remain
-required. Record browser version, OS, GPU/backend and date with executed results;
+dependency. Broader version compatibility, post-processing, media/voice,
+full lifecycle/failure behavior and physical input fixtures remain required.
+Record browser version, OS, GPU/backend and date with executed results;
 do not use a browser pass as native integration evidence.
 
-The committed [macOS arm64 browser reference](webgl-dom/reference-macos-arm64.json)
-passed all 16 checks on 2026-09-17 in Chrome 153 with ANGLE Metal on Apple M1 Pro.
-It includes fixture/lockfile hashes and raw pixel observations. This is browser
-baseline evidence only; no native compatibility is implied.
+Committed macOS arm64 browser references from Chrome 153 on 2026-09-17:
+
+| Fixture | Passing assertions | Evidence |
+| --- | --- | --- |
+| WebGL/DOM | 16 | [Report](webgl-dom/reference-macos-arm64.json); ANGLE Metal on Apple M1 Pro |
+| Workers/Wasm | 8 | [Report](workers-wasm/reference-macos-arm64.json) |
+| Offline audio/worklet | 8 | [Report](audio-worklet/reference-macos-arm64.json) |
+| Fetch/WebSocket reconnect | 15 | [Report](network/reference-macos-arm64.json) |
+
+Reports include fixture/service/lockfile hashes and raw observations. These are
+browser baseline results only; no native compatibility is implied. The audio
+reference is sample computation, not evidence of real-time or physical audio.

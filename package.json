@@ -5,7 +5,9 @@
   "description": "Research and foundations for a Three.js native game engine.",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "check": "node scripts/check.mjs",
     "test": "node --test scripts/compatibility/*.test.mjs",
@@ -17,5 +19,9 @@
     "pngjs": "7.0.0",
     "three": "0.186.0",
     "webgpu": "0.6.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "ws": "8.21.3"
   }
 }

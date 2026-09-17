@@ -1,0 +1,73 @@
+{
+  "composition": "WGSL textureLoad and blend into a distinct wgpu storage texture",
+  "cpuReadback": "Only final composed pixels for validation; no producer-to-compositor CPU image transport",
+  "exactMTLDeviceIdentityChecked": true,
+  "frames": 96,
+  "framesQueuedBeforeCpuWait": 8,
+  "glesVersion": "OpenGL ES 3.0.0 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)",
+  "initialization": "One completed GL zero clear per imported texture before unsafe HAL import",
+  "pixelsChecked": 155648,
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+  "sizes": [
+    [
+      32,
+      16
+    ],
+    [
+      64,
+      32
+    ],
+    [
+      96,
+      24
+    ]
+  ],
+  "status": "pass",
+  "synchronization": "Bidirectional GPU MTLSharedEvent handoff; wait and signal command buffers committed on wgpu's actual native queue around each wgpu submission",
+  "textureGenerations": 12,
+  "transport": "Retained private ANGLE MTLTexture imported into wgpu-core through the public Metal HAL texture API",
+  "unverified": [
+    "deno_webgpu registry integration",
+    "JavaScript WebGL binding",
+    "native window presentation",
+    "HTML DOM compositor",
+    "device loss",
+    "performance",
+    "Windows/Linux"
+  ],
+  "validation": "wgpu InstanceFlags::VALIDATION; Metal validation availability recorded by runner",
+  "wgpu": "29.0.1",
+  "wgpuAdapter": "Apple M1 Pro",
+  "wgpuCore": "29.0.1",
+  "wgpuHal": "29.0.4",
+  "wgpuQueueDeviceIdentityChecked": true,
+  "wgpuTypes": "29.0.1",
+  "recordedOn": "2026-09-17",
+  "operatingSystem": "macOS 26.1 (25B78)",
+  "arch": "arm64",
+  "rustCompiler": "rustc 1.93.0 (254b59607 2026-01-19)",
+  "nativeCompiler": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+  "metalValidationRequested": true,
+  "metalValidationObserved": true,
+  "sourceHashes": {
+    "Cargo.toml": "aa1b959988e9dcdd9a7e148e80fd2c7a1587920b8070b1b9ff899a3f70c38dda",
+    "Cargo.lock": "9ebbf7e65a90d486c3e06721a4a5cc3696dd62942e493d40c48591aef821620e",
+    "build.rs": "4bf1e1d2054b9422d92dc5f9fa0edeb4bc91ed91ff1d713c992313407cbe8b56",
+    "bridge.mm": "767135924779d19268fc38603aa78b87eabd949e3f20d4cedc3b0feb763399cb",
+    "src/main.rs": "b9c6c81803d7cd56d01527abb5eacee451bb768f399ed19dc2ec10268c78412d",
+    "src/native.rs": "5cc3d322fcd90bf10230fcd4f8bfab03301ae7b1f0a76924210163f39431b135"
+  },
+  "angleArtifact": "gl@9.0.0-rc.10 (headers, loaders and ANGLE libraries only)",
+  "nativeLibraries": [
+    {
+      "file": "libEGL.dylib",
+      "bytes": 490880,
+      "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+    },
+    {
+      "file": "libGLESv2.dylib",
+      "bytes": 15068592,
+      "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+    }
+  ]
+}

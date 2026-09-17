@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-reference",
+  "capturedAt": "2026-09-17T21:57:16.752Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.48",
+    "revision": "@199a3a541d76237379e353b348e64045584db057",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/harness.mjs",
+      "sha256": "89e0001c6cfe44275f8a69807e61fc052cbb779f1871bd2a50012e802ef3c0a2"
+    },
+    {
+      "path": "fixtures/workers-wasm/add-module.mjs",
+      "sha256": "372f86a8bae38e4608b86f51d4bc49cc502ed5113344982ac80890232745a0ec"
+    },
+    {
+      "path": "fixtures/workers-wasm/fixture.mjs",
+      "sha256": "f23b502869ce1392cd3d1884387a79cb9369b499aacf268b8b26ede52f3faacb"
+    },
+    {
+      "path": "fixtures/workers-wasm/index.html",
+      "sha256": "fb7d321ac51f23a94491e38958138bc0049c4830b00aeacdb1ccb2e96ad37462"
+    },
+    {
+      "path": "fixtures/workers-wasm/worker.mjs",
+      "sha256": "35b567d75c42d77822f4cde33813a67c8fa2678e79b415a9db9334ee6e9a17d9"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    }
+  ],
+  "result": {
+    "schemaVersion": 1,
+    "fixture": "workers-wasm",
+    "status": "passed",
+    "environment": {
+      "wasm": "original i32 addition module",
+      "worker": "module",
+      "sharedMemory": "not tested",
+      "cancellation": "explicit Worker.terminate; no late response within 100 ms"
+    },
+    "checks": [
+      {
+        "name": "Module worker executes imported Wasm addition",
+        "passed": true,
+        "observed": 42
+      },
+      {
+        "name": "Structured clone isolates nested objects",
+        "passed": true
+      },
+      {
+        "name": "Worker has no document global",
+        "passed": true
+      },
+      {
+        "name": "Transfer detaches the sender ArrayBuffer",
+        "passed": true
+      },
+      {
+        "name": "Worker returns a transferred Wasm result",
+        "passed": true
+      },
+      {
+        "name": "Worker import resolves relative to its module URL",
+        "passed": true
+      },
+      {
+        "name": "Messages preserve request identity and values",
+        "passed": true
+      },
+      {
+        "name": "Terminated worker emits no response to subsequent messaging",
+        "passed": true,
+        "observed": {
+          "before": 4,
+          "after": 4
+        }
+      }
+    ]
+  }
+}

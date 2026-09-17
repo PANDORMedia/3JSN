@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>3JSN V8 DOM comparison</title></head>
+<body>
+<div id="root"></div>
+<script>
+globalThis.__blitz_send_message = message => {
+  const output = document.createElement('pre');
+  output.className = 'result';
+  output.textContent = message;
+  document.body.appendChild(output);
+};
+</script>
+<script src="../../docs/investigations/html-dom/fixture.js"></script>
+<script src="behavior.js"></script>
+</body>
+</html>

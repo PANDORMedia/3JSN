@@ -1,8 +1,8 @@
 # WebGL2 / GLSL native integration investigation
 
 Date: 2026-09-17. Tracks [issue #19](https://github.com/PANDORMedia/3JSN/issues/19).
-Status: rendering feasibility demonstrated on one Mac; no shipping backend selected.
-Rust embedding and compositable GPU output remain unverified, so #19 is not complete.
+Status: rendering and ANGLE/native Metal texture composition demonstrated on one
+Mac; no shipping backend selected. Rust/JS/wgpu integration remains unverified.
 
 ## Recommendation
 
@@ -13,9 +13,10 @@ headless-gl's JS validation/object layer before writing a complete replacement,
 but do not adopt its current experimental Node binding as the shipping runtime.
 
 The concrete next gate is a Rust/V8 context with a native-owned output texture
-that the selected compositor samples on the GPU. A successful offscreen draw
-cannot settle that device, queue and lifetime contract. Keep the shared GPU
-contract open while the WebGPU host and HTML renderer are investigated.
+that the selected compositor reads on the GPU. The separate native Metal proof
+below settles a useful low-level ownership path, but does not show that wgpu or
+the JS binding implements it. Keep the shared GPU contract open while the WebGPU
+host and HTML renderer are investigated.
 
 ## Executed evidence
 
@@ -125,11 +126,27 @@ The binding/profile needs explicit tests for:
 These are required compatibility work. A passing Three.js scene does not authorize
 removing validation that a different unchanged application depends on.
 
-## GPU composition: what is possible, what is unproved
+## GPU composition: native Metal evidence and remaining integration
+
+The [native interop reproduction](../../experiments/native-webgl-interop/README.md)
+uses the already downloaded ANGLE libraries without upstream patches. It queries
+ANGLE's exact Metal device, imports a private `MTLTexture` as an EGLImage/GL
+framebuffer, then runs a native Metal compute pass on an independent queue to
+read that texture and blend into another private texture. Producer/consumer reuse
+is protected by bidirectional GPU shared-event waits/signals; eight alternating
+frames are queued before CPU verification. The host explicitly enables the
+requestable image extension inside ANGLE's WebGL-compatible GLES context.
+
+The [recorded result](../validation/2026-09-17-webgl-metal-interop.json) passed 96
+frames, 12 texture generations over three extents, and 155,648 final pixels with
+Metal API Validation reporting that it was enabled. Only final composed pixels
+were read back for assertions. There was no CPU image transport between producer
+and consumer. This Objective-C++ probe does not embed Rust, wgpu or the JS binding;
+none of those integrations is inferred from the native result.
 
 | Target | Source-supported route | Integration that still needs execution evidence |
 | --- | --- | --- |
-| macOS / Metal | Import a native `MTLTexture` through `EGL_METAL_TEXTURE_ANGLE`; query ANGLE's Metal device; exchange completion with Metal shared-event EGL sync | Exact same device, compatible render/sample format and usage, retain/release, queue ordering, resize and teardown |
+| macOS / Metal | Verified private `MTLTexture` import, native compute composition and bidirectional shared-event handoff | Rust/JS/wgpu adoption, full format/color-space policy, presentation and failure recovery |
 | Linux / Vulkan | Query ANGLE's device/queue; EGLImage import/export of `VkImage`; GL texture acquire/release layout handoff | Device creation/features accepted by both libraries, queue synchronization, layout/state tracking, and X11/Wayland presentation |
 | Windows | ANGLE's supported D3D11 or Vulkan paths | D3D11 and the WebGPU host's D3D12 do not automatically share resources; compare an explicit cross-API sharing design with using Vulkan for both |
 
@@ -157,11 +174,12 @@ Its presence does not establish readiness: the inspected
 does not list a completed platform for that backend. Do not build the initial
 compatibility promise around it without conformance and performance evidence.
 
-Start the composition probe with a single imported texture and a native GPU
-sampling pass, then test alternating frames, resize and repeated destruction.
-Measure a conservative completion path before replacing it with asynchronous
-fences. Presentation must not shuttle frames through CPU readback. The current
-probe uses readback exclusively to inspect results and proves no sharing path.
+Extend the verified Metal path into the selected Rust/compositor stack while
+preserving its ownership and synchronization requirements. Test presentation,
+window resize and loss/recovery separately; texture allocation at several sizes
+does not establish those lifecycle behaviors. The native proof uses asynchronous
+GPU fences without claiming their overhead or a performance gain. Presentation
+must not shuttle frames through CPU readback.
 
 ## Build, licensing and upkeep
 
@@ -189,10 +207,18 @@ than depending indefinitely on that installer.
 
 ## Remaining issue gates
 
+The [follow-on Rust experiment](../../experiments/native-webgl-wgpu/README.md)
+also consumes the ANGLE texture through wgpu-core 29.0.1 on Metal, with exact
+native-device identity and explicit ordering on wgpu's own queue. Its
+[96-frame validation](../validation/2026-09-17-webgl-wgpu-metal.json) proves an
+isolated Rust import path. It does not yet use Deno's actual registry or expose
+WebGL to the shipping JS realm.
+
 1. Replace or extract the Node-specific binding into the selected JS host without
    changing the Three.js fixture. Bound the adapter and document its ownership.
-2. Implement a native GPU texture sharing/composition probe, including resource
-   release and synchronization evidence. This is the unfulfilled central #19 gate.
+2. Adapt the verified native Metal texture handoff into the selected Rust/JS/wgpu
+   ownership model. Keep the isolated native result separate from that still
+   unproved integration and evaluate other backends independently.
 3. Turn observed API defects into regression fixtures and decide upstream fixes
    versus a maintained alternative before adopting the JS layer.
 4. Exercise CtF's pinned Three.js version, custom shaders, post-processing,

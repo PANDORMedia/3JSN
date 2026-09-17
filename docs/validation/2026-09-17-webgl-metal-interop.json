@@ -1,0 +1,58 @@
+{
+  "consumer": "Native Metal compute shader reads and blends into a second private texture",
+  "cpuReadback": "Final composed test pixels only; not producer-to-consumer transport",
+  "device": "Apple M1 Pro",
+  "frames": 96,
+  "framesQueuedBeforeCpuWait": 8,
+  "glesVersion": "OpenGL ES 3.0.0 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)",
+  "pixelsChecked": 155648,
+  "producer": "GLES3 GLSL draw through ANGLE Metal",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+  "sizes": [
+    [
+      32,
+      16
+    ],
+    [
+      64,
+      32
+    ],
+    [
+      96,
+      24
+    ]
+  ],
+  "status": "pass",
+  "synchronization": "GPU-only bidirectional MTLSharedEvent waits/signals via EGL_ANGLE_metal_shared_event_sync",
+  "textureGenerations": 12,
+  "transport": "same-device private MTLTexture imported as EGLImage; native Metal compute composition",
+  "unverified": [
+    "Rust/wgpu integration",
+    "JS WebGL binding",
+    "HTML compositor",
+    "window presentation",
+    "device loss",
+    "performance",
+    "Windows/Linux"
+  ],
+  "recordedOn": "2026-09-17",
+  "operatingSystem": "macOS 26.1 (25B78)",
+  "arch": "arm64",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+  "bindingArtifact": "gl@9.0.0-rc.10 (headers, loaders and ANGLE libraries only; no Node addon loaded)",
+  "metalValidationRequested": true,
+  "metalValidationObserved": true,
+  "sourceSHA256": "9730139c67c2c99a612def2a8aba2c09c0e88bbb79b75ebb06e8d5eb7d899691",
+  "nativeLibraries": [
+    {
+      "file": "libEGL.dylib",
+      "bytes": 490880,
+      "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+    },
+    {
+      "file": "libGLESv2.dylib",
+      "bytes": 15068592,
+      "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+    }
+  ]
+}

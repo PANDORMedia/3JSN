@@ -5,6 +5,13 @@ This is integration evidence and a recommendation, not a backend adoption or a
 claim that 3JSN runs dynamic HTML. The [product contract](../product.md) remains
 unchanged.
 
+Follow-on evidence: the [V8-to-Blitz experiment](../../experiments/html-v8/README.md)
+now exercises one Rust-owned DOM from V8, with no Boa or upstream patch. Seven
+declared original observations and 15 additional event/mutation checks pass;
+[its report](../validation/2026-09-17-html-v8.md) preserves the unsupported APIs
+and remaining painting, input and collection gates. The initial findings below
+describe the upstream Boa binding rather than this separate adapter.
+
 ## Finding that changes the earlier assessment
 
 **Blitz now has JavaScript DOM bindings, but they are tied to Boa, not V8.** Its

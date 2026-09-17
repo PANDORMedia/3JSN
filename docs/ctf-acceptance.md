@@ -19,15 +19,23 @@ The ignored local `.cache/acceptance/ctf/` directory holds the private manifest
 and provenance, including the exact exclusion set and dirty-worktree status.
 Only `.git`, installed dependency directories and declared workspace `dist`
 directories were excluded. Sources, lockfile, source assets and configuration
-were measured; their contents were not copied to this repository. The manifest
+were measured; their contents are not tracked or published by 3JSN. The manifest
 contains paths and content identities and must remain private.
 
-This identifies a mutable checkout; it does **not** preserve an immutable source
-archive. Before the full acceptance run, retain an authorized private archive or
-immutable private commit containing the dirty changes and required assets, verify
-it against the manifest, and record a recoverable private locator. Reconstructing
-from the git HEAD alone loses the uncommitted changes. Keep installed dependency
-and build-output identities separately; record toolchain/runtime versions.
+An authorized private recovery directory now preserves the exact manifest-scoped
+inputs, including the dirty changes: 1,107 files totaling 227,212,054 bytes. It is
+stored beneath the ignored `.cache/acceptance/ctf/` directory; the private recovery
+report records its locator. Every restored entry was rehashed against the original
+manifest, and a second hash of the original checkout confirmed it stayed unchanged.
+No installed dependencies or generated workspace outputs were copied.
+
+Recovery directories and files are owner-only; existing owner executable bits are
+retained. The private copy is retained as acceptance input and must not be edited.
+Verify its digest before use, and work from a separate disposable copy when builds
+need output directories. It is a recoverable local copy, not an off-machine backup
+or filesystem-enforced immutable archive. Reconstructing from git HEAD alone loses
+the uncommitted changes. Dependency installation, build-output identities and
+toolchain/runtime versions remain part of the execution record.
 
 ## Execution and evidence
 
@@ -65,8 +73,9 @@ steps require real devices, not synthetic events or successful compilation.
 
 ## Public fixture coverage
 
-The original [WebGL/DOM fixture](../fixtures/README.md) covers a small shared
-rendering/UI slice and can be redistributed. Its automated click/focus checks
-do not replace physical input, full CSS coverage, CtF's Three.js version, voice,
-game services or the journey above. Workers, audio/worklets, network/reconnect,
-post-processing and failure/lifecycle fixtures remain corpus work.
+The original [public fixture corpus](../fixtures/README.md) covers rendering/UI,
+module workers/Wasm, offline Web Audio/worklets, and local fetch/WebSocket reconnect.
+It can be redistributed. Its automated checks do not replace physical input,
+full CSS coverage, CtF's Three.js version, real-time audio devices, voice,
+game services or the journey above. Post-processing, media/voice, full lifecycle
+and the CtF browser/native journey remain corpus and acceptance work.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "browser-reference",
-  "capturedAt": "2026-09-17T21:25:53.085Z",
+  "capturedAt": "2026-09-17T21:57:16.527Z",
   "host": {
     "platform": "darwin",
     "architecture": "arm64"
@@ -15,6 +15,14 @@
   },
   "fixtureInputs": [
     {
+      "path": "fixtures/harness.mjs",
+      "sha256": "89e0001c6cfe44275f8a69807e61fc052cbb779f1871bd2a50012e802ef3c0a2"
+    },
+    {
+      "path": "fixtures/webgl-dom/fixture.mjs",
+      "sha256": "64b079b7b548c5eed380dc101934e8a3bb8c51495274fcd8a63805496ec1ead4"
+    },
+    {
       "path": "fixtures/webgl-dom/index.html",
       "sha256": "b46b2e91d512f2949a5d6f88ff1bec474032e8fb091f856a2493c7c3571d8ce7"
     },
@@ -23,12 +31,12 @@
       "sha256": "c5dc919108aa21fa630e54aa7d568f59f26a0a49c122e8cebf893533e32f68b4"
     },
     {
-      "path": "fixtures/webgl-dom/fixture.mjs",
-      "sha256": "64b079b7b548c5eed380dc101934e8a3bb8c51495274fcd8a63805496ec1ead4"
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
     },
     {
-      "path": "package-lock.json",
-      "sha256": "3fe49b0efc4d65caec8eee282412038127e68c86fff05ba30a7c5ce4f5d06a4e"
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
     }
   ],
   "result": {

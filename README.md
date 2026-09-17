@@ -69,6 +69,13 @@ The [WebGL/ANGLE experiment](experiments/native-webgl/README.md) and
 [HTML investigation](docs/investigations/html-dom.md) record working paths and
 concrete upstream compatibility failures. They are not adopted shipping backends.
 
+Follow-on experiments now verify [ANGLE-to-wgpu Metal texture sharing](experiments/native-webgl-wgpu/README.md)
+without CPU image transport and [V8-to-Blitz DOM behavior](experiments/html-v8/README.md)
+with one authoritative DOM. The [public compatibility corpus](fixtures/README.md)
+has browser references for WebGL/DOM, workers/Wasm, offline audio/worklets and
+fetch/WebSocket reconnection. These isolated results do not yet constitute an
+integrated unchanged-game runtime.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

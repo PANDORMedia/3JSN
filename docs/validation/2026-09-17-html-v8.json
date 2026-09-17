@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-09-17",
+  "host": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "rust": "1.93.0",
+    "chrome": "153.0.8010.48"
+  },
+  "sources": {
+    "fixtureSha256": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "behaviorSha256": "081cdade5aeceeca51383e01dfb3ed6f83bdea436638e087a9a6f986ac144d98",
+    "lockSha256": "1f0175db05735fd0f6cd977e7d9f0cadd6a091012c062939b8696ec2ac11f2f1"
+  },
+  "native": {
+    "fixture": "v8-blitz-dom",
+    "result": "pass-for-declared-probe-subset",
+    "blitzRevision": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+    "denoCore": "0.412.0",
+    "v8": "15.0.245.2-rusty",
+    "messages": [
+      {
+        "identity": true,
+        "mutation": true,
+        "geometry": [
+          120,
+          240
+        ],
+        "eventOrder": [
+          "capture",
+          "target",
+          "bubble"
+        ],
+        "detachedIdentity": true,
+        "classListSameObject": true,
+        "inputPrototype": true,
+        "canvasContextType": "undefined",
+        "serviceTypes": [
+          "undefined",
+          "undefined",
+          "undefined",
+          "undefined"
+        ]
+      },
+      {
+        "behavior": {
+          "reentrantLayout": true,
+          "sameRealmCallback": true,
+          "cancellation": true,
+          "propagationSnapshot": true,
+          "updatedPathAndOnce": true,
+          "dispatchCleanup": true,
+          "replacedNodeSurvives": true,
+          "selectorIdentity": true,
+          "liveStyle": true,
+          "removedListenerSkipped": true,
+          "stopPropagation": true,
+          "passive": true,
+          "cycleRejected": true,
+          "wrongParentRejected": true,
+          "invalidSelectorRejected": true
+        }
+      },
+      {
+        "frames": [
+          100,
+          116.6666666667
+        ]
+      }
+    ],
+    "limits": [
+      "No GPU, HTML painting or window integration.",
+      "Synthetic DOM events only; native input and default actions are not implemented.",
+      "Wrappers and detached nodes retained until document destruction; no per-node garbage collection.",
+      "Manually driven RAF timestamps are a test hook, not display scheduling.",
+      "Only fixture-required DOM methods and prototypes are implemented."
+    ]
+  },
+  "browserMessages": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": [
+        "capture",
+        "target",
+        "bubble"
+      ],
+      "detachedIdentity": true,
+      "classListSameObject": true,
+      "inputPrototype": true,
+      "canvasContextType": "function",
+      "serviceTypes": [
+        "function",
+        "function",
+        "function",
+        "function"
+      ]
+    },
+    {
+      "frames": [
+        33.6,
+        67
+      ]
+    },
+    {
+      "behavior": {
+        "reentrantLayout": true,
+        "sameRealmCallback": true,
+        "cancellation": true,
+        "propagationSnapshot": true,
+        "updatedPathAndOnce": true,
+        "dispatchCleanup": true,
+        "replacedNodeSurvives": true,
+        "selectorIdentity": true,
+        "liveStyle": true,
+        "removedListenerSkipped": true,
+        "stopPropagation": true,
+        "passive": true,
+        "cycleRejected": true,
+        "wrongParentRejected": true,
+        "invalidSelectorRejected": true
+      }
+    }
+  ]
+}

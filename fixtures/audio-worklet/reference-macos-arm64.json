@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-reference",
+  "capturedAt": "2026-09-17T21:57:16.867Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.48",
+    "revision": "@199a3a541d76237379e353b348e64045584db057",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/audio-worklet/clock-processor.mjs",
+      "sha256": "f187ee4035d00dfbe9fba78ec4c7af65d34c6cc369ab088f9e94a3b69a4ae8ed"
+    },
+    {
+      "path": "fixtures/audio-worklet/fixture.mjs",
+      "sha256": "8add1a7ebb8429e48c75adba6e0062eee5cb83274db92039d675498adc8a17b7"
+    },
+    {
+      "path": "fixtures/audio-worklet/index.html",
+      "sha256": "c12587f683648d36622a2cd17c94499416f4bc22655b7141799037b8dced8ba0"
+    },
+    {
+      "path": "fixtures/harness.mjs",
+      "sha256": "89e0001c6cfe44275f8a69807e61fc052cbb779f1871bd2a50012e802ef3c0a2"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    }
+  ],
+  "result": {
+    "schemaVersion": 1,
+    "fixture": "audio-worklet",
+    "status": "passed",
+    "environment": {
+      "mode": "OfflineAudioContext",
+      "sampleRate": 48000,
+      "physicalAudio": "not tested",
+      "microphone": "not accessed",
+      "workletQuantum": 128
+    },
+    "checks": [
+      {
+        "name": "Offline buffer retains requested format",
+        "passed": true
+      },
+      {
+        "name": "Scheduled source starts at the requested sample frame",
+        "passed": true
+      },
+      {
+        "name": "Gain automation applies at the scheduled audio time",
+        "passed": true
+      },
+      {
+        "name": "Scheduled stop restores silence",
+        "passed": true
+      },
+      {
+        "name": "Offline audio clock matches rendered sample count",
+        "passed": true,
+        "observed": {
+          "time": 0.042666666666666665,
+          "state": "closed"
+        }
+      },
+      {
+        "name": "Scheduled source emits ended",
+        "passed": true
+      },
+      {
+        "name": "Worklet produces the requested output samples",
+        "passed": true
+      },
+      {
+        "name": "Worklet message port returns consecutive rendering quanta",
+        "passed": true,
+        "observed": [
+          {
+            "frame": 0,
+            "time": 0,
+            "rate": 48000,
+            "length": 128
+          },
+          {
+            "frame": 128,
+            "time": 0.0026666666666666666,
+            "rate": 48000,
+            "length": 128
+          },
+          {
+            "frame": 256,
+            "time": 0.005333333333333333,
+            "rate": 48000,
+            "length": 128
+          }
+        ]
+      }
+    ]
+  }
+}
