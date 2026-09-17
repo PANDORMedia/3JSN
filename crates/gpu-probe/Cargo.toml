@@ -1,0 +1,12 @@
+[package]
+name = "threejs-native-gpu-probe"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+description = "Native adapter/device diagnostic for the 3JSN Rust harness research"
+
+[dependencies]
+wgpu.workspace = true
+pollster.workspace = true

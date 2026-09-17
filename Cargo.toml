@@ -1,0 +1,15 @@
+[workspace]
+members = ["crates/gpu-probe"]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.92"
+license = "MIT"
+version = "0.0.0"
+
+[workspace.dependencies]
+# Independent device probe only. Match deno_webgpu's wgpu-core versions when
+# integrating the JS bridge; resources cannot cross unrelated wgpu instances.
+wgpu = { version = "=28.0.0", default-features = false, features = ["std", "metal", "vulkan", "dx12", "wgsl"] }
+pollster = "=0.4.0"

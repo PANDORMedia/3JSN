@@ -1,0 +1,19 @@
+{
+  "name": "3jsn",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Research and foundations for a Three.js native game engine.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "probe:gpu": "node --expose-gc experiments/native-webgpu/probe.mjs",
+    "doctor": "node scripts/doctor.mjs"
+  },
+  "dependencies": {
+    "pngjs": "7.0.0",
+    "three": "0.186.0",
+    "webgpu": "0.6.1"
+  }
+}

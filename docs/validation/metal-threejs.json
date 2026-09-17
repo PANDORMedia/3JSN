@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-17T20:33:29.623Z",
+  "kind": "offscreen-correctness-probe",
+  "runtime": "Node v24.13.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "three": "186",
+  "webgpuPackage": "0.6.1",
+  "requestedBackend": "metal",
+  "adapter": {
+    "vendor": "apple",
+    "architecture": "metal-3",
+    "device": "apple-m1-pro",
+    "description": "Metal driver on macOS Version 26.1 (Build 25B78)",
+    "isFallbackAdapter": false
+  },
+  "width": 640,
+  "height": 400,
+  "foregroundPixels": 57384,
+  "changedPixels": 20105,
+  "browser": false,
+  "nativeWindow": false,
+  "rustIntegration": false,
+  "performanceClaim": "None. Readback is for correctness, not frame-time measurement."
+}
