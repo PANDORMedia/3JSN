@@ -67,8 +67,9 @@ The probe has one independent wgpu 29.0.4 device. It neither imports a Three.js 
 ANGLE canvas nor shares the current runtime's wgpu-core 29.0.1 registry. Vello
 0.10.0 requires the high-level wgpu wrapper `^29.0.3`. An isolated Cargo resolution
 succeeded with wrapper 29.0.4, core/types 29.0.1 and hal 29.0.4 alongside the current
-Deno binding, without a patch. That mixed graph has not been compiled or rendered
-here; the recorded paint run used core/types 29.0.4. Deno's published core/types
+Deno binding, without a patch. A [follow-up variant](../html-paint-mixed-probe/README.md)
+then compiled and rendered that graph on Metal, producing six byte-identical
+captures. The original recorded paint run used core/types 29.0.4. Deno's core/types
 requirements are exact, so moving those to 29.0.4 is not a lockfile-only update.
 Matching versions also does not supply a public wrapper constructor for Deno's
 existing `Arc<Global>` and device/queue identifiers.

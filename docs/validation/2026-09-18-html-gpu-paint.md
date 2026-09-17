@@ -88,9 +88,17 @@ A follow-up checked the published manifests and isolated Cargo resolution:
 - [`wgpu` 29.0.4](https://docs.rs/crate/wgpu/29.0.4/source/Cargo.toml) accepts core
   and types `^29.0.1`. Consequently Deno 0.226.0 + Vello 0.10.0 + wrapper 29.0.4
   **resolve together** to one core 29.0.1, one types 29.0.1 and hal 29.0.4, without
-  any dependency patch. This is resolution evidence only: that mixed graph has
-  not been compiled or GPU-validated by this probe. The recorded paint versions
-  and images above remain unchanged.
+  any dependency patch.
+
+The [follow-up variant](../../experiments/html-paint-mixed-probe/README.md) then
+compiled this mixed graph and ran the unchanged paint source on Metal. All
+assertions passed and all six PNG captures are byte-identical to the original
+run. The [separate verification](2026-09-18-html-compatible-graph.json) records
+actual Cargo versions, source identities and comparison hashes. It also corrects
+the unchanged source's stale hardcoded version labels in its raw JSON. Deno
+WebGPU was compiled as a dependency but not instantiated. The original report
+and images above still describe their all-29.0.4 run. Dependency compatibility
+is now demonstrated; sharing a live GPU registry remains a separate gate.
 
 **Registry ownership.** Version alignment does not wrap Deno's existing device.
 The public `wgpu::Instance::from_core` accepts a low-level

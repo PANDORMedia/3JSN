@@ -1,0 +1,282 @@
+{
+  "status": "pass",
+  "scope": "Unchanged HTML paint source built and rendered using a single Deno-compatible wgpu-core/types dependency graph. Deno WebGPU is compiled as a dependency but its extension is not instantiated and no runtime device registry is shared.",
+  "run": {
+    "startedAt": "2026-09-17T22:45:10.294708+00:00",
+    "finishedAt": "2026-09-17T22:45:14.082612+00:00",
+    "exitCode": 0,
+    "metalDebugLayer": "1",
+    "timeoutSeconds": 120
+  },
+  "actualResolvedVersions": [
+    {
+      "name": "anyrender_vello",
+      "version": "0.14.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "blitz-dom",
+      "version": "0.3.0-beta.2",
+      "source": "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+    },
+    {
+      "name": "blitz-html",
+      "version": "0.3.0-beta.2",
+      "source": "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+    },
+    {
+      "name": "blitz-paint",
+      "version": "0.3.0-beta.2",
+      "source": "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+    },
+    {
+      "name": "deno_core",
+      "version": "0.412.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_webgpu",
+      "version": "0.226.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "naga",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "vello",
+      "version": "0.10.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-core",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-hal",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-types",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    }
+  ],
+  "rawReportVersionCaveat": {
+    "path": "output/report.json",
+    "reason": "Unchanged probe hardcodes wgpuCore and wgpuTypes as 29.0.4. Actual lockfile and compiled graph use 29.0.1; use actualResolvedVersions for this run."
+  },
+  "host": {
+    "machine": "arm64",
+    "macOS": "26.1",
+    "rustc": "rustc 1.93.0 (254b59607 2026-01-19)"
+  },
+  "adapter": {
+    "name": "Apple M1 Pro",
+    "backend": "Metal",
+    "deviceType": "IntegratedGpu",
+    "wgpuValidation": true,
+    "velloUseCpu": false
+  },
+  "metalApiValidationObserved": true,
+  "validationErrors": [],
+  "inputHashesMatchRecorded": true,
+  "originalFixtureMessages": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": [
+        "capture",
+        "target",
+        "bubble"
+      ],
+      "detachedIdentity": true,
+      "classListSameObject": true,
+      "inputPrototype": true,
+      "canvasContextType": "undefined",
+      "serviceTypes": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
+      ]
+    },
+    {
+      "frames": [
+        100,
+        116.6666666667
+      ]
+    }
+  ],
+  "textOnlyChangedPixels": 798,
+  "captures": [
+    {
+      "name": "initial",
+      "rgbaSha256": "714d85f0478c169918d4e6535e908b6eb70a5d5ffc09d7899aa9c5ee372e41c5",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "719ba2bff877ea9aabef0d0019e3448201de333f99e757b2db15314bd754e186",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 120.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 104.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 7,
+      "whiteTextPixels": 237
+    },
+    {
+      "name": "after-original",
+      "rgbaSha256": "0bd3ca21f2237ac15ee610e05462ff185f2fe447825d8f65c45b6bbae9537142",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "3515996abc3b71cbada17013fd1e7adbe986a2be67d805a7f3168af15d2a4059",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 8,
+      "whiteTextPixels": 405
+    },
+    {
+      "name": "after-mutation",
+      "rgbaSha256": "3dcaee0f80cb53ab703aad0bc6d4bb2f3cf164cc8b9c030e07cc1a40a76a58ed",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "6b37c6a5f271ac984b9b3eeb674a3c1b3f83482b04c44bc3a66a9f6fe3d82ac7",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "whiteTextPixels": 331
+    },
+    {
+      "name": "without-text",
+      "rgbaSha256": "642f47fe6c87e4a8be974152768188afcab92fe6c7cc2c44c1dbb7892bf4800d",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "c2bc8e2d3ed30b03564da546081c0b4282cd0a4e9a6be9765570f09268697c32",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 0,
+      "whiteTextPixels": 0
+    },
+    {
+      "name": "restored-text",
+      "rgbaSha256": "3dcaee0f80cb53ab703aad0bc6d4bb2f3cf164cc8b9c030e07cc1a40a76a58ed",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "6b37c6a5f271ac984b9b3eeb674a3c1b3f83482b04c44bc3a66a9f6fe3d82ac7",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "whiteTextPixels": 331
+    },
+    {
+      "name": "scaled-2x",
+      "rgbaSha256": "572e1d38f1c0e940724a3033d7cf0eaca7d60ab09d45fbecca028b402a58076b",
+      "rgbaMatchesRecorded": true,
+      "pngSha256": "e3dfb02793b6ba7f3bc0f619e536cf22d26bba4e19393e4ed78abd957203d357",
+      "pngMatchesRecorded": true,
+      "geometry": {
+        "root": {
+          "x": 24.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 120.0
+        },
+        "button": {
+          "x": 32.0,
+          "y": 32.0,
+          "width": 224.0,
+          "height": 56.0
+        }
+      },
+      "glyphs": 9,
+      "whiteTextPixels": 1924
+    }
+  ],
+  "checkedPublicFilesUnchanged": true,
+  "sourceInputHashes": {
+    "Cargo.toml": "4d7a8a08091a55667082fcb9545bd25f255ac9c2b4eb7049779e88ed2b331d22",
+    "Cargo.lock": "00f447264f10ae8f04a25bc76d50492be4308d02bfedbd3a073d2db9542750ff",
+    "experiments/html-paint/Cargo.toml": "67b9d9880c257bd5f9a7fff2e3972f0c600ac499077dc776814ec59ee4633410",
+    "experiments/html-paint/Cargo.lock": "eb4583a77c1116623cc067167df7e94d127d5e880104792e3c2aaca7b2edc32f",
+    "experiments/html-paint/src/main.rs": "5be01eb4fce23be0bab05ba9ee7178924e2e19b248454b633c21745718588378",
+    "experiments/html-paint/src/dom_bridge.rs": "d0c6ba5761f1891db4baa991c882eb787a1e8761f788684fdb1a4949c6befa73",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "experiments/html-v8/src/bindings.js": "1d38425d73c62479d07312028c7799f77f84b1f0c280d989d3aa6e3eea779eb3",
+    "experiments/html-paint/fixture.html": "71652cd06c3c06919e1d447280a61c14f47c7b750575c5a5f62bbb33bb01e66d",
+    "experiments/html-paint/mutate.js": "1eb7fa42d969c95226bc6f99d0ce7c80a2b4ca022e739ce89be152553e21e55c",
+    "docs/investigations/html-dom/fixture.js": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "docs/validation/2026-09-18-html-gpu-paint.json": "bfc1f7f9c923d446f0c074d4bcb10761a371b4726c57f26f99c0da26f44471a9"
+  },
+  "manifestSha256": "d31755cfa7b9185aad0330b0a222fc92a7de65e65ca6e9288a516e780526f6bd",
+  "lockSha256": "352e4c00403d2f6ed3dd0da79e9f9f4493ffa8419a04dff1a0771c81de5d9235",
+  "binarySha256": "b09c12967c9ef69b0d04a9b05f5f395a32372cb5bf9e5a17879d1b7ae1bf8e36"
+}

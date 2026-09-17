@@ -1,0 +1,32 @@
+[package]
+name = "threejs-native-html-paint-mixed-probe"
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "threejs-native-html-paint-mixed-probe"
+path = "../../experiments/html-paint/src/main.rs"
+
+[workspace]
+
+[dependencies]
+blitz-dom = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false, features = ["woff"] }
+blitz-html = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
+blitz-paint = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
+blitz-traits = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
+anyrender_vello = "=0.14.0"
+vello = "=0.10.0"
+wgpu = { version = "=29.0.4", default-features = false, features = ["metal", "wgsl", "std"] }
+wgpu-core = { version = "=29.0.1", default-features = false, features = ["metal"] }
+wgpu-hal = { version = "=29.0.4", default-features = false, features = ["metal"] }
+wgpu-types = { version = "=29.0.1", default-features = false }
+deno_core = "=0.412.0"
+deno_error = "=0.7.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+pollster = "=0.4.0"
+png = "=0.18.1"
+sha2 = "=0.10.9"
+deno_webgpu = "=0.226.0"
