@@ -11,6 +11,7 @@ required work, not optional migrations for the application.
 | PBR material and basic lights | Small `MeshStandardMaterial` scene in offscreen probe | Broaden visual fixtures |
 | WebGPU renderer | Pinned Three.js 0.186.0, external device/context | First shipping renderer candidate |
 | Rust native GPU device | Independent wgpu diagnostic | Integrate with JS-owned device/surface |
+| Rust-hosted JavaScript/WebGPU | V8 module/event/error tests and Metal triangle pixels pass | Native surface/presentation and broader WebGPU fixtures remain |
 | Window, swapchain, resize, DPI | Not implemented | M1 |
 | TSL custom materials, compute, instancing | Not yet tested here | Add dedicated fixtures |
 | WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | Not implemented | Required WebGL/GLSL binding and native translation track; preserve source |

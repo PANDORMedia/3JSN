@@ -20,9 +20,11 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run check
+      - run: npm test
       - name: Select Rust toolchain
         run: rustup toolchain install 1.93.0 --profile minimal --component rustfmt --component clippy
       - run: cargo +1.93.0 fmt --all --check
       - run: cargo +1.93.0 check --workspace --locked
       - run: cargo +1.93.0 clippy --workspace --locked -- -D warnings
+      - run: cargo +1.93.0 test --workspace --locked
       # Native GPU/window tests require separate hardware runners.

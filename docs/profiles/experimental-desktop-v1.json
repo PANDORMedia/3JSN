@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "id": "experimental-desktop-v1",
+  "revision": 1,
+  "maturity": "experimental",
+  "description": "Contract and diagnostics vocabulary for the proposed unchanged-project desktop runtime. No integrated runtime or target is certified.",
+  "sourcePolicy": {
+    "applicationEdits": "forbidden",
+    "rendererMigration": "forbidden",
+    "configuration": "allowed",
+    "generatedOutputTransforms": "allowed-with-behavior-and-source-map-preservation",
+    "preservationAlgorithm": "sha256",
+    "externalServices": "explicit-configuration-not-implicitly-packaged"
+  },
+  "targets": [
+    {
+      "id": "macos-arm64",
+      "status": "unverified",
+      "backendCandidate": "metal"
+    },
+    {
+      "id": "macos-x64",
+      "status": "unverified",
+      "backendCandidate": "metal"
+    },
+    {
+      "id": "windows-x64",
+      "status": "unverified",
+      "backendCandidate": "d3d12-webgpu; webgl-interop-undecided"
+    },
+    {
+      "id": "linux-x64",
+      "status": "unverified",
+      "backendCandidate": "vulkan; x11-and-wayland-require-separate-evidence"
+    }
+  ],
+  "features": [
+    {
+      "id": "graphics.webgpu",
+      "status": "unsupported",
+      "reason": "Rust-hosted offscreen WebGPU is verified on Metal, but native presentation and the complete application profile are not implemented.",
+      "evidence": [
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-17.md"
+        },
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-17-rust-runtime.md"
+        }
+      ]
+    },
+    {
+      "id": "graphics.webgl2",
+      "status": "unsupported",
+      "reason": "Experimental Node/ANGLE reference renders on Metal with known API failures; Rust bindings and native composition are not implemented.",
+      "evidence": [
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-17-webgl-metal.json"
+        }
+      ]
+    },
+    {
+      "id": "graphics.canvas2d",
+      "status": "unsupported",
+      "reason": "Native Canvas 2D and texture upload are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "ui.dom",
+      "status": "unsupported",
+      "reason": "Live DOM, events, object identity and geometry semantics are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "ui.css",
+      "status": "unsupported",
+      "reason": "Native style, layout, text and paint are not integrated.",
+      "evidence": []
+    },
+    {
+      "id": "runtime.animation-frame",
+      "status": "unsupported",
+      "reason": "Manual probe scheduling does not establish browser-compatible native frame semantics.",
+      "evidence": []
+    },
+    {
+      "id": "runtime.workers",
+      "status": "unsupported",
+      "reason": "Module workers and messaging in the shipping host are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "runtime.wasm",
+      "status": "unknown",
+      "reason": "Candidate JS engines expose Wasm, but the selected host, loading and threading behavior have not been evaluated.",
+      "evidence": []
+    },
+    {
+      "id": "services.storage",
+      "status": "unsupported",
+      "reason": "Application origin, storage and reload behavior are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "services.fetch",
+      "status": "unsupported",
+      "reason": "Shipping-host fetch and resource/origin semantics are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "services.websocket",
+      "status": "unsupported",
+      "reason": "Shipping-host WebSocket and external-service configuration are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "services.audio",
+      "status": "unsupported",
+      "reason": "Web Audio and AudioWorklet host integration are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "services.webrtc",
+      "status": "unsupported",
+      "reason": "WebRTC, microphone capture and recording are not implemented.",
+      "evidence": []
+    },
+    {
+      "id": "input.gamepad",
+      "status": "unsupported",
+      "reason": "Native gamepad mapping and physical device checks are not implemented.",
+      "evidence": []
+    }
+  ]
+}

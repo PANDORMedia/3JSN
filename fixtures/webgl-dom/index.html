@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3JSN WebGL and live DOM reference</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": { "three": "../../node_modules/three/build/three.module.js" } }
+  </script>
+</head>
+<body>
+  <main id="panel">
+    <h1>WebGL and live DOM</h1>
+    <div class="canvases">
+      <canvas id="scene" width="160" height="120" aria-label="Shader and Canvas 2D texture"></canvas>
+      <canvas id="preview" width="160" height="120" aria-label="Second WebGL context"></canvas>
+      <canvas id="texture" width="16" height="16" aria-label="Procedural Canvas 2D texture"></canvas>
+    </div>
+    <div id="controls">
+      <button id="change" type="button"><span>Update texture</span></button>
+      <output id="message" aria-live="polite">Starting reference checks</output>
+    </div>
+    <pre id="result" aria-label="Machine-readable results">Pending</pre>
+  </main>
+  <script type="module" src="fixture.mjs"></script>
+</body>
+</html>

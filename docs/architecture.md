@@ -1,7 +1,7 @@
 # Proposed runtime architecture
 
-Status: proposed architecture, not an implemented engine. The WebGPU integration
-is one track; [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
+Status: the offscreen JS/WebGPU runtime is implemented; window presentation and
+the wider engine remain proposed. [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
 WebGL projects and dynamic HTML/CSS support too.
 
 ## Responsibility boundaries
@@ -14,10 +14,11 @@ WebGL projects and dynamic HTML/CSS support too.
 | Rust host | Windows, events, scheduling, services, shutdown, GPU surface integration | A reimplementation of Three.js |
 | wgpu-core / native backend | GPU resources, validation, command submission, platform API translation | Game objects or HTML layout |
 
-The leading WebGPU prototype would embed V8 via `deno_core` and reuse a matching
+The offscreen WebGPU prototype embeds V8 via `deno_core` and reuses a matching
 `deno_webgpu` extension with its bootstrap dependencies. This is library reuse,
-not a decision to launch the Deno CLI. The prototype must establish required
-extensions and distribution size. The HTML/DOM decision may change the JS engine;
+not a decision to launch the Deno CLI. Its [dependency record](dependencies.md)
+and [validation](validation/2026-09-17-rust-runtime.md) establish the initial graph
+and binary footprint. The HTML/DOM decision may change the JS engine;
 do not cement this candidate into public runtime contracts before that gate.
 
 ## Compatibility components
@@ -28,6 +29,8 @@ also implement the required WebGL semantics and bindings. Evaluate maintained
 HTML/style/layout components plus a JS DOM bridge. All application canvases and
 UI surfaces feed a native compositor; cross-backend texture sharing must be proved.
 See [HTML rendering](html-rendering.md) and [engineering standards](engineering.md).
+The [module contracts](module-contracts.md) define dependency direction, ownership,
+errors, cancellation and teardown responsibilities.
 
 ## Surface ownership is the first hard problem
 
@@ -106,8 +109,9 @@ contracts are covered by the dedicated HTML investigation.
 
 ## Repository growth
 
-Current code is intentionally two small probes. As implementation proceeds, use
-the following responsibility map; add modules only when they have real work:
+Current code includes the offscreen runtime/player and separate GPU probes.
+As implementation proceeds, use this responsibility map; add modules only when
+they have real work:
 
 ```text
 crates/runtime/          JS engine and extension bootstrap, async lifecycle

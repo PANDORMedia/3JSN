@@ -1,6 +1,7 @@
 # HTML/CSS and native GPU composition
 
-Status: research, 2026-09-17. HTML/CSS compatibility is required by the
+Status: research, 2026-09-17. The [source investigation and executable comparisons](investigations/html-dom.md)
+update the candidate assessment below. HTML/CSS compatibility is required by the
 [unchanged-project contract](product.md). No HTML renderer is implemented in 3JSN.
 
 ## The complete pipeline
@@ -31,7 +32,7 @@ with that realm; selecting a different engine may require revisiting V8.
 
 | Candidate | Useful capability | Missing decision |
 | --- | --- | --- |
-| [Blitz](https://github.com/DioxusLabs/blitz) | Modular Rust HTML/CSS stack and GPU texture integration example | Its README reports missing JavaScript language bindings; prove a DOM bridge and required CSS behavior |
+| [Blitz](https://github.com/DioxusLabs/blitz) | Modular Rust HTML/CSS stack, experimental Boa DOM bindings and GPU texture integration example | Required V8 bridge, canvas APIs and browser semantics remain unproved; the source has advanced beyond its README |
 | [Vello](https://github.com/linebender/vello) | GPU 2D painting component | Not an HTML parser, DOM, CSS layout engine or input system |
 | [Servo](https://book.servo.org/embedding/overview.html) | Embeddable web engine with more integrated web semantics | It is a browser engine, not a lightweight renderer swap; evaluate embedding, compositor and JS-engine implications |
 | [RmlUi](https://github.com/mikke89/RmlUi) | Game-oriented UI using HTML/CSS-like documents | Its own document/binding model does not establish unchanged browser DOM compatibility |

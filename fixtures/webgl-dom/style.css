@@ -1,0 +1,13 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #142030; color: #f4f5f8; font: 16px system-ui, sans-serif; }
+#panel { width: 400px; margin: 24px; padding: 16px; border: 2px solid #8291a6; }
+h1 { font-size: 20px; margin: 0 0 16px; }
+.canvases { display: grid; grid-template-columns: 160px 160px; gap: 12px; }
+canvas { display: block; }
+#texture { width: 32px; height: 32px; image-rendering: pixelated; }
+#controls { display: flex; gap: 12px; align-items: center; margin-top: 16px; }
+button { min-width: 130px; padding: 8px; color: #142030; background: #f4f5f8; border: 2px solid transparent; }
+button:focus { border-color: #14cba8; outline: 2px solid #14cba8; }
+#message { font-size: 13px; }
+#message.updated { color: #14cba8; }
+#result { font-size: 11px; white-space: pre-wrap; overflow-wrap: anywhere; }

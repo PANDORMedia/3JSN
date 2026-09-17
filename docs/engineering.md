@@ -2,6 +2,7 @@
 
 3JSN should be maintainable, solid and understandable. Contributors must be able
 to identify a subsystem's owner, contract and failure modes.
+The [module contracts](module-contracts.md) make these responsibilities explicit.
 
 ## Boundaries
 

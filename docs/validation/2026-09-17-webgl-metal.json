@@ -1,0 +1,102 @@
+{
+  "status": "partial",
+  "binding": "gl@9.0.0-rc.10",
+  "threeRevision": "186",
+  "node": "v24.13.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "kernel": "25.1.0",
+  "backend": "metal",
+  "native": {
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+    "version": "OpenGL ES 3.0.0 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)",
+    "shadingLanguage": "OpenGL ES GLSL ES 3.00 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)"
+  },
+  "width": 128,
+  "height": 128,
+  "publicVersion": "WebGL 1.0 stack-gl 9.0.0-rc.10",
+  "publicShadingLanguage": "WebGL GLSL ES 1.0 stack-gl",
+  "extensions": [
+    "EXT_color_buffer_float",
+    "EXT_texture_filter_anisotropic",
+    "OES_texture_float_linear",
+    "STACKGL_destroy_context",
+    "STACKGL_resize_drawingbuffer"
+  ],
+  "tests": [
+    {
+      "name": "GLSL ES 3.00 draw",
+      "status": "pass",
+      "pixels": 16384,
+      "expectedRGBA": [
+        64,
+        128,
+        191,
+        255
+      ],
+      "tolerance": 1
+    },
+    {
+      "name": "getBufferSubData",
+      "status": "known-failure",
+      "expected": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "actual": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "error": 0
+    },
+    {
+      "name": "WebGL2 version reporting",
+      "status": "known-failure",
+      "expected": "WebGL 2.0 / WebGL GLSL ES 3.00",
+      "actual": [
+        "WebGL 1.0 stack-gl 9.0.0-rc.10",
+        "WebGL GLSL ES 1.0 stack-gl"
+      ]
+    },
+    {
+      "name": "Upstream Three.js WebGLRenderer PBR scene",
+      "status": "pass",
+      "foregroundPixels": 4096,
+      "changedPixels": 4824
+    }
+  ],
+  "limitations": [
+    "Synthetic host canvas; no DOM, native window or presentation.",
+    "No Rust embedding, GPU composition, CtF or cross-platform acceptance.",
+    "Pixel readbacks are test measurements, not a proposed presentation transport.",
+    "No performance measurement or full WebGL conformance run."
+  ],
+  "nativeLibraries": [
+    {
+      "file": "webgl.node",
+      "bytes": 658184,
+      "sha256": "dcfb6186a9c98b567e2e387f19ef26d37aa29e917a217ad2eda1393ed4f4c64c"
+    },
+    {
+      "file": "libEGL.dylib",
+      "bytes": 490880,
+      "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+    },
+    {
+      "file": "libGLESv2.dylib",
+      "bytes": 15068592,
+      "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+    }
+  ],
+  "recordedOn": "2026-09-17",
+  "operatingSystem": "macOS 26.1 (25B78)",
+  "npmIntegrity": "sha512-G6lYaWoan0d2d8UO0UmaSS8zqyyZwYt6q2dFVJ2hD62sRWUwkMIH+Jp7gEoQesLlo28Nzelh+GIYz1qOUa5WmQ==",
+  "buildDependencies": {
+    "nan": "2.29.0",
+    "nodeGyp": "12.4.0"
+  }
+}

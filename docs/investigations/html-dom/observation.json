@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-09-17",
+  "host": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "rust": "1.93.0"
+  },
+  "source": {
+    "blitz": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+    "boa": "0.22.0",
+    "chrome": "153.0.8010.48"
+  },
+  "upstreamDomTests": {
+    "passed": 26,
+    "failed": 0
+  },
+  "native": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": {
+        "error": "TypeError: not a callable function"
+      },
+      "detachedIdentity": true,
+      "classListSameObject": false,
+      "inputPrototype": false,
+      "canvasContextType": "undefined",
+      "serviceTypes": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
+      ]
+    },
+    {
+      "frames": [
+        16,
+        16
+      ]
+    }
+  ],
+  "browser": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": [
+        "capture",
+        "target",
+        "bubble"
+      ],
+      "detachedIdentity": true,
+      "classListSameObject": true,
+      "inputPrototype": true,
+      "canvasContextType": "function",
+      "serviceTypes": [
+        "function",
+        "function",
+        "function",
+        "function"
+      ]
+    },
+    {
+      "frames": [
+        141.8,
+        1008.4
+      ]
+    }
+  ],
+  "limits": [
+    "DOM observation only; no paint, GPU composition, IME or hardware input was tested.",
+    "Native used manually advanced virtual time; Chrome used headless virtual-time budget. RAF observations establish timestamp semantics, not performance or frame pacing.",
+    "The collector test passing means observations were captured without an uncaught harness error, not that the DOM profile passed.",
+    "Servo and V8 DOM binding were not executed in this comparison."
+  ]
+}

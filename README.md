@@ -5,8 +5,9 @@
 An open-source native runtime and build tool for existing Three.js web games.
 The goal is **unchanged game source → `3jsn build` → native desktop applications**.
 
-**Status: research and executable probes. The CLI and integrated game runtime are
-not implemented. No platform or unchanged-project compatibility is certified.**
+**Status: Rust-hosted JavaScript/WebGPU offscreen runtime and research probes.
+The build CLI and native-window game runtime are not implemented. No platform or
+unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
 projects and dynamic HTML/CSS interfaces are part of the target, alongside WebGPU.
@@ -22,6 +23,7 @@ verified compatibility profiles, with CtF as a demanding acceptance application.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.
+- [Module contracts](docs/module-contracts.md), [dependency decision](docs/dependencies.md), and [versioned profile](docs/profiles/README.md).
 - [Research](docs/research.md), [benchmarks](docs/benchmarks.md), and [initial validation](docs/validation/2026-09-17.md).
 
 Maintainability, correctness and measured native performance are design constraints.
@@ -31,16 +33,20 @@ web-platform behavior without making Chromium/CEF or an OS WebView the default p
 
 ## Run the research probes
 
-Prerequisites: Node.js 24+ for the JavaScript experiment; Rust 1.92+ and a native
+Prerequisites: Node.js 24+ for the JavaScript experiment; Rust 1.93+ and a native
 compiler/linker for the Rust diagnostic. GPU commands need access to a real GPU.
 
 ```sh
 npm ci
 npm run check
+npm test
 npm run doctor
 npm run probe:gpu
+npm run probe:runtime
 
 cargo run --locked -p threejs-native-gpu-probe
+cargo run --locked -p threejs-native-player -- examples/runtime/offscreen.mjs
+cargo test --workspace --locked
 ```
 
 `probe:gpu` renders an animated Three.js scene through Node's Dawn binding to a
@@ -49,9 +55,19 @@ to `artifacts/native-webgpu/`. It is an offscreen correctness baseline, **not a
 native-window demo or a benchmark**. Node and Dawn are experimental tooling, not
 the proposed shipping runtime.
 
-The Rust diagnostic independently opens a `wgpu` adapter and device. It does not
-execute JavaScript or render the Three.js scene. These two experiments are not
-connected yet.
+The Rust player now embeds V8, loads local JS modules and exposes native WebGPU
+through matching Deno extensions. `probe:runtime` builds it in release mode,
+verifies triangle pixels on real hardware, and records dependency/adapter/binary
+evidence in `artifacts/rust-runtime/report.json`. See the
+[Rust integration validation](docs/validation/2026-09-17-rust-runtime.md).
+
+The original Rust diagnostic independently opens a `wgpu` adapter and device.
+It does not execute JS. The Node/Dawn Three.js scene remains a separate reference;
+the Rust player does not present a Three.js scene in a native window yet.
+
+The [WebGL/ANGLE experiment](experiments/native-webgl/README.md) and
+[HTML investigation](docs/investigations/html-dom.md) record working paths and
+concrete upstream compatibility failures. They are not adopted shipping backends.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

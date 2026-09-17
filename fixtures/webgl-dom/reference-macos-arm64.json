@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-reference",
+  "capturedAt": "2026-09-17T21:25:53.085Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.48",
+    "revision": "@199a3a541d76237379e353b348e64045584db057",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/webgl-dom/index.html",
+      "sha256": "b46b2e91d512f2949a5d6f88ff1bec474032e8fb091f856a2493c7c3571d8ce7"
+    },
+    {
+      "path": "fixtures/webgl-dom/style.css",
+      "sha256": "c5dc919108aa21fa630e54aa7d568f59f26a0a49c122e8cebf893533e32f68b4"
+    },
+    {
+      "path": "fixtures/webgl-dom/fixture.mjs",
+      "sha256": "64b079b7b548c5eed380dc101934e8a3bb8c51495274fcd8a63805496ec1ead4"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "3fe49b0efc4d65caec8eee282412038127e68c86fff05ba30a7c5ce4f5d06a4e"
+    }
+  ],
+  "result": {
+    "schemaVersion": 1,
+    "fixture": "webgl-dom",
+    "status": "passed",
+    "environment": {
+      "threeRevision": "186",
+      "renderer": "WebGLRenderer",
+      "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "input": "programmatic click/focus; physical input untested"
+    },
+    "checks": [
+      {
+        "name": "Canvas 2D context identity",
+        "passed": true
+      },
+      {
+        "name": "Independent WebGL contexts",
+        "passed": true
+      },
+      {
+        "name": "WebGL readback has no error",
+        "passed": true
+      },
+      {
+        "name": "GLSL samples the red Canvas 2D texture",
+        "passed": true,
+        "observed": [
+          255,
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "name": "WebGL readback has no error",
+        "passed": true
+      },
+      {
+        "name": "Second canvas retains independent green output",
+        "passed": true,
+        "observed": [
+          0,
+          255,
+          0,
+          255
+        ]
+      },
+      {
+        "name": "Grid/flex layout produces queryable geometry",
+        "passed": true,
+        "observed": {
+          "x": 42,
+          "y": 261,
+          "width": 130,
+          "height": 35
+        }
+      },
+      {
+        "name": "Programmatic focus updates activeElement",
+        "passed": true
+      },
+      {
+        "name": "Bubbling event retains live DOM identity",
+        "passed": true,
+        "observed": {
+          "clicks": 1,
+          "bubbles": 1,
+          "targetIdentity": true
+        }
+      },
+      {
+        "name": "Sibling innerHTML does not replace the control",
+        "passed": true
+      },
+      {
+        "name": "Mutation updates selector, class and text behavior",
+        "passed": true
+      },
+      {
+        "name": "Canvas 2D exposes updated ImageData",
+        "passed": true,
+        "observed": [
+          0,
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "name": "WebGL readback has no error",
+        "passed": true
+      },
+      {
+        "name": "Existing GLSL draws the updated CanvasTexture",
+        "passed": true,
+        "observed": [
+          0,
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "name": "Retained control listener handles a second click",
+        "passed": true,
+        "observed": {
+          "clicks": 2,
+          "bubbles": 2
+        }
+      },
+      {
+        "name": "Browser animation-frame callback runs",
+        "passed": true
+      }
+    ]
+  }
+}

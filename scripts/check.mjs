@@ -18,7 +18,7 @@ async function filesAt(directory) {
 
 let checked = 0;
 for (const file of await filesAt(root)) {
-  if (file.endsWith('.mjs')) {
+  if (file.endsWith('.mjs') || file.endsWith('.js')) {
     const result = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });
     assert.equal(result.status, 0, result.stderr || result.error?.message);
     checked++;

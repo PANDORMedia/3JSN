@@ -5,7 +5,7 @@ decision and [engineering standards](docs/engineering.md). Discuss changes that
 alter the runtime, renderer boundary or supported web API subset before introducing
 a second implementation.
 
-Use Node.js 24+ and Rust 1.92+. Pin direct experiment dependencies and commit both
+Use Node.js 24+ and Rust 1.93+. Pin direct experiment dependencies and commit both
 lockfiles. Keep generated captures, downloads, caches and build outputs out of Git.
 The Node/Dawn experiment and Rust device diagnostic are independent; label results
 with the actual runtime and backend rather than calling both “the engine.”
@@ -13,9 +13,11 @@ with the actual runtime and backend rather than calling both “the engine.”
 ```sh
 npm ci
 npm run check
+npm test
 cargo fmt --all --check
 cargo check --workspace --locked
 cargo clippy --workspace --locked -- -D warnings
+cargo test --workspace --locked
 ```
 
 For GPU-related work, also run the relevant probe on a real GPU and record the

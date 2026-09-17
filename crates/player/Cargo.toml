@@ -1,0 +1,10 @@
+[package]
+name = "threejs-native-player"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+threejs-native-runtime = { path = "../runtime" }
+tokio.workspace = true

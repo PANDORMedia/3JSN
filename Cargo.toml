@@ -1,10 +1,10 @@
 [workspace]
-members = ["crates/gpu-probe"]
+members = ["crates/gpu-probe", "crates/runtime", "crates/player"]
 resolver = "3"
 
 [workspace.package]
 edition = "2024"
-rust-version = "1.92"
+rust-version = "1.93"
 license = "MIT"
 version = "0.0.0"
 
@@ -13,3 +13,9 @@ version = "0.0.0"
 # integrating the JS bridge; resources cannot cross unrelated wgpu instances.
 wgpu = { version = "=28.0.0", default-features = false, features = ["std", "metal", "vulkan", "dx12", "wgsl"] }
 pollster = "=0.4.0"
+deno_core = "=0.412.0"
+deno_web = "=0.290.0"
+deno_webidl = "=0.259.0"
+deno_webgpu = "=0.226.0"
+thiserror = "=2.0.18"
+tokio = { version = "=1.49.0", features = ["rt", "time"] }
