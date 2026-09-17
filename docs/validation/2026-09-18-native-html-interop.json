@@ -1,0 +1,438 @@
+{
+  "status": "pass",
+  "fixture": "same-realm-three-dom-shared-metal-queue",
+  "device": {
+    "three": "186",
+    "adapter": "Apple M1 Pro"
+  },
+  "v8": "15.0.245.2-rusty",
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "wgpuValidation": true,
+  "velloUseCpu": false,
+  "cpuImageTransport": false,
+  "frames": 32,
+  "generations": [
+    {
+      "generation": 0,
+      "width": 384,
+      "height": 192,
+      "frames": 8,
+      "captures": [
+        {
+          "frame": 3,
+          "file": "generation-0-frame-3.png",
+          "pixels": {
+            "pixelsChecked": 73728,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 13508,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              199,
+              40,
+              60,
+              128
+            ],
+            "rgbaSha256": "4038193d66b2f83532e90b0b600003239c64826566f6977a2a2c7035976e122f"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": null
+        },
+        {
+          "frame": 7,
+          "file": "generation-0-frame-7.png",
+          "pixels": {
+            "pixelsChecked": 73728,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 13366,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              32,
+              159,
+              96,
+              128
+            ],
+            "rgbaSha256": "7f881447efa29a94a6d63d0de53328911fed32487b52812664e1713ad5c9fef7"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": 4628
+        }
+      ],
+      "descriptorMismatchRejected": true
+    },
+    {
+      "generation": 1,
+      "width": 512,
+      "height": 256,
+      "frames": 8,
+      "captures": [
+        {
+          "frame": 3,
+          "file": "generation-1-frame-3.png",
+          "pixels": {
+            "pixelsChecked": 131072,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 24002,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              199,
+              40,
+              60,
+              128
+            ],
+            "rgbaSha256": "d3bde63888afdb9a13ebba8314c54f9d756f316b9f5823277d6c7e90317f7468"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": null
+        },
+        {
+          "frame": 7,
+          "file": "generation-1-frame-7.png",
+          "pixels": {
+            "pixelsChecked": 131072,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 23736,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              32,
+              159,
+              96,
+              128
+            ],
+            "rgbaSha256": "fae8bb640ef6390825001a385b854b3adf81080c010c658af465d5a5df1c0269"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": 8218
+        }
+      ],
+      "descriptorMismatchRejected": true
+    },
+    {
+      "generation": 2,
+      "width": 384,
+      "height": 192,
+      "frames": 8,
+      "captures": [
+        {
+          "frame": 3,
+          "file": "generation-2-frame-3.png",
+          "pixels": {
+            "pixelsChecked": 73728,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 13508,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              199,
+              40,
+              60,
+              128
+            ],
+            "rgbaSha256": "4038193d66b2f83532e90b0b600003239c64826566f6977a2a2c7035976e122f"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": null
+        },
+        {
+          "frame": 7,
+          "file": "generation-2-frame-7.png",
+          "pixels": {
+            "pixelsChecked": 73728,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 13366,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              32,
+              159,
+              96,
+              128
+            ],
+            "rgbaSha256": "7f881447efa29a94a6d63d0de53328911fed32487b52812664e1713ad5c9fef7"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": 4628
+        }
+      ],
+      "descriptorMismatchRejected": true
+    },
+    {
+      "generation": 3,
+      "width": 448,
+      "height": 224,
+      "frames": 8,
+      "captures": [
+        {
+          "frame": 3,
+          "file": "generation-3-frame-3.png",
+          "pixels": {
+            "pixelsChecked": 100352,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 18394,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              199,
+              40,
+              60,
+              128
+            ],
+            "rgbaSha256": "f1cf5ca11ffccdf50375f08dc89ce4013eb5eb2e0d1954eb17a1367714e142ff"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": null
+        },
+        {
+          "frame": 7,
+          "file": "generation-3-frame-7.png",
+          "pixels": {
+            "pixelsChecked": 100352,
+            "maximumBlendErrorBytes": 1,
+            "gameForegroundPixels": 18204,
+            "whiteTextPixels": 405,
+            "uiSample": [
+              32,
+              159,
+              96,
+              128
+            ],
+            "rgbaSha256": "5ddee237a191a67684a3b18eafc4179fafbbd26c45ba65e107a0cfb43a82582b"
+          },
+          "layout": {
+            "root": {
+              "x": 24,
+              "y": 24,
+              "width": 240,
+              "height": 120
+            },
+            "glyphs": 8
+          },
+          "changedGamePixels": 6296
+        }
+      ],
+      "descriptorMismatchRejected": true
+    }
+  ],
+  "originalFixtureMessages": [
+    {
+      "identity": true,
+      "mutation": true,
+      "geometry": [
+        120,
+        240
+      ],
+      "eventOrder": [
+        "capture",
+        "target",
+        "bubble"
+      ],
+      "detachedIdentity": true,
+      "classListSameObject": true,
+      "inputPrototype": true,
+      "canvasContextType": "undefined",
+      "serviceTypes": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "undefined"
+      ]
+    },
+    {
+      "frames": [
+        100,
+        116.6666666667
+      ]
+    }
+  ],
+  "domEventMessages": [
+    {
+      "domEventChecks": {
+        "nativeBrands": true,
+        "domRoots": true,
+        "ancestorOnly": true,
+        "preCancelled": true,
+        "nativePrototypeInterop": true,
+        "readonlyEvent": true,
+        "pathMutation": true,
+        "nextDispatchPath": true,
+        "listenerMutation": true,
+        "exceptionCleanup": true
+      }
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "30164ffb1844cacd565bd37b70cda36f534de20b34cb781c316583c52e6b3a51",
+    "originalFixtureSha256": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+  },
+  "validationErrors": [],
+  "limits": [
+    "Metal-only offscreen experiment; no native presentation, hardware input or timing claim.",
+    "Two core registries retain the same native device and queue; resource IDs are never mixed.",
+    "Initialization waits once per texture generation; final assertion readbacks twice per generation. No pixel upload/copy through CPU between rendering and composition.",
+    "Bounded DOM/CSS adapter. No Window propagation, shadow DOM, full HTML conformance or CtF certification.",
+    "Three.js shared scene is unchanged; fixture host supplies offscreen canvas and manual frame timestamps.",
+    "Research executable requires source checkout; this does not validate standalone packaging."
+  ],
+  "execution": {
+    "startedAt": "2026-09-17T23:19:34.801Z",
+    "finishedAt": "2026-09-17T23:19:42.437Z",
+    "exitCode": 0,
+    "timeoutSeconds": 120,
+    "metalValidationObserved": true,
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "failureInjection": {
+    "afterSubmittedFrames": 2,
+    "exitCode": 1,
+    "sharedGpuCleanupCompleted": true,
+    "metalValidationObserved": true
+  },
+  "actualResolvedVersions": [
+    {
+      "name": "anyrender_vello",
+      "version": "0.14.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "blitz-dom",
+      "version": "0.3.0-beta.2",
+      "source": "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+    },
+    {
+      "name": "blitz-paint",
+      "version": "0.3.0-beta.2",
+      "source": "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+    },
+    {
+      "name": "deno_core",
+      "version": "0.412.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_web",
+      "version": "0.290.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_webgpu",
+      "version": "0.226.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_webidl",
+      "version": "0.259.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "v8",
+      "version": "150.4.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "vello",
+      "version": "0.10.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-core",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-hal",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-types",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    }
+  ],
+  "compiler": "rustc 1.93.0 (254b59607 2026-01-19)\nbinary: rustc\ncommit-hash: 254b59607d4417e9dffbc307138ae5c86280fe4c\ncommit-date: 2026-01-19\nhost: aarch64-apple-darwin\nrelease: 1.93.0\nLLVM version: 21.1.8",
+  "sourceSha256": {
+    "Cargo.toml": "628f586b190ccefdf19c34f3fd826e7a8b3ec9665d3e4bb17ad1722eb824e5b7",
+    "Cargo.lock": "031be0eae1314cc68fc84f9f19267a241163c24e5d56853ce51534c759f831d4",
+    "app.mjs": "3cbd53b54d2b3f4beb715409b9ad58370e9c4757d0fbb199970c30a25288ac4e",
+    "events.js": "e44b71d098f9fbebbeff79c800521079711b11b3e1f74bdfd6b2a1fcc87ef5ff",
+    "fixture.html": "30164ffb1844cacd565bd37b70cda36f534de20b34cb781c316583c52e6b3a51",
+    "bundle.mjs": "6eb5717c5c37d667c823f5cc244811661b9673e5e0980f0a0cae67099bc9d935",
+    "run.mjs": "e96fba13e6a2affcf1c615ccc1d1253c4715753dc32213fb2ae976c32171a1fb",
+    "src/main.rs": "7974291a0e0a79607e8326e90e1c50ca711aa4f62801178c773c62ebaf34eeb8",
+    "src/host.rs": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732",
+    "src/painter.rs": "c5dde072615f44c8b4be04898635ab6658f899dd2823e6bd7ab8bcac4596eef3",
+    "src/metal.rs": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26",
+    "src/evidence.rs": "d4dcca66c03db8b54b58e2471ac41071a5bd53c650d4b3389c496c8095a5e2cd",
+    "src/dom_bridge.rs": "6ac54b3fdb5c0ca29dae834b16b22336190d2f33b7f18a099f39ada021c22643",
+    "src/bindings.js": "d1ed5e1e25f1d03a11d134b3c0fc7b9a2fde81c26c6b9395d8e3c129665f30c9"
+  },
+  "sharedSourceSha256": {
+    "crates/runtime/src/web-globals.js": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "docs/investigations/html-dom/fixture.js": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "examples/spinning-scene/scene.mjs": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+  },
+  "bundleSha256": "ecfdd7fb79ce7f552520feda3ed0135ef1a6f01a467e07ac9ebb0f9b38281a6a",
+  "executableSha256": "454dfc005522a43519dc02506cc9b31c67665da3e6b140dbd8c6c507befae67d"
+}

@@ -4,7 +4,7 @@ use deno_core::{Extension, ExtensionFileSourceCode};
 
 deno_core::extension!(
     threejs_native_bootstrap,
-    esm = [dir "src", "bootstrap.js", "window.js", "animation.js"],
+    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js"],
 );
 
 fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, String>) {

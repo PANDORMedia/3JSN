@@ -87,6 +87,12 @@ has browser references for WebGL/DOM, workers/Wasm, offline audio/worklets and
 fetch/WebSocket reconnection. These isolated results do not yet constitute an
 integrated unchanged-game runtime.
 
+The [shared Metal composition experiment](experiments/native-html-interop/README.md)
+now combines that live DOM with the unchanged shared Three.js scene in one V8
+realm, using the same native GPU device and queue. Pixel, event, recreation and
+failure-cleanup checks pass; native presentation, full browser compatibility and
+other-platform compositor validation remain open.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

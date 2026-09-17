@@ -32,7 +32,7 @@ service locator to bypass these directions.
 | --- | --- | --- |
 | Application manifest | CLI writes version, profile, entry points, asset identities and target requirements; player validates before starting | Reject incompatible versions or missing required capabilities before launch |
 | OS windows/events | Platform on its required event thread; dimensions are drawable physical pixels, input records its coordinate space | Stop new events before releasing windows; retain handles until every surface is dropped |
-| JS realm | Runtime on its creating thread; all application DOM/GPU objects belong to that realm | Stop accepting callbacks, cancel owned async work, release surfaces/services, then dispose the isolate |
+| JS realm | Runtime on its creating thread; all application DOM/GPU objects belong to that realm | Stop callbacks, cancel owned async work, release persistent V8 handles, dispose the isolate, then release retained native surface/window owners |
 | GPU registry/device | Graphics adapter shared by JS bindings and composition; handles are typed and scoped to their owner | Validate compatible adapter/surface, invalidate acquired textures after present, report device loss; never mix registries |
 | DOM and layout | DOM adapter owns node identities, event dispatch and layout invalidation | Detach listeners and native resources with document disposal; preserve observable node identity while reachable |
 | Service operation | Named service owns a bounded queue and a cancellation handle | Complete once with a value, typed failure or cancellation; never call a disposed realm |

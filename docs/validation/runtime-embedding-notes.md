@@ -29,8 +29,10 @@ declarations and enumerates `js_files`, `esm_files`, `lazy_loaded_esm_files` and
 extensions' state callbacks. Dependency source filenames are discovered from
 their declarations, rather than duplicated in a maintained list.
 
-The build script also declares the three current 3JSN modules: `bootstrap.js`,
-`window.js` and `animation.js`. Keep that local declaration aligned with the
+The build script also declares the four current 3JSN modules: `bootstrap.js`,
+`web-globals.js`, `window.js` and `animation.js`. The shared web globals initialize
+the same Event/EventTarget and WebGPU classes before window or DOM adapters.
+Keep that local declaration aligned with the
 runtime's bootstrap extension when adding modules. Source paths produce Cargo
 `rerun-if-changed` instructions. Missing files, duplicate specifiers and non-ASCII
 extension sources fail the build. The pinned Deno API requires ASCII for these
@@ -62,10 +64,18 @@ cargo test --locked -p threejs-native-runtime --lib embedded::tests
 ```
 
 On the macOS arm64 development host, all five tests passed on 2026-09-18. The
-generated table contains 32 sources: 29 dependency modules and three 3JSN modules.
+then-generated table contained 32 sources: 29 dependency modules and three 3JSN modules.
 Three generated copies from separate build profiles were byte-identical and
 contained no absolute user paths. This is source-embedding evidence, not a
 cross-platform packaging certification.
+
+The subsequent globals extraction adds one local module (33 sources total).
+It changes module organization, not the initialized globals or dependency-source
+boundary. The same embedding coverage tests include the new specifier.
+All five embedding tests and the V8 execution regression passed again; the
+generated release table was checked to contain 33 entries. The separate
+[Three.js release regression](2026-09-18-native-html-runtime-regression.json)
+also passed with the extracted globals.
 
 A macOS release-player integration run also passed the Three.js offscreen scene
 while a Seatbelt policy denied all file reads under the runtime crate sources and

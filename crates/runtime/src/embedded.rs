@@ -87,6 +87,10 @@ mod tests {
             Extension {
                 esm_files: Cow::Owned(vec![
                     ExtensionFileSource::loaded_during_snapshot(
+                        "ext:threejs_native_bootstrap/web-globals.js",
+                        UNAVAILABLE,
+                    ),
+                    ExtensionFileSource::loaded_during_snapshot(
                         "ext:threejs_native_bootstrap/bootstrap.js",
                         UNAVAILABLE,
                     ),

@@ -1,0 +1,61 @@
+{
+  "recordedAt": "2026-09-17T23:20:05.258Z",
+  "kind": "rust-three-offscreen-correctness",
+  "runtime": "3JSN 0.0.0 / V8 15.0.245.2-rusty / metal / macos-aarch64",
+  "compiler": "rustc 1.93.0 (254b59607 2026-01-19)",
+  "target": "aarch64-apple-darwin",
+  "versions": {
+    "deno_core": "0.412.0",
+    "deno_web": "0.290.0",
+    "deno_webgpu": "0.226.0",
+    "deno_webidl": "0.259.0",
+    "v8": "150.4.0"
+  },
+  "inputs": [
+    {
+      "path": "examples/runtime/three-offscreen.mjs",
+      "sha256": "83e5ec1bc295fcd56cf816e71e18c165949fdfe6cf783b477d05d55108c8844e"
+    },
+    {
+      "path": "examples/spinning-scene/scene.mjs",
+      "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "00f447264f10ae8f04a25bc76d50492be4308d02bfedbd3a073d2db9542750ff"
+    }
+  ],
+  "binary": {
+    "bytes": 74867280,
+    "sha256": "175bea308f60508d5a502cf2767b49f3441f645eddd8cfb2720217b25e47e914"
+  },
+  "bundle": {
+    "sha256": "792bdc773b7c3ac11f25bf7a07c0015813a5db4a2443e1bdd601a3d47902a5ea"
+  },
+  "result": {
+    "rustThree": true,
+    "three": "186",
+    "width": 320,
+    "height": 200,
+    "nativeWindow": false,
+    "sameJavaScriptDevice": true,
+    "adapter": {
+      "vendor": "0",
+      "architecture": "",
+      "device": "0",
+      "description": "Apple M1 Pro",
+      "isFallbackAdapter": false
+    },
+    "foregroundPixels": 14345,
+    "changedPixels": 5041,
+    "errors": []
+  },
+  "limitations": [
+    "Readback verifies rendering only; it is not frame transport.",
+    "No native window, WebGL, DOM, unchanged-project compatibility or speed claim."
+  ]
+}

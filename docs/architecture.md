@@ -53,22 +53,25 @@ Retain the window while the surface references its handles. Invalidate per-frame
 textures after presentation. Reconfigure on nonzero drawable-size changes; skip
 acquisition while minimized. On lost/outdated surfaces, recover deliberately.
 Expose device loss to the application and fail visibly until resource recreation
-is implemented. Shut down callbacks, GPU work and surfaces before destroying
-windows and the JS isolate.
+is implemented. Stop callbacks and drain GPU work, release persistent V8 handles,
+dispose the isolate, then release retained surfaces and window owners. See the
+[native-window contract](native-window.md) for the implemented drop order.
 
 ## First frame loop
 
-Keep winit and the V8 isolate on the main/event thread for the first integration.
-Poll the JS async work without blocking the OS loop. Drive a compatible
+The implemented adapter keeps winit on the OS event thread and V8 on a dedicated
+worker with one current-thread Tokio reactor. A bounded latest-state channel
+coalesces OS updates; at most one presentation acknowledgement is pending.
+Poll JS async work without blocking the OS loop. Drive a compatible
 `requestAnimationFrame` from the host redraw cycle and give all callbacks in a
 frame the same monotonic timestamp. A callback requested during a frame belongs
 to a later frame; cancellation must work.
 
 Preserve the existing game loop, event and microtask semantics. Fixed-step
 simulation helpers can be optional engine APIs; never insert them automatically
-into an unchanged project. Measure before moving rendering to a worker. A
-dedicated JS thread requires event handoff, surface constraints and a clear
-ownership protocol; threads are not a free performance improvement.
+into an unchanged project. The worker lets the OS loop remain responsive during
+JavaScript execution; it is not a measured rendering speedup. Surface preparation,
+thread cancellation and ownership follow the native-window contract.
 
 Choose present mode and frames in flight explicitly. Record display refresh rate,
 drawable pixel dimensions, and scaling. DPI changes must affect the GPU target,

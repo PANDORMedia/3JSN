@@ -21,7 +21,7 @@ deno_core::extension!(
         op_native_keep_alive, op_native_request_adapter, op_native_canvas_context,
         op_native_resize, op_native_discard, op_native_current_texture],
     esm_entry_point = "ext:threejs_native_bootstrap/bootstrap.js",
-    esm = [dir "src", "bootstrap.js", "window.js", "animation.js"],
+    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js"],
     options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface> },
     state = |state, options| {
         state.put(options.instance);
