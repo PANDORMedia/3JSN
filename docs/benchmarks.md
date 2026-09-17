@@ -7,8 +7,10 @@ is not a benchmark. No speedup over a browser or another engine has been measure
 
 Use identical Three.js versions, scenes, camera, shaders, drawable pixel sizes,
 pixel ratio, antialiasing, color/tone settings, shadows, texture formats and asset
-resolution. Check images first. Compare a browser WebGPU build, the proposed Rust
-host, and an available existing native runtime. Use the same physical machine.
+resolution. Check images first. Compare the browser and native hosts using the
+same WebGL or WebGPU renderer; include an existing native runtime where it
+supports the workload. Use the same physical machine. A renderer migration is a
+separate experiment, not evidence of host overhead alone.
 
 Record OS, GPU/driver, CPU, runtime versions, backend, build mode, validation,
 display refresh, present mode, power source and thermal conditions. Do not
@@ -27,6 +29,8 @@ Keep VSync-paced behavior and uncapped throughput as separate measurements.
 | Many material variants | Cold shader compilation and warm cache behavior |
 | Fill-rate/post-processing scene | GPU-bound control; native host may change little |
 | Resize and long play session | Surface correctness, pacing and resource growth |
+| Live HTML menus around multiple 3D canvases | DOM updates, layout, text, painting and texture interoperability |
+| Packaged unchanged application | Asset loading, services, startup and end-to-end behavior |
 
 ## Measurements
 
@@ -37,6 +41,7 @@ Keep VSync-paced behavior and uncapped throughput as separate measurements.
 - Input-to-display latency measured separately; input-event timestamps alone do
   not establish photon latency. Use external measurement for that claim.
 - Process RSS, JS heap, GPU resource estimates, allocation/GC pauses and uploads.
+- DOM/style/layout/paint spans and canvas-composition copies/synchronization.
 
 Use at least five runs per case. Warm up for a recorded period (initial target:
 300 frames), then sample at least 1,800 frames. Preserve per-frame values and

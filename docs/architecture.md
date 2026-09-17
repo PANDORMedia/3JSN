@@ -1,6 +1,8 @@
 # Proposed runtime architecture
 
-Status: design for M1, not an implemented engine. See [ADR 0001](adr/0001-rust-native-webgpu.md).
+Status: proposed architecture, not an implemented engine. The WebGPU integration
+is one track; [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
+WebGL projects and dynamic HTML/CSS support too.
 
 ## Responsibility boundaries
 
@@ -12,10 +14,20 @@ Status: design for M1, not an implemented engine. See [ADR 0001](adr/0001-rust-n
 | Rust host | Windows, events, scheduling, services, shutdown, GPU surface integration | A reimplementation of Three.js |
 | wgpu-core / native backend | GPU resources, validation, command submission, platform API translation | Game objects or HTML layout |
 
-Embed V8 via `deno_core`; reuse a matching `deno_webgpu` extension and its required
-bootstrap dependencies. This is library reuse, not a decision to launch the Deno
-CLI. The prototype must establish exactly which web/runtime extensions are
-required before we promise a small distribution size.
+The leading WebGPU prototype would embed V8 via `deno_core` and reuse a matching
+`deno_webgpu` extension with its bootstrap dependencies. This is library reuse,
+not a decision to launch the Deno CLI. The prototype must establish required
+extensions and distribution size. The HTML/DOM decision may change the JS engine;
+do not cement this candidate into public runtime contracts before that gate.
+
+## Compatibility components
+
+Keep JS/WebGPU execution, WebGL compatibility, HTML/DOM rendering and platform
+services behind explicit boundaries. Evaluate ANGLE for WebGL/GLSL; the host must
+also implement the required WebGL semantics and bindings. Evaluate maintained
+HTML/style/layout components plus a JS DOM bridge. All application canvases and
+UI surfaces feed a native compositor; cross-backend texture sharing must be proved.
+See [HTML rendering](html-rendering.md) and [engineering standards](engineering.md).
 
 ## Surface ownership is the first hard problem
 
@@ -24,9 +36,10 @@ surface in the **same wgpu-core instance used by the JavaScript binding**. Adapt
 selection must account for that surface. The JavaScript GPU device and surface
 context refer to the same resource registry and compatible backend.
 
-Expose a minimal canvas-like object for Three.js: dimensions, `getContext('webgpu')`,
-and the events we explicitly support. Its GPUCanvasContext wraps the acquired
-surface texture. A small JS object with this shape does not require HTML or a DOM.
+For the M1 integration spike, expose a minimal canvas-like object for Three.js:
+dimensions, `getContext('webgpu')`, and supported events. Its GPUCanvasContext
+wraps the acquired surface texture. The product then needs real canvas/DOM
+integration and composition; this minimal object does not establish compatibility.
 
 The host coordinates acquire → game update → render/submit → present. Never
 read the frame back to CPU memory to display it. Readbacks belong only in captures,
@@ -48,8 +61,9 @@ Poll the JS async work without blocking the OS loop. Drive a compatible
 frame the same monotonic timestamp. A callback requested during a frame belongs
 to a later frame; cancellation must work.
 
-Use a bounded fixed-step simulation accumulator with an explicit catch-up cap,
-and render once per redraw. Measure before moving rendering to a worker. A
+Preserve the existing game loop, event and microtask semantics. Fixed-step
+simulation helpers can be optional engine APIs; never insert them automatically
+into an unchanged project. Measure before moving rendering to a worker. A
 dedicated JS thread requires event handoff, surface constraints and a clear
 ownership protocol; threads are not a free performance improvement.
 
@@ -87,16 +101,22 @@ asset service should expose decoded bytes to compatible Three.js loaders.
 
 Wasm physics and decoders are candidates. Workers, audio, networking and gamepads
 each need an API contract, lifecycle behavior and platform tests. HTML/CSS menus
-are not part of the shipping rendering path; use rendered UI or a separate tool.
+are required by the compatibility target. Their DOM, rendering and interaction
+contracts are covered by the dedicated HTML investigation.
 
 ## Repository growth
 
-Current code is intentionally two small probes. When M1 starts, add:
+Current code is intentionally two small probes. As implementation proceeds, use
+the following responsibility map; add modules only when they have real work:
 
 ```text
-crates/runtime/           V8 and extension bootstrap, async lifecycle
-crates/platform/          winit, surfaces, input, frame scheduling
-crates/player/            native executable and application options
+crates/runtime/          JS engine and extension bootstrap, async lifecycle
+crates/platform/         winit, surfaces, input, frame scheduling
+crates/player/           native executable and application options
+crates/webgl/            explicit native WebGL compatibility adapter
+crates/dom/              selected HTML stack and JS DOM integration
+crates/compositor/       native composition of canvas and UI surfaces
+crates/cli/              project analysis and target-build orchestration
 packages/runtime/        documented JavaScript surface and types
 examples/                portable Three.js scenes and reference game
 benchmarks/              identical workloads for browser and native hosts

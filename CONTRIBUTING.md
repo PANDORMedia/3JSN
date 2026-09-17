@@ -1,8 +1,9 @@
 # Contributing
 
 3JSN is at the research/prototype stage. Start with the roadmap and architecture
-decision. Discuss changes that alter the runtime, renderer boundary or supported
-web API subset before introducing a second implementation.
+decision and [engineering standards](docs/engineering.md). Discuss changes that
+alter the runtime, renderer boundary or supported web API subset before introducing
+a second implementation.
 
 Use Node.js 24+ and Rust 1.92+. Pin direct experiment dependencies and commit both
 lockfiles. Keep generated captures, downloads, caches and build outputs out of Git.
@@ -21,7 +22,8 @@ For GPU-related work, also run the relevant probe on a real GPU and record the
 hardware, driver/backend, command and result. Hosted CI compilation is not evidence
 of native rendering. Do not turn a missing GPU into a passing GPU test.
 
-Avoid broad Three.js forks and silent browser/WebGL/software fallbacks. Keep
+Avoid broad Three.js forks and silent browser/software fallbacks. WebGL compatibility
+is an explicit, required rendering path for unchanged existing games. Keep
 platform-specific behavior behind small boundaries. Explain any unsafe Rust with
 its lifetime and thread-safety invariants. Preserve third-party licenses for any
 code incorporated into the project.

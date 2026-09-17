@@ -1,7 +1,7 @@
 # ADR 0001: Rust harness, JavaScript gameplay, native WebGPU
 
 - Date: 2026-09-17
-- Status: proposed; integration and comparative performance gates remain open
+- Status: proposed WebGPU integration track; product scope amended by [ADR 0002](0002-unchanged-project-compatibility.md)
 - Priority: native performance while retaining Three.js and web development technology
 
 ## Decision
@@ -12,7 +12,8 @@ and basic input. Preserve upstream Three.js `WebGPURenderer` and TSL initially.
 
 The supported desktop targets we intend to establish are macOS/Metal,
 Linux/Vulkan, and Windows/D3D12. The shipping host should contain no browser,
-WebView, HTML layout engine, or mandatory local HTTP server.
+WebView or mandatory local frontend HTTP server. HTML/layout components are now
+required by ADR 0002; the original rendering-only scope has expanded.
 
 An independently installed Node/Dawn experiment is retained as a correctness
 reference. It is not the Rust host, nor a commitment to shipping Node.

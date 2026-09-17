@@ -1,7 +1,9 @@
 # Compatibility boundary
 
 “Uses Three.js” does not mean every existing browser application works unchanged.
-Only features with local evidence should become support claims.
+The product goal is unchanged source within a versioned compatibility profile.
+Only features with local evidence become support claims. WebGL and HTML/DOM are
+required work, not optional migrations for the application.
 
 | Capability | Evidence now | Planned treatment |
 | --- | --- | --- |
@@ -11,14 +13,15 @@ Only features with local evidence should become support claims.
 | Rust native GPU device | Independent wgpu diagnostic | Integrate with JS-owned device/surface |
 | Window, swapchain, resize, DPI | Not implemented | M1 |
 | TSL custom materials, compute, instancing | Not yet tested here | Add dedicated fixtures |
-| WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | Not targeted by initial WebGPU route | Migration to compatible TSL/node materials or separate compatibility work |
+| WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | Not implemented | Required WebGL/GLSL binding and native translation track; preserve source |
 | glTF, animation, textures | Not yet tested here | Native asset I/O and decoding; regression scenes |
 | Draco, KTX2/Basis, other Wasm decoders | Not implemented | Worker/Wasm and binary asset integration |
 | requestAnimationFrame | Manual scheduler in offscreen probe only | Native redraw scheduling |
 | Keyboard, pointer, gamepad | Not implemented | winit events; explicit gamepad service |
-| DOM-based controls | Not supported | Small event adapter or engine-native controls |
-| HTML/CSS UI, CSS2D/3DRenderer | Out of initial scope | Rendered game UI or separate authoring tool |
+| DOM-based controls | Not implemented | Compatible event, focus, geometry and pointer semantics |
+| HTML/CSS UI, CSS2D/3DRenderer | Not implemented | Required DOM/layout/text/paint/compositor research and implementation |
 | Web Audio / Three.js Audio | Not implemented | Evaluate native mixer/binding |
+| WebRTC, microphone capture, MediaRecorder | Not implemented | Required CtF voice track; permissions, device and connection lifecycle |
 | fetch, local files, saves | Host implementation not present | Explicit asset/save services and selected web APIs |
 | npm packages | Node research tooling only | Bundle runtime-compatible JS; audit native/Node dependencies |
 | Workers, SharedArrayBuffer, WebAssembly | Not validated in proposed embedded host | Implement/test as concrete features need them |
@@ -31,7 +34,7 @@ Only features with local evidence should become support claims.
 | --- | --- | --- | --- |
 | macOS arm64 | Metal | See dated validation for individual probes | Research only |
 | macOS x64 | Metal | None | Planned |
-| Windows x64 | D3D12 | None | Planned |
+| Windows x64 | D3D12 for WebGPU; WebGL backend/interop to select | None | Planned |
 | Linux x64: X11 and Wayland | Vulkan | None | Planned; each window system needs validation |
 | Windows/Linux arm64 | Platform native GPU API | None | Later evaluation |
 | Android / iOS | Vulkan / Metal where available | None | Later lifecycle, packaging and JS execution-policy research |
@@ -40,3 +43,6 @@ Only features with local evidence should become support claims.
 Desktop support will name minimum OS versions, architectures, drivers and GPUs
 after hardware testing. A dependency supporting a platform does not certify 3JSN.
 Compilation in CI does not establish native window, input or GPU correctness.
+
+Compatibility extends beyond rendering. See the [CtF inventory](ctf-compatibility.md)
+for the source-inspected acceptance target, including WebRTC and separate services.

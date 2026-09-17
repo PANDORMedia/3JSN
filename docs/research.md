@@ -1,7 +1,10 @@
 # Native Three.js research
 
-Research date: 2026-09-17. This document separates upstream capabilities from
-what has actually been verified in 3JSN. The latter is recorded in
+Research date: 2026-09-17. Updated product constraints are in
+[ADR 0002](adr/0002-unchanged-project-compatibility.md); unchanged WebGL and HTML/CSS
+projects are required, and the WebGPU path is an initial integration track. This
+document separates upstream capabilities from what has actually been verified in
+3JSN. The latter is recorded in
 [validation](validation/2026-09-17.md). Links to development branches can change.
 
 ## What already exists
@@ -39,7 +42,7 @@ nor that a packaged executable has zero runtime dependencies.
 | Deno raw desktop | Available host with WebGPU and standard runtime services. | Need to evaluate game-oriented input/audio, scheduling control, and deployment footprint. | Reference implementation and alternative baseline. |
 | C++ + V8 + Dawn + SDL3 | Mature building blocks and close alignment with Dawn. | Bindings, ownership, build system and cross-platform distribution remain substantial work. | Viable alternative; not inherently faster or slower than Rust. |
 | Rust + custom Three.js renderer backend over wgpu/SDL GPU | Could reduce boundary calls or expose native features. | Must maintain renderer/material/shader compatibility with Three.js. | Only if profiling proves a bottleneck the standard binding cannot fix. |
-| WebGL2 compatibility over ANGLE | Potential migration route for existing GLSL-heavy projects. | Extra API binding and compatibility surface, with its own performance behavior. | Separate future track, not the first renderer. |
+| WebGL2 compatibility over ANGLE | Preserve existing WebGL/GLSL projects through native graphics backends. | Extra API binding and compatibility surface, with its own performance behavior. | Required compatibility track for unchanged WebGL games; investigate early. |
 | General JavaScript-to-native source translation | Attractive promise of “compile my game.” | Dynamic language semantics, npm compatibility and debugging; effectively a compiler project. | Outside the initial scope. |
 
 The [wgpu project](https://github.com/gfx-rs/wgpu) provides native Metal,
@@ -83,9 +86,10 @@ Three.js fork for the first experiment. Internal integration points can change
 between releases, so keep a compatibility fixture and deliberate upgrades.
 
 Existing WebGL-specific materials and integrations are not automatically
-portable. The migration target is node materials/TSL and WebGPU-compatible
-addons. DOM controls, HTML/CSS overlays, image loading, audio, workers, and
-compressed assets each need an explicit runtime implementation or alternative.
+portable. Node materials/TSL fit the WebGPU path. Existing GLSL games need a WebGL
+compatibility path; the product contract does not require a TSL migration. DOM
+controls, HTML/CSS overlays, image loading, audio, workers and compressed assets
+each need an explicit runtime implementation.
 See the [compatibility plan](compatibility.md).
 
 ## Performance hypothesis, not a result
@@ -108,5 +112,6 @@ Use the [benchmark protocol](benchmarks.md) to decide what deserves optimization
    reload/restart in development, native GPU captures and useful crash reports.
 4. A reference game: a small playable scene that exercises the whole shipping path.
 
-Start with the player. An editor, full DOM, networking framework, console SDKs,
-and a custom ECS are separate decisions; none is required to prove the renderer.
+Start with the player and required web compatibility. An editor, a new networking
+framework, console SDKs and a custom ECS are separate decisions; none is required
+to prove the renderer.

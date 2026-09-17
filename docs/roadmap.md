@@ -1,100 +1,63 @@
 # Roadmap
 
-The goal is a performant native player for Three.js games, then a usable engine
-around it. Milestones are acceptance gates, not release dates. The first integrated
-spike is a bounded investigation; a portable engine with assets, audio, tooling
-and reliable distribution is a months-scale project.
+## Product target
 
-## M0 — Establish the foundation
+Run `3jsn build` against an existing Three.js web project and produce a native
+application for each supported desktop target, without editing the game's
+JavaScript, shaders, HTML or CSS. Configuration for entry points, build commands,
+assets, application identity and service endpoints is allowed. Generated build
+artifacts may be transformed; the source tree stays unchanged.
 
-- [x] Research existing runtimes and graphics backends using primary sources.
-- [x] Record the Rust/WebGPU architecture proposal and compatibility limits.
-- [x] Add independently runnable JS rendering and Rust GPU-device probes.
-- [x] Pin dependencies and provide a local Git/OSS repository foundation.
-- [ ] Run both probes on Windows and Linux hardware.
+This is the destination, not current compatibility. Start with a versioned profile
+and CaptureTheFrog (CtF) as a demanding acceptance project. Expand support with
+evidence. Unsupported APIs must produce useful diagnostics rather than a
+misleading successful build. See the [product contract](product.md).
 
-Exit: reproducible local evidence, honest support status, and a concrete M1 task.
-See [initial validation](validation/2026-09-17.md) for the exact evidence.
+The [GitHub issue index](issues.md) maps each milestone to its epic and work items.
+GitHub issues track execution; this page explains sequencing and completion gates.
 
-## M1 — One native window, actual Three.js, Rust host
+## Milestones
 
-Do this next, in order:
+| Phase | Deliverable | Completion gate |
+| --- | --- | --- |
+| M0 — Contract and architecture | Compatibility contract, CtF inventory, boundaries and foundation | Supported semantics, source-preservation evidence and module ownership are explicit |
+| M1 — Native Rust host | Embedded JS, native window, GPU surface and lifecycle | Upstream Three.js WebGPU scene runs in a Rust-hosted native window with clean shutdown |
+| M2 — Unchanged WebGL projects | WebGL2/GLSL compatibility, post-processing and multiple canvases | Existing WebGL Three.js fixtures run without renderer or shader edits |
+| M3 — HTML/CSS on the GPU | DOM integration, layout, text, interaction and composition | Dynamic HTML/CSS UI and 3D canvases compose and receive input correctly |
+| M4 — Web services and CtF | Assets, workers, Wasm, storage, networking, audio, controllers, voice | Pinned CtF client passes the complete game flow with unchanged source |
+| M5 — CLI and desktop builds | Project detection, build/run/check, artifacts and distribution | One CLI invocation orchestrates builds for supported OS/architecture targets |
+| M6 — Performance and developer preview | Profiles, regressions, docs, debug workflow and release gates | Reproducible results and installable artifacts on clean desktop machines |
+| Future — Broader platforms and tooling | Mobile, architectures, XR/video, optional engine/editor tooling | Separate evidence-backed proposals; no implied support |
 
-1. Select compatible published `deno_core`, `deno_webgpu`, web extension and V8
-   versions. Compile a minimal embedded JS runtime. Record build footprint and
-   any required upstream patches. Do not independently choose incompatible wgpu
-   versions for the surface and the binding.
-2. Expose `navigator.gpu`, required GPU constants, promises, performance timing,
-   console output and the minimal bootstrap needed by Three.js. Run one offscreen
-   scene in Rust/V8 to prove the JS bridge before adding presentation.
-3. Create a winit window and register its handles with the binding's own GPU
-   instance. Prove the surface lifecycle with a clear frame.
-4. Wrap that surface as a canvas/context for upstream Three.js. Render the shared
-   fixture, acquire/present entirely on GPU, and drive animation from native redraw.
-5. Handle resize, scaling, zero-size/minimized windows and clean close. Report
-   unsupported adapters, device loss and shader/validation failures clearly.
+## Sequence and decision gates
 
-Acceptance:
+1. Establish compatibility contracts and dependency/ownership boundaries.
+2. Prove the Rust/JS/native surface path while investigating HTML and WebGL reuse.
+   DOM integration and GPU interoperability are early feasibility questions.
+3. Prove unchanged WebGL projects and an interactive DOM compositor. A native cube
+   alone is not evidence that an unchanged web project can run.
+4. Add required services and validate the pinned CtF client, including its network
+   worker, menus, audio and voice. Its remote game and voice services remain
+   separate unless explicitly configured as packaged services.
+5. Complete desktop packaging and clean-machine tests. CLI analysis can start
+   earlier; its success claims depend on the runtime compatibility profile.
+6. Ship a documented preview after compatibility and performance gates pass.
 
-- One command opens an animated Three.js scene in a native macOS window.
-- No browser/WebView process, local HTTP server, or CPU frame readback in presentation.
-- The GPU device used by JS is the one that renders to the window.
-- Logs identify engine/dependency versions, native backend and adapter.
-- A 10-minute run with repeated resize/minimize/restore/close shows no validation
-  errors, crash, or unbounded resource growth.
-- JS exceptions reach the console with a useful source location.
+M1 is a useful integration spike; WebGPU-only support does not satisfy the product
+goal. M2 and M3 are mandatory. A no-change build must not silently substitute a
+Three.js renderer or require an application rewrite.
 
-Decision gate: accept ADR 0001 only after the bridge works. If integration needs
-an extensive fork, compare the cost with embedding/contributing to an existing host.
+## Shared definition of done
 
-## M2 — Establish and improve performance
+Each implementation issue needs observable acceptance criteria, relevant fixtures,
+useful errors, documented public behavior, and deliberate dependency boundaries.
+Document public APIs, ownership/thread invariants and surprising decisions. Remove
+comments that restate the code. See [engineering standards](engineering.md).
 
-Implement the [benchmark protocol](benchmarks.md), plus native captures and CPU
-profiles. Test draw submission, instancing, dynamic uploads, shader warmup, large
-scenes and GPU-bound rendering. Compare identical settings in a browser, the Rust
-host and an existing native host. Retain raw measurements.
+GPU claims require hardware evidence; CI compilation is separate. Platform claims
+name the OS, architecture, backend and driver tested. Performance claims follow
+[the measurement protocol](benchmarks.md). Shipping requires source preservation
+and functional compatibility evidence as well as speed measurements.
 
-Acceptance: explain the leading bottleneck of each scene and publish repeatable
-p50/p95/p99 timings. Decide whether binding optimization, frame-loop changes or
-a custom renderer is warranted. Do not declare success on an isolated FPS number.
-
-## M3 — Desktop portability and a playable vertical slice
-
-Bring up Windows/D3D12 and Linux/Vulkan, including X11 and Wayland. Add local glTF
-and texture loading, keyboard/pointer input, gamepads, audio, a save directory and
-an optional physics integration. Build a small playable example, not just a cube.
-
-Acceptance: the same game source and assets work on all three desktop systems;
-only platform packaging/configuration differs. Verify real controllers and audio
-devices, resize/fullscreen, asset paths and errors. CI builds all target variants,
-while hardware checks validate runtime behavior separately.
-
-## M4 — Developer preview
-
-Provide a CLI to run/build games, documented APIs and compatibility tables,
-source maps, restart/reload during development, per-platform artifacts, asset
-bundling and dependency notices. Decide versioning and project governance before
-publishing packages. Add signing/notarization where distribution requires it.
-
-Acceptance: a contributor can clone a starter, develop locally, produce a game
-artifact and run it on a clean target machine without Node or a browser installed.
-Record what remains experimental. Keep performance regression workloads in CI or
-dedicated hardware jobs, with stable hardware and explicit tolerances.
-
-## Later decisions
-
-Mobile lifecycle/embedding, touch and platform JS constraints; native UI/text;
-editor integration; multiplayer/networking; advanced GPU-driven rendering;
-console ports where SDK access is available. Choose these from demonstrated game
-needs rather than promising every engine subsystem at launch.
-
-## Suggested first issues
-
-1. Embed matched Deno core/WebGPU extensions in a minimal Rust executable.
-2. Render the shared Three.js fixture through the Rust JS bridge offscreen.
-3. Bind a native winit surface to the same GPU instance.
-4. Add redraw-driven animation, resize/DPI handling and deterministic teardown.
-5. Create browser/native comparison scenes and record the initial performance baseline.
-
-Each issue should name its acceptance evidence, dependency versions and the exact
-platform tested. These are local planning items, not remotely created issues.
+No deadlines are inferred from issue order. Broad browser API compatibility is
+sustained systems work, not a packaging trick.
