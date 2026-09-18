@@ -22,6 +22,9 @@ use shaders::*;
 use webgl_state::*;
 use webgl_textures::*;
 
+#[cfg(test)]
+mod uniform_lifecycle_tests;
+
 struct State {
     display: Rc<native::Display>,
     contexts: BTreeMap<u32, native::Context>,

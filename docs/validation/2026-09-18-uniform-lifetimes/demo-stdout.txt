@@ -1,0 +1,11 @@
+
+running 1 test
+{"webglWindow":{"phase":"First frame","frame":1,"generation":1,"bitmap":{"width":904,"height":400},"css":{"width":904,"height":400},"contextIdentity":true,"replacementContextDistinct":null,"connected":true,"contextLost":false}}
+{"webglWindow":{"phase":"Bitmap resized","frame":12,"generation":1,"bitmap":{"width":1130,"height":500},"css":{"width":904,"height":400},"contextIdentity":true,"replacementContextDistinct":null,"connected":true,"contextLost":false}}
+{"webglWindow":{"phase":"Same-width reset","frame":24,"generation":1,"bitmap":{"width":1130,"height":500},"css":{"width":904,"height":400},"contextIdentity":true,"replacementContextDistinct":null,"connected":true,"contextLost":false}}
+{"webglWindow":{"phase":"Canvas replaced","frame":36,"generation":2,"bitmap":{"width":1130,"height":500},"css":{"width":904,"height":400},"contextIdentity":true,"replacementContextDistinct":true,"connected":true,"contextLost":false}}
+{"webglWindow":{"phase":"Lifecycle complete","frame":60,"generation":2,"bitmap":{"width":1130,"height":500},"css":{"width":904,"height":400},"contextIdentity":true,"replacementContextDistinct":true,"connected":true,"contextLost":false}}
+{"webglDemoOffscreen":{"packagedInputs":false,"frames":60,"checkpoints":5,"snapshotGenerations":4,"canvasContexts":2,"cleanup":"passed","surfacePresentation":false,"cpuFrameTransport":false,"htmlParser":"preserved"}}
+test demo_offscreen::animated_three_demo_offscreen ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 2.59s

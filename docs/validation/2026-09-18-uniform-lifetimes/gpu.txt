@@ -1,0 +1,16 @@
+   Compiling threejs-native-webgl-runtime v0.0.0 (/Users/sean/dev/3JSN/experiments/webgl-runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.79s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_webgl_runtime-f9716b11fab4a520)
+
+running 1 test
+2026-09-18 22:46:20.958 threejs_native_webgl_runtime-f9716b11fab4a520[20519:6223854] Metal API Validation Enabled
+Uniform lifecycle: 4096 alias/missing lookups, 64 relinks, failed link, deleted-current/failed-switch/unbind, noncurrent delete, foreign context and final zero registry passed
+test uniform_lifecycle_tests::uniform_registry_tracks_live_program_generations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 1.33s
+
+     Running unittests src/main.rs (target/debug/deps/threejs_native_webgl_runtime-c03387acaaa3d834)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

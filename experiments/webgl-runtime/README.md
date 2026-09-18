@@ -117,8 +117,10 @@ MTL_DEBUG_LAYER=1 target/debug/threejs-native-webgl-runtime \
 Run `draw-boundaries.mjs` the same way for the native negative controls. Mesh
 output includes raw RGBA arrays for offline test captures only. Full WebGL
 conformance, arbitrary materials/textures, DOM/window composition, resize/context
-loss and other platforms remain open. Uniform registry entries are currently
-retained until context disposal; deleted-shader wrapper queries are incomplete.
+loss and other platforms remain open. Uniform locations now share per-program/
+generation host entries and are reclaimed on relink or program retirement;
+[lifetime evidence](../../docs/validation/2026-09-18-uniform-lifetimes.md).
+Deleted-shader wrapper queries remain incomplete.
 
 ## Real DOM canvas checkpoint
 
