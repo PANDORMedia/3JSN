@@ -1,0 +1,1 @@
+2026-09-18 19:04:58.929 threejs-native-webgl-runtime[87839:5959024] Metal API Validation Enabled

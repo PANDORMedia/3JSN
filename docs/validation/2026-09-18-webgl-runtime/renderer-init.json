@@ -1,0 +1,19 @@
+{
+  "status": "upstream-renderer-initialization-only",
+  "threeRevision": "186",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+  "version": "OpenGL ES 3.0.0 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)",
+  "maxTextures": 16,
+  "pixel": [
+    255,
+    0,
+    0,
+    255
+  ],
+  "limitations": [
+    "No geometry draw yet",
+    "Injected canvas fixture; no DOM/window integration",
+    "Partial WebGL API; no conformance claim",
+    "macOS Metal only"
+  ]
+}
