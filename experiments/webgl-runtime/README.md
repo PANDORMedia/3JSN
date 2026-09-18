@@ -2,7 +2,8 @@
 
 This isolated macOS experiment prepares native context ownership for the WebGL
 runtime. Upstream Three.js r186 now constructs its `WebGLRenderer`, initializes
-fallback textures and clears a native framebuffer through a partial WebGL facade.
+fallback textures and renders indexed/nonindexed meshes and GLSL materials through
+a partial WebGL facade.
 The harness injects a canvas fixture through Three's public constructor; it does
 not expose DOM `canvas.getContext('webgl2')` or connect to the UI compositor.
 No compatibility profile is advanced by this probe.
@@ -33,7 +34,7 @@ The upstream renderer initialization harness verifies an exact red pixel after
 cross-context/deleted objects, invalid viewport preservation, precision errors,
 coalesced JavaScript/native error flags, and invalid host dimensions. The shader
 probe separately verifies that successful attachment preserves a preceding GL
-error. No geometry or Three.js scene has drawn through this bridge yet.
+error. The subsequent mesh checkpoint below extends this initialization evidence.
 
 The facade intentionally remains partial: only bounded RGBA8 null/Uint8Array
 uploads, default unpack state and a 64 MiB per-image allocation budget are
@@ -81,3 +82,39 @@ MTL_DEBUG_LAYER=1 target/debug/threejs-native-webgl-runtime \
 The binary enters a current-thread Tokio runtime before creating V8 so its delayed
 tasks have a host. This synchronous fixture does not prove application event-loop
 or shutdown behavior. No browser, Node addon or CPU frame transport is used.
+
+## Offscreen mesh checkpoint
+
+The unchanged upstream renderer now draws a rotating indexed `BoxGeometry` with
+`MeshBasicMaterial`; its equivalent nonindexed geometry is byte-identical. A
+`ShaderMaterial`, an `onBeforeCompile` customization and `MeshNormalMaterial`
+also render with their expected colors. Rotation changes 1,221 pixels in the
+128 × 128 frame. Captures and controls are archived in the
+[mesh validation record](../../docs/validation/2026-09-18-webgl-mesh.md).
+
+Standard shader source/compile/link operations and actual program reflection now
+feed opaque, context/program/link-generation-owned uniform locations. Buffer and
+VAO operations validate pointer-shaped offsets before native calls. Typed uploads
+avoid JSON; integer uniforms preserve signed bits through a borrowed unsigned
+view required by the pinned Deno binding macro. Uniform sequences are bounded to
+1,048,576 scalars before conversion; each buffer is limited to 64 MiB. These are
+experimental limits, not aggregate memory quotas or production performance claims.
+
+Nineteen CPU tests and strict Clippy pass. Real Metal controls reject short
+vertex/index buffers, client-memory pointers, stale/foreign-current-program
+uniform locations and invalid matrix extents. They verify signed subviews,
+source-offset buffer updates, coercion reentrancy and current-program deferred
+deletion. Old initialization and ownership probes still pass.
+
+```sh
+node_modules/.bin/esbuild experiments/webgl-runtime/mesh.mjs \
+  --bundle --format=iife --platform=browser --outfile=.cache/native-webgl/mesh.js
+MTL_DEBUG_LAYER=1 target/debug/threejs-native-webgl-runtime \
+  "$THREEJS_NATIVE_ANGLE_PACKAGE/deps/darwin/dylib" .cache/native-webgl/mesh.js
+```
+
+Run `draw-boundaries.mjs` the same way for the native negative controls. Mesh
+output includes raw RGBA arrays for offline test captures only. Full WebGL
+conformance, arbitrary materials/textures, DOM/window composition, resize/context
+loss and other platforms remain open. Uniform registry entries are currently
+retained until context disposal; deleted-shader wrapper queries are incomplete.

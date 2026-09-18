@@ -5,6 +5,9 @@ use glow::HasContext;
 use crate::{State, failure, resources::ResourceKind};
 
 pub enum Object {
+    UniformLocation(crate::webgl_programs::UniformLocation),
+    Buffer(glow::NativeBuffer),
+    VertexArray(glow::NativeVertexArray),
     Texture(glow::NativeTexture),
     Framebuffer(glow::NativeFramebuffer),
     Shader(glow::NativeShader),
@@ -36,7 +39,10 @@ pub fn op_gl_create_shader(
         return Err(JsErrorBox::type_error("Expected vertex or fragment shader"));
     }
     let State {
-        contexts, objects, ..
+        contexts,
+        objects,
+        programs,
+        ..
     } = state.borrow_mut::<State>();
     let owner = contexts
         .get_mut(&context)
@@ -45,7 +51,10 @@ pub fn op_gl_create_shader(
     // A live current context owns every GL object stored behind these identities.
     let shader = unsafe { owner.gl.create_shader(kind) }.map_err(failure)?;
     match objects.insert(context, ResourceKind::Shader, Object::Shader(shader)) {
-        Ok(id) => Ok(id),
+        Ok(id) => {
+            programs.register_shader(context, id, kind);
+            Ok(id)
+        }
         Err(error) => {
             unsafe { owner.gl.delete_shader(shader) };
             Err(failure(error.to_string()))
@@ -159,7 +168,10 @@ pub fn op_gl_link_program(
     id: u32,
 ) -> Result<serde_json::Value, JsErrorBox> {
     let State {
-        contexts, objects, ..
+        contexts,
+        objects,
+        programs,
+        ..
     } = state.borrow_mut::<State>();
     let program = objects
         .get(context, ResourceKind::Program, id)
@@ -169,6 +181,7 @@ pub fn op_gl_link_program(
         .get_mut(&context)
         .ok_or_else(|| failure("Unknown context"))?;
     owner.make_current().map_err(failure)?;
+    programs.before_link(context, id)?;
     unsafe {
         owner.gl.link_program(program);
         Ok(
@@ -180,7 +193,10 @@ pub fn op_gl_link_program(
 #[op2(fast)]
 pub fn op_gl_delete_shader(state: &mut OpState, context: u32, id: u32) -> Result<(), JsErrorBox> {
     let State {
-        contexts, objects, ..
+        contexts,
+        objects,
+        programs,
+        ..
     } = state.borrow_mut::<State>();
     let owner = contexts
         .get_mut(&context)
@@ -191,13 +207,17 @@ pub fn op_gl_delete_shader(state: &mut OpState, context: u32, id: u32) -> Result
         .map_err(|e| failure(e.to_string()))?
         .shader();
     unsafe { owner.gl.delete_shader(shader) };
+    programs.remove_shader(context, id);
     Ok(())
 }
 
 #[op2(fast)]
 pub fn op_gl_delete_program(state: &mut OpState, context: u32, id: u32) -> Result<(), JsErrorBox> {
     let State {
-        contexts, objects, ..
+        contexts,
+        objects,
+        programs,
+        ..
     } = state.borrow_mut::<State>();
     let owner = contexts
         .get_mut(&context)
@@ -208,5 +228,6 @@ pub fn op_gl_delete_program(state: &mut OpState, context: u32, id: u32) -> Resul
         .map_err(|e| failure(e.to_string()))?
         .program();
     unsafe { owner.gl.delete_program(program) };
+    programs.remove_program(context, id);
     Ok(())
 }

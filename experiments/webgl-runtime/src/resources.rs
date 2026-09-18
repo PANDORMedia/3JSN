@@ -3,6 +3,7 @@ use std::{collections::HashMap, error::Error, fmt};
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ResourceKind {
     Buffer,
+    UniformLocation,
     Shader,
     Program,
     Texture,

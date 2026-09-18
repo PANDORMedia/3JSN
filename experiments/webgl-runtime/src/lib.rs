@@ -8,6 +8,10 @@ use serde_json::json;
 mod native;
 pub mod resources;
 mod shaders;
+mod webgl_geometry;
+mod webgl_programs;
+use webgl_geometry::*;
+use webgl_programs::*;
 mod webgl_state;
 mod webgl_textures;
 use shaders::*;
@@ -18,6 +22,7 @@ struct State {
     display: Rc<native::Display>,
     contexts: BTreeMap<u32, native::Context>,
     next_id: u32,
+    programs: webgl_programs::ProgramState,
     objects: resources::Registry<shaders::Object>,
 }
 
@@ -116,6 +121,51 @@ fn op_angle_read_pixel(
 }
 
 #[op2(fast)]
+fn op_angle_read_rgba(
+    state: &mut OpState,
+    id: u32,
+    width: u32,
+    height: u32,
+    #[buffer] output: &mut [u8],
+) -> Result<(), JsErrorBox> {
+    let required = width.checked_mul(height).and_then(|n| n.checked_mul(4));
+    if required.is_none_or(|n| n > 16 * 1024 * 1024 || n as usize != output.len()) {
+        return Err(JsErrorBox::type_error(
+            "RGBA observation exceeds its bounded output",
+        ));
+    }
+    let owner = current(state, id)?;
+    unsafe {
+        for (name, expected) in [
+            (glow::PIXEL_PACK_BUFFER_BINDING, 0),
+            (glow::PACK_ALIGNMENT, 4),
+            (glow::PACK_ROW_LENGTH, 0),
+            (glow::PACK_SKIP_PIXELS, 0),
+            (glow::PACK_SKIP_ROWS, 0),
+        ] {
+            if owner.gl.get_parameter_i32(name) != expected {
+                return Err(failure("RGBA observation requires default pack state"));
+            }
+        }
+        owner.gl.read_pixels(
+            0,
+            0,
+            width as i32,
+            height as i32,
+            glow::RGBA,
+            glow::UNSIGNED_BYTE,
+            glow::PixelPackData::Slice(Some(output)),
+        );
+        if owner.gl.get_error() != glow::NO_ERROR {
+            return Err(failure(
+                "RGBA observation failed or inherited a pending GL error",
+            ));
+        }
+    }
+    Ok(())
+}
+
+#[op2(fast)]
 fn op_angle_resize(
     state: &mut OpState,
     id: u32,
@@ -128,7 +178,10 @@ fn op_angle_resize(
 #[op2(fast)]
 fn op_angle_dispose(state: &mut OpState, id: u32) -> Result<(), JsErrorBox> {
     let State {
-        contexts, objects, ..
+        contexts,
+        objects,
+        programs,
+        ..
     } = state.borrow_mut::<State>();
     contexts
         .get_mut(&id)
@@ -137,12 +190,15 @@ fn op_angle_dispose(state: &mut OpState, id: u32) -> Result<(), JsErrorBox> {
         .map_err(failure)?;
     contexts.remove(&id);
     objects.remove_context(id);
+    programs.remove_context(id);
     Ok(())
 }
 
 deno_core::extension!(
     angle_probe,
-    ops = [op_angle_create, op_angle_info, op_angle_clear, op_angle_read_pixel, op_angle_resize, op_angle_dispose,
+    ops = [op_wgl_shader_source, op_wgl_compile_shader, op_wgl_link_program, op_wgl_use_program, op_wgl_bind_attrib_location, op_wgl_shader_parameter, op_wgl_program_parameter, op_wgl_shader_info_log, op_wgl_program_info_log, op_wgl_get_active_uniform, op_wgl_get_active_attrib, op_wgl_get_attrib_location, op_wgl_get_uniform_location, op_wgl_uniform_float, op_wgl_uniform_int, op_wgl_uniform_fv, op_wgl_uniform_iv, op_wgl_uniform_matrix,
+        op_wgl_create_buffer, op_wgl_bind_buffer, op_wgl_delete_buffer, op_wgl_buffer_data_size, op_wgl_buffer_data_bytes, op_wgl_buffer_sub_data, op_wgl_create_vertex_array, op_wgl_bind_vertex_array, op_wgl_delete_vertex_array, op_wgl_enable_vertex_attrib_array, op_wgl_disable_vertex_attrib_array, op_wgl_vertex_attrib_divisor, op_wgl_vertex_attrib_pointer, op_wgl_draw_arrays, op_wgl_draw_elements,
+        op_angle_read_rgba, op_angle_create, op_angle_info, op_angle_clear, op_angle_read_pixel, op_angle_resize, op_angle_dispose,
         op_gl_create_shader, op_gl_compile_shader, op_gl_shader_status,
         op_gl_create_program, op_gl_attach_shader, op_gl_link_program,
         op_gl_delete_shader, op_gl_delete_program,
@@ -154,7 +210,7 @@ deno_core::extension!(
         op_gl_tex_image_2d, op_gl_tex_image_3d,
         op_gl_create_framebuffer, op_gl_bind_framebuffer, op_gl_delete_framebuffer],
     esm_entry_point = "ext:angle_probe/probe-bootstrap.js",
-    esm = [dir "src", "probe-bootstrap.js", "webgl.js", "webgl-bootstrap.js"],
+    esm = [dir "src", "probe-bootstrap.js", "webgl.js", "webgl-bootstrap.js", "webgl-geometry.js", "webgl-programs.js"],
     options = { native: State },
     state = |state, options| state.put(options.native),
 );
@@ -165,6 +221,7 @@ pub fn probe_extension(libraries: &Path) -> Result<Extension, String> {
         display: native::Display::new(libraries)?,
         contexts: BTreeMap::new(),
         next_id: 0,
+        programs: webgl_programs::ProgramState::default(),
         objects: resources::Registry::new(),
     }))
 }

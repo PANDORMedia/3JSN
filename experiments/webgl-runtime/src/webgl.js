@@ -1,8 +1,25 @@
+import { installPrograms } from './webgl-programs.js';
+import { installGeometry } from './webgl-geometry.js';
 import { core } from 'ext:core/mod.js';
 
 // This partial facade is not installed as the browser's WebGL2RenderingContext.
 // Unsupported entry points remain absent until their native behavior is implemented.
 const constants = {
+  ARRAY_BUFFER: 0x8892, ELEMENT_ARRAY_BUFFER: 0x8893,
+  STATIC_DRAW: 0x88e4, DYNAMIC_DRAW: 0x88e8, STREAM_DRAW: 0x88e0,
+  FLOAT: 0x1406, BYTE: 0x1400, SHORT: 0x1402, UNSIGNED_SHORT: 0x1403,
+  INT: 0x1404, UNSIGNED_INT: 0x1405, HALF_FLOAT: 0x140b,
+  TRIANGLES: 4, TRIANGLE_STRIP: 5, TRIANGLE_FAN: 6, POINTS: 0, LINES: 1, LINE_LOOP: 2, LINE_STRIP: 3,
+  COMPILE_STATUS: 0x8b81, LINK_STATUS: 0x8b82, VALIDATE_STATUS: 0x8b83, DELETE_STATUS: 0x8b80,
+  SHADER_TYPE: 0x8b4f, ATTACHED_SHADERS: 0x8b85, ACTIVE_UNIFORMS: 0x8b86, ACTIVE_ATTRIBUTES: 0x8b89,
+  FLOAT_VEC2: 0x8b50, FLOAT_VEC3: 0x8b51, FLOAT_VEC4: 0x8b52,
+  INT_VEC2: 0x8b53, INT_VEC3: 0x8b54, INT_VEC4: 0x8b55, BOOL: 0x8b56,
+  BOOL_VEC2: 0x8b57, BOOL_VEC3: 0x8b58, BOOL_VEC4: 0x8b59,
+  FLOAT_MAT2: 0x8b5a, FLOAT_MAT3: 0x8b5b, FLOAT_MAT4: 0x8b5c,
+  SAMPLER_2D: 0x8b5e, SAMPLER_CUBE: 0x8b60,
+  ONE: 1, ZERO: 0, SRC_ALPHA: 0x302, ONE_MINUS_SRC_ALPHA: 0x303,
+  FUNC_ADD: 0x8006, POLYGON_OFFSET_FILL: 0x8037, SAMPLE_ALPHA_TO_COVERAGE: 0x809e,
+
   NO_ERROR: 0, INVALID_ENUM: 0x500, INVALID_VALUE: 0x501, INVALID_OPERATION: 0x502,
   COLOR_BUFFER_BIT: 0x4000, DEPTH_BUFFER_BIT: 0x100, STENCIL_BUFFER_BIT: 0x400,
   VENDOR: 0x1f00, RENDERER: 0x1f01, VERSION: 0x1f02, SHADING_LANGUAGE_VERSION: 0x8b8c,
@@ -138,6 +155,9 @@ export class ExperimentalWebGLContext {
   }
   deleteFramebuffer(framebuffer) { remove(this, framebuffer, 'framebuffer', core.ops.op_gl_delete_framebuffer); }
 }
+installPrograms(ExperimentalWebGLContext.prototype, { state, resource, create, remove, objects });
+installGeometry(ExperimentalWebGLContext.prototype, { state, resource, create, remove });
+
 for (const [name, value] of Object.entries(constants)) {
   Object.defineProperty(ExperimentalWebGLContext.prototype, name, { value, enumerable: true });
   Object.defineProperty(ExperimentalWebGLContext, name, { value, enumerable: true });
@@ -166,3 +186,8 @@ export function closeContext(context) {
   owner.closed = true;
 }
 export function observePixel(context, output) { core.ops.op_angle_read_pixel(state(context).id, output); }
+
+export function observeFrame(context, output) {
+  const owner = state(context);
+  core.ops.op_angle_read_rgba(owner.id, owner.width, owner.height, output);
+}
