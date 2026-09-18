@@ -68,6 +68,33 @@ pub struct LoadedUi {
     pub report: LoadReport,
 }
 
+/// Validate serialized tree data and parser requirements without constructing a
+/// document or invoking providers. The caller supplies its actual parser capability.
+pub fn preflight_json(bytes: &[u8], html_parser_available: bool) -> Result<CompiledUi, LoadError> {
+    let input = CompiledUi::from_json(bytes)?;
+    validate_parser_requirements(&input, html_parser_available)?;
+    Ok(input)
+}
+
+fn validate_parser_requirements(
+    input: &CompiledUi,
+    html_parser_available: bool,
+) -> Result<(), LoadError> {
+    if !html_parser_available {
+        for node in &input.nodes {
+            if let CompiledNode::Element {
+                namespace, name, ..
+            } = node
+                && let Some(requirement) =
+                    capabilities::element_html_parser_requirement(namespace, name)
+            {
+                return Err(LoadError::Unsupported(requirement));
+            }
+        }
+    }
+    Ok(())
+}
+
 pub fn load_json(bytes: &[u8], config: DocumentConfig) -> Result<LoadedUi, LoadError> {
     let input = CompiledUi::from_json(bytes)?;
     load_validated(&input, config, false)
@@ -103,18 +130,10 @@ fn load_validated(
         ));
     }
     let default_parser_enabled = cfg!(feature = "dynamic-html") && !restricted;
-    if config.html_parser_provider.is_none() && !default_parser_enabled {
-        for node in &input.nodes {
-            if let CompiledNode::Element {
-                namespace, name, ..
-            } = node
-                && let Some(requirement) =
-                    capabilities::element_html_parser_requirement(namespace, name)
-            {
-                return Err(LoadError::Unsupported(requirement));
-            }
-        }
-    }
+    validate_parser_requirements(
+        input,
+        config.html_parser_provider.is_some() || default_parser_enabled,
+    )?;
     // Match HtmlDocument's UA policy, including callers supplying extra sheets.
     if let Some(sheets) = &mut config.ua_stylesheets
         && !sheets.iter().any(|sheet| sheet == DEFAULT_CSS)

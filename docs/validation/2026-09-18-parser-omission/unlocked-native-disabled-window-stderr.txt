@@ -1,0 +1,1 @@
+2026-09-18 14:16:49.870 runtime-disabled[32328:5507202] Metal API Validation Enabled

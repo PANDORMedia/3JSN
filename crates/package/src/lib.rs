@@ -11,9 +11,19 @@ use std::{
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
+mod compiled;
+pub use compiled::{CompiledUi, HtmlParserMode, MAX_COMPILED_UI_BYTES};
+mod font;
+pub use font::read_font;
+#[cfg(test)]
+mod compiled_tests;
+#[cfg(test)]
+mod font_tests;
+
 const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
 pub const DOM_PROFILE: &str = "dom-window-v1";
+pub const COMPILED_DOM_PROFILE: &str = "compiled-dom-window-v1";
 pub const DOM_FONT_CAPABILITY: &str = "dom-package-fonts-v1";
 pub const MAX_RESOURCES: usize = 64;
 pub const MAX_STYLESHEET_BYTES: u64 = 1024 * 1024;
@@ -48,6 +58,7 @@ pub struct Resource {
 pub enum Profile {
     NativeWindow,
     DomWindow,
+    CompiledDomWindow(HtmlParserMode),
 }
 
 impl Profile {
@@ -55,7 +66,12 @@ impl Profile {
         match self {
             Self::NativeWindow => PROFILE,
             Self::DomWindow => DOM_PROFILE,
+            Self::CompiledDomWindow(_) => COMPILED_DOM_PROFILE,
         }
+    }
+
+    fn is_dom(self) -> bool {
+        matches!(self, Self::DomWindow | Self::CompiledDomWindow(_))
     }
 }
 
@@ -81,6 +97,8 @@ struct Manifest {
     entry: String,
     #[serde(default, deserialize_with = "present_string")]
     html: Option<String>,
+    #[serde(default, deserialize_with = "compiled::present_descriptor")]
+    compiled_ui: Option<compiled::Descriptor>,
     #[serde(default, deserialize_with = "present_string")]
     font: Option<String>,
     #[serde(default, deserialize_with = "present_vec")]
@@ -121,7 +139,10 @@ fn present_vec<'de, T: Deserialize<'de>, D: serde::Deserializer<'de>>(
 pub struct Application {
     pub entry: PathBuf,
     pub html: Option<PathBuf>,
-    pub font: Option<PathBuf>,
+    pub compiled_ui: Option<CompiledUi>,
+    /// Bounded fallback font bytes from the same read used for integrity checks.
+    /// Decoding and usable-family validation remain the runtime's responsibility.
+    pub font: Option<Vec<u8>>,
     pub resources: Option<Vec<Resource>>,
 }
 
@@ -176,7 +197,7 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
     let resources = match (&manifest.requires, &manifest.resources) {
         (None, None) => return Ok(()),
         (Some(requires), Some(resources))
-            if profile == Profile::DomWindow && requires == &[DOM_FONT_CAPABILITY] =>
+            if profile.is_dom() && requires == &[DOM_FONT_CAPABILITY] =>
         {
             resources
         }
@@ -199,9 +220,13 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         if resource.path == manifest.entry
             || Some(&resource.path) == manifest.html.as_ref()
             || Some(&resource.path) == manifest.font.as_ref()
+            || manifest
+                .compiled_ui
+                .as_ref()
+                .is_some_and(|ui| ui.path.to_lowercase() == resource.path.to_lowercase())
         {
             return Err(invalid(
-                "resource paths must be distinct from entry, HTML and fallback font",
+                "resource paths must be distinct from entry, HTML, compiled UI and fallback font",
             ));
         }
         let suffixes: &[&str] = match resource.kind {
@@ -259,10 +284,11 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
             actual: target().into(),
         });
     }
-    if profile == Profile::DomWindow && !target().starts_with("macos-") {
-        return Err(invalid(
-            "dom-window-v1 requires the experimental macOS Metal player",
-        ));
+    if profile.is_dom() && !target().starts_with("macos-") {
+        return Err(invalid(format!(
+            "{} requires the experimental macOS Metal player",
+            profile.as_str()
+        )));
     }
     if manifest.name.is_empty()
         || manifest.name.len() > 64
@@ -307,9 +333,14 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
     {
         return Err(invalid("entry must be listed in files"));
     }
-    match (profile, &manifest.html, &manifest.font) {
-        (Profile::NativeWindow, None, None) => {}
-        (Profile::DomWindow, Some(html), Some(font)) => {
+    match (
+        profile,
+        &manifest.html,
+        &manifest.font,
+        &manifest.compiled_ui,
+    ) {
+        (Profile::NativeWindow, None, None, None) => {}
+        (Profile::DomWindow, Some(html), Some(font), None) => {
             for path in [html, font] {
                 validate_path(path)?;
                 if !manifest.files.iter().any(|file| &file.path == path) {
@@ -323,15 +354,26 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
                 return Err(invalid("DOM package entry, HTML and font must be distinct"));
             }
         }
-        (Profile::NativeWindow, _, _) => {
+        (Profile::CompiledDomWindow(mode), None, Some(_), Some(_)) => {
+            compiled::validate(manifest, mode)?;
+        }
+        (Profile::NativeWindow, _, _, _) => {
             return Err(invalid(
-                "native-window-v1 does not accept HTML or font fields",
+                "native-window-v1 does not accept HTML, compiled UI or font fields",
             ));
         }
-        (Profile::DomWindow, _, _) => {
-            return Err(invalid("dom-window-v1 requires HTML and font fields"));
+        (Profile::DomWindow, _, _, _) => {
+            return Err(invalid(
+                "dom-window-v1 requires HTML and font fields and no compiled UI",
+            ));
+        }
+        (Profile::CompiledDomWindow(_), _, _, _) => {
+            return Err(invalid(
+                "compiled-dom-window-v1 requires compiled UI and font fields and no HTML",
+            ));
         }
     }
+    font::validate(manifest)?;
     validate_resources(manifest, profile)
 }
 
@@ -385,6 +427,8 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
     let manifest: Manifest = serde_json::from_slice(&bytes).map_err(|e| invalid(e.to_string()))?;
     validate_manifest(&manifest, profile)?;
     let mut resources = manifest.resources.as_ref().map(|_| Vec::new());
+    let mut compiled_ui = None;
+    let mut font = None;
     for item in &manifest.files {
         let path = root.join(&item.path);
         let mut file = regular_file(&root, &item.path)?;
@@ -393,7 +437,28 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
             .resources
             .as_ref()
             .and_then(|resources| resources.iter().find(|resource| resource.path == item.path));
-        let size = if let Some(resource) = resource {
+        let size = if let Some(ui) = manifest
+            .compiled_ui
+            .as_ref()
+            .filter(|ui| ui.path == item.path)
+        {
+            let bytes = compiled::read_bytes(file, &path)?;
+            hasher.update(&bytes);
+            let size = bytes.len() as u64;
+            compiled_ui = Some(CompiledUi {
+                format: ui.format.clone(),
+                version: ui.version,
+                html_parser: ui.html_parser,
+                bytes,
+            });
+            size
+        } else if manifest.font.as_ref() == Some(&item.path) {
+            let bytes = font::read_bytes(file, &path)?;
+            hasher.update(&bytes);
+            let size = bytes.len() as u64;
+            font = Some(bytes);
+            size
+        } else if let Some(resource) = resource {
             let mut bytes = Vec::new();
             file.take(resource.kind.byte_limit() + 1)
                 .read_to_end(&mut bytes)
@@ -425,7 +490,8 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
     Ok(Application {
         entry: root.join(manifest.entry),
         html: manifest.html.map(|path| root.join(path)),
-        font: manifest.font.map(|path| root.join(path)),
+        compiled_ui,
+        font,
         resources,
     })
 }
@@ -436,10 +502,10 @@ mod tests {
     use serde_json::{Value, json};
     use std::sync::atomic::{AtomicUsize, Ordering};
 
-    struct Fixture(PathBuf);
+    pub(super) struct Fixture(pub(super) PathBuf);
 
     impl Fixture {
-        fn new() -> Self {
+        pub(super) fn new() -> Self {
             static NEXT: AtomicUsize = AtomicUsize::new(0);
             let root = std::env::temp_dir().join(format!(
                 "3jsn-package-{}-{}",
@@ -452,7 +518,7 @@ mod tests {
             Self(fs::canonicalize(root).unwrap())
         }
 
-        fn manifest(&self) -> Value {
+        pub(super) fn manifest(&self) -> Value {
             json!({
                 "schemaVersion": 1, "profile": PROFILE, "name": "test-game",
                 "target": target(), "entry": "app/main.mjs", "files": [{
@@ -462,13 +528,13 @@ mod tests {
             })
         }
 
-        fn write(&self, manifest: &Value) -> PathBuf {
+        pub(super) fn write(&self, manifest: &Value) -> PathBuf {
             let path = self.0.join("app.json");
             fs::write(&path, serde_json::to_vec(manifest).unwrap()).unwrap();
             path
         }
 
-        fn dom_manifest(&self) -> Value {
+        pub(super) fn dom_manifest(&self) -> Value {
             let mut manifest = self.manifest();
             manifest["profile"] = json!(DOM_PROFILE);
             manifest["html"] = json!("app/index.html");
@@ -489,7 +555,7 @@ mod tests {
             manifest
         }
 
-        fn font_manifest(&self) -> Value {
+        pub(super) fn font_manifest(&self) -> Value {
             let mut manifest = self.dom_manifest();
             manifest["requires"] = json!([DOM_FONT_CAPABILITY]);
             manifest["resources"] = json!([
@@ -577,7 +643,7 @@ mod tests {
         let path = fixture.0.join("app.json");
         let app = load_for(&path, Profile::DomWindow).unwrap();
         assert_eq!(app.html.unwrap(), fixture.0.join("app/index.html"));
-        assert_eq!(app.font.unwrap(), fixture.0.join("app/font.woff2"));
+        assert_eq!(app.font.unwrap(), b"integrity-only fixture");
         for payload in ["app/index.html", "app/font.woff2"] {
             let file = fixture.0.join(payload);
             let original = fs::read(&file).unwrap();

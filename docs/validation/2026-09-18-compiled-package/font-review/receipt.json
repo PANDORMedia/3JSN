@@ -1,0 +1,69 @@
+{
+  "base": "65d930f27877ed9240488dc18c2b0eb0733d2b9a",
+  "changes": [
+    {
+      "path": "crates/package/src/compiled_tests.rs",
+      "sha256": "07515bd4634543dd6ee1b33c5a9319dac569efd6057260d54cc95ee966071d52"
+    },
+    {
+      "path": "crates/package/src/lib.rs",
+      "sha256": "229ac0e4571ecd695fd3992c18d576787abd7cde65c1b718b153af87f4d21b8f"
+    },
+    {
+      "path": "docs/build.md",
+      "sha256": "d939dd7a6a0ab19faba86cb3e268597c6d500a2bed6c847b3fcb3dcd27f5fe05"
+    },
+    {
+      "path": "experiments/compiled-ui-runtime/README.md",
+      "sha256": "45d5d0167722bb2921c3860dac9eba586887f203d0e4644a2b7d28f34e479839"
+    },
+    {
+      "path": "experiments/compiled-ui-runtime/src/window_options.rs",
+      "sha256": "3f6f11e9fd359edd88f7c42fee5cfe0c66444faef9a8bb288d926eb454ec4c4a"
+    },
+    {
+      "path": "experiments/compiled-ui-runtime/tests/package_options.rs",
+      "sha256": "cd7d8c5d2868ddb3aafdb5ed1fe51a7535ef39add48102813e9d76d09b27e7ea"
+    },
+    {
+      "path": "experiments/compiled-ui-runtime/tests/support/package_options.rs",
+      "sha256": "2ed4a1130d7984cdf1843b375049466fa71d6d0e109a730827eab3a901146b57"
+    },
+    {
+      "path": "experiments/dom-canvas/src/window_options.rs",
+      "sha256": "5629700f84a0459a4a911ec914c4614746f8e4dac584526b0c3ab734ba6d79d0"
+    },
+    {
+      "path": "crates/package/src/font.rs",
+      "sha256": "83adf9450a256ebf869bfa57aa262b0691e71ea52e54ce66c61785b096b16d60"
+    },
+    {
+      "path": "crates/package/src/font_tests.rs",
+      "sha256": "3ca000419cb3eb75a995745871991aa686e18eeb3d37ff5f2609c79a50b2061b"
+    }
+  ],
+  "tests": {
+    "package": {
+      "passed": 26,
+      "failed": 0
+    },
+    "runtimeDefault": {
+      "passed": 13,
+      "failed": 0
+    },
+    "runtimeRestricted": {
+      "passed": 11,
+      "failed": 0
+    }
+  },
+  "checks": {
+    "packageClippy": "passed --all-targets -D warnings",
+    "restrictedRuntimeClippy": "passed --bin threejs-compiled-ui-runtime --test package_options -D warnings",
+    "defaultRuntimeClippy": "passed --bin threejs-compiled-ui-runtime --test package_options -D warnings",
+    "rustfmt": "passed",
+    "diffCheck": "passed"
+  },
+  "gpuRun": false,
+  "committed": false,
+  "recordedAt": "2026-09-18T16:19:28.783830+00:00"
+}

@@ -7,7 +7,8 @@ The goal is **unchanged game source → `3jsn build` → native desktop applicat
 
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
 and compatibility experiments. An experimental host-only build CLI packages the
-native-window fixture and a restricted HTML-entry demo; existing web-project builds are not integrated.
+native-window fixture and bounded interpreted/compiled HTML-entry demos; general
+existing web-project builds are not integrated.
 No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
@@ -23,7 +24,7 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 - [Architecture](docs/architecture.md) and [updated decision](docs/adr/0002-unchanged-project-compatibility.md): native host and compatibility boundaries.
 - [HTML/CSS research](docs/html-rendering.md): DOM, layout, interaction and GPU composition.
 - [Compiled UI direction](docs/adr/0003-compiled-ui-and-generic-compatibility.md): build-time HTML/CSS processing, live native UI state and proven parser omission.
-- [Restricted artifact evidence](docs/validation/2026-09-18-parser-omission.md): optional HTML-parser linkage, DOM checks and measured footprint; new window validation pending.
+- [Restricted artifact evidence](docs/validation/2026-09-18-parser-omission.md): optional HTML-parser linkage, DOM checks, measured footprint and native Metal presentation.
 - [Webfont packaging](docs/web-fonts.md): opt-in static font downloads, pinned offline builds and native face loading.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
@@ -140,8 +141,14 @@ constructs that same native DOM from build-time HTML data. Its
 [checkpoint](docs/validation/2026-09-18-compiled-ui.md) matches the interpreted
 path across five generic fixtures and presents 120 Metal frames while reads of
 the original HTML are denied. Dynamic markup still works through the retained
-parser. This is an experimental construction proof; CSS compilation, parser
-omission, complete browser parity and build-CLI integration remain open.
+parser. This is an experimental construction proof. The separate
+[compiled-UI runtime](experiments/compiled-ui-runtime/README.md) adds explicit
+preserved/restricted HTML-parser modes and an experimental
+[`compiled-dom-window-v1` build path](docs/build.md#build-compiled-initial-ui).
+The [compiled-package checkpoint](docs/validation/2026-09-18-compiled-package.md)
+presents 120 Metal frames in each mode after relocation, with packaged fonts and
+no HTML payload. CSS compilation, complete browser parity and a stable shipping
+format remain open.
 
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout

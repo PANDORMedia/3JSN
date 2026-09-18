@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "node": {
+    "passed": 143,
+    "skipped": 1,
+    "networkEnabled": true
+  },
+  "compiledLoader": {
+    "defaultPassed": 25,
+    "restrictedPassed": 7
+  },
+  "workspace": {
+    "passed": 33,
+    "existingIgnored": 2
+  },
+  "runtimePreflight": {
+    "preservedPassed": 9,
+    "restrictedPassed": 9
+  },
+  "clippy": {
+    "runtime": "Both modes: binary and package_options integration target only; not all targets.",
+    "workspace": "--workspace --all-targets -- -D warnings"
+  },
+  "format": {
+    "runtime": "passed",
+    "compiledLoader": "passed",
+    "rootWorkspace": "cargo fmt --all --check passed; reported by coordinating agent"
+  },
+  "logs": [
+    {
+      "name": "node-tests-network.log",
+      "source": ".cache/compiled-package/node-tests-network.log",
+      "sha256": "bc85f84c98a87fd339acd13b9bba2fe930f15e7659e62652355678636b64aad5"
+    },
+    {
+      "name": "loader-tests.log",
+      "source": ".cache/compiled-package/loader-tests.log",
+      "sha256": "ba640157325f44b8ae1501198a00e5c79062aef84868520c9d2700712c95b439"
+    },
+    {
+      "name": "loader-restricted-tests.log",
+      "source": ".cache/compiled-package/loader-restricted-tests.log",
+      "sha256": "9e35d23921453fb9a6ebf4e67eb281bd83eca9ac931d37eab7dfa9e99fc2da24"
+    },
+    {
+      "name": "workspace-tests.log",
+      "source": ".cache/compiled-package/workspace-tests.log",
+      "sha256": "5162b3fcb1b8506a7e7cfb1768e25abc1d7c49f7b06b1d3dc23cf143ef85a0ca"
+    },
+    {
+      "name": "runtime-preserved-test.log",
+      "source": ".cache/compiled-package/runtime-preserved-test.log",
+      "sha256": "f33fabf6c42e5a278a5ca50a448c3342d3a7e69dff79ec2a4cfa1fe6edf23b2c"
+    },
+    {
+      "name": "runtime-restricted-test.log",
+      "source": ".cache/compiled-package/runtime-restricted-test.log",
+      "sha256": "8ec780ac62223f3bedcba357d4533cf8bd518840c50a1c08a54a40e4cfd61948"
+    },
+    {
+      "name": "runtime-preserved-clippy-scoped.log",
+      "source": ".cache/compiled-package/runtime-preserved-clippy-scoped.log",
+      "sha256": "515d735b04a0c28edafd888ce4426b0178699a00b7585ea0e086ab032ade9e03"
+    },
+    {
+      "name": "runtime-restricted-clippy-scoped.log",
+      "source": ".cache/compiled-package/runtime-restricted-clippy-scoped.log",
+      "sha256": "43afd2e8726482bfddf3b7cfa9ed40ce9374c6e699806f1ed5f323fe9497011b"
+    },
+    {
+      "name": "workspace-clippy.log",
+      "source": ".cache/compiled-package/workspace-clippy.log",
+      "sha256": "d1559d919f627e501344193a1f788adbc9a840bbfeb15aa4909115f1d39473b0"
+    },
+    {
+      "name": "runtime-format.log",
+      "source": ".cache/compiled-package/runtime-format.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "loader-format.log",
+      "source": ".cache/compiled-package/loader-format.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -3,8 +3,9 @@
 `3jsn build --bundle-web-fonts` resolves static font dependencies during the build,
 copies the complete font bytes into the application, and rewrites generated
 HTML/CSS to local package references. Original application files stay unchanged.
-The option extends the experimental macOS `dom-window-v1` profile; it is not a
-claim that arbitrary web applications are supported.
+The option extends the experimental macOS `dom-window-v1` and
+`compiled-dom-window-v1` profiles; it is not a claim that arbitrary web
+applications are supported.
 
 ```sh
 node packages/cli/cli.mjs build fixtures/web-fonts \
@@ -15,8 +16,15 @@ node packages/cli/cli.mjs build fixtures/web-fonts \
 
 The output parent must exist. Build the player using the pinned
 [DOM preparation steps](../experiments/dom-canvas/README.md); the CLI checks its
-`dom-package-fonts-v1` capability before downloading fonts. The separate `--font`
-input remains the generic fallback of this interim profile. CSS webfont families
+`dom-package-fonts-v1` capability before downloading fonts. For compiled packages,
+supply the [compiled-UI runtime](../experiments/compiled-ui-runtime/README.md)
+and select `compiled-dom-window-v1` in the project config. Its parser mode must
+exactly match `--html-parser preserved|restricted` (default `preserved`). The
+localizer runs before UI compilation: generated HTML becomes `app/ui.json`,
+without an HTML payload, while listed CSS/font resources remain packaged.
+These options do not widen the existing bounded package HTML grammar or remove
+the live DOM, runtime CSS parsing or CPU layout. The separate `--font`
+input remains the generic fallback for both profiles. CSS webfont families
 register their own faces and do not replace every generic family with one font.
 
 ## Resource graph and reproducibility
@@ -64,13 +72,17 @@ records do not replace the font blobs when moving offline build state.
 | Runtime-created, removed or reordered font rules | Fail checked startup/frame validation; no silent stale face set |
 
 Fonts are decoded and registered before application startup and initial layout.
+`--verify-app` checks package integrity without decoding fonts, running JS or
+opening a window. Compiled `--measure-app` does load and register fonts, but its
+CPU behavior/layout diagnostic does not establish GPU presentation.
 This does not implement asynchronous `FontFaceSet` readiness or `font-display`
 swap timing. Dynamic text and ordinary styling are distinct from dynamic font
 rule creation. Discovering fonts constructed from arbitrary JavaScript URLs or
 CSS strings remains future capability work.
 
 The native resource base is `threejsn://package/app/index.html`. It is an internal
-URL-resolution base, not a complete browser origin/security model. Exact listed
+URL-resolution base, also used by compiled packages without an HTML file; it is
+not a complete browser origin/security model. Exact listed
 CSS/font URLs resolve only to bytes verified from the package; there is no native
 network or filesystem fallback. This provider does not implement other asset
 types or sandbox trusted application JavaScript.
@@ -124,4 +136,9 @@ certification, startup speed or memory improvement.
 
 The [2026-09-18 checkpoint](validation/2026-09-18-web-fonts.md) records the
 verified macOS Metal package and browser width comparison, including limitations
-and the two independently checked broad Blitz test failures.
+and the two independently checked broad Blitz test failures. That checkpoint
+covers interpreted packages. The separate
+[compiled-package checkpoint](validation/2026-09-18-compiled-package.md) registers
+28 faces from 25 packaged font files in each parser mode, checks offline repeat
+builds, and presents 120 relocated Metal frames per mode. It does not add a
+compiled-package browser pixel comparison or performance result.

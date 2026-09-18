@@ -6,6 +6,8 @@ import { pathToFileURL } from 'node:url';
 import { parse } from 'parse5';
 
 export const LIMITS = Object.freeze({ inputBytes: 1_048_576, nodes: 10_000, attributes: 10_000, depth: 128, stringBytes: 65_536, diagnostics: 1_000, outputBytes: 16_777_216 });
+export const FORMAT = '3jsn-static-ui-experiment';
+export const VERSION = 1;
 
 function fail(code, message, source = null) {
   throw Object.assign(new Error(message), { code, source });
@@ -117,7 +119,7 @@ export function compileHtml(html, { sourceName = 'document.html', limits = {} } 
     for (let i = children.length - 1; i >= 0; i--) pending.push({ node: children[i], parent: index, depth: depth + 1 });
   }
   const result = {
-    format: '3jsn-static-ui-experiment', version: 1,
+    format: FORMAT, version: VERSION,
     source: { name: sourceName, sha256: createHash('sha256').update(html, 'utf8').digest('hex'), byteLength },
     document: { mode: document.mode, scriptingEnabled: false }, nodes, diagnostics,
     diagnosticsTotal, diagnosticsTruncated: diagnosticsTotal > diagnostics.length,

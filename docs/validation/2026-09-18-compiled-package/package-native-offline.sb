@@ -1,0 +1,13 @@
+(version 1)
+(allow default)
+(deny network*)
+(deny file-read*
+ (subpath "/Users/sean/dev/3JSN/.cache")
+ (subpath "/Users/sean/dev/3JSN/node_modules")
+ (subpath "/Users/sean/dev/3JSN/crates")
+ (subpath "/Users/sean/dev/3JSN/experiments")
+ (subpath "/Users/sean/dev/3JSN/examples")
+ (subpath "/Users/sean/dev/3JSN/fixtures")
+ (subpath "/Users/sean/dev/3JSN/artifacts/compiled-package-native-01/input")
+ (subpath "/Users/sean/dev/3JSN/.cache/compiled-package/font-state")
+)
