@@ -57,6 +57,18 @@ The [webfont extension](../../docs/web-fonts.md) also prepares pinned
 Fontique/Parley copies for CSS matching and Unicode coverage. These are
 experimental dependency candidates with separate regression evidence.
 
+The prepared Blitz CSSOM helper removes a property only for an exactly empty
+value. Whitespace values go through its maintained CSS parser: invalid ordinary
+declarations leave the prior value unchanged, while valid custom-property
+declarations remain present. The same patch and upstream unit controls are applied to both
+positioned research profiles. Run those controls through a prepared host manifest
+with `cargo test --locked --manifest-path experiments/dom-canvas/Cargo.toml -p blitz-dom --lib cssom_empty_value_tests`.
+Property replacement uses Stylo's CSSOM update API to retain declaration order
+and replace importance, including shorthand expansion, rather than its parsing
+append API.
+The standalone `html-v8` probe uses the unpatched Git dependency and does not
+exercise this prepared helper.
+
 Painting uses `paint_scene(..., PaintLimits) -> Result<PaintStats, PaintError>`.
 The default permits 1,024 total clip/effect layers and 1,024 open layers. All
 producers and subdocuments share that budget. A rejected layer suppresses later

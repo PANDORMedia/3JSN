@@ -40,12 +40,29 @@ The runtime retains live UI state and required dynamic parsing. An
 [initial-tree prototype](validation/2026-09-18-compiled-ui.md) now builds the same
 authoritative native DOM without reparsing the original document, with five
 native comparison fixtures and a bounded Metal-window run. Browser parity,
-framework workloads, CSS compilation and build-CLI integration remain open.
+broader framework workloads and CSS compilation remain open. The
+[compiled-package checkpoint](validation/2026-09-18-compiled-package.md) integrates
+the bounded `compiled-dom-window-v1` CLI profile: both parser modes present
+120 Metal frames after relocation with offline fonts and no HTML payload.
+General frontend build discovery and unchanged-project admission remain open.
 A separate [restricted release artifact](validation/2026-09-18-parser-omission.md)
 now proves HTML-parser omission through dependency/compiler/link evidence and
 records size/startup/peak-memory measurements. Its CPU fixture matches sampled
-Chrome behavior; new native-window validation is pending. This does not enable
-automatic parser removal from existing projects.
+Chrome behavior. The [unlocked follow-up](validation/2026-09-18-parser-omission.md#unlocked-native-follow-up)
+now presents 120 Metal frames on both exact release variants and the preserved
+interpreted shared-host player. Those release identities and linkage measurements
+remain distinct from later package binaries. This does not enable automatic
+parser removal from existing projects.
+
+A [React DOM fixture](../fixtures/react-dom/README.md) exercises the independent
+framework-generated-tree gate using upstream React DOM over generic bindings.
+The [checkpoint](validation/2026-09-18-react-dom.md) matches tested React behavior
+with Chrome and presents 120 relocated Metal frames in both parser modes. One
+generic DOM ID/name-collision difference remains explicit; this is not complete
+DOM parity or React certification. SSR/hydration, portals, focus/selection,
+physical input, pixel parity and bounded lifetime behavior remain open. The
+[custom-renderer comparison](react-ui.md) is brainstorming only; it does not
+replace the unchanged-source contract or introduce a second UI tree.
 
 ## Milestones
 

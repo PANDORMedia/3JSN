@@ -1,5 +1,9 @@
 import { core } from 'ext:core/mod.js';
 
+for (const name of ['HierarchyRequestError', 'NotFoundError']) {
+  core.registerErrorBuilder(`DOMException${name}`, message => Object.assign(new Error(message), { name }));
+}
+
 const { op_dom_read: read, op_dom_mutate: mutate, op_observe: observe } = core.ops;
 const ids = new WeakMap();
 const wrappers = new Map();

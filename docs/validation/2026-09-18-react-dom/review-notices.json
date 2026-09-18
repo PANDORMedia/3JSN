@@ -1,0 +1,72 @@
+{
+  "files": [
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "c87ccb32ee4692fc98d63511462ea7e1276da1d5c7259b51a13aaf60c3e9953a"
+    },
+    {
+      "path": "LICENSES/Blitz-Apache-2.0.txt",
+      "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+    },
+    {
+      "path": "LICENSES/Blitz-MIT.txt",
+      "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+    },
+    {
+      "path": "LICENSES/Deno-MIT.txt",
+      "sha256": "f62497fffecc0852960c8d3e6934b9db86d16396e9b604072e923892cae3a588"
+    },
+    {
+      "path": "LICENSES/Fontique-MIT.txt",
+      "sha256": "2a6a0b5c3b55df37595092d3b3036cfe91e9b432f5c04da5f50db02e857780c8"
+    },
+    {
+      "path": "LICENSES/Parley-Apache-2.0.txt",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    {
+      "path": "LICENSES/Parley-MIT.txt",
+      "sha256": "285111f788d3856f28c164b3760aa151cad55310fa16e19103f36f3052b033f0"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "7e0412505b8c413a7b05cbacab8deeeb9e12345e1670a3ec65cf44838c921ead"
+    },
+    {
+      "path": "crates/js-sources/build.rs",
+      "sha256": "4d429d7a8d137b990ee678394b5a56007a62b13635c869f46bb8b71899f1725a"
+    },
+    {
+      "path": "crates/js-sources/src/lib.rs",
+      "sha256": "e3de54a17889e7655047da2ba03a7f4ce3d6448ad56e1e25dbe2b66affc0d520"
+    },
+    {
+      "path": "docs/compatibility.md",
+      "sha256": "7996526cbc466dc72f62d6ff3797cb2286313144bd815916f5901a1e8484d35a"
+    },
+    {
+      "path": "docs/react-ui.md",
+      "sha256": "de644eb38fb75905910c362367269bcf8f078e88af8208cc97086444bdb71ea2"
+    },
+    {
+      "path": "docs/validation/2026-09-18-react-dom.md",
+      "sha256": "e9d830f537e060ba73d024acaf3cd51b867d99784c5d1014f05abfb7fb12aae7"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/README.md",
+      "sha256": "e53565511362e80fafdea0a48e2bc3f6bafc44a331dbbabdf4169793639f3a78"
+    },
+    {
+      "path": "fixtures/react-dom/README.md",
+      "sha256": "bc5a7355baf33253116d545756bccbca788e58c21dcd6c5b672675a2ec9b3727"
+    }
+  ],
+  "validation": [
+    "node scripts/check.mjs: PASS 690 source/config/document files",
+    "rustfmt --check --edition 2024 crates/js-sources/build.rs crates/js-sources/src/lib.rs: PASS",
+    "git diff --check: PASS",
+    "all six license files byte-identical to cached pinned upstream source"
+  ],
+  "runtimeChanged": false,
+  "historicalReceiptsChanged": false
+}

@@ -1,4 +1,6 @@
 //! Compile-time sources for the shared Deno web extensions.
+//! Embedded upstream source is MIT-licensed by the Deno authors; see
+//! THIRD_PARTY_NOTICES.md and LICENSES/Deno-MIT.txt at the repository root.
 
 use deno_core::{Extension, ExtensionFileSource, ExtensionFileSourceCode};
 

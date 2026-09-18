@@ -24,10 +24,35 @@ required work, not optional migrations for the application.
 | Web Audio / Three.js Audio | Not implemented | Evaluate native mixer/binding |
 | WebRTC, microphone capture, MediaRecorder | Not implemented | Required CtF voice track; permissions, device and connection lifecycle |
 | fetch, local files, saves | Host implementation not present | Explicit asset/save services and selected web APIs |
-| npm packages | Node research tooling only | Bundle runtime-compatible JS; audit native/Node dependencies |
+| npm packages | Bounded CLI bundles upstream Three.js and a React DOM fixture; arbitrary package compatibility unverified | Audit browser/Node dependencies and observable APIs |
 | Workers, SharedArrayBuffer, WebAssembly | Not validated in proposed embedded host | Implement/test as concrete features need them |
+| React DOM | [Bounded upstream React 19.3.0 fixture](validation/2026-09-18-react-dom.md); tested React observations match Chrome and both parser modes present 120 Metal frames; one generic DOM lookup difference remains | Shared generic DOM; broader framework behavior remains open |
 | React Three Fiber | Not evaluated | Separate compatibility milestone if demanded |
 | WebXR / video / camera | Out of initial scope | Platform-specific later research |
+
+## React DOM checkpoint scope
+
+Upstream React DOM operates on the existing authoritative native document. The
+[checkpoint](validation/2026-09-18-react-dom.md) verifies asynchronous renders and
+effects, delegated synthetic clicks, keyed mutation and identity, style/text
+updates, cleanup and remount. Both relocated parser-mode packages complete React
+verification and present 120 Metal frames under a policy configured to deny
+network and development-file reads. File-denial controls pass; network denial
+was not independently tested.
+The tested React observations match Chrome in CPU and window runs.
+
+The independent generic DOM checks retain one ID/name-collision discrepancy:
+native collection lookup returns the first matching element while the tested
+Chrome returns the second. `knownDifferences` records this same case four times,
+across both parser modes and CPU/window execution. The harness compares other
+observations strictly and explicitly reports incomplete overall semantic parity.
+
+This does not certify React, SSR/hydration, Suspense, portals, forms/selection,
+accessibility, other web libraries or native OS input. Effect cleanup does not
+prove garbage collection: native nodes and wrappers remain retained until realm
+teardown. Pixel equivalence, bounded memory across repeated mounts and performance
+remain separate gates. A [custom reconciler host](react-ui.md) is a research
+option only; the current path uses upstream React DOM and shared generic APIs.
 
 ## Platform targets
 

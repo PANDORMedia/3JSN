@@ -13,6 +13,7 @@ const changedFiles = {
   'packages/blitz-dom/src/net.rs': '00927f23a13cdd78bd12c69931644022fd0561cd14df19664673c715dfc530d1',
   'packages/blitz-dom/src/lib.rs': '6c778ad7c4c90b052b3c8e3918c9cea233f5a497df7db1f96e633779f9abc339',
   'packages/blitz-dom/src/cssom.rs': 'fde5873fc5b63152876a5567af4a850effd415250fc8ad81590d2c9542897a21',
+  'packages/blitz-dom/src/resolved_style.rs': '063c7bef6551978c3173582d1b84300a9361056daaa609cb2ebe62db87ea7f38',
   'packages/blitz-dom/src/config.rs': '3158f1825ae6d5e1fedfa9bfb3ff9b29afe057291ed5179454459193d86c025c',
   'packages/blitz-dom/src/layout/damage.rs': '64bb8e1a479160c80c0999311830595c9ef921785d906eb7e70e7e17b55f59ab',
   'packages/blitz-dom/src/document.rs': '5710e4ca5dd594fd3d8e1b74212a14d76f1a18b5e46bcde172b9c1d8b872d1a2',
@@ -22,7 +23,7 @@ const changedFiles = {
   'packages/blitz-paint/src/lib.rs': '7650e6b40569585ef308da42ac51192a072815fe7130a51909410b53ce5c0859',
   'packages/blitz-paint/src/render.rs': '454a9d61ba9213d888e6699714fe07bc387e48d049979cc650f61e6af6dfa0fa',
 };
-const patchNames = ['blitz-stacking-demotion.patch', 'blitz-boxless-geometry.patch', 'blitz-layer-budget.patch', 'blitz-web-fonts.patch', 'blitz-inline-font-width.patch', 'blitz-stylesheet-order.patch'];
+const patchNames = ['blitz-stacking-demotion.patch', 'blitz-boxless-geometry.patch', 'blitz-layer-budget.patch', 'blitz-web-fonts.patch', 'blitz-inline-font-width.patch', 'blitz-stylesheet-order.patch', 'blitz-cssom-empty-value.patch'];
 const addedFiles = ['packages/blitz-paint/src/checked_scene.rs', 'packages/blitz-dom/src/web_fonts.rs'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 

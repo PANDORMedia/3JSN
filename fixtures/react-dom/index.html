@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>3JSN · React task board</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #101925; color: #edf3f8; }
+    body { margin: 24px; font: 16px sans-serif; display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+    .dashboard { background: #1b2939; border-left-style: solid; border-left-color: var(--accent); padding: 20px 20px 20px 16px; }
+    .eyebrow { color: #a3b7cc; font-size: 12px; letter-spacing: 2px; margin: 0 0 8px; }
+    h1 { font-size: 32px; line-height: 38px; margin: 0 0 10px; }
+    #mixed { margin: 0 0 6px; line-height: 28px; }
+    #count-value { color: var(--accent); font-size: 24px; }
+    #phase { color: #a3b7cc; font-size: 13px; margin: 0 0 18px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+    button { background: #30475f; color: #edf3f8; border: 0; padding: 9px 12px; font: inherit; font-size: 13px; }
+    #advance { background: #386b60; }
+    .active #advance { background: #685480; }
+    ul { margin: 18px 0 0; padding: 0; list-style: none; }
+    li { display: flex; align-items: center; gap: 12px; background: #23364a; padding: 10px 12px; margin-top: 8px; }
+    .task-key { color: var(--accent); font-size: 12px; width: 22px; }
+    .footnote { color: #a3b7cc; font-size: 12px; line-height: 18px; margin: 16px 0 0; }
+    #scene { display: block; width: 300px; height: 340px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <canvas id="scene" width="300" height="340"></canvas>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
