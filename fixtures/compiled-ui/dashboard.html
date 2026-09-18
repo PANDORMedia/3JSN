@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Compiled UI laboratory</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101923;color:#e8eef4;font:16px "3JSN Fixture",sans-serif}
+main{padding:24px;width:100%}h1{font-size:28px;margin:0 0 14px}.row{display:flex;gap:16px}
+.card{padding:16px;background:#213448;width:280px;border-radius:12px}.card.changed{background:#28564c}
+button{font:16px "3JSN Fixture",sans-serif;padding:8px 14px;color:#102a23;background:#82e1bb;border:0;border-radius:6px}
+canvas{display:block;width:100%;height:210px;margin-top:18px}#mutate-target{margin-top:16px}
+#later{color:#ad8ee8}.hidden{display:none}
+</style><style>#later{color:#82e1bb}</style></head>
+<body><!-- Preserved author comment. -->
+<main id="application"><h1 data-probe="heading">Build once. Keep it live.</h1>
+<div class="row"><section id="card" class="card" data-probe="card"><p id="status" data-probe="status">Ready &amp; waiting</p>
+<button id="action" data-probe="action" type="button">Advance</button></section>
+<section class="card"><span id="later" data-probe="cascade">Two ordered stylesheets</span>
+<p class="hidden" data-probe="hidden">Hidden but queryable</p></section></div>
+<div id="mutate-target" data-probe="target"><em>Initial fragment</em></div>
+<canvas id="scene" width="640" height="210"></canvas></main>
+</body></html>

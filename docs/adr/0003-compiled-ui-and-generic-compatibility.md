@@ -1,7 +1,7 @@
 # ADR 0003: Compile UI inputs while preserving generic application behavior
 
 - Date: 2026-09-18
-- Status: direction accepted; compiler and parser omission are not implemented
+- Status: direction accepted; initial-tree construction prototype verified; parser omission remains unimplemented
 - Extends: [ADR 0002](0002-unchanged-project-compatibility.md)
 
 ## Decision
@@ -100,7 +100,15 @@ ordering. HTML setters are parsing operations under the
    CtF adds an end-to-end application test without introducing game-specific
    branches into the engine.
 
-No footprint or performance improvement is claimed before measurement. Current
-Blitz/V8 integration parses HTML into a live document and parses mutation strings
-at runtime. Build-time JS bundling or HTML script-path rewriting alone does not
-implement this compiler direction.
+The [initial-tree checkpoint](../validation/2026-09-18-compiled-ui.md) now compiles
+static HTML through parse5 into bounded, versioned experimental JSON and constructs
+the authoritative Blitz document through public mutation APIs. Five generic
+fixtures match the interpreted-native construction path; browser comparison
+remains partial. One compiled fixture presents 120 Metal frames with reads of its
+original HTML denied, while retaining dynamic `innerHTML` behavior.
+
+This proves the construction portion of step 2, not the complete comparison or
+step 3. The prototype retains CSS and HTML parsers, drops native DocumentType
+nodes explicitly and rejects unsupported document modes. Script discovery,
+resource packaging, framework coverage and a shipping data format remain open.
+No footprint or performance improvement is claimed before measurement.

@@ -1,0 +1,287 @@
+--- a/packages/blitz-dom/src/document.rs
++++ b/packages/blitz-dom/src/document.rs
+@@ -33,7 +33,7 @@
+ use smallvec::SmallVec;
+ use std::any::Any;
+ use std::cell::RefCell;
+-use std::collections::{BTreeMap, Bound, HashMap, HashSet};
++use std::collections::{BTreeMap, HashMap, HashSet};
+ use std::ops::{Deref, DerefMut};
+ use std::rc::Rc;
+ use std::str::FromStr;
+@@ -302,8 +302,11 @@
+     pub(crate) nodes_to_id: HashMap<String, SmallVec<[NodeId; 1]>>,
+     /// Map of `<style>` and `<link>` node IDs to their associated stylesheet
+     pub(crate) nodes_to_stylesheet: BTreeMap<NodeId, DocumentStyleSheet>,
++    /// Connected author-sheet owners in the order currently installed in Stylo.
++    pub(crate) stylesheet_order: Vec<NodeId>,
+     /// Incremented whenever `nodes_to_stylesheet` changes (a stylesheet is
+-    /// added, replaced or removed), so that CSSOM wrappers can detect that
++    /// added, replaced or removed) or the owners change DOM order, so that
++    /// CSSOM wrappers can detect that
+     /// their cached rule data is stale.
+     pub(crate) stylesheet_generation: u64,
+     /// Stylesheets added by the useragent
+@@ -458,6 +461,7 @@
+             url: base_url,
+             ua_stylesheets: HashMap::new(),
+             nodes_to_stylesheet: BTreeMap::new(),
++            stylesheet_order: Vec::new(),
+             stylesheet_generation: 0,
+             font_ctx,
+             web_fonts: crate::web_fonts::WebFontState::new(config.defer_font_loads),
+@@ -1122,6 +1126,9 @@
+     }
+ 
+     pub fn process_style_element(&mut self, target_id: NodeId) {
++        if !self.is_connected_stylesheet_owner(target_id) {
++            return;
++        }
+         let css = self.nodes[target_id].text_content();
+         let css = html_escape::decode_html_entities(&css);
+         let sheet = self.make_stylesheet(&css, Origin::Author);
+@@ -1142,7 +1149,9 @@
+     /// Iterate over the author stylesheets (from `<style>` and `<link>` nodes)
+     /// currently associated with this document
+     pub fn author_stylesheets(&self) -> impl Iterator<Item = &DocumentStyleSheet> {
+-        self.nodes_to_stylesheet.values()
++        self.stylesheet_order
++            .iter()
++            .map(|id| &self.nodes_to_stylesheet[id])
+     }
+ 
+     /// Iterate over the user-agent stylesheets currently associated with this document
+@@ -1180,12 +1189,19 @@
+     }
+ 
+     pub fn upsert_stylesheet_for_node(&mut self, node_id: NodeId) {
++        if !self.is_connected_stylesheet_owner(node_id) {
++            return;
++        }
+         let raw_styles = self.nodes[node_id].text_content();
+         let sheet = self.make_stylesheet(raw_styles, Origin::Author);
+         self.add_stylesheet_for_node(sheet, node_id);
+     }
+ 
+     pub fn add_stylesheet_for_node(&mut self, stylesheet: DocumentStyleSheet, node_id: NodeId) {
++        // Network responses and deferred style work may outlive their owner.
++        if !self.is_connected_stylesheet_owner(node_id) {
++            return;
++        }
+         let old = self.nodes_to_stylesheet.insert(node_id, stylesheet.clone());
+         self.stylesheet_generation += 1;
+ 
+@@ -1211,23 +1227,57 @@
+         let element = &mut self.nodes[node_id].element_data_mut().unwrap();
+         element.special_data = SpecialElementData::Stylesheet(stylesheet.clone());
+ 
+-        // TODO: Nodes could potentially get reused so ordering by node_id might be wrong.
+-        let insertion_point = self
+-            .nodes_to_stylesheet
+-            .range((Bound::Excluded(node_id), Bound::Unbounded))
+-            .next()
+-            .map(|(_, sheet)| sheet);
+-
+-        if let Some(insertion_point) = insertion_point {
+-            self.stylist.insert_stylesheet_before(
+-                stylesheet,
+-                insertion_point.clone(),
+-                &self.guard.read(),
+-            )
+-        } else {
++        self.stylist
++            .append_stylesheet(stylesheet, &self.guard.read());
++        self.stylesheet_order.retain(|id| *id != node_id);
++        self.stylesheet_order.push(node_id);
++        self.refresh_stylesheet_order();
++    }
++
++    fn is_connected_stylesheet_owner(&self, node_id: NodeId) -> bool {
++        self.nodes
++            .get(node_id)
++            .is_some_and(|node| node.flags.is_in_document() && node.element_data().is_some())
++    }
++
++    /// Reconcile after tree mutations, without scanning unrelated DOM subtrees.
++    pub(crate) fn refresh_stylesheet_order(&mut self) {
++        let mut owners = Vec::with_capacity(self.nodes_to_stylesheet.len());
++        for &id in self.nodes_to_stylesheet.keys() {
++            let mut current = id;
++            let mut path = Vec::new();
++            while current != self.root_node_id {
++                let parent = self.nodes[current]
++                    .parent
++                    .expect("connected stylesheet owner must have a document ancestor");
++                path.push(
++                    self.nodes[parent]
++                        .index_of_child(current)
++                        .expect("stylesheet owner must belong to its parent"),
++                );
++                current = parent;
++            }
++            path.reverse();
++            owners.push((path, id));
++        }
++        owners.sort_unstable_by(|a, b| a.0.cmp(&b.0));
++        let order: Vec<_> = owners.into_iter().map(|(_, id)| id).collect();
++        if order == self.stylesheet_order {
++            return;
++        }
++
++        // Keep the existing objects: reparsing would lose CSSOM edits and imports.
++        let guard = self.guard.read();
++        for id in &self.stylesheet_order {
+             self.stylist
+-                .append_stylesheet(stylesheet, &self.guard.read())
+-        }
++                .remove_stylesheet(self.nodes_to_stylesheet[id].clone(), &guard);
++        }
++        for id in &order {
++            self.stylist
++                .append_stylesheet(self.nodes_to_stylesheet[id].clone(), &guard);
++        }
++        self.stylesheet_order = order;
++        self.stylesheet_generation += 1;
+     }
+ 
+     pub fn handle_messages(&mut self) {
+--- a/packages/blitz-dom/src/mutator.rs
++++ b/packages/blitz-dom/src/mutator.rs
+@@ -53,6 +53,7 @@
+     // Tracked nodes for deferred processing when mutations have completed
+     title_node: Option<NodeId>,
+     style_nodes: HashSet<NodeId>,
++    stylesheet_order_dirty: bool,
+     form_nodes: HashSet<NodeId>,
+ 
+     /// Whether an element/attribute that affect animation status has been seen
+@@ -82,6 +83,7 @@
+             eager_op_queue: Vec::new(),
+             title_node: None,
+             style_nodes: HashSet::new(),
++            stylesheet_order_dirty: false,
+             form_nodes: HashSet::new(),
+             recompute_is_animating: false,
+             mutations_occurred: false,
+@@ -537,6 +539,7 @@
+ 
+     /// Remove the node from it's parent but don't drop it
+     pub fn remove_node(&mut self, node_id: NodeId) {
++        self.stylesheet_order_dirty = true;
+         self.doc.web_fonts.dirty = true;
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         // Process the subtree *before* severing the parent link so that
+@@ -569,6 +572,7 @@
+         node_id: NodeId,
+         on_drop: &mut dyn FnMut(NodeId),
+     ) -> Option<Node> {
++        self.stylesheet_order_dirty = true;
+         self.doc.web_fonts.dirty = true;
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         self.process_removed_subtree(node_id);
+@@ -602,6 +606,7 @@
+     }
+ 
+     pub fn remove_and_drop_all_children(&mut self, node_id: NodeId) {
++        self.stylesheet_order_dirty = true;
+         self.doc.web_fonts.dirty = true;
+         let parent = &mut self.doc.nodes[node_id];
+         let parent_is_in_doc = parent.flags.is_in_document();
+@@ -669,6 +674,7 @@
+         child_ids: &[NodeId],
+         insert_children_fn: &dyn Fn(&mut Node, &[NodeId]),
+     ) {
++        self.stylesheet_order_dirty |= !child_ids.is_empty();
+         self.doc.web_fonts.dirty = true;
+         let new_parent_is_in_document = self.doc.nodes[parent_id].flags.is_in_document();
+         self.mutations_occurred |= new_parent_is_in_document && !child_ids.is_empty();
+@@ -891,6 +897,10 @@
+         // Add/Update inline stylesheets (<style> elements)
+         for id in self.style_nodes.drain() {
+             self.doc.process_style_element(id);
++        }
++
++        if mem::take(&mut self.stylesheet_order_dirty) {
++            self.doc.refresh_stylesheet_order();
+         }
+ 
+         for id in self.form_nodes.drain() {
+@@ -1141,6 +1151,7 @@
+             .force_stylesheet_origins_dirty(OriginSet::all());
+ 
+         self.doc.nodes_to_stylesheet.remove(&node_id);
++        self.doc.stylesheet_order.retain(|id| *id != node_id);
+         self.doc.stylesheet_generation += 1;
+     }
+ 
+--- a/packages/blitz-dom/src/cssom.rs
++++ b/packages/blitz-dom/src/cssom.rs
+@@ -285,11 +285,9 @@
+     /// The owner nodes (`<style>` / `<link>` elements) of the document's author
+     /// stylesheets (`document.styleSheets`).
+     ///
+-    /// Ordered by node id, which matches document order for stylesheets
+-    /// created while parsing (and is the order the stylist uses too, see
+-    /// `add_stylesheet_for_node`).
++    /// Connected owners in DOM order, matching the author cascade.
+     pub fn stylesheet_owner_nodes(&self) -> impl Iterator<Item = NodeId> + '_ {
+-        self.nodes_to_stylesheet.keys().copied()
++        self.stylesheet_order.iter().copied()
+     }
+ 
+     /// Whether `node_id` currently owns a stylesheet
+@@ -298,7 +296,7 @@
+     }
+ 
+     /// A counter which changes whenever the set of stylesheets (or the
+-    /// stylesheet object owned by some node) changes. CSSOM wrappers use it to
++    /// stylesheet object owned by some node) or their DOM order changes. CSSOM wrappers use it to
+     /// detect that rule data cached on the script side is stale.
+     pub fn stylesheet_generation(&self) -> u64 {
+         self.stylesheet_generation
+--- a/packages/blitz-dom/src/web_fonts.rs
++++ b/packages/blitz-dom/src/web_fonts.rs
+@@ -221,25 +221,8 @@
+     fn font_stylesheet_owners(&self) -> Vec<(NodeId, bool)> {
+         #[cfg(test)]
+         self.web_fonts.owner_checks.fetch_add(1, Ordering::Relaxed);
+-        let mut owners = Vec::new();
+-        for &id in self.nodes_to_stylesheet.keys() {
+-            let mut current = id;
+-            let mut path = Vec::new();
+-            while current != self.root_node_id {
+-                let Some(parent) = self.nodes[current].parent else {
+-                    break;
+-                };
+-                path.push(
+-                    self.nodes[parent]
+-                        .index_of_child(current)
+-                        .expect("font owner must belong to its parent"),
+-                );
+-                current = parent;
+-            }
+-            if current != self.root_node_id {
+-                continue;
+-            }
+-            path.reverse();
++        let mut owners = Vec::with_capacity(self.stylesheet_order.len());
++        for &id in &self.stylesheet_order {
+             let restricted = self.nodes[id].element_data().is_some_and(|el| {
+                 el.attr(crate::local_name!("media"))
+                     .is_some_and(|value| !value.is_empty())
+@@ -253,13 +236,9 @@
+                         !value.is_empty() && !value.eq_ignore_ascii_case("text/css")
+                     })
+             });
+-            owners.push((path, id, restricted));
+-        }
+-        owners.sort_unstable_by(|a, b| a.0.cmp(&b.0));
++            owners.push((id, restricted));
++        }
+         owners
+-            .into_iter()
+-            .map(|(_, id, restricted)| (id, restricted))
+-            .collect()
+     }
+ 
+     fn collect_web_fonts(

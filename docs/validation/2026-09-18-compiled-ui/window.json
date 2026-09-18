@@ -1,0 +1,308 @@
+{
+  "status": "passed",
+  "target": "macos-arm64",
+  "backend": "Metal",
+  "loading": {
+    "irNodes": 41,
+    "nativeNodes": 40,
+    "omittedDoctypeNodes": [
+      1
+    ],
+    "initialDocumentHtmlParserUsed": false,
+    "dynamicHtmlParserProvider": "blitz-html"
+  },
+  "initialDocumentHtmlReadsDenied": true,
+  "nativeNetworkingDenied": true,
+  "sourcePreserved": true,
+  "interpretedCompletion": {
+    "nativeDomWindow": true,
+    "backend": "Metal",
+    "presentedFrames": 120,
+    "canvasSnapshots": 120,
+    "cpuImageTransport": false,
+    "nativeDeviceIdentityChecked": true,
+    "nativeQueueIdentityChecked": true
+  },
+  "compiledCompletion": {
+    "nativeDomWindow": true,
+    "backend": "Metal",
+    "presentedFrames": 120,
+    "canvasSnapshots": 120,
+    "cpuImageTransport": false,
+    "nativeDeviceIdentityChecked": true,
+    "nativeQueueIdentityChecked": true
+  },
+  "observations": {
+    "initial": {
+      "clicks": 0,
+      "samples": [
+        {
+          "key": "heading",
+          "text": "Build once. Keep it live.",
+          "rect": [
+            24,
+            24,
+            912,
+            32.5
+          ]
+        },
+        {
+          "key": "card",
+          "text": "Ready & waiting\nAdvance",
+          "rect": [
+            24,
+            70.5,
+            280,
+            118
+          ]
+        },
+        {
+          "key": "status",
+          "text": "Ready & waiting",
+          "rect": [
+            40,
+            102.5,
+            248,
+            19
+          ]
+        },
+        {
+          "key": "action",
+          "text": "Advance",
+          "rect": [
+            40,
+            137.5,
+            96.875,
+            35
+          ]
+        },
+        {
+          "key": "cascade",
+          "text": "Two ordered stylesheets",
+          "rect": [
+            336,
+            86.5,
+            193.625,
+            19
+          ]
+        },
+        {
+          "key": "hidden",
+          "text": "Hidden but queryable",
+          "rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "key": "target",
+          "text": "Initial fragment",
+          "rect": [
+            24,
+            204.5,
+            912,
+            19
+          ]
+        }
+      ],
+      "templates": 0,
+      "inertContentQueryable": false,
+      "foreignContent": 0
+    },
+    "mutated": {
+      "sameTarget": true,
+      "created": {
+        "clicks": 1,
+        "samples": [
+          {
+            "key": "heading",
+            "text": "Build once. Keep it live.",
+            "rect": [
+              24,
+              24,
+              912,
+              32.5
+            ]
+          },
+          {
+            "key": "card",
+            "text": "Advanced 1 · café\nAdvance",
+            "rect": [
+              24,
+              70.5,
+              280,
+              118
+            ]
+          },
+          {
+            "key": "status",
+            "text": "Advanced 1 · café",
+            "rect": [
+              40,
+              102.5,
+              248,
+              19
+            ]
+          },
+          {
+            "key": "action",
+            "text": "Advance",
+            "rect": [
+              40,
+              137.5,
+              96.875,
+              35
+            ]
+          },
+          {
+            "key": "cascade",
+            "text": "Two ordered stylesheets",
+            "rect": [
+              336,
+              86.5,
+              193.625,
+              19
+            ]
+          },
+          {
+            "key": "hidden",
+            "text": "Hidden but queryable",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "key": "target",
+            "text": "Initial fragmentCreated with DOM operations",
+            "rect": [
+              24,
+              204.5,
+              912,
+              19
+            ]
+          },
+          {
+            "key": "created",
+            "text": "Created with DOM operations",
+            "rect": [
+              154.375,
+              204.5,
+              236.40625,
+              19
+            ]
+          }
+        ],
+        "templates": 0,
+        "inertContentQueryable": false,
+        "foreignContent": 0
+      },
+      "parsed": {
+        "clicks": 1,
+        "samples": [
+          {
+            "key": "heading",
+            "text": "Build once. Keep it live.",
+            "rect": [
+              24,
+              24,
+              912,
+              32.5
+            ]
+          },
+          {
+            "key": "card",
+            "text": "Advanced 1 · café\nAdvance",
+            "rect": [
+              24,
+              70.5,
+              280,
+              118
+            ]
+          },
+          {
+            "key": "status",
+            "text": "Advanced 1 · café",
+            "rect": [
+              40,
+              102.5,
+              248,
+              19
+            ]
+          },
+          {
+            "key": "action",
+            "text": "Advance",
+            "rect": [
+              40,
+              137.5,
+              96.875,
+              35
+            ]
+          },
+          {
+            "key": "cascade",
+            "text": "Two ordered stylesheets",
+            "rect": [
+              336,
+              86.5,
+              193.625,
+              19
+            ]
+          },
+          {
+            "key": "hidden",
+            "text": "Hidden but queryable",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "key": "target",
+            "text": "Runtime markup remains supported.",
+            "rect": [
+              24,
+              204.5,
+              912,
+              19
+            ]
+          },
+          {
+            "key": "parsed",
+            "text": "Runtime markup remains supported.",
+            "rect": [
+              31,
+              204.5,
+              294.03125,
+              19
+            ]
+          }
+        ],
+        "templates": 0,
+        "inertContentQueryable": false,
+        "foreignContent": 0
+      }
+    }
+  },
+  "invalidVersionRejected": true,
+  "undeclaredResourceRejected": true,
+  "inputs": {
+    "htmlSha256": "362d9942f50909dae6a6a6e5b9b44311fe4ba72aeb14736c92a9f6e52fe00788",
+    "irSha256": "4a8afb83cffb2c78b0138bf59cdabe8a8af64aa57f43a3682df060644d950b41",
+    "playerSha256": "b12ad47b7a5fc7c098e93252a2bcd0ed9975496d007aa98c208c6745fa514696",
+    "moduleSha256": "f87d56cfba2c6b8cb975b56b0bc6279691f0bcb292a010bdc22d0b5f58a10e83",
+    "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+  },
+  "limits": [
+    "This is an experimental direct player invocation, not a new supported package profile.",
+    "CSS and dynamic HTML parsing remain linked; the fixture deliberately exercises innerHTML after startup.",
+    "Presentation and DOM observations do not certify GPU pixel equivalence or performance improvements."
+  ]
+}

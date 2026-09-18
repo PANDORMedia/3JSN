@@ -1,0 +1,8 @@
+<!doctype html><html><head><title>Namespace boundaries</title><style>
+body{margin:12px;font:16px "3JSN Fixture",sans-serif}svg{width:180px;height:70px}#mutate-target{width:240px}
+</style></head><body>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 70"><defs><linearGradient id="gradient"><stop offset="0" stop-color="green"/></linearGradient></defs>
+<foreignObject width="180" height="70"><div id="foreign" data-probe="foreign">HTML in SVG</div></foreignObject><use href="#gradient" xlink:href="#gradient" xmlns:xlink="http://www.w3.org/1999/xlink"/></svg>
+<math xmlns="http://www.w3.org/1998/Math/MathML"><mtext><span data-probe="math-text">HTML in MathML</span></mtext></math>
+<div id="mutate-target" data-probe="target">Namespace fixture</div>
+</body></html>

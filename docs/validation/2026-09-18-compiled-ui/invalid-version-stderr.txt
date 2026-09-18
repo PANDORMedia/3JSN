@@ -1,0 +1,2 @@
+2026-09-18 12:58:59.268 player[16270:5387260] Metal API Validation Enabled
+3JSN DOM player: unsupported compiled UI capability: format or version

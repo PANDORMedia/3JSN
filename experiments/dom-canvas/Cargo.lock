@@ -4059,6 +4059,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "threejs-compiled-ui-experiment"
+version = "0.0.0"
+dependencies = [
+ "blitz-dom",
+ "blitz-html",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "threejs-dom-canvas-probe"
 version = "0.0.0"
 dependencies = [
@@ -4080,6 +4090,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "threejs-compiled-ui-experiment",
  "threejs-native-js-sources",
  "threejs-native-package",
  "tokio",

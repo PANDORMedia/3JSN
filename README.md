@@ -132,7 +132,15 @@ canvas retention, animation-error propagation and observed native pause/resize
 controls. The [HTML-entry packaging checkpoint](docs/validation/2026-09-18-dom-package.md)
 now runs the relocated fixture with development-source reads and networking
 denied. It remains an interpreted HTML experiment; generic unchanged HTML/WebGL
-applications and build-time UI compilation are not yet supported.
+applications are not yet supported by the build CLI.
+
+The [compiled initial-tree prototype](experiments/compiled-ui/README.md) now
+constructs that same native DOM from build-time HTML data. Its
+[checkpoint](docs/validation/2026-09-18-compiled-ui.md) matches the interpreted
+path across five generic fixtures and presents 120 Metal frames while reads of
+the original HTML are denied. Dynamic markup still works through the retained
+parser. This is an experimental construction proof; CSS compilation, parser
+omission, complete browser parity and build-CLI integration remain open.
 
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout

@@ -15,6 +15,7 @@ use winit::event_loop::EventLoopProxy;
 use crate::{
     Result, dom_bridge, host,
     package_resources::{PACKAGE_BASE_URL, PackageResources},
+    window_options::DocumentInput,
     window_scene::WindowScene,
 };
 
@@ -198,7 +199,7 @@ fn dispatch_input(
 
 pub struct Worker {
     pub resources: Option<Vec<threejs_native_package::Resource>>,
-    pub html: String,
+    pub document: DocumentInput,
     pub module: PathBuf,
     pub font: Vec<u8>,
     pub instance: wgpu::Instance,
@@ -238,25 +239,34 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
         .map(|assets| PackageResources::new(PACKAGE_BASE_URL, assets))
         .transpose()
         .map_err(|error| error.to_string())?;
-    let mut runtime = host::create_with_prepared_extensions(
-        &worker.html,
-        DocumentConfig {
-            defer_font_loads: resources.is_some(),
-            base_url: resources
-                .as_ref()
-                .map(|provider| provider.base_url().into()),
-            net_provider: resources
-                .as_ref()
-                .map(|provider| provider.clone() as Arc<dyn blitz_traits::net::NetProvider>),
-            font_ctx: Some(font_ctx),
-            viewport: Some(Viewport::new(
-                initial.width,
-                initial.height,
-                initial.scale as f32,
-                ColorScheme::Dark,
-            )),
-            ..Default::default()
-        },
+    let config = DocumentConfig {
+        defer_font_loads: resources.is_some(),
+        base_url: resources
+            .as_ref()
+            .map(|provider| provider.base_url().into()),
+        net_provider: resources
+            .as_ref()
+            .map(|provider| provider.clone() as Arc<dyn blitz_traits::net::NetProvider>),
+        font_ctx: Some(font_ctx),
+        viewport: Some(Viewport::new(
+            initial.width,
+            initial.height,
+            initial.scale as f32,
+            ColorScheme::Dark,
+        )),
+        ..Default::default()
+    };
+    let dom = match worker.document {
+        DocumentInput::Html(html) => dom_bridge::extension(&html, config),
+        DocumentInput::Compiled(bytes) => {
+            let loaded = threejs_compiled_ui_experiment::load_json(&bytes, config)
+                .map_err(|error| error.to_string())?;
+            println!("{}", serde_json::json!({"compiledUi": loaded.report}));
+            dom_bridge::extension_with_document(loaded.document)
+        }
+    };
+    let mut runtime = host::create_with_dom_extension(
+        dom,
         vec![extension(initial)],
         threejs_native_js_sources::embed_extension_sources,
     );

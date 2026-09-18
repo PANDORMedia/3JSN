@@ -1,0 +1,23 @@
+node:internal/errors:985
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/sean/dev/3JSN/artifacts/compiled-ui-window/Native UI é #/player --describe
+
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at Socket.<anonymous> (node:internal/child_process:457:11)
+    at Socket.emit (node:events:508:28)
+    at Pipe.<anonymous> (node:net:346:12) {
+  code: null,
+  killed: true,
+  signal: 'SIGTERM',
+  cmd: '/Users/sean/dev/3JSN/artifacts/compiled-ui-window/Native UI é #/player --describe',
+  stdout: '',
+  stderr: ''
+}
+
+Node.js v24.13.0

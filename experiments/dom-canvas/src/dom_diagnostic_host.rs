@@ -1,8 +1,12 @@
 include!("../../html-v8/src/main.rs");
 
 pub fn create(html: &str, config: DocumentConfig) -> JsRuntime {
+    create_with_document(HtmlDocument::from_html(html, config).into_inner())
+}
+
+pub fn create_with_document(document: BaseDocument) -> JsRuntime {
     let mut extension = html_v8_probe::init(DomState {
-        document: HtmlDocument::from_html(html, config).into_inner(),
+        document,
         started: Instant::now(),
         messages: vec![],
     });

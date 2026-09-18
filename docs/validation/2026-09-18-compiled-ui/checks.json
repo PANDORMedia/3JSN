@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-18",
+  "platform": "macOS 26.1 (25B78), arm64",
+  "backend": "Metal",
+  "node": {
+    "passed": 135,
+    "skipped": 1,
+    "failed": 0
+  },
+  "rustWorkspace": {
+    "passed": 25,
+    "ignored": 2,
+    "failed": 0
+  },
+  "compiledUi": {
+    "loader": 9,
+    "stylesheetRegression": 9,
+    "failed": 0
+  },
+  "domWindow": {
+    "passed": 16,
+    "failed": 0
+  },
+  "scopedClippy": "passed: compiled UI all targets and the two DOM player binaries; dependency warnings retained",
+  "format": "passed: workspace, compiled UI, DOM experiment",
+  "preparation": "verified exact pinned and patched source contents",
+  "browserComparison": "partial; all 5 interpreted/compiled pairs equivalent",
+  "gpuWindow": "both paths presented 120 frames; original HTML reads denied for compiled run",
+  "sourceChecks": "passed after documentation and evidence archival",
+  "review": {
+    "compiler": "Claude Fable 5.1 and local review; CLI bounded read, BOM/UTF-16 provenance and diagnostics issues corrected and covered by 16 compiler tests",
+    "harness": "local independent review; fixture font control and actual macos-arm64 player target checks corrected",
+    "stylesheet": "local code review and nine focused red/green regressions"
+  },
+  "broaderUpstreamSuite": "not rerun; prior documented hover/scroll failures remain outside this checkpoint"
+}

@@ -7,9 +7,14 @@ use threejs_native_package::{Profile, load_for};
 
 use crate::Result;
 
+pub enum DocumentInput {
+    Html(String),
+    Compiled(Vec<u8>),
+}
+
 pub struct Options {
     pub font: Vec<u8>,
-    pub html: String,
+    pub document: DocumentInput,
     pub module: PathBuf,
     pub frames: Option<u64>,
     pub resources: Option<Vec<threejs_native_package::Resource>>,
@@ -21,7 +26,7 @@ pub enum Command {
     Run(Options),
 }
 
-pub const USAGE: &str = "Usage: threejs-dom-window-probe <font> <html> <bundled-app> [frame-count]\n       threejs-dom-window-probe --describe\n       threejs-dom-window-probe --verify-app <app.json>\n       threejs-dom-window-probe --app <app.json> [--frames COUNT]\n       packaged-executable [--frames COUNT]";
+pub const USAGE: &str = "Usage: threejs-dom-window-probe <font> <html> <bundled-app> [frame-count]\n       threejs-dom-window-probe --compiled-ui <ui.json> <font> <bundled-app> [--frames COUNT]\n       threejs-dom-window-probe --describe\n       threejs-dom-window-probe --verify-app <app.json>\n       threejs-dom-window-probe --app <app.json> [--frames COUNT]\n       packaged-executable [--frames COUNT]";
 
 pub fn description() -> serde_json::Value {
     serde_json::json!({
@@ -58,7 +63,7 @@ fn package(manifest: &Path, frames: Option<u64>) -> Result<Command> {
     let font = app.font.ok_or("DOM package has no font")?;
     Ok(Command::Run(Options {
         font: std::fs::read(font)?,
-        html: std::fs::read_to_string(html)?,
+        document: DocumentInput::Html(std::fs::read_to_string(html)?),
         module: app.entry,
         frames,
         resources: app.resources,
@@ -72,6 +77,25 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
         [flag, manifest, rest @ ..] if flag == "--app" => {
             package(Path::new(manifest), frame_option(rest)?)
         }
+        [flag, ui, font, module, rest @ ..] if flag == "--compiled-ui" => {
+            use std::io::Read;
+            use threejs_compiled_ui_experiment::contract::MAX_IR_BYTES;
+            let frames = frame_option(rest)?;
+            let mut bytes = Vec::new();
+            std::fs::File::open(ui)?
+                .take(MAX_IR_BYTES as u64 + 1)
+                .read_to_end(&mut bytes)?;
+            if bytes.len() > MAX_IR_BYTES {
+                return Err("compiled UI input exceeds 16 MiB".into());
+            }
+            Ok(Command::Run(Options {
+                font: std::fs::read(font)?,
+                document: DocumentInput::Compiled(bytes),
+                module: PathBuf::from(module).canonicalize()?,
+                frames,
+                resources: Some(Vec::new()),
+            }))
+        }
         [] => package(&executable.with_file_name("app.json"), None),
         [flag, ..] if flag == "--frames" => {
             package(&executable.with_file_name("app.json"), frame_option(args)?)
@@ -81,7 +105,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
         }
         [font, html, module, rest @ ..] if rest.len() <= 1 => Ok(Command::Run(Options {
             font: std::fs::read(font)?,
-            html: std::fs::read_to_string(html)?,
+            document: DocumentInput::Html(std::fs::read_to_string(html)?),
             module: PathBuf::from(module).canonicalize()?,
             frames: rest.first().map(frame_count).transpose()?,
             resources: None,

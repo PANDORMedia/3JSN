@@ -1,0 +1,3601 @@
+{
+  "status": "partial",
+  "compiledEquivalentToInterpreted": true,
+  "results": [
+    {
+      "fixture": "dashboard",
+      "sourceSha256": "362d9942f50909dae6a6a6e5b9b44311fe4ba72aeb14736c92a9f6e52fe00788",
+      "irSha256": "4a8afb83cffb2c78b0138bf59cdabe8a8af64aa57f43a3682df060644d950b41",
+      "recoveredDiagnostics": [],
+      "equivalent": true,
+      "native": {
+        "html": {
+          "loading": {
+            "initialDocumentHtmlParserUsed": true
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  752,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Ready & waiting\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  280,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Ready & waiting",
+                "rect": [
+                  40,
+                  103,
+                  248,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  336,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Initial fragment",
+                "rect": [
+                  24,
+                  205,
+                  752,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 1,
+              "samples": [
+                {
+                  "key": "heading",
+                  "text": "Build once. Keep it live.",
+                  "rect": [
+                    24,
+                    24,
+                    752,
+                    33
+                  ]
+                },
+                {
+                  "key": "card",
+                  "text": "Advanced 1 · café\nAdvance",
+                  "rect": [
+                    24,
+                    71,
+                    280,
+                    118
+                  ]
+                },
+                {
+                  "key": "status",
+                  "text": "Advanced 1 · café",
+                  "rect": [
+                    40,
+                    103,
+                    248,
+                    19
+                  ]
+                },
+                {
+                  "key": "action",
+                  "text": "Advance",
+                  "rect": [
+                    40,
+                    138,
+                    96.875,
+                    35
+                  ]
+                },
+                {
+                  "key": "cascade",
+                  "text": "Two ordered stylesheets",
+                  "rect": [
+                    336,
+                    87,
+                    193.625,
+                    19
+                  ]
+                },
+                {
+                  "key": "hidden",
+                  "text": "Hidden but queryable",
+                  "rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Initial fragmentCreated with DOM operations",
+                  "rect": [
+                    24,
+                    205,
+                    752,
+                    19
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    154.375,
+                    205,
+                    236.40625,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 1,
+              "samples": [
+                {
+                  "key": "heading",
+                  "text": "Build once. Keep it live.",
+                  "rect": [
+                    24,
+                    24,
+                    752,
+                    33
+                  ]
+                },
+                {
+                  "key": "card",
+                  "text": "Advanced 1 · café\nAdvance",
+                  "rect": [
+                    24,
+                    71,
+                    280,
+                    118
+                  ]
+                },
+                {
+                  "key": "status",
+                  "text": "Advanced 1 · café",
+                  "rect": [
+                    40,
+                    103,
+                    248,
+                    19
+                  ]
+                },
+                {
+                  "key": "action",
+                  "text": "Advance",
+                  "rect": [
+                    40,
+                    138,
+                    96.875,
+                    35
+                  ]
+                },
+                {
+                  "key": "cascade",
+                  "text": "Two ordered stylesheets",
+                  "rect": [
+                    336,
+                    87,
+                    193.625,
+                    19
+                  ]
+                },
+                {
+                  "key": "hidden",
+                  "text": "Hidden but queryable",
+                  "rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    24,
+                    205,
+                    752,
+                    19
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    31,
+                    205,
+                    294.03125,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 1,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  472,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Advanced 1 · café\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  228,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Advanced 1 · café",
+                "rect": [
+                  40,
+                  103,
+                  196,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  284,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  24,
+                  205,
+                  472,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  31,
+                  205,
+                  294.03125,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        },
+        "ui": {
+          "loading": {
+            "irNodes": 41,
+            "nativeNodes": 40,
+            "omittedDoctypeNodes": [
+              1
+            ],
+            "initialDocumentHtmlParserUsed": false,
+            "dynamicHtmlParserProvider": "blitz-html"
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  752,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Ready & waiting\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  280,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Ready & waiting",
+                "rect": [
+                  40,
+                  103,
+                  248,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  336,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Initial fragment",
+                "rect": [
+                  24,
+                  205,
+                  752,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 1,
+              "samples": [
+                {
+                  "key": "heading",
+                  "text": "Build once. Keep it live.",
+                  "rect": [
+                    24,
+                    24,
+                    752,
+                    33
+                  ]
+                },
+                {
+                  "key": "card",
+                  "text": "Advanced 1 · café\nAdvance",
+                  "rect": [
+                    24,
+                    71,
+                    280,
+                    118
+                  ]
+                },
+                {
+                  "key": "status",
+                  "text": "Advanced 1 · café",
+                  "rect": [
+                    40,
+                    103,
+                    248,
+                    19
+                  ]
+                },
+                {
+                  "key": "action",
+                  "text": "Advance",
+                  "rect": [
+                    40,
+                    138,
+                    96.875,
+                    35
+                  ]
+                },
+                {
+                  "key": "cascade",
+                  "text": "Two ordered stylesheets",
+                  "rect": [
+                    336,
+                    87,
+                    193.625,
+                    19
+                  ]
+                },
+                {
+                  "key": "hidden",
+                  "text": "Hidden but queryable",
+                  "rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Initial fragmentCreated with DOM operations",
+                  "rect": [
+                    24,
+                    205,
+                    752,
+                    19
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    154.375,
+                    205,
+                    236.40625,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 1,
+              "samples": [
+                {
+                  "key": "heading",
+                  "text": "Build once. Keep it live.",
+                  "rect": [
+                    24,
+                    24,
+                    752,
+                    33
+                  ]
+                },
+                {
+                  "key": "card",
+                  "text": "Advanced 1 · café\nAdvance",
+                  "rect": [
+                    24,
+                    71,
+                    280,
+                    118
+                  ]
+                },
+                {
+                  "key": "status",
+                  "text": "Advanced 1 · café",
+                  "rect": [
+                    40,
+                    103,
+                    248,
+                    19
+                  ]
+                },
+                {
+                  "key": "action",
+                  "text": "Advance",
+                  "rect": [
+                    40,
+                    138,
+                    96.875,
+                    35
+                  ]
+                },
+                {
+                  "key": "cascade",
+                  "text": "Two ordered stylesheets",
+                  "rect": [
+                    336,
+                    87,
+                    193.625,
+                    19
+                  ]
+                },
+                {
+                  "key": "hidden",
+                  "text": "Hidden but queryable",
+                  "rect": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    24,
+                    205,
+                    752,
+                    19
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    31,
+                    205,
+                    294.03125,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 1,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  472,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Advanced 1 · café\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  228,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Advanced 1 · café",
+                "rect": [
+                  40,
+                  103,
+                  196,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  284,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  24,
+                  205,
+                  472,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  31,
+                  205,
+                  294.03125,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        }
+      },
+      "browserDifferences": []
+    },
+    {
+      "fixture": "repaired",
+      "sourceSha256": "36fb03b0f575fa4c221f1a9dc20a990bbc8b0d34566c77194d5cd505cea4d88e",
+      "irSha256": "0a7aec8491772ab00d755fa16aa5d1da3a7d125cafd0c0d9f2a6536d37b542a3",
+      "recoveredDiagnostics": [],
+      "equivalent": true,
+      "native": {
+        "html": {
+          "loading": {
+            "initialDocumentHtmlParserUsed": true
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Recovered document",
+                "rect": [
+                  12,
+                  111,
+                  220,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foster",
+                  "text": "Before the table",
+                  "rect": [
+                    12,
+                    12,
+                    129.265625,
+                    19
+                  ]
+                },
+                {
+                  "key": "cell",
+                  "text": "Cell & value",
+                  "rect": [
+                    12,
+                    31,
+                    106.265625,
+                    29
+                  ]
+                },
+                {
+                  "key": "adopt",
+                  "text": "Bold both",
+                  "rect": [
+                    12,
+                    76,
+                    76.8125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Recovered documentCreated with DOM operations",
+                  "rect": [
+                    12,
+                    111,
+                    227,
+                    57
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    130,
+                    188.171875,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foster",
+                  "text": "Before the table",
+                  "rect": [
+                    12,
+                    12,
+                    129.265625,
+                    19
+                  ]
+                },
+                {
+                  "key": "cell",
+                  "text": "Cell & value",
+                  "rect": [
+                    12,
+                    31,
+                    106.265625,
+                    29
+                  ]
+                },
+                {
+                  "key": "adopt",
+                  "text": "Bold both",
+                  "rect": [
+                    12,
+                    76,
+                    76.8125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    111,
+                    227,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    111,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  111,
+                  227,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  111,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        },
+        "ui": {
+          "loading": {
+            "irNodes": 29,
+            "nativeNodes": 28,
+            "omittedDoctypeNodes": [
+              1
+            ],
+            "initialDocumentHtmlParserUsed": false,
+            "dynamicHtmlParserProvider": "blitz-html"
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Recovered document",
+                "rect": [
+                  12,
+                  111,
+                  220,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foster",
+                  "text": "Before the table",
+                  "rect": [
+                    12,
+                    12,
+                    129.265625,
+                    19
+                  ]
+                },
+                {
+                  "key": "cell",
+                  "text": "Cell & value",
+                  "rect": [
+                    12,
+                    31,
+                    106.265625,
+                    29
+                  ]
+                },
+                {
+                  "key": "adopt",
+                  "text": "Bold both",
+                  "rect": [
+                    12,
+                    76,
+                    76.8125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Recovered documentCreated with DOM operations",
+                  "rect": [
+                    12,
+                    111,
+                    227,
+                    57
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    130,
+                    188.171875,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foster",
+                  "text": "Before the table",
+                  "rect": [
+                    12,
+                    12,
+                    129.265625,
+                    19
+                  ]
+                },
+                {
+                  "key": "cell",
+                  "text": "Cell & value",
+                  "rect": [
+                    12,
+                    31,
+                    106.265625,
+                    29
+                  ]
+                },
+                {
+                  "key": "adopt",
+                  "text": "Bold both",
+                  "rect": [
+                    12,
+                    76,
+                    76.8125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    111,
+                    227,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    111,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  111,
+                  227,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  111,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        }
+      },
+      "browserDifferences": [
+        {
+          "path": "mutated.created.samples.4.rect.2",
+          "actual": 188.171875,
+          "expected": 183.09375
+        },
+        {
+          "path": "mutated.parsed.samples.4.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        },
+        {
+          "path": "resized.samples.4.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        }
+      ]
+    },
+    {
+      "fixture": "namespaces",
+      "sourceSha256": "40390c6a66424e8fbb5cc542ac6e5a4572423b2e992a54d8810da04689d74cad",
+      "irSha256": "aaf9d6578df0082ce6998e3cd038aa9160608cd53ead4184b3229500e551ebf5",
+      "recoveredDiagnostics": [],
+      "equivalent": true,
+      "native": {
+        "html": {
+          "loading": {
+            "initialDocumentHtmlParserUsed": true
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  12,
+                  82,
+                  132.03125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Namespace fixture",
+                "rect": [
+                  12,
+                  101,
+                  240,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foreign",
+                  "text": "HTML in SVG",
+                  "rect": [
+                    12,
+                    12,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "math-text",
+                  "text": "HTML in MathML",
+                  "rect": [
+                    12,
+                    82,
+                    132.03125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Namespace fixtureCreated with DOM operations",
+                  "rect": [
+                    12,
+                    101,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    101,
+                    219.671875,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foreign",
+                  "text": "HTML in SVG",
+                  "rect": [
+                    12,
+                    12,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "math-text",
+                  "text": "HTML in MathML",
+                  "rect": [
+                    12,
+                    82,
+                    132.03125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    101,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    101,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  12,
+                  82,
+                  132.03125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  101,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  101,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        },
+        "ui": {
+          "loading": {
+            "irNodes": 28,
+            "nativeNodes": 27,
+            "omittedDoctypeNodes": [
+              1
+            ],
+            "initialDocumentHtmlParserUsed": false,
+            "dynamicHtmlParserProvider": "blitz-html"
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  12,
+                  82,
+                  132.03125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Namespace fixture",
+                "rect": [
+                  12,
+                  101,
+                  240,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foreign",
+                  "text": "HTML in SVG",
+                  "rect": [
+                    12,
+                    12,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "math-text",
+                  "text": "HTML in MathML",
+                  "rect": [
+                    12,
+                    82,
+                    132.03125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Namespace fixtureCreated with DOM operations",
+                  "rect": [
+                    12,
+                    101,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    101,
+                    219.671875,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "foreign",
+                  "text": "HTML in SVG",
+                  "rect": [
+                    12,
+                    12,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "key": "math-text",
+                  "text": "HTML in MathML",
+                  "rect": [
+                    12,
+                    82,
+                    132.03125,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    101,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    101,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  12,
+                  82,
+                  132.03125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  101,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  101,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        }
+      },
+      "browserDifferences": [
+        {
+          "path": "initial.samples.0.rect.2",
+          "actual": 0,
+          "expected": 180
+        },
+        {
+          "path": "initial.samples.0.rect.3",
+          "actual": 0,
+          "expected": 19
+        },
+        {
+          "path": "initial.samples.1.rect.0",
+          "actual": 12,
+          "expected": 197.09375
+        },
+        {
+          "path": "initial.samples.1.rect.1",
+          "actual": 82,
+          "expected": 68
+        },
+        {
+          "path": "initial.samples.1.rect.2",
+          "actual": 132.03125,
+          "expected": 127.015625
+        },
+        {
+          "path": "initial.samples.1.rect.3",
+          "actual": 19,
+          "expected": 20
+        },
+        {
+          "path": "initial.samples.2.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "initial.foreignContent",
+          "actual": 0,
+          "expected": 1
+        },
+        {
+          "path": "mutated.created.samples.0.rect.2",
+          "actual": 0,
+          "expected": 180
+        },
+        {
+          "path": "mutated.created.samples.0.rect.3",
+          "actual": 0,
+          "expected": 19
+        },
+        {
+          "path": "mutated.created.samples.1.rect.0",
+          "actual": 12,
+          "expected": 197.09375
+        },
+        {
+          "path": "mutated.created.samples.1.rect.1",
+          "actual": 82,
+          "expected": 68
+        },
+        {
+          "path": "mutated.created.samples.1.rect.2",
+          "actual": 132.03125,
+          "expected": 127.015625
+        },
+        {
+          "path": "mutated.created.samples.1.rect.3",
+          "actual": 19,
+          "expected": 20
+        },
+        {
+          "path": "mutated.created.samples.2.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "mutated.created.samples.3.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "mutated.created.samples.3.rect.2",
+          "actual": 219.671875,
+          "expected": 214.59375
+        },
+        {
+          "path": "mutated.created.foreignContent",
+          "actual": 0,
+          "expected": 1
+        },
+        {
+          "path": "mutated.parsed.samples.0.rect.2",
+          "actual": 0,
+          "expected": 180
+        },
+        {
+          "path": "mutated.parsed.samples.0.rect.3",
+          "actual": 0,
+          "expected": 19
+        },
+        {
+          "path": "mutated.parsed.samples.1.rect.0",
+          "actual": 12,
+          "expected": 197.09375
+        },
+        {
+          "path": "mutated.parsed.samples.1.rect.1",
+          "actual": 82,
+          "expected": 68
+        },
+        {
+          "path": "mutated.parsed.samples.1.rect.2",
+          "actual": 132.03125,
+          "expected": 127.015625
+        },
+        {
+          "path": "mutated.parsed.samples.1.rect.3",
+          "actual": 19,
+          "expected": 20
+        },
+        {
+          "path": "mutated.parsed.samples.2.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "mutated.parsed.samples.3.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "mutated.parsed.samples.3.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        },
+        {
+          "path": "mutated.parsed.foreignContent",
+          "actual": 0,
+          "expected": 1
+        },
+        {
+          "path": "resized.samples.0.rect.2",
+          "actual": 0,
+          "expected": 180
+        },
+        {
+          "path": "resized.samples.0.rect.3",
+          "actual": 0,
+          "expected": 19
+        },
+        {
+          "path": "resized.samples.1.rect.0",
+          "actual": 12,
+          "expected": 197.09375
+        },
+        {
+          "path": "resized.samples.1.rect.1",
+          "actual": 82,
+          "expected": 68
+        },
+        {
+          "path": "resized.samples.1.rect.2",
+          "actual": 132.03125,
+          "expected": 127.015625
+        },
+        {
+          "path": "resized.samples.1.rect.3",
+          "actual": 19,
+          "expected": 20
+        },
+        {
+          "path": "resized.samples.2.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "resized.samples.3.rect.1",
+          "actual": 101,
+          "expected": 88
+        },
+        {
+          "path": "resized.samples.3.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        },
+        {
+          "path": "resized.foreignContent",
+          "actual": 0,
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "fixture": "templates",
+      "sourceSha256": "73ef473ccae0844a1bd41f12c6cba8dab6e7c3dd3d8052d1da7300cfe2f3c8f7",
+      "irSha256": "4abe4f6199bd064e96c7baf25ad44fa302aa998d2889e38e31ab3b9a42f66496",
+      "recoveredDiagnostics": [],
+      "equivalent": true,
+      "native": {
+        "html": {
+          "loading": {
+            "initialDocumentHtmlParserUsed": true
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  776,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Template fixture",
+                "rect": [
+                  12,
+                  51,
+                  240,
+                  19
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "visible",
+                  "text": "Visible outside the template",
+                  "rect": [
+                    12,
+                    16,
+                    776,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Template fixtureCreated with DOM operations",
+                  "rect": [
+                    12,
+                    51,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    51,
+                    237.5625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 1,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "visible",
+                  "text": "Visible outside the template",
+                  "rect": [
+                    12,
+                    16,
+                    776,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    51,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    51,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 1,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  496,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  51,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  51,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        },
+        "ui": {
+          "loading": {
+            "irNodes": 27,
+            "nativeNodes": 26,
+            "omittedDoctypeNodes": [
+              1
+            ],
+            "initialDocumentHtmlParserUsed": false,
+            "dynamicHtmlParserProvider": "blitz-html"
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  776,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Template fixture",
+                "rect": [
+                  12,
+                  51,
+                  240,
+                  19
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "visible",
+                  "text": "Visible outside the template",
+                  "rect": [
+                    12,
+                    16,
+                    776,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Template fixtureCreated with DOM operations",
+                  "rect": [
+                    12,
+                    51,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    19,
+                    51,
+                    237.5625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 1,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "visible",
+                  "text": "Visible outside the template",
+                  "rect": [
+                    12,
+                    16,
+                    776,
+                    19
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    12,
+                    51,
+                    247,
+                    38
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    19,
+                    51,
+                    207.515625,
+                    38
+                  ]
+                }
+              ],
+              "templates": 1,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  496,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  51,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  51,
+                  207.515625,
+                  38
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        }
+      },
+      "browserDifferences": [
+        {
+          "path": "mutated.created.samples.2.rect.2",
+          "actual": 237.5625,
+          "expected": 232.484375
+        },
+        {
+          "path": "mutated.parsed.samples.2.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        },
+        {
+          "path": "resized.samples.2.rect.2",
+          "actual": 207.515625,
+          "expected": 202.4375
+        }
+      ]
+    },
+    {
+      "fixture": "cascade-recovery",
+      "sourceSha256": "34091960647f9977220b409057c71e400e9ebfa07b3fce6433381b86be9038e2",
+      "irSha256": "27b91dfbea5a7b06e3c733950c91691210bbde558688cf0b132ebc2d662df9cb",
+      "recoveredDiagnostics": [],
+      "equivalent": true,
+      "native": {
+        "html": {
+          "loading": {
+            "initialDocumentHtmlParserUsed": true
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  12
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Cascade recovery",
+                "rect": [
+                  8,
+                  24,
+                  784,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "cascade",
+                  "text": "A",
+                  "rect": [
+                    10,
+                    10,
+                    42,
+                    12
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Cascade recoveryCreated with DOM operations",
+                  "rect": [
+                    8,
+                    24,
+                    784,
+                    19
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    158.015625,
+                    24,
+                    236.40625,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "cascade",
+                  "text": "A",
+                  "rect": [
+                    10,
+                    10,
+                    42,
+                    12
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    8,
+                    24,
+                    784,
+                    19
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    15,
+                    24,
+                    294.03125,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  12
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  8,
+                  24,
+                  504,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  15,
+                  24,
+                  294.03125,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        },
+        "ui": {
+          "loading": {
+            "irNodes": 20,
+            "nativeNodes": 19,
+            "omittedDoctypeNodes": [
+              1
+            ],
+            "initialDocumentHtmlParserUsed": false,
+            "dynamicHtmlParserProvider": "blitz-html"
+          },
+          "initial": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  12
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Cascade recovery",
+                "rect": [
+                  8,
+                  24,
+                  784,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "mutated": {
+            "sameTarget": true,
+            "created": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "cascade",
+                  "text": "A",
+                  "rect": [
+                    10,
+                    10,
+                    42,
+                    12
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Cascade recoveryCreated with DOM operations",
+                  "rect": [
+                    8,
+                    24,
+                    784,
+                    19
+                  ]
+                },
+                {
+                  "key": "created",
+                  "text": "Created with DOM operations",
+                  "rect": [
+                    158.015625,
+                    24,
+                    236.40625,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            },
+            "parsed": {
+              "clicks": 0,
+              "samples": [
+                {
+                  "key": "cascade",
+                  "text": "A",
+                  "rect": [
+                    10,
+                    10,
+                    42,
+                    12
+                  ]
+                },
+                {
+                  "key": "target",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    8,
+                    24,
+                    784,
+                    19
+                  ]
+                },
+                {
+                  "key": "parsed",
+                  "text": "Runtime markup remains supported.",
+                  "rect": [
+                    15,
+                    24,
+                    294.03125,
+                    19
+                  ]
+                }
+              ],
+              "templates": 0,
+              "inertContentQueryable": false,
+              "foreignContent": 0
+            }
+          },
+          "resized": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  12
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  8,
+                  24,
+                  504,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  15,
+                  24,
+                  294.03125,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "gpuRequested": false,
+          "htmlParserLinked": true
+        }
+      },
+      "browserDifferences": [
+        {
+          "path": "initial.samples.0.rect.3",
+          "actual": 12,
+          "expected": 21
+        },
+        {
+          "path": "initial.samples.1.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "mutated.created.samples.0.rect.3",
+          "actual": 12,
+          "expected": 21
+        },
+        {
+          "path": "mutated.created.samples.1.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "mutated.created.samples.2.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "mutated.parsed.samples.0.rect.3",
+          "actual": 12,
+          "expected": 21
+        },
+        {
+          "path": "mutated.parsed.samples.1.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "mutated.parsed.samples.2.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "resized.samples.0.rect.3",
+          "actual": 12,
+          "expected": 21
+        },
+        {
+          "path": "resized.samples.1.rect.1",
+          "actual": 24,
+          "expected": 33
+        },
+        {
+          "path": "resized.samples.2.rect.1",
+          "actual": 24,
+          "expected": 33
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.50",
+      "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    },
+    "observations": {
+      "dashboard": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "heading",
+              "text": "Build once. Keep it live.",
+              "rect": [
+                24,
+                24,
+                752,
+                33
+              ]
+            },
+            {
+              "key": "card",
+              "text": "Ready & waiting\nAdvance",
+              "rect": [
+                24,
+                71,
+                280,
+                118
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready & waiting",
+              "rect": [
+                40,
+                103,
+                248,
+                19
+              ]
+            },
+            {
+              "key": "action",
+              "text": "Advance",
+              "rect": [
+                40,
+                138,
+                96.875,
+                35
+              ]
+            },
+            {
+              "key": "cascade",
+              "text": "Two ordered stylesheets",
+              "rect": [
+                336,
+                87,
+                193.625,
+                19
+              ]
+            },
+            {
+              "key": "hidden",
+              "text": "Hidden but queryable",
+              "rect": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Initial fragment",
+              "rect": [
+                24,
+                205,
+                752,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        },
+        "mutated": {
+          "sameTarget": true,
+          "created": {
+            "clicks": 1,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  752,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Advanced 1 · café\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  280,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Advanced 1 · café",
+                "rect": [
+                  40,
+                  103,
+                  248,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  336,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Initial fragmentCreated with DOM operations",
+                "rect": [
+                  24,
+                  205,
+                  752,
+                  19
+                ]
+              },
+              {
+                "key": "created",
+                "text": "Created with DOM operations",
+                "rect": [
+                  154.375,
+                  205,
+                  236.40625,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "parsed": {
+            "clicks": 1,
+            "samples": [
+              {
+                "key": "heading",
+                "text": "Build once. Keep it live.",
+                "rect": [
+                  24,
+                  24,
+                  752,
+                  33
+                ]
+              },
+              {
+                "key": "card",
+                "text": "Advanced 1 · café\nAdvance",
+                "rect": [
+                  24,
+                  71,
+                  280,
+                  118
+                ]
+              },
+              {
+                "key": "status",
+                "text": "Advanced 1 · café",
+                "rect": [
+                  40,
+                  103,
+                  248,
+                  19
+                ]
+              },
+              {
+                "key": "action",
+                "text": "Advance",
+                "rect": [
+                  40,
+                  138,
+                  96.875,
+                  35
+                ]
+              },
+              {
+                "key": "cascade",
+                "text": "Two ordered stylesheets",
+                "rect": [
+                  336,
+                  87,
+                  193.625,
+                  19
+                ]
+              },
+              {
+                "key": "hidden",
+                "text": "Hidden but queryable",
+                "rect": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  24,
+                  205,
+                  752,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  31,
+                  205,
+                  294.046875,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          }
+        },
+        "resized": {
+          "clicks": 1,
+          "samples": [
+            {
+              "key": "heading",
+              "text": "Build once. Keep it live.",
+              "rect": [
+                24,
+                24,
+                472,
+                33
+              ]
+            },
+            {
+              "key": "card",
+              "text": "Advanced 1 · café\nAdvance",
+              "rect": [
+                24,
+                71,
+                228,
+                118
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Advanced 1 · café",
+              "rect": [
+                40,
+                103,
+                196,
+                19
+              ]
+            },
+            {
+              "key": "action",
+              "text": "Advance",
+              "rect": [
+                40,
+                138,
+                96.875,
+                35
+              ]
+            },
+            {
+              "key": "cascade",
+              "text": "Two ordered stylesheets",
+              "rect": [
+                284,
+                87,
+                193.625,
+                19
+              ]
+            },
+            {
+              "key": "hidden",
+              "text": "Hidden but queryable",
+              "rect": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                24,
+                205,
+                472,
+                19
+              ]
+            },
+            {
+              "key": "parsed",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                31,
+                205,
+                294.046875,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        }
+      },
+      "repaired": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "foster",
+              "text": "Before the table",
+              "rect": [
+                12,
+                12,
+                129.265625,
+                19
+              ]
+            },
+            {
+              "key": "cell",
+              "text": "Cell & value",
+              "rect": [
+                12,
+                31,
+                106.265625,
+                29
+              ]
+            },
+            {
+              "key": "adopt",
+              "text": "Bold both",
+              "rect": [
+                12,
+                76,
+                76.8125,
+                19
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Recovered document",
+              "rect": [
+                12,
+                111,
+                220,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        },
+        "mutated": {
+          "sameTarget": true,
+          "created": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Recovered documentCreated with DOM operations",
+                "rect": [
+                  12,
+                  111,
+                  227,
+                  57
+                ]
+              },
+              {
+                "key": "created",
+                "text": "Created with DOM operations",
+                "rect": [
+                  19,
+                  130,
+                  183.09375,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "parsed": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foster",
+                "text": "Before the table",
+                "rect": [
+                  12,
+                  12,
+                  129.265625,
+                  19
+                ]
+              },
+              {
+                "key": "cell",
+                "text": "Cell & value",
+                "rect": [
+                  12,
+                  31,
+                  106.265625,
+                  29
+                ]
+              },
+              {
+                "key": "adopt",
+                "text": "Bold both",
+                "rect": [
+                  12,
+                  76,
+                  76.8125,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  111,
+                  227,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  111,
+                  202.4375,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          }
+        },
+        "resized": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "foster",
+              "text": "Before the table",
+              "rect": [
+                12,
+                12,
+                129.265625,
+                19
+              ]
+            },
+            {
+              "key": "cell",
+              "text": "Cell & value",
+              "rect": [
+                12,
+                31,
+                106.265625,
+                29
+              ]
+            },
+            {
+              "key": "adopt",
+              "text": "Bold both",
+              "rect": [
+                12,
+                76,
+                76.8125,
+                19
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                12,
+                111,
+                227,
+                38
+              ]
+            },
+            {
+              "key": "parsed",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                19,
+                111,
+                202.4375,
+                38
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        }
+      },
+      "namespaces": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "foreign",
+              "text": "HTML in SVG",
+              "rect": [
+                12,
+                12,
+                180,
+                19
+              ]
+            },
+            {
+              "key": "math-text",
+              "text": "HTML in MathML",
+              "rect": [
+                197.09375,
+                68,
+                127.015625,
+                20
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Namespace fixture",
+              "rect": [
+                12,
+                88,
+                240,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 1
+        },
+        "mutated": {
+          "sameTarget": true,
+          "created": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  180,
+                  19
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  197.09375,
+                  68,
+                  127.015625,
+                  20
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Namespace fixtureCreated with DOM operations",
+                "rect": [
+                  12,
+                  88,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "created",
+                "text": "Created with DOM operations",
+                "rect": [
+                  19,
+                  88,
+                  214.59375,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 1
+          },
+          "parsed": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "foreign",
+                "text": "HTML in SVG",
+                "rect": [
+                  12,
+                  12,
+                  180,
+                  19
+                ]
+              },
+              {
+                "key": "math-text",
+                "text": "HTML in MathML",
+                "rect": [
+                  197.09375,
+                  68,
+                  127.015625,
+                  20
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  88,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  88,
+                  202.4375,
+                  38
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 1
+          }
+        },
+        "resized": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "foreign",
+              "text": "HTML in SVG",
+              "rect": [
+                12,
+                12,
+                180,
+                19
+              ]
+            },
+            {
+              "key": "math-text",
+              "text": "HTML in MathML",
+              "rect": [
+                197.09375,
+                68,
+                127.015625,
+                20
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                12,
+                88,
+                247,
+                38
+              ]
+            },
+            {
+              "key": "parsed",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                19,
+                88,
+                202.4375,
+                38
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 1
+        }
+      },
+      "templates": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "visible",
+              "text": "Visible outside the template",
+              "rect": [
+                12,
+                16,
+                776,
+                19
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Template fixture",
+              "rect": [
+                12,
+                51,
+                240,
+                19
+              ]
+            }
+          ],
+          "templates": 1,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        },
+        "mutated": {
+          "sameTarget": true,
+          "created": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  776,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Template fixtureCreated with DOM operations",
+                "rect": [
+                  12,
+                  51,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "created",
+                "text": "Created with DOM operations",
+                "rect": [
+                  19,
+                  51,
+                  232.484375,
+                  38
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "parsed": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "visible",
+                "text": "Visible outside the template",
+                "rect": [
+                  12,
+                  16,
+                  776,
+                  19
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  12,
+                  51,
+                  247,
+                  38
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  19,
+                  51,
+                  202.4375,
+                  38
+                ]
+              }
+            ],
+            "templates": 1,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          }
+        },
+        "resized": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "visible",
+              "text": "Visible outside the template",
+              "rect": [
+                12,
+                16,
+                496,
+                19
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                12,
+                51,
+                247,
+                38
+              ]
+            },
+            {
+              "key": "parsed",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                19,
+                51,
+                202.4375,
+                38
+              ]
+            }
+          ],
+          "templates": 1,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        }
+      },
+      "cascade-recovery": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "cascade",
+              "text": "A",
+              "rect": [
+                10,
+                10,
+                42,
+                21
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Cascade recovery",
+              "rect": [
+                8,
+                33,
+                784,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        },
+        "mutated": {
+          "sameTarget": true,
+          "created": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  21
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Cascade recoveryCreated with DOM operations",
+                "rect": [
+                  8,
+                  33,
+                  784,
+                  19
+                ]
+              },
+              {
+                "key": "created",
+                "text": "Created with DOM operations",
+                "rect": [
+                  158.015625,
+                  33,
+                  236.40625,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          },
+          "parsed": {
+            "clicks": 0,
+            "samples": [
+              {
+                "key": "cascade",
+                "text": "A",
+                "rect": [
+                  10,
+                  10,
+                  42,
+                  21
+                ]
+              },
+              {
+                "key": "target",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  8,
+                  33,
+                  784,
+                  19
+                ]
+              },
+              {
+                "key": "parsed",
+                "text": "Runtime markup remains supported.",
+                "rect": [
+                  15,
+                  33,
+                  294.046875,
+                  19
+                ]
+              }
+            ],
+            "templates": 0,
+            "inertContentQueryable": false,
+            "foreignContent": 0
+          }
+        },
+        "resized": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "cascade",
+              "text": "A",
+              "rect": [
+                10,
+                10,
+                42,
+                21
+              ]
+            },
+            {
+              "key": "target",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                8,
+                33,
+                504,
+                19
+              ]
+            },
+            {
+              "key": "parsed",
+              "text": "Runtime markup remains supported.",
+              "rect": [
+                15,
+                33,
+                294.046875,
+                19
+              ]
+            }
+          ],
+          "templates": 0,
+          "inertContentQueryable": false,
+          "foreignContent": 0
+        }
+      }
+    }
+  },
+  "inputs": {
+    "probeSha256": "bb426f0870195166bd79a4225c911bf3eea2a4b8596a2058b70e8fbd3d3abe73",
+    "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+    "behaviorSha256": "ce151dd62cdadd419175fd9fe5ba4a6979a23d0a1e34ae1515dc79f38ef93cbc"
+  },
+  "limits": [
+    "CPU construction/DOM/layout comparison; no GPU or performance measurement in this probe.",
+    "Native DocumentType nodes and non-no-quirks modes are unsupported; source doctype metadata remains in the IR.",
+    "Initial document HTML parsing is bypassed; CSS parsing and dynamic HTML parser linkage remain. Experimental JSON is not a shipping package ABI."
+  ]
+}

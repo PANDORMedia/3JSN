@@ -25,9 +25,14 @@ path = "tests/layer_budget.rs"
 name = "threejs-dom-window-probe"
 path = "src/window_probe.rs"
 
+[[bin]]
+name = "threejs-compiled-ui-probe"
+path = "src/compiled_probe.rs"
+
 [workspace]
 
 [dependencies]
+threejs-compiled-ui-experiment = { path = "../compiled-ui" }
 threejs-native-js-sources = { path = "../../crates/js-sources" }
 threejs-native-package = { path = "../../crates/package" }
 blitz-dom = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false, features = ["woff"] }
