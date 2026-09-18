@@ -1,0 +1,123 @@
+{
+  "date": "2026-09-18",
+  "baseCommitBeforeChanges": "c0e842e95661983d66801aa7ff2371714840967c",
+  "platform": {
+    "os": "Darwin",
+    "version": "26.1",
+    "arch": "arm64"
+  },
+  "buildProfile": "dev (unoptimized + debuginfo)",
+  "binary": {
+    "path": "target/debug/threejs-dom-window-probe",
+    "sha256": "168f4a30dad6237b20561f83eccc69737a08180a280dabc7c758c5cd946a05a5",
+    "bytes": 186765192
+  },
+  "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+  "htmlCopyMatchesNativeInput": true,
+  "applicationSourceRetainedInSourceMap": true,
+  "sameBundleForBrowserAndNative": {
+    "sha256": "4d75a709df6ef006b60b967850e6a1ab5359694a5a0fa68ea10a18427c12ed71",
+    "mapSha256": "35aacc30f59e9d891c4cc6f0af89d5001560335b903f9cfbecf8cbf6136b20bf"
+  },
+  "sources": {
+    "experiments/dom-canvas/Cargo.toml": "7df8a73befca390789c1db9c77a85d7589d3e623e335041df934c1c880bcb200",
+    "experiments/dom-canvas/Cargo.lock": "c08095ef4baa62fd8005fa02095964f364c1e34c4f7baf9057d050d5762a5180",
+    "experiments/dom-canvas/src/window_probe.rs": "eba356fc1b30607f2037d2aff13d61511c3e5fd62576ea1876dd162b0b4f5c51",
+    "experiments/dom-canvas/src/window_runtime.rs": "16cee49310ce3b5623d6902fa68831a9c37bfe6eed0a75fd28151441bff10b6e",
+    "experiments/dom-canvas/src/window_scene.rs": "1761c34ae4648451bc898ebc9f25f83a4d8a2c34f9a5e0412f30acf2f8ef8e8a",
+    "experiments/dom-canvas/src/window.js": "27216459a67418bae023d538595df948c016bcc498eecdcd1d7e0e25838f5b67",
+    "experiments/dom-canvas/src/dom_bridge.rs": "af703dbeefe7eba651be5096547130106bb9dffef25cb71edee71920e45eac79",
+    "experiments/dom-canvas/src/painter.rs": "5284defa2286ac856248aea713593f67141eff800e229095de6ec1117c0d97e8",
+    "experiments/dom-canvas/src/canvas_texture.rs": "96324cddf147357f11817d2eb84c7395727b41ea2fc4f2fa11ab36fc03129411",
+    "experiments/dom-canvas/src/canvas_init.rs": "a9088eca951b1c17bb980a12ccf25ebc5132633021aebf3a2602783359c6073d",
+    "experiments/dom-canvas/src/canvas.js": "f5bda273f0aaac8e5c71953c2c888a7cba74a7f2e28c5c5fbcc23b5df9cbbe26",
+    "experiments/native-html-interop/src/host.rs": "7539f928cc9cc30e5593a8d3e891bd1ca58715c3bf399a4d64439b19542b244e",
+    "experiments/native-html-interop/src/metal.rs": "00e95d97ba4ba9a33a6c203e628eef2f276016f2049d2a472405c05a6b1381c8",
+    "experiments/native-html-interop/src/bindings.js": "25d0fea354ee7506cdb84515b1dd49d65721317627f90a96cd7f0248847793bd",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "crates/runtime/src/animation.js": "128de03009c871a44813415c506d62e7b6376562d2147b065d996c215a113471",
+    "crates/runtime/src/web-globals.js": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa",
+    "examples/dom-window/index.html": "f4946e5ab3873c3a545307721ad28b7248d92fb0e38d44ec3067fec41befa61c",
+    "examples/dom-window/app.mjs": "9f200c317d9486a63bf2889161a8384a9d6fcff9d4fd73afafde7c5212b756c3",
+    "examples/spinning-scene/scene.mjs": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c",
+    "scripts/compatibility/dom-window.test.mjs": "7f63e97eb5a0edd7a6b52954cc4b33e6d902dd5dbc56aa8275fbab2f8eaffe99",
+    "package-lock.json": "d366a73cdae32f6fbd1ac6856d3f747da970095041c12e2f24498f66425e67b7"
+  },
+  "logs": {
+    "native-120": {
+      "file": "native-120.txt",
+      "rawSha256": "a9ff800a02830b40e634d7f86ccbe4c35cf0720c8aa23a584a018185bc30afe4",
+      "archivedSha256": "a9ff800a02830b40e634d7f86ccbe4c35cf0720c8aa23a584a018185bc30afe4"
+    },
+    "retained-canvas": {
+      "file": "retained-canvas.txt",
+      "rawSha256": "0e726ee77f28542d9ce9820585b42ca480a9950727f93168deb7145300da8aba",
+      "archivedSha256": "0e726ee77f28542d9ce9820585b42ca480a9950727f93168deb7145300da8aba"
+    },
+    "frame-error": {
+      "file": "frame-error.txt",
+      "rawSha256": "27c3d39fc2ad03a076fe5aa1f92bbf98b3647958efaa322036b4e16b48c92f42",
+      "archivedSha256": "2c58a54338c09711048b219103450b17c0bd582a09a3e16be3520335a888947c"
+    },
+    "interactive": {
+      "file": "interactive.txt",
+      "rawSha256": "a9701f259a3c9cd71b31562ce311f2f38d2053497280c5650f58f35d4f90a01a",
+      "archivedSha256": "a9701f259a3c9cd71b31562ce311f2f38d2053497280c5650f58f35d4f90a01a"
+    },
+    "node-tests": {
+      "file": "node-tests.txt",
+      "rawSha256": "60bac6bedb94167fde352818692e01ea305ad15107a515cc86370405cd1d12a2",
+      "archivedSha256": "60bac6bedb94167fde352818692e01ea305ad15107a515cc86370405cd1d12a2"
+    },
+    "rust-tests": {
+      "file": "rust-tests.txt",
+      "rawSha256": "32954aeada058aeec7696c9daeed8916a799776db206fb1b5cfc847c44725226",
+      "archivedSha256": "8842fcd52c95957e31d984d22ce9dd505be594d876ede9563991c54dace7d8ac"
+    },
+    "clippy": {
+      "file": "clippy.txt",
+      "rawSha256": "6a20d8501b33ec4523fe7bb6b83c008152978c3a608a6534c1b6cf75b37e9052",
+      "archivedSha256": "85d18f67e49c60e54be2aa6f5f5abd8d2d1b97a5737bb3ff798a5b5fb823a630"
+    },
+    "build": {
+      "file": "build.txt",
+      "rawSha256": "c1b1d7ed4b6a5d823733c5ac4bc91d0aea28c378697998d3b339b4a249c5fd3c",
+      "archivedSha256": "7230485655a161a538e5baf88653331743403fb9eff0e78b161aa701b53491a3"
+    }
+  },
+  "exits": {
+    "native-120": 0,
+    "retained-canvas": 0,
+    "frame-error": 1,
+    "node-tests": 0,
+    "rust-tests": 0,
+    "clippy": 0
+  },
+  "manual": {
+    "nativePauseClick": true,
+    "nativeSpaceResume": true,
+    "nativeReset": true,
+    "crossTargetReleaseDoesNotActivatePause": true,
+    "canvasResizeCss": [
+      [
+        904,
+        440
+      ],
+      [
+        784,
+        360
+      ]
+    ],
+    "devicePixelRatio": 2,
+    "closePresentedFrames": 9877,
+    "closeCanvasSnapshots": 9878,
+    "browserPauseClick": true,
+    "capturedBrowserErrors": [],
+    "screenshotFileArchived": false
+  },
+  "limits": [
+    "Single Mac, native Metal, one named canvas and bounded DOM input.",
+    "Frame counts and UI observations are not browser pixel parity or performance evidence.",
+    "Default renderer; DPR candidate remains separate."
+  ]
+}

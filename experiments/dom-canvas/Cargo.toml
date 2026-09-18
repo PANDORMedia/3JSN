@@ -21,6 +21,10 @@ path = "src/geometry_probe.rs"
 name = "layer-budget"
 path = "tests/layer_budget.rs"
 
+[[bin]]
+name = "threejs-dom-window-probe"
+path = "src/window_probe.rs"
+
 [workspace]
 
 [dependencies]
@@ -45,7 +49,8 @@ deno_webgpu = "=0.226.0"
 
 deno_web = "=0.290.0"
 deno_webidl = "=0.259.0"
-tokio = { version = "=1.49.0", features = ["rt", "time", "macros"] }
+tokio = { version = "=1.49.0", features = ["rt", "time", "sync", "macros"] }
+winit = "=0.30.13"
 objc2 = "=0.6.4"
 objc2-metal = { version = "=0.3.2", default-features = false, features = ["MTLDevice", "MTLCommandQueue", "MTLTexture", "MTLResource", "MTLPixelFormat"] }
 

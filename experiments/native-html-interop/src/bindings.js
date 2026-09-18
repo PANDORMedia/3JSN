@@ -19,7 +19,7 @@ function idOf(node) {
   if (id === undefined) throw new TypeError('Expected a node from this document');
   return id;
 }
-function wrap(id) {
+export function wrap(id) {
   if (id === null) return null;
   if (wrappers.has(id)) return wrappers.get(id);
   const { tag } = read({ kind: 'describe', id });

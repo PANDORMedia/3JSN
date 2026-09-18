@@ -16,6 +16,12 @@ misleading successful build. See the [product contract](product.md).
 The [GitHub issue index](issues.md) maps each milestone to its epic and work items.
 GitHub issues track execution; this page explains sequencing and completion gates.
 
+The latest [native DOM-window checkpoint](validation/2026-09-18-dom-window.md)
+combines one Three.js canvas with interactive HTML and resizing on Metal. The
+separate [DPR cache repair](validation/2026-09-18-dpr-cache.md) passes its CPU
+regressions. Next integration gates are broader DOM/input semantics and project
+loading, alongside unchanged WebGL support; these checkpoints do not complete M3.
+
 ## Milestones
 
 | Phase | Deliverable | Completion gate |

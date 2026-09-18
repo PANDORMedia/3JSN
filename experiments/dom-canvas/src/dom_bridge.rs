@@ -149,6 +149,36 @@ pub fn with_texture<T>(
     apply(&texture)
 }
 
+/// Inspect a configured DOM canvas without asking application code to expose its
+/// GPUDevice. The rooted context owns both configuration and current texture.
+pub fn with_canvas<T>(
+    runtime: &mut JsRuntime,
+    element_id: &str,
+    apply: impl FnOnce(&GPUCanvasContext, &mut v8::PinScope<'_, '_>) -> crate::Result<T>,
+) -> crate::Result<T> {
+    let context = {
+        let state = runtime.op_state();
+        let state = state.borrow();
+        let id = state
+            .borrow::<DomState>()
+            .document
+            .get_element_by_id(element_id)
+            .ok_or("canvas element missing")?;
+        state
+            .borrow::<Canvases>()
+            .0
+            .get(&id.as_u64().to_string())
+            .ok_or("canvas has no context")?
+            .context
+            .clone()
+    };
+    deno_core::scope!(scope, runtime);
+    let context = v8::Local::new(scope, context);
+    let context = cppgc::try_unwrap_cppgc_object::<GPUCanvasContext>(scope, context)
+        .ok_or("context brand changed")?;
+    apply(&context, scope)
+}
+
 pub fn expire(runtime: &mut JsRuntime) {
     let contexts: Vec<_> = runtime
         .op_state()

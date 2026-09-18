@@ -18,6 +18,14 @@ deno_core::extension!(
 );
 
 pub fn create(html: &str, config: DocumentConfig) -> JsRuntime {
+    create_with_extensions(html, config, vec![])
+}
+
+pub fn create_with_extensions(
+    html: &str,
+    config: DocumentConfig,
+    extensions: Vec<deno_core::Extension>,
+) -> JsRuntime {
     let instance = Arc::new(deno_webgpu::wgpu_core::global::Global::new(
         "3JSN shared Metal queue probe",
         wgpu_types::InstanceDescriptor {
@@ -34,20 +42,22 @@ pub fn create(html: &str, config: DocumentConfig) -> JsRuntime {
         deno_core::ascii_str_include!("../../../crates/runtime/src/web-globals.js"),
     )]
     .into();
+    let mut installed = vec![
+        deno_webidl::deno_webidl::init(),
+        deno_web::deno_web::init(
+            Arc::new(deno_web::BlobStore::default()),
+            None,
+            false,
+            deno_web::InMemoryBroadcastChannel::default(),
+        ),
+        deno_webgpu::deno_webgpu::init(),
+        globals,
+        dom_bridge::extension(html, config),
+    ];
+    installed.extend(extensions);
     JsRuntime::new(RuntimeOptions {
         module_loader: Some(Rc::new(FsModuleLoader)),
-        extensions: vec![
-            deno_webidl::deno_webidl::init(),
-            deno_web::deno_web::init(
-                Arc::new(deno_web::BlobStore::default()),
-                None,
-                false,
-                deno_web::InMemoryBroadcastChannel::default(),
-            ),
-            deno_webgpu::deno_webgpu::init(),
-            globals,
-            dom_bridge::extension(html, config),
-        ],
+        extensions: installed,
         ..Default::default()
     })
 }

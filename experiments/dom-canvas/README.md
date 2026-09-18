@@ -5,6 +5,11 @@ real DOM canvas paints Three.js among HTML elements. Stacking-context demotion i
 fixed by a pinned one-line patch; ancestor clipping still fails. The executable exits nonzero after saving that result;
 this is not an adopted shipping DOM or compositor.
 
+The [native-window extension](WINDOW.md) presents a simple HTML/Three.js fixture
+with working pause/resize controls. It reuses this default renderer and retains
+the clipping limitation; the [window checkpoint](../../docs/validation/2026-09-18-dom-window.md)
+does not certify arbitrary HTML projects.
+
 The [overflow comparison](OVERFLOW.md) now separates stale paint positions,
 missing clips and containing-block layout errors in 22 browser/native cases.
 Its prototype patch is deliberately excluded from normal preparation.

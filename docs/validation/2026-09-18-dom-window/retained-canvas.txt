@@ -1,0 +1,2 @@
+2026-09-18 10:33:28.948 threejs-dom-window-probe[87650:5119446] Metal API Validation Enabled
+{"nativeDomWindow":true,"backend":"Metal","presentedFrames":20,"canvasSnapshots":1,"cpuImageTransport":false,"nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true}

@@ -1,0 +1,2 @@
+2026-09-18 10:33:24.769 threejs-dom-window-probe[87645:5119315] Metal API Validation Enabled
+Error: "Error: expected-DOM-window-frame-failure\n    at fail (file://<repo>/artifacts/dom-window/frame-error.mjs:4:29)\n    at Object.dispatch (ext:dom_window/animation.js:25:24)\n    at ext:dom_window/window.js:113:25\n    at ext:dom_window/window.js:103:7"

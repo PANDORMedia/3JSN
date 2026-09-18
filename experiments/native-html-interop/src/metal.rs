@@ -16,6 +16,7 @@ type Result<T> = std::result::Result<T, Box<dyn Error>>;
 /// and drains both owners before teardown. Sharing native objects does not share
 /// wgpu resource IDs, validation state, pending writes, or completion fences.
 pub struct MetalBridge {
+    pub adapter: wgpu::Adapter,
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
     deno: Instance,
@@ -26,6 +27,22 @@ pub struct MetalBridge {
 
 impl MetalBridge {
     pub fn new(deno: Instance, device_id: id::DeviceId, queue_id: id::QueueId) -> Result<Self> {
+        let wrapper = wgpu::Instance::new(wgpu::InstanceDescriptor {
+            backends: wgpu::Backends::METAL,
+            flags: wgpu::InstanceFlags::VALIDATION,
+            ..wgpu::InstanceDescriptor::new_without_display_handle()
+        });
+        Self::with_instance(deno, device_id, queue_id, &wrapper)
+    }
+
+    /// Reuse the instance that created the native presentation surface. Device
+    /// and queue identity are still checked before sharing any canvas storage.
+    pub fn with_instance(
+        deno: Instance,
+        device_id: id::DeviceId,
+        queue_id: id::QueueId,
+        wrapper: &wgpu::Instance,
+    ) -> Result<Self> {
         // The guards keep core objects alive while Objective-C references are
         // retained. Neither native object is manually destroyed or transferred.
         let (native_device, native_queue) = unsafe {
@@ -50,11 +67,6 @@ impl MetalBridge {
             timestamp_period.is_finite() && timestamp_period > 0.0,
             "Deno queue has an invalid timestamp period",
         )?;
-        let wrapper = wgpu::Instance::new(wgpu::InstanceDescriptor {
-            backends: wgpu::Backends::METAL,
-            flags: wgpu::InstanceFlags::VALIDATION,
-            ..wgpu::InstanceDescriptor::new_without_display_handle()
-        });
         let descriptor = wgpu::DeviceDescriptor {
             label: Some("Vello on Deno's native Metal queue"),
             ..Default::default()
@@ -110,6 +122,7 @@ impl MetalBridge {
                 )?;
             }
             return Ok(Self {
+                adapter,
                 device,
                 queue,
                 deno,

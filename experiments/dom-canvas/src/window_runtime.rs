@@ -1,0 +1,369 @@
+use std::{
+    future::Future,
+    path::PathBuf,
+    sync::{Arc, Mutex},
+    task::{Context, Poll, Waker},
+    time::Duration,
+};
+
+use blitz_dom::DocumentConfig;
+use blitz_traits::shell::{ColorScheme, Viewport};
+use deno_core::{JsRuntime, OpState, op2, v8};
+use tokio::sync::{mpsc, watch};
+use winit::event_loop::EventLoopProxy;
+
+use crate::{Result, dom_bridge, host, window_scene::WindowScene};
+
+#[derive(Clone, Copy, PartialEq)]
+pub struct HostState {
+    pub width: u32,
+    pub height: u32,
+    pub scale: f64,
+    pub visible: bool,
+    pub redraw: u64,
+    pub present: u64,
+    pub close: bool,
+}
+
+impl HostState {
+    fn drawable(self) -> bool {
+        self.visible && self.width > 0 && self.height > 0 && !self.close
+    }
+}
+
+pub struct Input {
+    pub kind: &'static str,
+    pub x: f64,
+    pub y: f64,
+    pub button: i32,
+    pub key: String,
+}
+
+#[derive(Debug)]
+pub enum HostEvent {
+    Ready,
+    Prepared(u64),
+    Presented(u64),
+    Stopped(std::result::Result<(u64, u64), String>),
+}
+
+pub type Interrupt = Arc<Mutex<Option<v8::IsolateHandle>>>;
+
+struct Callbacks {
+    viewport: [f64; 3],
+    pending: bool,
+    frame: Option<v8::Global<v8::Function>>,
+    resize: Option<v8::Global<v8::Function>>,
+    input: Option<v8::Global<v8::Function>>,
+}
+
+#[op2]
+fn op_dom_window_bind(
+    state: &mut OpState,
+    #[scoped] frame: v8::Global<v8::Function>,
+    #[scoped] resize: v8::Global<v8::Function>,
+    #[scoped] input: v8::Global<v8::Function>,
+) {
+    let callbacks = state.borrow_mut::<Callbacks>();
+    callbacks.frame = Some(frame);
+    callbacks.resize = Some(resize);
+    callbacks.input = Some(input);
+}
+
+#[op2]
+#[serde]
+fn op_dom_window_viewport(state: &mut OpState) -> Vec<f64> {
+    state.borrow::<Callbacks>().viewport.to_vec()
+}
+
+#[op2(fast)]
+fn op_dom_window_pending(state: &mut OpState, pending: bool) {
+    state.borrow_mut::<Callbacks>().pending = pending;
+}
+
+deno_core::extension!(dom_window,
+    ops = [op_dom_window_bind, op_dom_window_viewport, op_dom_window_pending],
+    options = { viewport: [f64; 3] },
+    state = |state, options| state.put(Callbacks { viewport: options.viewport, pending: false,
+        frame: None, resize: None, input: None }),
+);
+
+fn extension(state: HostState) -> deno_core::Extension {
+    let mut extension = dom_window::init([state.width.into(), state.height.into(), state.scale]);
+    extension.esm_files = vec![
+        deno_core::ExtensionFileSource::new(
+            "ext:dom_window/animation.js",
+            deno_core::ascii_str_include!("../../../crates/runtime/src/animation.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
+            "ext:dom_window/window.js",
+            deno_core::ascii_str_include!("window.js"),
+        ),
+    ]
+    .into();
+    extension.esm_entry_point = Some("ext:dom_window/window.js");
+    extension
+}
+
+fn call(
+    runtime: &mut JsRuntime,
+    callback: &v8::Global<v8::Function>,
+    args: &[v8::Global<v8::Value>],
+) -> Result<()> {
+    let call = runtime.call_with_args(callback, args);
+    let mut call = std::pin::pin!(call);
+    match call.as_mut().poll(&mut Context::from_waker(Waker::noop())) {
+        Poll::Ready(result) => {
+            result?;
+            Ok(())
+        }
+        Poll::Pending => Err("internal window callback returned a promise".into()),
+    }
+}
+
+fn resize(runtime: &mut JsRuntime, state: HostState) -> Result<()> {
+    dom_bridge::with_document(runtime, |doc| {
+        doc.set_viewport(Viewport::new(
+            state.width,
+            state.height,
+            state.scale as f32,
+            ColorScheme::Dark,
+        ));
+    });
+    let callback = runtime
+        .op_state()
+        .borrow()
+        .borrow::<Callbacks>()
+        .resize
+        .clone()
+        .ok_or("missing resize callback")?;
+    let args = {
+        deno_core::scope!(scope, runtime);
+        [state.width.into(), state.height.into(), state.scale].map(|value| {
+            let value: v8::Local<v8::Value> = v8::Number::new(scope, value).into();
+            v8::Global::new(scope, value)
+        })
+    };
+    call(runtime, &callback, &args)
+}
+
+fn dispatch_input(
+    runtime: &mut JsRuntime,
+    input: Input,
+    started: std::time::Instant,
+) -> Result<()> {
+    let target = if input.kind.starts_with("mouse") || input.kind == "click" {
+        dom_bridge::with_document(runtime, |doc| {
+            doc.resolve(started.elapsed().as_secs_f64());
+            doc.element_from_point(input.x as f32, input.y as f32)
+                .map(|node| node.as_u64().to_string())
+                .unwrap_or_default()
+        })
+    } else {
+        String::new()
+    };
+    // No document or OpState borrow crosses application dispatch: handlers can
+    // synchronously mutate the same DOM and request fresh layout.
+    let callback = runtime
+        .op_state()
+        .borrow()
+        .borrow::<Callbacks>()
+        .input
+        .clone()
+        .ok_or("missing input callback")?;
+    let args = {
+        deno_core::scope!(scope, runtime);
+        let kind = v8::String::new(scope, input.kind).ok_or("input kind allocation failed")?;
+        let x = v8::Number::new(scope, input.x);
+        let y = v8::Number::new(scope, input.y);
+        let button = v8::Number::new(scope, f64::from(input.button));
+        let key = v8::String::new(scope, &input.key).ok_or("input key allocation failed")?;
+        let target = v8::String::new(scope, &target).ok_or("input target allocation failed")?;
+        [
+            kind.into(),
+            x.into(),
+            y.into(),
+            button.into(),
+            key.into(),
+            target.into(),
+        ]
+        .map(|value: v8::Local<v8::Value>| v8::Global::new(scope, value))
+    };
+    call(runtime, &callback, &args)
+}
+
+pub struct Worker {
+    pub html: String,
+    pub module: PathBuf,
+    pub font: Vec<u8>,
+    pub instance: wgpu::Instance,
+    pub surface: wgpu::Surface<'static>,
+    pub state: watch::Receiver<HostState>,
+    pub input: mpsc::Receiver<Input>,
+    pub proxy: EventLoopProxy<HostEvent>,
+    pub interrupt: Interrupt,
+}
+
+async fn closed(mut state: watch::Receiver<HostState>) {
+    while !state.borrow_and_update().close {
+        if state.changed().await.is_err() {
+            break;
+        }
+    }
+}
+
+pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> {
+    let initial = *worker.state.borrow();
+    let started = std::time::Instant::now();
+    let mut runtime = host::create_with_extensions(
+        &worker.html,
+        DocumentConfig {
+            font_ctx: Some(blitz_dom::build_single_font_ctx(&worker.font)),
+            viewport: Some(Viewport::new(
+                initial.width,
+                initial.height,
+                initial.scale as f32,
+                ColorScheme::Dark,
+            )),
+            ..Default::default()
+        },
+        vec![extension(initial)],
+    );
+    *worker.interrupt.lock().unwrap() = Some(runtime.v8_isolate().thread_safe_handle());
+    let mut scene = None;
+    let mut presented = 0;
+    let outcome: Result<(u64, u64)> = async {
+        if worker.state.borrow().close {
+            return Ok((0, 0));
+        }
+        tokio::select! {
+            result = host::load(&mut runtime, &worker.module) => result?,
+            _ = closed(worker.state.clone()) => return Ok((0, 0)),
+        }
+        // Three.js may configure its DOM canvas lazily on the first RAF. Run
+        // that callback before discovering the canvas device for composition.
+        let first_frame = runtime
+            .op_state()
+            .borrow()
+            .borrow::<Callbacks>()
+            .frame
+            .clone()
+            .ok_or("missing animation callback")?;
+        call(&mut runtime, &first_frame, &[])?;
+        drop(first_frame);
+        scene = Some(WindowScene::new(
+            &mut runtime,
+            &worker.instance,
+            worker.surface,
+            initial.width,
+            initial.height,
+        )?);
+        let scene = scene.as_mut().unwrap();
+        worker.proxy.send_event(HostEvent::Ready)?;
+        let mut viewport = (initial.width, initial.height, initial.scale);
+        let mut redraw = 0;
+        let mut sequence = 0;
+        let mut pending: Option<(u64, wgpu::SurfaceTexture)> = None;
+        let mut composed = false;
+        let mut tick = tokio::time::interval(Duration::from_millis(8));
+        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+        loop {
+            let current = *worker.state.borrow_and_update();
+            if current.close {
+                break;
+            }
+            if let Poll::Ready(Err(error)) =
+                runtime.poll_event_loop(&mut Context::from_waker(Waker::noop()), Default::default())
+            {
+                return Err(error.into());
+            }
+            if viewport != (current.width, current.height, current.scale) {
+                pending = None;
+                composed = false;
+                viewport = (current.width, current.height, current.scale);
+                if current.width > 0 && current.height > 0 {
+                    scene.resize(current.width, current.height)?;
+                    resize(&mut runtime, current)?;
+                }
+            }
+            if !current.drawable() {
+                pending = None;
+                composed = false;
+            }
+            if pending
+                .as_ref()
+                .is_some_and(|(id, _)| *id == current.present)
+            {
+                let (_, frame) = pending.take().unwrap();
+                frame.present();
+                presented += 1;
+                composed = false;
+                worker.proxy.send_event(HostEvent::Presented(presented))?;
+            }
+            for _ in 0..64 {
+                let Ok(input) = worker.input.try_recv() else {
+                    break;
+                };
+                dispatch_input(&mut runtime, input, started)?;
+            }
+            if worker.state.borrow().close {
+                break;
+            }
+            if current.drawable() && pending.is_none() && (current.redraw != redraw || composed) {
+                if !composed {
+                    redraw = current.redraw;
+                    let callback = {
+                        let state = runtime.op_state();
+                        let state = state.borrow();
+                        let callbacks = state.borrow::<Callbacks>();
+                        callbacks.pending.then(|| callbacks.frame.clone()).flatten()
+                    };
+                    if let Some(callback) = callback {
+                        call(&mut runtime, &callback, &[])?;
+                    }
+                    scene.compose(&mut runtime)?;
+                    composed = true;
+                }
+                if let Some(frame) = scene.acquire()? {
+                    sequence += 1;
+                    pending = Some((sequence, frame));
+                    worker.proxy.send_event(HostEvent::Prepared(sequence))?;
+                }
+            }
+            tokio::select! {
+                _ = tick.tick() => {},
+                result = worker.state.changed() => { if result.is_err() { break; } },
+            }
+        }
+        drop(pending);
+        Ok((presented, scene.snapshots))
+    }
+    .await;
+    // Clear the shared interrupt before disposing the isolate. Holding its lock
+    // makes termination and disposal mutually exclusive, including startup errors.
+    *worker.interrupt.lock().unwrap() = None;
+    runtime.v8_isolate().cancel_terminate_execution();
+    let snapshots = scene.as_ref().map_or(0, |scene| scene.snapshots);
+    let cleanup = scene.as_mut().map(|scene| scene.release()).transpose();
+    if let Err(error) = cleanup {
+        // A failed drain cannot establish safe alias teardown. Leak this failed
+        // process generation rather than destroying resources still in GPU use.
+        std::mem::forget(scene);
+        std::mem::forget(runtime);
+        return Err(format!(
+            "GPU teardown did not complete: {error}; application result: {outcome:?}"
+        ));
+    }
+    drop(scene);
+    dom_bridge::release(&mut runtime);
+    runtime.op_state().borrow_mut().take::<Callbacks>();
+    drop(runtime);
+    if worker.state.borrow().close
+        && outcome
+            .as_ref()
+            .is_err_and(|e| e.to_string().contains("execution terminated"))
+    {
+        return Ok((presented, snapshots));
+    }
+    outcome.map_err(|error| error.to_string())
+}

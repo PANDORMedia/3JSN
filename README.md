@@ -121,6 +121,14 @@ change, and [initialized handoff](docs/validation/2026-09-18-canvas-handoff.md) 
 untouched, partially written and discarded render-attachment canvases. Ancestor
 clipping still fails, so the integration result remains explicitly partial.
 
+The [native DOM window](experiments/dom-canvas/WINDOW.md) now presents HTML text,
+a working HTML button and a real Three.js canvas together through Metal. The
+same fixture HTML and bundle run in the browser. Its
+[hardware checkpoint](docs/validation/2026-09-18-dom-window.md) covers 120 frames,
+canvas retention, animation-error propagation and observed native pause/resize
+controls. This remains a separate experiment; the CLI does not yet package
+unchanged HTML/WebGL applications.
+
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout
 candidate repairs viewport ownership, dynamic grid state and
@@ -163,6 +171,11 @@ keeps that clip inside its owner's opacity effect. New controls match Chrome's
 composition classification and uniform interiors, while all 190 prior ownership
 captures remain unchanged. Transformed DOM queries and live display-scale
 transitions still have recorded failures.
+
+The positioned candidate's [DPR cache repair](docs/validation/2026-09-18-dpr-cache.md)
+now passes all three previously failing CPU regressions and 77 selected layout
+and ownership tests. Physical display transitions and GPU/input alignment remain
+unverified; this repair does not adopt the candidate into the native DOM window.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
