@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "presentation": "offscreen-only",
+  "limits": [
+    "No window, surface, input or presentation evidence.",
+    "External ANGLE and font inputs; not a standalone application package.",
+    "No performance or general WebGL compatibility claim."
+  ],
+  "sourceBefore": {
+    "examples/webgl-window/index.html": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4",
+    "examples/webgl-window/main.mjs": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59"
+  },
+  "executableSha256": "3957b268352e42fbe340def5db8b5659a90aa68582c751e3dbe3f965dda44e55",
+  "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+  "generated": {
+    "uiSha256": "7bfea5e56c57bc036f625faa1bd70a261a58069328ec7b1816eb79a46aeaf155",
+    "scriptSha256": "c891af6d8ca92ba46df87cf51a24afa16e71717b03b5a871f3a3ab900953b900"
+  },
+  "command": {
+    "executable": "/Users/sean/dev/3JSN/target/debug/deps/webgl_composition-72af6618e5d7d7fd",
+    "args": [
+      "--exact",
+      "demo_offscreen::animated_three_demo_offscreen",
+      "--ignored",
+      "--nocapture"
+    ],
+    "environment": {
+      "THREEJS_NATIVE_DEMO_UI": "/Users/sean/dev/3JSN/.cache/native-webgl/demo-uniform-lifetimes/ui.json",
+      "THREEJS_NATIVE_DEMO_SCRIPT": "/Users/sean/dev/3JSN/.cache/native-webgl/demo-uniform-lifetimes/app.js",
+      "THREEJS_NATIVE_DEMO_CAPTURE": "/Users/sean/dev/3JSN/.cache/native-webgl/demo-uniform-lifetimes/demo.png",
+      "THREEJS_NATIVE_COMPOSITION_FONT": "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+      "THREEJS_NATIVE_ANGLE_PACKAGE": "/Users/sean/dev/3JSN/.cache/native-webgl/node_modules/gl",
+      "MTL_DEBUG_LAYER": "1"
+    }
+  },
+  "demo": {
+    "packagedInputs": false,
+    "frames": 60,
+    "checkpoints": 5,
+    "snapshotGenerations": 4,
+    "canvasContexts": 2,
+    "cleanup": "passed",
+    "surfacePresentation": false,
+    "cpuFrameTransport": false,
+    "htmlParser": "preserved"
+  },
+  "capture": {
+    "width": 960,
+    "height": 640,
+    "sha256": "18a45c0715feba788761025143be29d1234ad7e6034a0169a5980e3734c8d041"
+  },
+  "sourceAfter": {
+    "examples/webgl-window/index.html": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4",
+    "examples/webgl-window/main.mjs": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59"
+  },
+  "sourcePreserved": true
+}

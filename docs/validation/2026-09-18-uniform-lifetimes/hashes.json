@@ -1,0 +1,8 @@
+{
+  "target/debug/deps/threejs_native_webgl_runtime-f9716b11fab4a520": "5cc54d68957f8a58101c79591a551c5e304d3765995c831cebee966bbd98a96e",
+  "target/debug/deps/webgl_composition-72af6618e5d7d7fd": "3957b268352e42fbe340def5db8b5659a90aa68582c751e3dbe3f965dda44e55",
+  "experiments/webgl-runtime/src/webgl_programs.rs": "8fc457ef379e4e7cb3f26deb33bc38dec3a358460c8cbf3861a358eb9fc3da8d",
+  "experiments/webgl-runtime/src/shaders.rs": "74f4fb200778126492de4c46f49d6e139a62a7154bed13dfeb6087c8b0f87b59",
+  "experiments/webgl-runtime/src/uniform_lifecycle_tests.rs": "ce17584519ce2709e938f13053ffff304454d2383296ee3e0f57a74161c57e99",
+  "experiments/webgl-runtime/src/uniform-lifecycle-test.js": "f9c9a61d097005cee5ba339a1a62470330a5d10bf0cc4316e331586fdfec01e5"
+}

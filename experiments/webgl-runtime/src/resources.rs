@@ -69,6 +69,11 @@ impl<T> Registry<T> {
         }
     }
 
+    #[cfg(test)]
+    pub(crate) fn len(&self) -> usize {
+        self.entries.len()
+    }
+
     pub fn insert(
         &mut self,
         context: u32,

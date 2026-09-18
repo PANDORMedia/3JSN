@@ -1,0 +1,32 @@
+globalThis.check = (value, message) => { if (!value) throw Error(message); };
+globalThis.fragmentSource = '#version 300 es\nprecision highp float; uniform vec4 tint[2]; out vec4 color; void main(){color=tint[0]+tint[1];}';
+globalThis.makeProgram = gl => {
+  const vertex = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertex, '#version 300 es\nvoid main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));gl_Position=vec4(p*2.0-1.0,0.0,1.0);}');
+  gl.compileShader(vertex);
+  check(gl.getShaderParameter(vertex, gl.COMPILE_STATUS), gl.getShaderInfoLog(vertex));
+  const fragment = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragment, fragmentSource);
+  gl.compileShader(fragment);
+  check(gl.getShaderParameter(fragment, gl.COMPILE_STATUS), gl.getShaderInfoLog(fragment));
+  const program = gl.createProgram();
+  gl.attachShader(program, vertex);
+  gl.attachShader(program, fragment);
+  gl.linkProgram(program);
+  check(gl.getProgramParameter(program, gl.LINK_STATUS), gl.getProgramInfoLog(program));
+  gl.useProgram(program);
+  return { program, fragment };
+};
+globalThis.draw = (gl, expected) => {
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  const pixel = new Uint8Array(4);
+  __webglHost.observePixel(gl, pixel);
+  check(pixel.every((value, index) => value === expected[index]), `Unexpected uniform pixel: ${pixel}`);
+  check(gl.getError() === gl.NO_ERROR, 'Uniform rendering generated a GL error');
+};
+globalThis.gl = __webglHost.createContext({}, 8, 8);
+const created = makeProgram(gl);
+globalThis.program = created.program;
+globalThis.fragment = created.fragment;

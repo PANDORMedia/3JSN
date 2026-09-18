@@ -9,7 +9,10 @@ use glow::HasContext;
 use serde::Serialize;
 
 use crate::{
-    State, current, failure, resources::ResourceKind, shaders::Object, webgl_state::ParameterValue,
+    State, current, failure,
+    resources::{Registry, ResourceKind},
+    shaders::Object,
+    webgl_state::ParameterValue,
 };
 
 #[derive(Clone, Copy)]
@@ -23,6 +26,17 @@ pub struct UniformLocation {
 struct ProgramRecord {
     generation: u64,
     deleted: bool,
+    locations: HashMap<u32, u32>,
+}
+
+impl ProgramRecord {
+    fn clear_locations(&mut self, objects: &mut Registry<Object>, context: u32) {
+        for id in self.locations.drain().map(|(_, id)| id) {
+            objects
+                .remove(context, ResourceKind::UniformLocation, id)
+                .expect("program owns every cached uniform location");
+        }
+    }
 }
 
 #[derive(Default)]
@@ -56,7 +70,12 @@ impl ProgramState {
         self.contexts.remove(&context);
     }
 
-    pub fn before_link(&mut self, context: u32, program: u32) -> Result<(), JsErrorBox> {
+    pub fn before_link(
+        &mut self,
+        objects: &mut Registry<Object>,
+        context: u32,
+        program: u32,
+    ) -> Result<(), JsErrorBox> {
         let record = self
             .contexts
             .entry(context)
@@ -68,21 +87,22 @@ impl ProgramState {
             .generation
             .checked_add(1)
             .ok_or_else(|| failure("Program link generation exhausted"))?;
+        record.clear_locations(objects, context);
         Ok(())
     }
 
-    pub fn remove_program(&mut self, context: u32, program: u32) {
+    pub fn remove_program(&mut self, objects: &mut Registry<Object>, context: u32, program: u32) {
         if let Some(owner) = self.contexts.get_mut(&context) {
             if owner.current == Some(program) {
                 // GLES retains a deleted current program until another useProgram.
                 owner.programs.entry(program).or_default().deleted = true;
-            } else {
-                owner.programs.remove(&program);
+            } else if let Some(mut record) = owner.programs.remove(&program) {
+                record.clear_locations(objects, context);
             }
         }
     }
 
-    fn use_program(&mut self, context: u32, program: Option<u32>) {
+    fn use_program(&mut self, objects: &mut Registry<Object>, context: u32, program: Option<u32>) {
         let owner = self.contexts.entry(context).or_default();
         if let Some(previous) = owner.current
             && Some(previous) != program
@@ -91,7 +111,11 @@ impl ProgramState {
                 .get(&previous)
                 .is_some_and(|record| record.deleted)
         {
-            owner.programs.remove(&previous);
+            owner
+                .programs
+                .remove(&previous)
+                .unwrap()
+                .clear_locations(objects, context);
         }
         owner.current = program;
         if let Some(program) = program {
@@ -99,11 +123,38 @@ impl ProgramState {
         }
     }
 
-    fn generation(&self, context: u32, program: u32) -> u64 {
-        self.contexts
-            .get(&context)
-            .and_then(|owner| owner.programs.get(&program))
-            .map_or(0, |record| record.generation)
+    fn uniform_location(
+        &mut self,
+        objects: &mut Registry<Object>,
+        context: u32,
+        program: u32,
+        native: glow::NativeUniformLocation,
+    ) -> Result<u32, JsErrorBox> {
+        let record = self
+            .contexts
+            .entry(context)
+            .or_default()
+            .programs
+            .entry(program)
+            .or_default();
+        // Array names and their [0] aliases resolve to the same native location.
+        // JS still creates a fresh wrapper; only the host payload is shared.
+        if let Some(id) = record.locations.get(&native.0) {
+            return Ok(*id);
+        }
+        let id = objects
+            .insert(
+                context,
+                ResourceKind::UniformLocation,
+                Object::UniformLocation(UniformLocation {
+                    program,
+                    generation: record.generation,
+                    native,
+                }),
+            )
+            .map_err(|error| failure(error.to_string()))?;
+        record.locations.insert(native.0, id);
+        Ok(id)
     }
 
     fn accepts(&self, context: u32, location: &UniformLocation) -> bool {
@@ -187,10 +238,10 @@ pub fn op_wgl_link_program(state: &mut OpState, context: u32, id: u32) -> Result
     // Validate current ownership before advancing the generation. Every link attempt
     // invalidates prior WebGL locations, even when the new executable fails to link.
     current(state, context)?;
-    state
-        .borrow_mut::<State>()
-        .programs
-        .before_link(context, id)?;
+    let State {
+        programs, objects, ..
+    } = state.borrow_mut::<State>();
+    programs.before_link(objects, context, id)?;
     let gl = &current(state, context)?.gl;
     unsafe { gl.link_program(value) };
     Ok(())
@@ -209,10 +260,10 @@ pub fn op_wgl_use_program(state: &mut OpState, context: u32, id: u32) -> Result<
         gl.get_parameter_program(glow::CURRENT_PROGRAM) == value
     };
     if accepted {
-        state
-            .borrow_mut::<State>()
-            .programs
-            .use_program(context, (id != 0).then_some(id));
+        let State {
+            programs, objects, ..
+        } = state.borrow_mut::<State>();
+        programs.use_program(objects, context, (id != 0).then_some(id));
     }
     Ok(())
 }
@@ -403,20 +454,10 @@ pub fn op_wgl_get_uniform_location(
     let Some(native) = (unsafe { gl.get_uniform_location(value, &name) }) else {
         return Ok(0);
     };
-    let state = state.borrow_mut::<State>();
-    let generation = state.programs.generation(context, id);
-    state
-        .objects
-        .insert(
-            context,
-            ResourceKind::UniformLocation,
-            Object::UniformLocation(UniformLocation {
-                program: id,
-                generation,
-                native,
-            }),
-        )
-        .map_err(|error| failure(error.to_string()))
+    let State {
+        programs, objects, ..
+    } = state.borrow_mut::<State>();
+    programs.uniform_location(objects, context, id, native)
 }
 
 fn uniform_location(
@@ -628,32 +669,134 @@ mod tests {
     #[test]
     fn location_requires_same_context_current_program_and_link_generation() {
         let mut state = ProgramState::default();
-        state.before_link(1, 10).unwrap();
-        state.before_link(1, 11).unwrap();
-        state.use_program(1, Some(10));
+        let mut objects = Registry::new();
+        state.before_link(&mut objects, 1, 10).unwrap();
+        state.before_link(&mut objects, 1, 11).unwrap();
+        state.use_program(&mut objects, 1, Some(10));
         let first = location(10, 1);
         assert!(state.accepts(1, &first));
         assert!(!state.accepts(2, &first));
         assert!(!state.accepts(1, &location(11, 1)));
-        state.before_link(1, 10).unwrap();
+        state.before_link(&mut objects, 1, 10).unwrap();
         assert!(!state.accepts(1, &first));
         assert!(state.accepts(1, &location(10, 2)));
-        state.use_program(1, None);
+        state.use_program(&mut objects, 1, None);
         assert!(!state.accepts(1, &location(10, 2)));
     }
 
     #[test]
     fn deleting_current_program_preserves_executable_until_unbound() {
         let mut state = ProgramState::default();
-        state.before_link(1, 10).unwrap();
-        state.use_program(1, Some(10));
-        state.remove_program(1, 10);
+        let mut objects = Registry::new();
+        state.before_link(&mut objects, 1, 10).unwrap();
+        state.use_program(&mut objects, 1, Some(10));
+        state.remove_program(&mut objects, 1, 10);
         assert!(state.accepts(1, &location(10, 1)));
-        state.use_program(1, Some(11));
+        state.use_program(&mut objects, 1, Some(11));
         assert!(!state.accepts(1, &location(10, 1)));
         assert!(!state.contexts[&1].programs.contains_key(&10));
         state.remove_context(1);
         assert!(!state.accepts(1, &location(11, 0)));
+    }
+
+    fn stored_location(objects: &Registry<Object>, context: u32, id: u32) -> UniformLocation {
+        match objects
+            .get(context, ResourceKind::UniformLocation, id)
+            .unwrap()
+        {
+            Object::UniformLocation(location) => *location,
+            _ => panic!("expected location payload"),
+        }
+    }
+
+    #[test]
+    fn repeated_queries_and_relinks_bound_registry_storage_and_never_reuse_handles() {
+        let mut state = ProgramState::default();
+        let mut objects = Registry::new();
+        let mut last = 0;
+        for _ in 0..128 {
+            state.before_link(&mut objects, 1, 10).unwrap();
+            assert_eq!(objects.len(), 0);
+            if last != 0 {
+                assert!(objects.get(1, ResourceKind::UniformLocation, last).is_err());
+            }
+            let first = state
+                .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(3))
+                .unwrap();
+            assert!(first > last);
+            for _ in 0..1000 {
+                assert_eq!(
+                    state
+                        .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(3))
+                        .unwrap(),
+                    first
+                );
+            }
+            last = state
+                .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(4))
+                .unwrap();
+            assert_eq!(objects.len(), 2);
+        }
+        state.remove_program(&mut objects, 1, 10);
+        assert_eq!(objects.len(), 0);
+        assert!(objects.get(1, ResourceKind::UniformLocation, last).is_err());
+    }
+
+    #[test]
+    fn same_native_location_is_isolated_by_context_program_and_generation() {
+        let mut state = ProgramState::default();
+        let mut objects = Registry::new();
+        let a = state
+            .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(3))
+            .unwrap();
+        let b = state
+            .uniform_location(&mut objects, 1, 11, glow::NativeUniformLocation(3))
+            .unwrap();
+        let c = state
+            .uniform_location(&mut objects, 2, 10, glow::NativeUniformLocation(3))
+            .unwrap();
+        assert!(a < b && b < c);
+        assert!(objects.get(2, ResourceKind::UniformLocation, a).is_err());
+        state.use_program(&mut objects, 1, Some(10));
+        assert!(state.accepts(1, &stored_location(&objects, 1, a)));
+        assert!(!state.accepts(1, &stored_location(&objects, 1, b)));
+        state.before_link(&mut objects, 1, 10).unwrap();
+        assert_eq!(objects.len(), 2);
+        assert!(objects.get(1, ResourceKind::UniformLocation, a).is_err());
+        let next = state
+            .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(3))
+            .unwrap();
+        assert!(next > c);
+        state.remove_program(&mut objects, 1, 11);
+        assert_eq!(objects.len(), 2);
+        assert!(objects.get(1, ResourceKind::UniformLocation, b).is_err());
+        assert!(objects.get(2, ResourceKind::UniformLocation, c).is_ok());
+        // Context teardown independently owns all remaining registry payloads.
+        state.remove_context(1);
+        assert_eq!(objects.remove_context(1), 1);
+        assert_eq!(objects.len(), 1);
+    }
+
+    #[test]
+    fn deleted_current_locations_survive_until_successful_switch_or_unbind() {
+        for replacement in [None, Some(11)] {
+            let mut state = ProgramState::default();
+            let mut objects = Registry::new();
+            state.before_link(&mut objects, 1, 10).unwrap();
+            let id = state
+                .uniform_location(&mut objects, 1, 10, glow::NativeUniformLocation(3))
+                .unwrap();
+            state.use_program(&mut objects, 1, Some(10));
+            state.remove_program(&mut objects, 1, 10);
+            assert_eq!(objects.len(), 1);
+            assert!(state.accepts(1, &stored_location(&objects, 1, id)));
+            // Re-selecting the current executable must not reclaim its locations.
+            state.use_program(&mut objects, 1, Some(10));
+            assert_eq!(objects.len(), 1);
+            state.use_program(&mut objects, 1, replacement);
+            assert_eq!(objects.len(), 0);
+            assert!(objects.get(1, ResourceKind::UniformLocation, id).is_err());
+        }
     }
 
     #[test]

@@ -181,7 +181,7 @@ pub fn op_gl_link_program(
         .get_mut(&context)
         .ok_or_else(|| failure("Unknown context"))?;
     owner.make_current().map_err(failure)?;
-    programs.before_link(context, id)?;
+    programs.before_link(objects, context, id)?;
     unsafe {
         owner.gl.link_program(program);
         Ok(
@@ -228,6 +228,6 @@ pub fn op_gl_delete_program(state: &mut OpState, context: u32, id: u32) -> Resul
         .map_err(|e| failure(e.to_string()))?
         .program();
     unsafe { owner.gl.delete_program(program) };
-    programs.remove_program(context, id);
+    programs.remove_program(objects, context, id);
     Ok(())
 }
