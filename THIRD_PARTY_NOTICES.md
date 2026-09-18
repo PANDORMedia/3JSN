@@ -32,8 +32,8 @@ Copyright 2018-2026 the Deno authors. **MIT license**; see the preserved
 The runtime also uses `deno_core 0.412.0`. The three embedded extension packages identify
 [Deno revision `0c071246a412575e07423263404a5d13e7ed6aa2`](https://github.com/denoland/deno/tree/0c071246a412575e07423263404a5d13e7ed6aa2).
 `experiments/dom-canvas/patches/deno-webgpu-canvas.patch` modifies Deno's
-`ext/webgpu/canvas.rs`. Any checked-source replacements
-of `ext/web/02_event.js` in the embedding crate remain derived from that MIT source.
+`ext/webgpu/canvas.rs`. `crates/js-sources/dom_event_parent.rs` contains checked-source replacements
+for `ext/web/02_event.js` derived from that MIT source.
 The license text is copied verbatim from the published `deno_webgpu 0.226.0` package's
 `LICENSE.md`; its attribution agrees with the embedded source headers.
 

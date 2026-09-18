@@ -1,3 +1,7 @@
+// Portions derived from deno_web 0.290.0 ext/web/02_event.js.
+// Copyright 2018-2026 the Deno authors. MIT license.
+// See LICENSES/Deno-MIT.txt and THIRD_PARTY_NOTICES.md at the repository root.
+
 //! Complete Deno's DOM event path for the native document's Window.
 //!
 //! deno_web 0.290.0 supplies the dispatch algorithm but treats every parent as a
