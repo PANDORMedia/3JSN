@@ -1,0 +1,61 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "path": "experiments/webgl-runtime/native/angle.mm",
+      "sha256": "65baed4a71f621a85bdf33ed1db548ae61f9a1cee39f3b9bc27edc58b814acb9"
+    },
+    {
+      "path": "experiments/webgl-runtime/native/angle.h",
+      "sha256": "1916f088dd0e1a0046bf00b65a065074d092c1b1929fa7313dcb3e37c24a1d58"
+    },
+    {
+      "path": "experiments/webgl-runtime/Cargo.toml",
+      "sha256": "feac4cd51f0524b10ee0de45da2656e3e2e8e46574bb417ddb57aaa60fb8a620"
+    },
+    {
+      "path": "experiments/webgl-runtime/Cargo.lock",
+      "sha256": "781cbd167963c606a9e8592d1ec28e6dc8d0ec9d7608e5db568829e8328e524e"
+    },
+    {
+      "path": "experiments/webgl-runtime/src/lib.rs",
+      "sha256": "0164298b38b1d7043b07ec317dc8ad60ad06cf934b531d7fa3f890e5aa0c62e6"
+    },
+    {
+      "path": "experiments/webgl-runtime/src/native.rs",
+      "sha256": "7153eca73f4b2ac61e63bb91cefd7ad7fa4427ce96c8ea70f5bd485be46fb313"
+    },
+    {
+      "path": "experiments/webgl-runtime/src/snapshot.rs",
+      "sha256": "fcfadeb5055dc46a54f089d00939b147bfedc4acc12a5ebcdcdfcbb78315517a"
+    },
+    {
+      "path": "experiments/webgl-runtime/src/snapshot_consumer.rs",
+      "sha256": "737aa6914aa361be361a5c7ff91cb0a3c6e8ff12fd5e9933762dbf0bf2a6f704"
+    },
+    {
+      "path": "experiments/webgl-runtime/tests/snapshot.rs",
+      "sha256": "c74ffb2894bbced06f5be8f076636166b5d25955bc9cae13f8cfaced92395e3e"
+    },
+    {
+      "path": "target/debug/deps/snapshot-cbbf053656e26104",
+      "sha256": "5f2aa72d496dff5708ef3da87722c8a7da86f4a9b6ea79853b3d79ecd47ae593"
+    },
+    {
+      "path": "target/debug/deps/threejs_native_webgl_runtime-c971e9e895e68e1d",
+      "sha256": "040b615514bfa9c365044b765d0379d436c102b7b869c38d3d04c8e911103689"
+    },
+    {
+      "path": "target/debug/deps/webgl_dom-c6263664d8ce0284",
+      "sha256": "f3959b4527dddaba05f07104043c3113bf1084ccd919fda7a2c92520506e9ce1"
+    },
+    {
+      "path": "target/debug/deps/webgl_dom-f0b4106d389c660a",
+      "sha256": "d1e70ed7d6ff8fa0ae422389543de2eb446f32ed909a844b2d628a14017a490d"
+    },
+    {
+      "path": ".cache/native-webgl/dom.js",
+      "sha256": "906d640cbd54385efb0a426bb0b97b1600e09b218478e010b1da4eb704b989ce"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-//! Metal-only experiment: two wgpu registries sharing one native device and queue.
+//! Metal compositor ownership, with an optional shared Deno device/queue registry.
 
-use std::{borrow::Cow, error::Error, time::Duration};
+use std::{borrow::Cow, error::Error, ffi::c_void, time::Duration};
 
 use deno_webgpu::{Instance, wgpu_core::id};
 use objc2::{rc::Retained, runtime::ProtocolObject};
@@ -12,16 +12,21 @@ use wgpu_hal::Adapter as _;
 
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
-/// The host keeps Deno's device/queue alive, serializes both registries' work,
-/// and drains both owners before teardown. Sharing native objects does not share
-/// wgpu resource IDs, validation state, pending writes, or completion fences.
+struct DenoOwner {
+    instance: Instance,
+    device: id::DeviceId,
+    queue: id::QueueId,
+}
+
+/// The shared mode retains Deno's registry and drains both owners. Independent
+/// mode owns only the compositor queue; external producers require their own
+/// synchronization and retirement protocol. Native identity never shares wgpu
+/// resource IDs, validation state, pending writes, or completion fences.
 pub struct MetalBridge {
     pub adapter: wgpu::Adapter,
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
-    deno: Instance,
-    deno_device: id::DeviceId,
-    deno_queue: id::QueueId,
+    deno: Option<DenoOwner>,
     native_device: Retained<ProtocolObject<dyn MTLDevice>>,
 }
 
@@ -125,24 +130,121 @@ impl MetalBridge {
                 adapter,
                 device,
                 queue,
-                deno,
-                deno_device: device_id,
-                deno_queue: queue_id,
+                deno: Some(DenoOwner {
+                    instance: deno,
+                    device: device_id,
+                    queue: queue_id,
+                }),
                 native_device,
             });
         }
         Err("no compatible wrapper adapter exposes Deno's identical MTLDevice".into())
     }
 
-    /// Flush and drain both registries before generation teardown, including
-    /// after a failed render. Call while producer and imported aliases remain
-    /// alive. This is a bounded cleanup barrier, never a per-frame handoff.
-    /// A failed drain must be reported; it does not certify orderly teardown.
+    /// Open an independent compositor queue on the producer's exact Metal device.
+    /// The expected pointer is only an identity token: it is never dereferenced
+    /// or retained. The returned owner retains its own checked native device.
+    /// External producer queues remain separate and require explicit handoffs.
+    pub fn with_native_device(
+        instance: &wgpu::Instance,
+        surface: &wgpu::Surface<'_>,
+        expected_device: *mut c_void,
+    ) -> Result<Self> {
+        Self::open_native_device(instance, Some(surface), expected_device)
+    }
+
+    /// Open the same independent compositor without a presentation surface.
+    /// The expected pointer remains an identity token, never an adopted owner.
+    pub fn with_native_device_offscreen(
+        instance: &wgpu::Instance,
+        expected_device: *mut c_void,
+    ) -> Result<Self> {
+        Self::open_native_device(instance, None, expected_device)
+    }
+
+    fn open_native_device(
+        instance: &wgpu::Instance,
+        surface: Option<&wgpu::Surface<'_>>,
+        expected_device: *mut c_void,
+    ) -> Result<Self> {
+        ensure(!expected_device.is_null(), "expected Metal device is null")?;
+        let descriptor = wgpu::DeviceDescriptor {
+            label: Some("Independent native Metal compositor"),
+            ..Default::default()
+        };
+        let mut failures = Vec::new();
+        for adapter in pollster::block_on(instance.enumerate_adapters(wgpu::Backends::METAL)) {
+            if surface.is_some_and(|surface| !adapter.is_surface_supported(surface))
+                || !adapter.features().contains(descriptor.required_features)
+                || !descriptor.required_limits.check_limits(&adapter.limits())
+            {
+                continue;
+            }
+            let (device, queue) = match pollster::block_on(adapter.request_device(&descriptor)) {
+                Ok(pair) => pair,
+                Err(error) => {
+                    failures.push(error.to_string());
+                    continue;
+                }
+            };
+            let native_device = {
+                // SAFETY: HAL guards keep both newly created owners live while
+                // inspecting them; no external pointer is accessed or adopted.
+                let (device, queue) = unsafe {
+                    (
+                        device.as_hal::<wgpu_hal::api::Metal>(),
+                        queue.as_hal::<wgpu_hal::api::Metal>(),
+                    )
+                };
+                let device = device.ok_or("independent compositor device is not Metal")?;
+                let queue = queue.ok_or("independent compositor queue is not Metal")?;
+                let native = device.raw_device();
+                if Retained::as_ptr(native).cast_mut().cast::<c_void>() != expected_device {
+                    continue;
+                }
+                ensure(
+                    same_device(&queue.as_raw().device(), native),
+                    "independent compositor queue belongs to a different Metal device",
+                )?;
+                native.clone()
+            };
+            return Ok(Self {
+                adapter,
+                device,
+                queue,
+                deno: None,
+                native_device,
+            });
+        }
+        let mut message = if surface.is_some() {
+            "no surface-compatible Metal adapter exposes the expected MTLDevice"
+        } else {
+            "no Metal adapter exposes the expected MTLDevice"
+        }
+        .to_string();
+        if !failures.is_empty() {
+            message.push_str(": ");
+            message.push_str(&failures.join("; "));
+        }
+        Err(message.into())
+    }
+
+    /// Whether this compositor shares Deno's native queue and drains its registry.
+    pub fn shared_deno_queue(&self) -> bool {
+        self.deno.is_some()
+    }
+
+    /// Flush and drain owned registries before generation teardown, including
+    /// after a failed render. Independent mode does not drain external producers.
+    /// Call while producers and imported aliases remain alive. This is a bounded
+    /// cleanup barrier, never a per-frame handoff; a failure must be reported.
     pub fn drain(&self) -> Result<()> {
-        let deno_flush = self
-            .deno
-            .queue_submit(self.deno_queue, &[])
-            .map_err(|(_, error)| format!("Deno cleanup submit failed: {error}"));
+        let deno_flush = self.deno.as_ref().map(|owner| {
+            owner
+                .instance
+                .queue_submit(owner.queue, &[])
+                .map_err(|(_, error)| format!("Deno cleanup submit failed: {error}"))
+        });
         self.queue.submit([]);
         // Attempt both waits even if one registry has lost its device. Queue
         // fences and deferred resource destruction belong to separate cores.
@@ -150,21 +252,23 @@ impl MetalBridge {
             submission_index: None,
             timeout: Some(Duration::from_secs(15)),
         });
-        let deno_wait = self.deno.device_poll(
-            self.deno_device,
-            wgpu_types::PollType::Wait {
-                submission_index: None,
-                timeout: Some(Duration::from_secs(15)),
-            },
-        );
+        let deno_wait = self.deno.as_ref().map(|owner| {
+            owner.instance.device_poll(
+                owner.device,
+                wgpu_types::PollType::Wait {
+                    submission_index: None,
+                    timeout: Some(Duration::from_secs(15)),
+                },
+            )
+        });
         let mut errors = Vec::new();
-        if let Err(error) = deno_flush {
+        if let Some(Err(error)) = deno_flush {
             errors.push(error);
         }
         if let Err(error) = wrapper_wait {
             errors.push(format!("wrapper cleanup wait failed: {error}"));
         }
-        if let Err(error) = deno_wait {
+        if let Some(Err(error)) = deno_wait {
             errors.push(format!("Deno cleanup wait failed: {error}"));
         }
         if errors.is_empty() {
@@ -191,6 +295,10 @@ impl MetalBridge {
         texture: &wgpu::Texture,
         descriptor: &wgpu::TextureDescriptor<'_>,
     ) -> Result<id::TextureId> {
+        let deno = self
+            .deno
+            .as_ref()
+            .ok_or("independent compositor has no Deno texture registry")?;
         ensure(
             descriptor.dimension == wgpu::TextureDimension::D2
                 && descriptor.format == wgpu::TextureFormat::Rgba8Unorm
@@ -211,7 +319,7 @@ impl MetalBridge {
                 && texture.usage() == descriptor.usage,
             "import descriptor disagrees with wrapper texture",
         )?;
-        let limits = self.deno.device_limits(self.deno_device);
+        let limits = deno.instance.device_limits(deno.device);
         ensure(
             descriptor.size.width <= limits.max_texture_dimension_2d
                 && descriptor.size.height <= limits.max_texture_dimension_2d,
@@ -295,15 +403,15 @@ impl MetalBridge {
                     depth: 1,
                 },
             );
-            self.deno.create_texture_from_hal(
+            deno.instance.create_texture_from_hal(
                 Box::new(hal),
-                self.deno_device,
+                deno.device,
                 &core_descriptor,
                 None,
             )
         };
         if let Some(error) = error {
-            self.deno.texture_drop(id);
+            deno.instance.texture_drop(id);
             return Err(error.into());
         }
         Ok(id)

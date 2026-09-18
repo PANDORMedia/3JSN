@@ -1,0 +1,6 @@
+Native-window attempt before final blend bindings: existing public webgl-dom fixture, --frames 30.
+Metal API validation enabled; compiled UI and packaged-resource startup completed.
+Process exited 1: DOM window frame budget timed out.
+Desktop inspection reported: The Mac is locked and automatic unlock could not unlock it.
+No completed native presentation or final window capture is claimed.
+The public webgl-window lifecycle fixture is prepared but has not been presented.

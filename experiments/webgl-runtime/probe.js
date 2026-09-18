@@ -1,0 +1,67 @@
+(() => {
+  const native = __angleProbe;
+  const assert = (value, message) => { if (!value) throw new Error(message); };
+  const rejects = (action, message) => { let rejected = false; try { action(); } catch { rejected = true; } assert(rejected, message); };
+  const pixel = context => { const bytes = new Uint8Array(4); native.pixel(context, bytes); return [...bytes]; };
+  const a = native.create(32, 24), b = native.create(16, 16);
+  const info = native.info(a);
+  assert(info.renderer.includes('ANGLE Metal Renderer'), 'Expected native ANGLE Metal backend');
+  assert(info.version.startsWith('OpenGL ES 3'), 'Expected ES3 native context');
+  assert(String(pixel(a)) === '0,0,0,0', 'Context A drawing buffer initialized');
+  assert(String(pixel(b)) === '0,0,0,0', 'Context B drawing buffer initialized');
+  const padded = new Uint8Array(12).fill(91);
+  native.pixel(a, padded.subarray(4, 8));
+  assert(String(padded) === '91,91,91,91,0,0,0,0,91,91,91,91', 'Readback honors typed-view offset and length');
+  native.clear(a, 1, 0, 0, 1);
+  native.clear(b, 0, 1, 0, 1);
+  assert(String(pixel(a)) === '255,0,0,255', 'Context A state/readback');
+  assert(String(pixel(b)) === '0,255,0,255', 'Context B state/readback');
+  rejects(() => native.pixel(a, new Uint8Array(3)), 'Short destination must reject');
+  rejects(() => native.create(0, 1), 'Zero extent must reject in this backend probe');
+  rejects(() => native.resize(a, 16385, 1), 'Over-budget extent must reject');
+  assert(String(pixel(a)) === '255,0,0,255', 'Failed resize must retain drawing buffer');
+  native.resize(a, 48, 32);
+  assert(String(pixel(a)) === '0,0,0,0', 'Replacement drawing buffer initialized');
+  native.clear(a, 0, 0, 1, 1);
+  assert(String(pixel(a)) === '0,0,255,255', 'Resized context draw/readback');
+  const vertex = native.createShader(a, 0x8b31);
+  const fragment = native.createShader(a, 0x8b30);
+  native.compileShader(a, vertex, '#version 300 es\nvoid main() { gl_Position = vec4(0, 0, 0, 1); }');
+  native.compileShader(a, fragment, '#version 300 es\nprecision highp float; out vec4 color; void main() { color = vec4(1); }');
+  assert(native.shaderStatus(a, vertex).compiled, 'Vertex GLSL compilation');
+  assert(native.shaderStatus(a, fragment).compiled, 'Fragment GLSL compilation');
+  rejects(() => native.shaderStatus(b, vertex), 'Cross-context shader identity must reject');
+  const program = native.createProgram(a);
+  rejects(() => native.shaderStatus(a, program), 'Program cannot impersonate shader');
+  native.getParameter(a, 0xffffffff);
+  native.attachShader(a, program, vertex);
+  assert(native.getError(a) === 0x500, 'Successful attach preserves earlier GL error');
+  native.attachShader(a, program, vertex);
+  assert(native.getError(a) === 0x502, 'Duplicate shader attachment sets INVALID_OPERATION');
+  assert(String(pixel(a)) === '0,0,255,255', 'Rejected attachment does not contaminate later readback');
+  native.attachShader(a, program, fragment);
+  assert(native.linkProgram(a, program).linked, 'Native program linking');
+  const malformed = native.createShader(a, 0x8b30);
+  native.compileShader(a, malformed, '#version 300 es\nthis is invalid GLSL');
+  assert(!native.shaderStatus(a, malformed).compiled, 'Invalid GLSL returns compiler failure');
+  native.deleteShader(a, malformed);
+  rejects(() => native.shaderStatus(a, malformed), 'Deleted shader identity must reject');
+  native.deleteShader(a, vertex);
+  native.deleteShader(a, fragment);
+  native.deleteProgram(a, program);
+  const abandoned = native.createShader(a, 0x8b31);
+  native.dispose(a);
+  rejects(() => native.shaderStatus(a, abandoned), 'Context disposal invalidates owned objects');
+  rejects(() => native.info(a), 'Disposed identity must reject');
+  assert(String(pixel(b)) === '0,255,0,255', 'Other context survives disposal');
+  const c = native.create(8, 8);
+  assert(c !== a && c !== b, 'Context identities are never reused');
+  native.clear(c, 1, 1, 0, 1);
+  assert(String(pixel(c)) === '255,255,0,255', 'Replacement context');
+  native.dispose(b);
+  native.dispose(c);
+  return { status: 'backend-ownership-probe-only', info, contexts: 3, resizeVerified: true,
+    crossContextIsolation: true, disposalVerified: true, shaderCompilationAndLinking: true,
+    limitations: ['No WebGL JavaScript interface or Three.js rendering yet.',
+      'Readback is observation only; no compositor or native window is connected.'] };
+})()

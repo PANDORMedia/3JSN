@@ -1,0 +1,17 @@
+{
+  "status": "backend-ownership-probe-only",
+  "info": {
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+    "version": "OpenGL ES 3.0.0 (ANGLE 2.1.24078 git hash: ac6cda4cbd71)",
+    "vendor": "Google Inc. (Apple)"
+  },
+  "contexts": 3,
+  "resizeVerified": true,
+  "crossContextIsolation": true,
+  "disposalVerified": true,
+  "shaderCompilationAndLinking": true,
+  "limitations": [
+    "No WebGL JavaScript interface or Three.js rendering yet.",
+    "Readback is observation only; no compositor or native window is connected."
+  ]
+}

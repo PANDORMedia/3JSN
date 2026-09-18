@@ -10,13 +10,25 @@ name = "threejs-compiled-ui-runtime"
 path = "src/main.rs"
 test = false
 
+[[test]]
+name = "webgl_dom"
+path = "tests/webgl_dom.rs"
+required-features = ["native-webgl"]
+
+[[test]]
+name = "webgl_composition"
+path = "tests/webgl_composition.rs"
+required-features = ["native-webgl"]
+
 [features]
 default = ["dynamic-html"]
+native-webgl = ["dep:threejs-native-webgl-runtime"]
 dynamic-html = ["dep:blitz-html", "threejs-compiled-ui-experiment/dynamic-html"]
 
 [workspace]
 
 [dependencies]
+threejs-native-webgl-runtime = { path = "../webgl-runtime", optional = true, features = ["metal-snapshot"] }
 threejs-native-input-queue = { path = "../../crates/input-queue" }
 threejs-compiled-ui-experiment = { path = "../compiled-ui", default-features = false }
 threejs-native-js-sources = { path = "../../crates/js-sources" }

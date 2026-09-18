@@ -1,0 +1,7 @@
+Original untouched-buffer GPU test: SIGSEGV in GL_BlitFramebuffer.
+macOS exception: EXC_BAD_ACCESS, KERN_INVALID_ADDRESS at 0x18.
+Native caller: AngleSnapshot::publish().
+First consumer.update(), before any application clear/draw.
+Diagnostic only: explicitly clearing the new pbuffer before snapshot creation
+made orientation, alpha, repeated publication and lifetime assertions pass.
+That diagnostic was removed; the untouched-buffer assertion remains required.

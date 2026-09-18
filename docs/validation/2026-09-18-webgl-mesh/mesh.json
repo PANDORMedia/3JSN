@@ -1,0 +1,32 @@
+{
+  "status": "offscreen-upstream-three-mesh",
+  "threeRevision": "186",
+  "width": 128,
+  "height": 128,
+  "changedPixels": 1221,
+  "basicCenter": [
+    255,
+    136,
+    34,
+    255
+  ],
+  "shaderCenter": [
+    26,
+    77,
+    229,
+    255
+  ],
+  "customCenter": [
+    0,
+    255,
+    0,
+    255
+  ],
+  "indexedEqualsNonIndexed": true,
+  "normalFaceColors": 3,
+  "limitations": [
+    "Injected canvas fixture; no DOM/window integration",
+    "Partial WebGL bindings",
+    "macOS Metal only"
+  ]
+}

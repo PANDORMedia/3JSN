@@ -1,0 +1,51 @@
+{
+  "kind": "compact observation from completed native test",
+  "fixture": "experiments/webgl-runtime/blending.mjs",
+  "threeRevision": "186",
+  "center": [
+    127,
+    0,
+    0,
+    128
+  ],
+  "corners": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "coveredPixels": 3136,
+  "transparentPixels": 13248,
+  "premultipliedPixelsVerified": true,
+  "validBlendMethods": 5,
+  "invalidEnumMethods": [
+    "blendEquation",
+    "blendEquationSeparate",
+    "blendFunc",
+    "blendFuncSeparate"
+  ],
+  "pendingInvalidEnumPreserved": true,
+  "invalidCallsPreservedState": true,
+  "restoredPixelsIdentical": true,
+  "metalApiValidation": true
+}

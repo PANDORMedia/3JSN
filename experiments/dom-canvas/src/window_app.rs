@@ -39,6 +39,8 @@ pub fn run(options: Options) -> Result<()> {
         limit: None,
         presented: 0,
         snapshots: 0,
+        canvas_api: None,
+        shared_queue: None,
         stopped: false,
         error: None,
     };
@@ -61,7 +63,8 @@ pub fn run(options: Options) -> Result<()> {
     println!(
         "{}",
         serde_json::json!({"nativeDomWindow":true,"backend":"Metal","presentedFrames":app.presented,
-        "canvasSnapshots":app.snapshots,"cpuImageTransport":false,"nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true})
+        "canvasSnapshots":app.snapshots,"cpuImageTransport":false,"nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":app.shared_queue,
+        "canvasApi":app.canvas_api,"nativeEventHandoff":app.shared_queue.map(|shared| !shared)})
     );
     Ok(())
 }
@@ -79,6 +82,8 @@ struct App {
     limit: Option<u64>,
     presented: u64,
     snapshots: u64,
+    canvas_api: Option<&'static str>,
+    shared_queue: Option<bool>,
     deadline: Option<Instant>,
     stopped: bool,
     error: Option<String>,
@@ -240,7 +245,12 @@ impl ApplicationHandler<HostEvent> for App {
 
     fn user_event(&mut self, event_loop: &ActiveEventLoop, event: HostEvent) {
         match event {
-            HostEvent::Ready => {
+            HostEvent::Ready {
+                canvas_api,
+                shared_queue,
+            } => {
+                self.canvas_api = Some(canvas_api);
+                self.shared_queue = Some(shared_queue);
                 if let Some(window) = &self.window {
                     window.request_redraw();
                 }

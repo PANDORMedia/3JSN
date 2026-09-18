@@ -1,0 +1,13 @@
+{
+  "status": "draw-boundaries-pass",
+  "controls": [
+    "typed upload offsets",
+    "bufferSubData source ranges",
+    "EBO bounds",
+    "ANGLE VBO bounds",
+    "client-memory pointers rejected",
+    "uniform program identity",
+    "matrix extents",
+    "relink generations"
+  ]
+}

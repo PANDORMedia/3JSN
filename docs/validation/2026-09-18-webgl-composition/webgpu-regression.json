@@ -1,0 +1,194 @@
+{
+  "status": "partial",
+  "fixture": "dom-canvas-native-metal",
+  "contract": [
+    {
+      "name": "canvas DOM brand",
+      "passed": true
+    },
+    {
+      "name": "default bitmap dimensions",
+      "passed": true,
+      "observed": [
+        300,
+        150
+      ]
+    },
+    {
+      "name": "absent dimensions stay absent attributes",
+      "passed": true
+    },
+    {
+      "name": "IDL dimension reflection",
+      "passed": true
+    },
+    {
+      "name": "invalid attribute defaults",
+      "passed": true,
+      "observed": 300
+    },
+    {
+      "name": "HTML integer parsing",
+      "passed": true,
+      "observed": 40
+    },
+    {
+      "name": "CSS size differs from bitmap size",
+      "passed": true,
+      "observed": {
+        "bitmap": [
+          64,
+          32
+        ],
+        "css": [
+          128,
+          96
+        ]
+      }
+    },
+    {
+      "name": "unknown context is null",
+      "passed": true
+    },
+    {
+      "name": "native context brand and identity",
+      "passed": true
+    },
+    {
+      "name": "incompatible context mode is null",
+      "passed": true
+    },
+    {
+      "name": "initial configuration is null",
+      "passed": true
+    },
+    {
+      "name": "unconfigured texture throws InvalidStateError",
+      "passed": true,
+      "observed": "InvalidStateError"
+    },
+    {
+      "name": "current texture identity and metadata",
+      "passed": true
+    },
+    {
+      "name": "rendered canvas texture is readable",
+      "passed": true,
+      "observed": [
+        255,
+        0,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "invalid format throws and preserves current texture",
+      "passed": true,
+      "observed": "TypeError"
+    },
+    {
+      "name": "valid reconfigure replaces current texture",
+      "passed": true
+    },
+    {
+      "name": "reconfigured texture expires",
+      "passed": true
+    },
+    {
+      "name": "bitmap resize preserves context and changes texture",
+      "passed": true
+    },
+    {
+      "name": "resized texture expires",
+      "passed": true
+    },
+    {
+      "name": "redundant width assignment replaces WebGPU texture",
+      "passed": true
+    },
+    {
+      "name": "attribute resize reaches context",
+      "passed": true
+    },
+    {
+      "name": "independent canvas context and pixels",
+      "passed": true,
+      "observed": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "detach and reinsert preserve context",
+      "passed": true
+    },
+    {
+      "name": "unconfigure clears state and expires texture",
+      "passed": true
+    },
+    {
+      "name": "unconfigure does not reset context mode",
+      "passed": true
+    },
+    {
+      "name": "default usage is only render attachment",
+      "passed": true,
+      "observed": 16
+    },
+    {
+      "name": "host cannot silently grant COPY_SRC usage",
+      "passed": true
+    }
+  ],
+  "cpuImageTransport": false,
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "paint": {
+    "clipping": {
+      "name": "ancestor overflow clips hoisted canvas",
+      "passed": false,
+      "sample": [
+        400,
+        100
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "actual": [
+        16,
+        21,
+        34,
+        255
+      ]
+    },
+    "alphaConversions": [
+      {
+        "mode": "premultiplied",
+        "straightRgba": [
+          0,
+          255,
+          0,
+          128
+        ]
+      },
+      {
+        "mode": "opaque",
+        "straightRgba": [
+          0,
+          128,
+          0,
+          255
+        ]
+      }
+    ],
+    "changedAnimationPixels": 3358,
+    "submittedCanvasFrames": 17,
+    "validationErrors": []
+  },
+  "interpretation": "Exit 1 and partial status reproduce the documented ancestor overflow clipping gate in docs/validation/2026-09-18-dom-canvas.md; this run is not a full passing paint regression."
+}

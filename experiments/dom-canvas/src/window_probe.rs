@@ -24,7 +24,11 @@ mod host;
 mod metal;
 mod package_resources;
 mod painter;
+#[cfg(feature = "native-webgl")]
+#[path = "../../compiled-ui-runtime/src/webgl_backend.rs"]
+mod webgl_backend;
 mod window_app;
+mod window_capture;
 mod window_input;
 mod window_options;
 mod window_runtime;

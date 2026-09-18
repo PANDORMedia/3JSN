@@ -1,0 +1,35 @@
+{
+  "package": {
+    "name": "gl",
+    "version": "9.0.0-rc.10",
+    "license": "BSD-2-Clause",
+    "path": ".cache/native-webgl/node_modules/gl",
+    "resolved": "https://registry.npmjs.org/gl/-/gl-9.0.0-rc.10.tgz",
+    "integrity": "sha512-G6lYaWoan0d2d8UO0UmaSS8zqyyZwYt6q2dFVJ2hD62sRWUwkMIH+Jp7gEoQesLlo28Nzelh+GIYz1qOUa5WmQ=="
+  },
+  "archive": {
+    "path": ".cache/native-webgl/npm-cache/_cacache/content-v2/sha512/1b/a9/58696a1a9f477677c50ed1499a492f33ab2c99c18b7aab6745549da10fadac45653090c207f89a7b804a107ac2e5a36f0dcde961f86218cf5a8e51ae5699",
+    "bytes": 18196825,
+    "integrityVerified": true
+  },
+  "libraries": [
+    {
+      "path": "deps/darwin/dylib/libEGL.dylib",
+      "bytes": 490880,
+      "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ]
+    },
+    {
+      "path": "deps/darwin/dylib/libGLESv2.dylib",
+      "bytes": 15068592,
+      "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ]
+    }
+  ]
+}

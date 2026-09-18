@@ -1,0 +1,26 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_webgl_runtime-c971e9e895e68e1d)
+
+running 20 tests
+test native::snapshot_tests::snapshot_preserves_application_bindings_and_errors ... ignored, Requires ANGLE_LIBRARY_DIR and native Metal hardware
+test webgl_geometry::tests::allocations_reject_nonintegers_and_limit_before_native_narrowing ... ok
+test webgl_geometry::tests::attribute_offsets_and_strides_preserve_element_alignment ... ok
+test webgl_geometry::tests::array_ranges_preserve_last_valid_vertex_without_wrapping ... ok
+test webgl_geometry::tests::buffer_targets_exclude_pointer_reinterpreting_pixel_bindings ... ok
+test webgl_geometry::tests::byte_bounds_allow_empty_end_and_reject_overflow ... ok
+test webgl_geometry::tests::indexed_ranges_cover_u8_u16_u32_and_reject_short_stores ... ok
+test webgl_geometry::tests::subdata_overruns_are_invalid_value_but_index_overruns_are_invalid_operation ... ok
+test webgl_programs::tests::signed_buffer_view_preserves_negative_values_and_subview_extent ... ok
+test webgl_programs::tests::upload_lengths_never_truncate_partial_vectors_or_overflow_glsizei ... ok
+test webgl_programs::tests::location_requires_same_context_current_program_and_link_generation ... ok
+test webgl_programs::tests::deleting_current_program_preserves_executable_until_unbound ... ok
+test resources::tests::foreign_context_and_wrong_kind_cannot_read_mutate_or_delete ... ok
+test resources::tests::context_removal_drops_only_its_payloads_and_preserves_id_history ... ok
+test resources::tests::native_name_reuse_cannot_revive_a_deleted_handle ... ok
+test resources::tests::exhaustion_never_wraps_or_recovers_by_deleting ... ok
+test webgl_textures::tests::null_storage_and_uploads_share_checked_allocation_limit ... ok
+test webgl_textures::tests::unsupported_formats_and_invalid_scalar_arguments_never_reach_gl ... ok
+test webgl_textures::tests::upload_bounds_cover_rows_depth_and_view_length ... ok
+test webgl_state::tests::query_wire_shape_preserves_typed_array_kind_and_explicit_null ... ok
+
+test result: ok. 19 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
