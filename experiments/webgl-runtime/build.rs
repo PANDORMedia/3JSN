@@ -27,6 +27,7 @@ fn main() {
         .compile("webgl_angle");
     println!("cargo:rustc-link-lib=framework=Foundation");
     println!("cargo:rustc-link-lib=framework=Metal");
+    println!("cargo:rustc-link-lib=framework=IOSurface");
     println!("cargo:rerun-if-env-changed=THREEJS_NATIVE_ANGLE_PACKAGE");
     println!("cargo:rerun-if-changed=native/angle.mm");
     println!("cargo:rerun-if-changed=native/angle.h");

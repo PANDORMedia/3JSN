@@ -2,14 +2,16 @@ import { core } from 'ext:core/mod.js';
 import { idOf } from 'ext:html_v8_probe/bindings.js';
 import { registerCanvasBackend } from 'ext:dom_canvas/canvas.js';
 import {
-  ExperimentalWebGLContext, closeContext, contextIdentity, resizeContext,
+  ExperimentalWebGLContext, closeContext, contextIdentity, contextAttributes, resizeContext, requestedAttributes,
 } from 'ext:angle_probe/webgl.js';
 
 registerCanvasBackend('webgl2', {
-  create(canvas, width, height) {
-    const context = new ExperimentalWebGLContext(canvas, width, height);
+  prepareOptions: requestedAttributes,
+  create(canvas, width, height, options) {
+    const context = new ExperimentalWebGLContext(canvas, width, height, options);
     try {
-      core.ops.op_webgl_canvas_register(idOf(canvas), contextIdentity(context));
+      core.ops.op_webgl_canvas_register(idOf(canvas), contextIdentity(context),
+        contextAttributes(context).premultipliedAlpha);
     } catch (error) {
       try { closeContext(context); }
       catch (cleanupError) {

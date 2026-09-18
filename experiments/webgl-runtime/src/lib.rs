@@ -75,6 +75,39 @@ fn op_angle_create(state: &mut OpState, width: u32, height: u32) -> Result<u32, 
 
 #[op2]
 #[serde]
+fn op_angle_create_with_attributes(
+    state: &mut OpState,
+    width: u32,
+    height: u32,
+    alpha: bool,
+    depth: bool,
+    stencil: bool,
+) -> Result<serde_json::Value, JsErrorBox> {
+    let state = state.borrow_mut::<State>();
+    if state.contexts.len() >= 16 {
+        return Err(failure("The experimental context limit is 16"));
+    }
+    let id = state
+        .next_id
+        .checked_add(1)
+        .ok_or_else(|| failure("Context identity exhausted"))?;
+    let context = native::Context::with_attributes(
+        state.display.clone(),
+        width,
+        height,
+        alpha,
+        depth,
+        stencil,
+    )
+    .map_err(failure)?;
+    // Native selection enforces exact buffer presence before returning the context.
+    state.next_id = id;
+    state.contexts.insert(id, context);
+    Ok(json!({"id": id, "alpha": alpha, "depth": depth, "stencil": stencil}))
+}
+
+#[op2]
+#[serde]
 fn op_angle_info(state: &mut OpState, id: u32) -> Result<serde_json::Value, JsErrorBox> {
     let context = current(state, id)?;
     // All GLES calls occur with this live owner-thread context current.
@@ -215,7 +248,7 @@ deno_core::extension!(
     angle_probe,
     ops = [op_wgl_shader_source, op_wgl_compile_shader, op_wgl_link_program, op_wgl_use_program, op_wgl_bind_attrib_location, op_wgl_shader_parameter, op_wgl_program_parameter, op_wgl_shader_info_log, op_wgl_program_info_log, op_wgl_get_active_uniform, op_wgl_get_active_attrib, op_wgl_get_attrib_location, op_wgl_get_uniform_location, op_wgl_uniform_float, op_wgl_uniform_int, op_wgl_uniform_fv, op_wgl_uniform_iv, op_wgl_uniform_matrix,
         op_wgl_create_buffer, op_wgl_bind_buffer, op_wgl_delete_buffer, op_wgl_buffer_data_size, op_wgl_buffer_data_bytes, op_wgl_buffer_sub_data, op_wgl_create_vertex_array, op_wgl_bind_vertex_array, op_wgl_delete_vertex_array, op_wgl_enable_vertex_attrib_array, op_wgl_disable_vertex_attrib_array, op_wgl_vertex_attrib_divisor, op_wgl_vertex_attrib_pointer, op_wgl_draw_arrays, op_wgl_draw_elements,
-        op_angle_read_rgba, op_angle_create, op_angle_info, op_angle_clear, op_angle_read_pixel, op_angle_resize, op_angle_dispose,
+        op_angle_read_rgba, op_angle_create, op_angle_create_with_attributes, op_angle_info, op_angle_clear, op_angle_read_pixel, op_angle_resize, op_angle_dispose,
         op_gl_create_shader, op_gl_compile_shader, op_gl_shader_status,
         op_gl_create_program, op_gl_attach_shader, op_gl_link_program,
         op_gl_delete_shader, op_gl_delete_program,

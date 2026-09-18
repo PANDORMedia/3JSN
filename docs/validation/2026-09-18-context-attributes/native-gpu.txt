@@ -1,0 +1,33 @@
+   Compiling threejs-native-webgl-runtime v0.0.0 (/Users/sean/dev/3JSN/experiments/webgl-runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.78s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_webgl_runtime-f9716b11fab4a520)
+
+running 2 tests
+test native::snapshot_tests::requested_framebuffer_attributes_control_gl_semantics ... 2026-09-18 22:37:51.376 threejs_native_webgl_runtime-f9716b11fab4a520[18869:6213136] Metal API Validation Enabled
+Testing alpha=false depth=false stencil=false
+Testing alpha=false depth=false stencil=true
+Testing alpha=false depth=true stencil=false
+Testing alpha=false depth=true stencil=true
+Testing alpha=true depth=false stencil=false
+Testing alpha=true depth=false stencil=true
+Testing alpha=true depth=true stencil=false
+Testing alpha=true depth=true stencil=true
+ok
+test native::snapshot_tests::snapshot_preserves_application_bindings_and_errors ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 1.77s
+
+     Running unittests src/main.rs (target/debug/deps/threejs_native_webgl_runtime-c03387acaaa3d834)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests threejs_native_webgl_runtime
+
+running 1 test
+test /Users/sean/dev/3JSN/.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deno_core-0.412.0/extensions.rs - angle_probe (line 486) ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 1.00s; merged doctests compilation took 0.70s

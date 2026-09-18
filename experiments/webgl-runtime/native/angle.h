@@ -30,6 +30,11 @@ void angle_display_destroy(AngleDisplay *display) ANGLE_NOEXCEPT;
 // binding unless EGL itself refuses restoration, which is reported explicitly.
 AngleContext *angle_context_create(AngleDisplay *display, unsigned width,
                                    unsigned height) ANGLE_NOEXCEPT;
+// Requested buffers are exact presence/absence; unavailable combinations fail.
+// Opaque contexts use an RGB IOSurface pbuffer with GPU-initialized alpha one.
+// This entry point is otherwise governed by the same ownership contract.
+AngleContext *angle_context_create_with_attributes(AngleDisplay *display, unsigned width,
+    unsigned height, int alpha, int depth, int stencil) ANGLE_NOEXCEPT;
 void angle_context_destroy(AngleContext *context) ANGLE_NOEXCEPT;
 int angle_context_make_current(AngleContext *context) ANGLE_NOEXCEPT;
 

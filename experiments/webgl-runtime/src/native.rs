@@ -9,7 +9,14 @@ use std::{
 unsafe extern "C" {
     fn angle_display_create(path: *const c_char) -> *mut c_void;
     fn angle_display_destroy(display: *mut c_void);
-    fn angle_context_create(display: *mut c_void, width: u32, height: u32) -> *mut c_void;
+    fn angle_context_create_with_attributes(
+        display: *mut c_void,
+        width: u32,
+        height: u32,
+        alpha: i32,
+        depth: i32,
+        stencil: i32,
+    ) -> *mut c_void;
     fn angle_context_destroy(context: *mut c_void);
     fn angle_context_make_current(context: *mut c_void) -> i32;
     fn angle_context_resize(context: *mut c_void, width: u32, height: u32) -> i32;
@@ -66,10 +73,29 @@ pub struct Context {
 
 impl Context {
     pub fn new(display: Rc<Display>, width: u32, height: u32) -> Result<Self, String> {
+        Self::with_attributes(display, width, height, true, true, true)
+    }
+
+    pub fn with_attributes(
+        display: Rc<Display>,
+        width: u32,
+        height: u32,
+        alpha: bool,
+        depth: bool,
+        stencil: bool,
+    ) -> Result<Self, String> {
         // Every context retains its display and is accessed only on the owner thread.
-        let raw =
-            NonNull::new(unsafe { angle_context_create(display.raw.as_ptr(), width, height) })
-                .ok_or_else(error)?;
+        let raw = NonNull::new(unsafe {
+            angle_context_create_with_attributes(
+                display.raw.as_ptr(),
+                width,
+                height,
+                alpha.into(),
+                depth.into(),
+                stencil.into(),
+            )
+        })
+        .ok_or_else(error)?;
         let native = ContextOwner {
             raw: Some(raw),
             _display: display,
@@ -152,6 +178,153 @@ impl Drop for ContextOwner {
 mod snapshot_tests {
     use super::*;
     use glow::HasContext;
+
+    #[test]
+    #[ignore = "Requires ANGLE_LIBRARY_DIR and native Metal hardware"]
+    fn requested_framebuffer_attributes_control_gl_semantics() -> Result<(), String> {
+        let directory = std::env::var("ANGLE_LIBRARY_DIR").map_err(|e| e.to_string())?;
+        let display = Display::new(Path::new(&directory))?;
+        for alpha in [false, true] {
+            for depth in [false, true] {
+                for stencil in [false, true] {
+                    eprintln!("Testing alpha={alpha} depth={depth} stencil={stencil}");
+                    let mut context =
+                        Context::with_attributes(display.clone(), 4, 4, alpha, depth, stencil)
+                            .map_err(|error| {
+                                format!("alpha={alpha} depth={depth} stencil={stencil}: {error}")
+                            })?;
+                    // All commands target this live owner-thread context. The shader's
+                    // destination-alpha blend distinguishes an RGB buffer from a
+                    // compositor-only opaque override of an RGBA buffer.
+                    let program = unsafe {
+                        let gl = &context.gl;
+                        assert_eq!(gl.get_parameter_i32(glow::ALPHA_BITS) > 0, alpha);
+                        assert_eq!(gl.get_parameter_i32(glow::DEPTH_BITS) > 0, depth);
+                        assert_eq!(gl.get_parameter_i32(glow::STENCIL_BITS) > 0, stencil);
+                        gl.clear_color(0.0, 0.0, 0.0, 0.0);
+                        gl.clear(glow::COLOR_BUFFER_BIT);
+                        let mut pixel = [0; 4];
+                        gl.read_pixels(
+                            0,
+                            0,
+                            1,
+                            1,
+                            glow::RGBA,
+                            glow::UNSIGNED_BYTE,
+                            glow::PixelPackData::Slice(Some(&mut pixel)),
+                        );
+                        assert_eq!(pixel[3], if alpha { 0 } else { 255 });
+                        let vertex = gl.create_shader(glow::VERTEX_SHADER)?;
+                        gl.shader_source(vertex, "#version 300 es\nvoid main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));gl_Position=vec4(p*2.0-1.0,0.0,1.0);}");
+                        gl.compile_shader(vertex);
+                        assert!(
+                            gl.get_shader_compile_status(vertex),
+                            "{}",
+                            gl.get_shader_info_log(vertex)
+                        );
+                        let fragment = gl.create_shader(glow::FRAGMENT_SHADER)?;
+                        gl.shader_source(fragment, "#version 300 es\nprecision highp float;out vec4 color;void main(){color=vec4(1.0,0.0,0.0,0.25);}");
+                        gl.compile_shader(fragment);
+                        assert!(
+                            gl.get_shader_compile_status(fragment),
+                            "{}",
+                            gl.get_shader_info_log(fragment)
+                        );
+                        let program = gl.create_program()?;
+                        gl.attach_shader(program, vertex);
+                        gl.attach_shader(program, fragment);
+                        gl.link_program(program);
+                        assert!(
+                            gl.get_program_link_status(program),
+                            "{}",
+                            gl.get_program_info_log(program)
+                        );
+                        gl.use_program(Some(program));
+                        if depth {
+                            gl.enable(glow::DEPTH_TEST);
+                            gl.depth_func(glow::LESS);
+                        }
+                        gl.enable(glow::BLEND);
+                        gl.blend_func(glow::DST_ALPHA, glow::ZERO);
+                        gl.draw_arrays(glow::TRIANGLES, 0, 3);
+                        gl.read_pixels(
+                            0,
+                            0,
+                            1,
+                            1,
+                            glow::RGBA,
+                            glow::UNSIGNED_BYTE,
+                            glow::PixelPackData::Slice(Some(&mut pixel)),
+                        );
+                        assert_eq!(
+                            pixel,
+                            if alpha {
+                                [0, 0, 0, 0]
+                            } else {
+                                [255, 0, 0, 255]
+                            }
+                        );
+                        gl.delete_shader(vertex);
+                        gl.delete_shader(fragment);
+                        assert_eq!(gl.get_error(), glow::NO_ERROR);
+                        program
+                    };
+                    unsafe {
+                        context.gl.depth_mask(false);
+                        context.gl.stencil_mask_separate(glow::FRONT, 0x12);
+                        context.gl.stencil_mask_separate(glow::BACK, 0x34);
+                    }
+                    context.resize(5, 6)?;
+                    unsafe {
+                        let gl = &context.gl;
+                        assert_eq!(gl.get_parameter_i32(glow::DEPTH_WRITEMASK), 0);
+                        assert_eq!(gl.get_parameter_i32(glow::STENCIL_WRITEMASK), 0x12);
+                        assert_eq!(gl.get_parameter_i32(glow::STENCIL_BACK_WRITEMASK), 0x34);
+                        assert_eq!(gl.get_parameter_i32(glow::ALPHA_BITS) > 0, alpha);
+                        assert_eq!(gl.get_parameter_i32(glow::DEPTH_BITS) > 0, depth);
+                        assert_eq!(gl.get_parameter_i32(glow::STENCIL_BITS) > 0, stencil);
+                        let mut pixel = [0; 4];
+                        gl.read_pixels(
+                            0,
+                            0,
+                            1,
+                            1,
+                            glow::RGBA,
+                            glow::UNSIGNED_BYTE,
+                            glow::PixelPackData::Slice(Some(&mut pixel)),
+                        );
+                        assert_eq!(pixel, [0, 0, 0, if alpha { 0 } else { 255 }]);
+                        gl.disable(glow::BLEND);
+                        gl.depth_mask(true);
+                        if stencil {
+                            gl.enable(glow::STENCIL_TEST);
+                            gl.stencil_mask(0xff);
+                            gl.stencil_func(glow::EQUAL, 0, 0xff);
+                        }
+                        gl.draw_arrays(glow::TRIANGLES, 0, 3);
+                        gl.read_pixels(
+                            0,
+                            0,
+                            1,
+                            1,
+                            glow::RGBA,
+                            glow::UNSIGNED_BYTE,
+                            glow::PixelPackData::Slice(Some(&mut pixel)),
+                        );
+                        assert_eq!(
+                            pixel,
+                            [255, 0, 0, if alpha { 64 } else { 255 }],
+                            "resized depth/stencil rejected the first fragment"
+                        );
+                        gl.delete_program(program);
+                        assert_eq!(gl.get_error(), glow::NO_ERROR);
+                    }
+                    context.close()?;
+                }
+            }
+        }
+        Ok(())
+    }
 
     #[test]
     #[ignore = "Requires ANGLE_LIBRARY_DIR and native Metal hardware"]

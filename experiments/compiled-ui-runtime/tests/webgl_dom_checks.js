@@ -12,16 +12,18 @@
   const colors = new Set();
   for (let i = 0; i < pixels.length; i += 4) colors.add(`${pixels[i]},${pixels[i+1]},${pixels[i+2]}`);
   check(colors.size >= 4, 'DOM Three mesh pixels are missing');
+  const alpha = gl.getContextAttributes().alpha;
+  const isInitialized = bytes => bytes.every((value, index) => value === (index % 4 === 3 && !alpha ? 255 : 0));
   const viewport = [...gl.getParameter(gl.VIEWPORT)];
   canvas.width = 80;
   check(gl.drawingBufferWidth === 80 && gl.drawingBufferHeight === 96, 'Attribute resize did not reach native storage');
   check([...gl.getParameter(gl.VIEWPORT)].join() === viewport.join(), 'Resize changed application viewport state');
   let resized = new Uint8Array(80 * 96 * 4); __observeNativeFrame(gl, resized);
-  check(resized.every(value => value === 0), 'Resized drawing buffer was not initialized');
+  check(isInitialized(resized), 'Resized drawing buffer was not initialized');
   gl.clearColor(1,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT);
   canvas.setAttribute('width', '80');
   resized = new Uint8Array(80 * 96 * 4); __observeNativeFrame(gl, resized);
-  check(resized.every(value => value === 0), 'Repeated dimension assignment did not reset storage');
+  check(isInitialized(resized), 'Repeated dimension assignment did not reset storage');
   check(canvas.getContext('webgl2') === gl, 'Resize replaced the JS context');
   let resizeRejected = false;
   try { canvas.width = 0; } catch (error) { resizeRejected = error instanceof RangeError; }
@@ -40,5 +42,50 @@
   let rejected = false;
   try { HTMLCanvasElement.prototype.getContext.call(document.createElement('div'), 'webgl2'); } catch (error) { rejected = error instanceof TypeError; }
   check(rejected, 'Non-canvas receiver acquired a native context');
-  check(gl.getError() === gl.NO_ERROR, 'Canvas lifecycle generated a GL error');
+  const attributesCanvas = document.createElement('canvas');
+  attributesCanvas.width = attributesCanvas.height = 4;
+  for (const invalid of [false, 1, 'attributes', { powerPreference: 'invalid' }]) {
+    let rejected = false;
+    try { attributesCanvas.getContext('webgl2', invalid); } catch (error) { rejected = error instanceof TypeError; }
+    check(rejected, 'Invalid context dictionary was accepted');
+  }
+  const order = [];
+  const names = ['alpha', 'antialias', 'depth', 'desynchronized', 'failIfMajorPerformanceCaveat',
+    'powerPreference', 'premultipliedAlpha', 'preserveDrawingBuffer', 'stencil'];
+  const options = Object.fromEntries(names.map(name => [name, undefined]));
+  for (const name of names) Object.defineProperty(options, name, { get() { order.push(name); return undefined; } });
+  const attributesGl = attributesCanvas.getContext('webgl2', options);
+  check(order.join() === names.join(), 'Context dictionary getters were reordered or repeated');
+  const attributes = attributesGl.getContextAttributes();
+  check(attributes.alpha && attributes.depth && !attributes.stencil && attributes.premultipliedAlpha,
+    'Default alpha/depth/stencil/premultiplication differ from WebGL');
+  attributes.alpha = false;
+  attributes.depth = false;
+  check(attributesGl.getContextAttributes().alpha && attributesGl.getContextAttributes().depth,
+    'Returned attributes mutated the context');
+  check(attributesCanvas.getContext('webgl2', { get alpha() { throw Error('Re-read context options'); } }) === attributesGl,
+    'Repeated context request replaced context');
+  const resizedByGetter = document.createElement('canvas');
+  const resizedGl = resizedByGetter.getContext('webgl2', {
+    get alpha() { resizedByGetter.width = 7; resizedByGetter.height = 9; return true; },
+    powerPreference: { [Symbol.toPrimitive](hint) { check(hint === 'string', 'Enum used wrong primitive hint'); return 'default'; } },
+  });
+  check(resizedGl.drawingBufferWidth === 7 && resizedGl.drawingBufferHeight === 9,
+    'Attribute getters left stale native dimensions');
+  const reentrant = document.createElement('canvas');
+  let inner;
+  const outer = reentrant.getContext('webgl2', { get alpha() { inner = reentrant.getContext('webgpu'); return true; } });
+  check(outer === null && reentrant.getContext('webgpu') === inner, 'Reentrant attributes replaced canvas mode');
+  const sameMode = document.createElement('canvas');
+  const sameOuter = sameMode.getContext('webgl2', {
+    get alpha() { inner = sameMode.getContext('webgl2', { alpha: true }); return false; },
+  });
+  check(sameOuter === inner && sameOuter.getContextAttributes().alpha, 'Reentrant attributes replaced first context');
+  const noDepth = document.createElement('canvas').getContext('webgl2', { depth: 0, stencil: true });
+  check(!noDepth.getContextAttributes().depth && noDepth.getContextAttributes().stencil,
+    'Depth/stencil options were not forwarded');
+  check(noDepth.getParameter(noDepth.DEPTH_BITS) === 0 && noDepth.getParameter(noDepth.STENCIL_BITS) >= 8,
+    'Native depth/stencil buffers differ from reported attributes');
+  check(gl.getError() === gl.NO_ERROR && attributesGl.getError() === attributesGl.NO_ERROR,
+    'Canvas lifecycle generated a GL error');
 })();

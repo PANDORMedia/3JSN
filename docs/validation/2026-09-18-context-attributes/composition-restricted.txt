@@ -1,0 +1,11 @@
+
+running 2 tests
+test dom_webgl_context_alpha_attributes ... 2026-09-18 22:35:12.620 webgl_composition-a7fdddeda3f74fdd[17933:6208922] Metal API Validation Enabled
+context attributes passed: alpha=true, premultipliedAlpha=false; initial/reset/repaint/replacement/cleanup
+context attributes passed: alpha=false, premultipliedAlpha=true; initial/reset/repaint/replacement/cleanup
+context attributes passed: alpha=false, premultipliedAlpha=false; initial/reset/repaint/replacement/cleanup
+ok
+test dom_webgl_gpu_composition_and_generations ... context attributes passed: alpha=true, premultipliedAlpha=true; initial/reset/repaint/replacement/cleanup
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 3.35s

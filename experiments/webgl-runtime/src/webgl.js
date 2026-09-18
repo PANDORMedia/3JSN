@@ -39,6 +39,7 @@ const constants = {
   MAX_VERTEX_UNIFORM_VECTORS: 0x8dfb, MAX_VARYING_VECTORS: 0x8dfc,
   MAX_FRAGMENT_UNIFORM_VECTORS: 0x8dfd, MAX_SAMPLES: 0x8d57, SAMPLES: 0x80a9,
   MAX_UNIFORM_BUFFER_BINDINGS: 0x8a2f, SCISSOR_BOX: 0xc10, VIEWPORT: 0xba2,
+  ALPHA_BITS: 0xd55, DEPTH_BITS: 0xd56, STENCIL_BITS: 0xd57,
   TEXTURE_2D: 0xde1, TEXTURE_3D: 0x806f, TEXTURE_2D_ARRAY: 0x8c1a,
   TEXTURE_CUBE_MAP: 0x8513, TEXTURE_CUBE_MAP_POSITIVE_X: 0x8515,
   TEXTURE_MIN_FILTER: 0x2801, TEXTURE_MAG_FILTER: 0x2800,
@@ -86,23 +87,47 @@ function remove(receiver, object, kind, op) {
   value.deleted = true;
 }
 
+export function requestedAttributes(options) {
+  if (options != null && typeof options !== 'object' && typeof options !== 'function') {
+    throw new TypeError('WebGL context attributes must be a dictionary');
+  }
+  const result = {};
+  // Web IDL dictionaries read members once, in lexicographic order.
+  for (const [name, fallback] of [
+    ['alpha', true], ['antialias', true], ['depth', true], ['desynchronized', false],
+    ['failIfMajorPerformanceCaveat', false], ['powerPreference', 'default'],
+    ['premultipliedAlpha', true], ['preserveDrawingBuffer', false], ['stencil', false],
+  ]) {
+    const value = options?.[name];
+    result[name] = value === undefined ? fallback : name === 'powerPreference' ? `${value}` : Boolean(value);
+    if (name === 'powerPreference' && !['default', 'low-power', 'high-performance'].includes(result[name])) {
+      throw new TypeError('Invalid WebGL powerPreference');
+    }
+  }
+  return result;
+}
+
 export class ExperimentalWebGLContext {
-  constructor(canvas, width, height) {
+  constructor(canvas, width, height, options) {
     if (![width, height].every(value => Number.isSafeInteger(value) && value >= 1 && value <= 16384)) {
       throw new RangeError('Experimental drawing buffer dimensions must be integers from 1 to 16384');
     }
-    const id = core.ops.op_angle_create(width, height);
-    contexts.set(this, { id, canvas, width, height, closed: false, errors: new Set() });
+    const requested = requestedAttributes(options);
+    const { id, alpha, depth, stencil } = core.ops.op_angle_create_with_attributes(
+      width, height, requested.alpha, requested.depth, requested.stencil,
+    );
+    const attributes = Object.freeze({ alpha, depth, stencil, antialias: false,
+      premultipliedAlpha: requested.premultipliedAlpha, preserveDrawingBuffer: true,
+      powerPreference: 'default', failIfMajorPerformanceCaveat: false, desynchronized: false });
+    contexts.set(this, { id, canvas, width, height, attributes, closed: false, errors: new Set() });
   }
   get canvas() { return state(this).canvas; }
   get drawingBufferWidth() { return state(this).width; }
   get drawingBufferHeight() { return state(this).height; }
   getContextAttributes() {
-    state(this);
-    // These are the native configuration's actual attributes, not requested hints.
-    return { alpha: true, depth: true, stencil: true, antialias: false,
-      premultipliedAlpha: true, preserveDrawingBuffer: true,
-      powerPreference: 'default', failIfMajorPerformanceCaveat: false, desynchronized: false };
+    // Preservation remains forced in this experimental host; automatic post-present
+    // clearing needs the compositor's presentation boundary before it can be exposed.
+    return { ...state(this).attributes };
   }
   getSupportedExtensions() { state(this); return []; }
   getExtension(name) { state(this); String(name); return null; }
@@ -194,6 +219,10 @@ for (const [name, [op, types]] of Object.entries(scalarMethods)) {
 // Host-only ownership operations; applications receive just the context facade.
 export function contextIdentity(context) {
   return state(context).id;
+}
+
+export function contextAttributes(context) {
+  return state(context).attributes;
 }
 
 export function closeContext(context) {
