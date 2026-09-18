@@ -34,7 +34,9 @@ def write_json(path, value):
 
 
 def run_child(command, stdout_path, stderr_path, timeout=TIMEOUT_SECONDS):
-    """Wait for exactly this child; a watchdog bounds its entire process group."""
+    """Measure a Darwin child; its wait4 resident-set value is in bytes."""
+    if sys.platform != "darwin":
+        raise RuntimeError("Darwin only: child measurement requires macOS wait4 byte units")
     with stdout_path.open("xb") as stdout, stderr_path.open("xb") as stderr:
         started = time.monotonic_ns()
         process = subprocess.Popen(command, stdout=stdout, stderr=stderr, start_new_session=True)
