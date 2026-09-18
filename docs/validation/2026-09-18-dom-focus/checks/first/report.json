@@ -1,0 +1,127 @@
+[
+  {
+    "label": "workspace-format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exitCode": 0,
+    "seconds": 0.44617509841918945,
+    "log": "workspace-format.txt"
+  },
+  {
+    "label": "workspace-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 12.620131254196167,
+    "log": "workspace-clippy.txt"
+  },
+  {
+    "label": "workspace-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "seconds": 36.853939056396484,
+    "log": "workspace-tests.txt"
+  },
+  {
+    "label": "input-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--test",
+      "input_delivery",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "--test-threads=1"
+    ],
+    "exitCode": 0,
+    "seconds": 24.949841260910034,
+    "log": "input-tests.txt"
+  },
+  {
+    "label": "input-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--test",
+      "input_delivery",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 15.78742504119873,
+    "log": "input-clippy.txt"
+  },
+  {
+    "label": "compiled-preserved-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 4.404108047485352,
+    "log": "compiled-preserved-clippy.txt"
+  },
+  {
+    "label": "compiled-restricted-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--no-default-features",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 1.9505152702331543,
+    "log": "compiled-restricted-clippy.txt"
+  }
+]

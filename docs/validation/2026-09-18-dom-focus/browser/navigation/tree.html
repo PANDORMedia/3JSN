@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Original focus navigation control</title>
+<style>body{margin:8px}#tree>[id]{display:block;box-sizing:border-box;width:240px;height:28px;margin:3px;padding:3px}#inert-parent{height:34px!important}#inert-child{width:220px;height:25px}</style>
+</head><body><div id="tree">
+<div id="negative-before" tabindex="-1">Negative before</div>
+<button id="positive-two" tabindex="2">Positive two</button>
+<button id="natural-a">Natural A</button>
+<div id="negative" tabindex="-1">Negative between</div>
+<button id="positive-one" tabindex="1">Positive one</button>
+<div id="zero" tabindex="0">Zero</div>
+<button id="natural-b">Natural B</button>
+<button id="disabled" disabled>Disabled</button>
+<div id="inert-parent" inert><button id="inert-child">Inert child</button></div>
+<div id="positive-two-later" tabindex="2">Positive two later</div>
+<div id="negative-after" tabindex="-1">Negative after</div>
+<div id="outside">Nonfocusable outside controls</div>
+</div></body></html>

@@ -1,0 +1,351 @@
+diff --git a/packages/blitz-dom/src/document.rs b/packages/blitz-dom/src/document.rs
+--- a/packages/blitz-dom/src/document.rs
++++ b/packages/blitz-dom/src/document.rs
+@@ -922,10 +922,10 @@
+         if self.active_node_id == Some(node_id) {
+             self.active_node_id = self.nearest_surviving_element_ancestor(node_id);
+         }
+-        if self.focus_node_id == Some(node_id) {
+-            let shell_provider = self.shell_provider.clone();
+-            self.nodes[node_id].blur(shell_provider);
+-            self.focus_node_id = None;
++        if self.focus_within_chain().contains(&node_id) {
++            // Clear while the complete parent chain is still available, including
++            // root-first subtree teardown.
++            self.clear_focus();
+         }
+         if self.mousedown_node_id == Some(node_id) {
+             self.mousedown_node_id = None;
+@@ -1745,11 +1745,13 @@
+     /// Clear the focussed node
+     pub fn clear_focus(&mut self) {
+         if let Some(id) = self.focus_node_id {
++            let previous = self.focus_within_chain();
+             let shell_provider = self.shell_provider.clone();
+             self.snapshot_node_and(id, ElementState::FOCUS | ElementState::FOCUSRING, |node| {
+                 node.blur(shell_provider)
+             });
+             self.focus_node_id = None;
++            self.update_focus_within(&previous);
+         }
+     }
+ 
+@@ -1769,6 +1771,8 @@
+ 
+         let shell_provider = self.shell_provider.clone();
+ 
++        let previous = self.focus_within_chain();
++
+         // Remove focus from the old node
+         if let Some(id) = self.focus_node_id {
+             self.snapshot_node_and(id, ElementState::FOCUS | ElementState::FOCUSRING, |node| {
+@@ -1784,6 +1788,7 @@
+         );
+ 
+         self.focus_node_id = Some(focus_node_id);
++        self.update_focus_within(&previous);
+ 
+         true
+     }
+diff --git a/packages/blitz-dom/src/focus_within.rs b/packages/blitz-dom/src/focus_within.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-dom/src/focus_within.rs
+@@ -0,0 +1,244 @@
++//! Keep Stylo's ancestor focus state synchronized with the authoritative focus.
++
++use crate::{BaseDocument, NodeId};
++use style_dom::ElementState;
++
++impl BaseDocument {
++    pub(crate) fn focus_within_chain(&self) -> Vec<NodeId> {
++        let mut chain = Vec::new();
++        let mut current = self.focus_node_id;
++        while let Some(id) = current {
++            let Some(node) = self.get_node(id) else {
++                break;
++            };
++            if node.is_element() {
++                chain.push(id);
++            }
++            current = node.parent;
++        }
++        chain
++    }
++
++    /// Diff DOM ancestors rather than layout parents, including when an existing
++    /// focused subtree is moved without changing the focused node itself.
++    pub(crate) fn update_focus_within(&mut self, previous: &[NodeId]) {
++        let current = self.focus_within_chain();
++        for &id in previous {
++            if !current.contains(&id) {
++                self.set_focus_within(id, false);
++            }
++        }
++        for &id in &current {
++            if !previous.contains(&id) {
++                self.set_focus_within(id, true);
++            }
++        }
++    }
++
++    fn set_focus_within(&mut self, id: NodeId, value: bool) {
++        let Some(node) = self.get_node(id) else {
++            return;
++        };
++        let Some(element) = node.element_data() else {
++            return;
++        };
++        if element.element_state.contains(ElementState::FOCUS_WITHIN) == value {
++            return;
++        }
++        let update = |node: &mut crate::Node| {
++            node.element_data_mut()
++                .unwrap()
++                .element_state
++                .set(ElementState::FOCUS_WITHIN, value);
++            node.mark_ancestors_dirty();
++        };
++        if node.flags.is_in_document() {
++            self.snapshot_node_and(id, ElementState::FOCUS_WITHIN, update);
++        } else {
++            // Teardown may already have removed this ancestor's snapshots. It
++            // still needs its bit cleared, without installing a detached snapshot.
++            update(self.get_node_mut(id).unwrap());
++        }
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use crate::{DocumentConfig, QualName, ns};
++
++    struct Fixture {
++        doc: BaseDocument,
++        body: NodeId,
++        left: [NodeId; 3],
++        right: [NodeId; 3],
++        a: NodeId,
++        b: NodeId,
++    }
++
++    fn element(doc: &mut BaseDocument, parent: Option<NodeId>, tag: &str, class: &str) -> NodeId {
++        let mut dom = doc.mutate();
++        let id = dom.create_element(QualName::new(None, ns!(html), tag.into()), vec![]);
++        dom.set_attribute(id, QualName::new(None, ns!(), "class".into()), class);
++        if let Some(parent) = parent {
++            dom.append_children(parent, &[id]);
++        }
++        id
++    }
++
++    fn fixture() -> Fixture {
++        let mut doc = BaseDocument::new(DocumentConfig::default());
++        let root = doc.root_node().id;
++        let html = element(&mut doc, Some(root), "html", "");
++        let body = element(&mut doc, Some(html), "body", "");
++        let left = element(&mut doc, Some(body), "section", "group");
++        let left_marker = element(&mut doc, Some(left), "i", "");
++        let left_sibling = element(&mut doc, Some(body), "aside", "");
++        let right = element(&mut doc, Some(body), "section", "group");
++        let right_marker = element(&mut doc, Some(right), "i", "");
++        let right_sibling = element(&mut doc, Some(body), "aside", "");
++        let a = element(&mut doc, Some(left), "button", "");
++        let b = element(&mut doc, Some(right), "button", "");
++        doc.add_user_agent_stylesheet(
++            ".group { opacity: 0.2 } i, aside { opacity: 0.1 }
++             .group:focus-within { opacity: 0.8 }
++             .group:focus-within > i { opacity: 0.6 }
++             .group:focus-within + aside { opacity: 0.9 }",
++        );
++        Fixture {
++            doc,
++            body,
++            left: [left, left_marker, left_sibling],
++            right: [right, right_marker, right_sibling],
++            a,
++            b,
++        }
++    }
++
++    fn group(doc: &BaseDocument, ids: [NodeId; 3], focused: bool) {
++        let expected = if focused {
++            ["0.8", "0.6", "0.9"]
++        } else {
++            ["0.2", "0.1", "0.1"]
++        };
++        for (id, opacity) in ids.into_iter().zip(expected) {
++            assert_eq!(doc.resolved_style_value(id, "opacity"), opacity);
++        }
++    }
++
++    #[test]
++    fn focus_within_focus_switch_and_clear_restyle_ancestors_descendants_and_siblings() {
++        for resolve_first in [false, true] {
++            let Fixture {
++                mut doc,
++                body,
++                left,
++                right,
++                a,
++                b,
++            } = fixture();
++            if resolve_first {
++                doc.resolve(0.0);
++            }
++            doc.set_focus_to(a);
++            doc.resolve(0.0);
++            group(&doc, left, true);
++            group(&doc, right, false);
++            let matches = doc.query_selector_all(":focus-within").unwrap();
++            assert!(matches.contains(&a) && matches.contains(&left[0]) && matches.contains(&body));
++            assert!(!matches.contains(&b));
++            // FOCUSRING is set by every focus call; it is not a modality policy.
++            assert!(doc.query_selector(":focus-visible").unwrap().is_none());
++            doc.set_focus_to(b);
++            doc.resolve(0.0);
++            group(&doc, left, false);
++            group(&doc, right, true);
++            doc.clear_focus();
++            doc.resolve(0.0);
++            group(&doc, right, false);
++            assert!(doc.query_selector_all(":focus-within").unwrap().is_empty());
++        }
++    }
++
++    fn check_removal(removal: u8) {
++        let Fixture {
++            mut doc, left, a, ..
++        } = fixture();
++        let wrapper = element(&mut doc, Some(left[0]), "div", "");
++        doc.mutate().append_children(wrapper, &[a]);
++        doc.resolve(0.0);
++        doc.set_focus_to(a);
++        doc.resolve(0.0);
++        group(&doc, left, true);
++        match removal {
++            0 => doc.mutate().remove_node(wrapper),
++            1 => {
++                doc.mutate().remove_and_drop_node(wrapper);
++            }
++            _ => doc.mutate().remove_and_drop_all_children(wrapper),
++        }
++        doc.resolve(0.0);
++        group(&doc, left, false);
++        assert!(doc.focus_node_id.is_none());
++        assert!(doc.query_selector_all(":focus-within").unwrap().is_empty());
++        if let Some(node) = doc.get_node(a) {
++            assert!(!node.element_state().contains(ElementState::FOCUS_WITHIN));
++        }
++    }
++
++    #[test]
++    fn focus_within_subtree_detach_clears_surviving_ancestors() {
++        check_removal(0);
++    }
++
++    #[test]
++    fn focus_within_subtree_drop_clears_surviving_ancestors() {
++        check_removal(1);
++    }
++
++    #[test]
++    fn focus_within_drop_all_children_clears_surviving_ancestors() {
++        check_removal(2);
++    }
++
++    #[test]
++    fn dropping_all_children_invalidates_layout_without_focus() {
++        let Fixture { mut doc, left, .. } = fixture();
++        doc.resolve(0.0);
++        doc.mutate().remove_and_drop_all_children(left[0]);
++        doc.resolve(0.0);
++        assert!(doc.get_node(left[0]).unwrap().children.is_empty());
++    }
++
++    #[test]
++    fn focus_within_reparenting_updates_both_chains_without_changing_focus_policy() {
++        let Fixture {
++            mut doc,
++            left,
++            right,
++            a,
++            b,
++            ..
++        } = fixture();
++        let wrapper = element(&mut doc, Some(left[0]), "div", "");
++        doc.mutate().append_children(wrapper, &[a]);
++        doc.resolve(0.0);
++        doc.set_focus_to(a);
++        doc.resolve(0.0);
++        doc.mutate().append_children(right[0], &[wrapper]);
++        doc.resolve(0.0);
++        assert_eq!(doc.focus_node_id, Some(a));
++        group(&doc, left, false);
++        group(&doc, right, true);
++        doc.mutate().insert_nodes_before(b, &[wrapper]);
++        doc.resolve(0.0);
++        assert_eq!(doc.focus_node_id, Some(a));
++        group(&doc, right, true);
++        let detached = element(&mut doc, None, "section", "");
++        doc.mutate().append_children(detached, &[wrapper]);
++        doc.resolve(0.0);
++        assert!(doc.focus_node_id.is_none());
++        group(&doc, right, false);
++        assert!(doc.query_selector_all(":focus-within").unwrap().is_empty());
++    }
++}
+diff --git a/packages/blitz-dom/src/lib.rs b/packages/blitz-dom/src/lib.rs
+--- a/packages/blitz-dom/src/lib.rs
++++ b/packages/blitz-dom/src/lib.rs
+@@ -60,6 +60,7 @@
+ mod resolved_style;
+ /// Scrolling of nodes and the viewport, and scroll animations.
+ mod scrolling;
++mod focus_within;
+ mod selection;
+ /// Implementations that interact with servo's style engine
+ mod stylo;
+diff --git a/packages/blitz-dom/src/mutator.rs b/packages/blitz-dom/src/mutator.rs
+--- a/packages/blitz-dom/src/mutator.rs
++++ b/packages/blitz-dom/src/mutator.rs
+@@ -611,5 +611,8 @@
+         let parent = &mut self.doc.nodes[node_id];
+         let parent_is_in_doc = parent.flags.is_in_document();
++
++        // Discard cached layout children before any child slots are freed.
++        parent.insert_damage(ALL_DAMAGE);
+ 
+         // TODO: make this fine grained / conditional based on ElementSelectorFlags
+         if parent_is_in_doc {
+@@ -684,6 +687,7 @@
+         // would remove both the old and the newly-inserted entries from the
+         // parent's child list, and anchor indices would be computed against a
+         // child list that still contains the moved nodes.
++        let previous_focus_chain = self.doc.focus_within_chain();
+         for child_id in child_ids.iter().copied() {
+             let child = &mut self.doc.nodes[child_id];
+             let child_was_in_doc = child.flags.is_in_document();
+@@ -740,6 +744,7 @@
+             }
+         }
+ 
++        self.doc.update_focus_within(&previous_focus_chain);
+         self.maybe_record_node(parent_id);
+     }
+ 
+diff --git a/packages/blitz-dom/src/stylo.rs b/packages/blitz-dom/src/stylo.rs
+--- a/packages/blitz-dom/src/stylo.rs
++++ b/packages/blitz-dom/src/stylo.rs
+@@ -474,7 +474,9 @@
+             NonTSPseudoClass::Disabled => self.element_state().contains(ElementState::DISABLED),
+             NonTSPseudoClass::Enabled => self.element_state().contains(ElementState::ENABLED),
+             NonTSPseudoClass::Focus => self.element_state().contains(ElementState::FOCUS),
+-            NonTSPseudoClass::FocusWithin => false,
++            NonTSPseudoClass::FocusWithin => {
++                self.element_state().contains(ElementState::FOCUS_WITHIN)
++            }
+             NonTSPseudoClass::FocusVisible => false,
+             NonTSPseudoClass::Fullscreen => false,
+             NonTSPseudoClass::Hover => self.element_state().contains(ElementState::HOVER),

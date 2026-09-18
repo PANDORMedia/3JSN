@@ -15,10 +15,14 @@ pub fn embed_extension_sources(extension: &mut Extension) {
         &mut extension.lazy_loaded_js_files,
     ] {
         for source in sources.to_mut() {
-            if matches!(
-                source.code,
-                ExtensionFileSourceCode::LoadedFromFsDuringSnapshot(_)
-            ) {
+            // Apply the checked Document/Window event-path repair in release
+            // builds too, where Deno can already supply an in-memory source.
+            if source.specifier == "ext:deno_web/02_event.js"
+                || matches!(
+                    source.code,
+                    ExtensionFileSourceCode::LoadedFromFsDuringSnapshot(_)
+                )
+            {
                 let index = EMBEDDED_SOURCES
                     .binary_search_by_key(&source.specifier, |(specifier, _)| *specifier)
                     .unwrap_or_else(|_| {
@@ -142,6 +146,27 @@ mod tests {
             extension.esm_files[0].load().unwrap().as_str(),
             "export const computed = true;"
         );
+    }
+
+    #[test]
+    fn document_event_repair_also_replaces_in_memory_dependency_source() {
+        let specifier = "ext:deno_web/02_event.js";
+        let mut extension = Extension {
+            lazy_loaded_js_files: Cow::Owned(vec![ExtensionFileSource::new(
+                specifier,
+                deno_core::ascii_str!("unpatched dependency source"),
+            )]),
+            ..Default::default()
+        };
+        embed_extension_sources(&mut extension);
+        let actual = extension.lazy_loaded_js_files[0].load().unwrap();
+        let expected = EMBEDDED_SOURCES
+            .iter()
+            .find(|(name, _)| *name == specifier)
+            .unwrap()
+            .1;
+        assert_eq!(actual.as_str(), expected.as_str());
+        assert!(actual.as_str().contains("eventTarget.defaultView ?? null"));
     }
 
     #[test]

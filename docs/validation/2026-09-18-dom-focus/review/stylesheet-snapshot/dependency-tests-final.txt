@@ -1,0 +1,22 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.07s
+     Running unittests src/lib.rs (target/debug/deps/blitz_dom-720d81d51309afae)
+
+running 3 tests
+test stylo::stylesheet_snapshot_tests::stylesheet_snapshot_state_only_ancestors_allow_class_rule_invalidation ... ok
+test stylo::stylesheet_snapshot_tests::stylesheet_snapshot_preserves_pre_attribute_values_and_original_state ... ok
+test stylo::stylesheet_snapshot_tests::stylesheet_snapshot_focused_text_replacement_and_character_data_restyle_ids ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 77 filtered out; finished in 0.03s
+

@@ -88,8 +88,10 @@ submitted frames and requires the expected error plus an explicit cleanup result
 
 - Offscreen Metal only; native presentation, other APIs/platforms, sustained
   rendering, frame pacing and device-loss recovery remain separate tests.
-- The DOM adapter has no Window propagation, shadow DOM, `on*` handlers, native
-  input, default click activation, IME or accessibility implementation.
+- The shared DOM adapter now includes bounded focus and Document-to-Window
+  propagation; see the [focus checkpoint](../../docs/validation/2026-09-18-dom-focus.md)
+  for bounded CPU/browser and native-window evidence. Shadow DOM, `on*`
+  handlers, general default activation, IME and accessibility remain open.
 - Deno 0.290 skips ancestor propagation without a target listener. A temporary
   inert listener adapts `Node.dispatchEvent`, with cleanup in `finally`. Borrowing
   `EventTarget.prototype.dispatchEvent` directly bypasses that adapter.

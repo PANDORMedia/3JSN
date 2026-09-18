@@ -1,0 +1,129 @@
+diff --git a/packages/blitz-dom/src/stylo.rs b/packages/blitz-dom/src/stylo.rs
+--- a/packages/blitz-dom/src/stylo.rs
++++ b/packages/blitz-dom/src/stylo.rs
+@@ -62,6 +62,21 @@
+ impl crate::document::BaseDocument {
+     pub fn resolve_stylist(&mut self, now: f64) {
+         style::thread_state::enter(ThreadState::LAYOUT);
++
++        // Stylo 0.21 stylesheet invalidation reads old IDs/classes even from
++        // state-only snapshots. Preserve their original state while adding the
++        // missing attributes, only when stylesheet invalidation will run.
++        if self.stylist.stylesheets_have_changed() {
++            let state_only: Vec<_> = self
++                .snapshots
++                .iter()
++                .filter(|(_, snapshot)| snapshot.attrs.is_none())
++                .map(|(opaque, _)| NodeId::from_u64(opaque.id() as u64))
++                .collect();
++            for id in state_only {
++                self.snapshot_node(id);
++            }
++        }
+ 
+         let guard = &self.guard;
+         let guards = StylesheetGuards {
+@@ -1503,3 +1518,103 @@
+ 
+     // let val = CSSInlineStyleDeclaration();
+ }
++
++#[cfg(test)]
++mod stylesheet_snapshot_tests {
++    use crate::{BaseDocument, DocumentConfig, NodeId, QualName, ns};
++    use style_dom::ElementState;
++
++    fn attribute(doc: &mut BaseDocument, id: NodeId, name: &str, value: &str) {
++        doc.mutate()
++            .set_attribute(id, QualName::new(None, ns!(), name.into()), value);
++    }
++
++    fn element(doc: &mut BaseDocument, parent: NodeId, tag: &str) -> NodeId {
++        let mut dom = doc.mutate();
++        let id = dom.create_element(QualName::new(None, ns!(html), tag.into()), vec![]);
++        dom.append_children(parent, &[id]);
++        id
++    }
++
++    fn replace_text(doc: &mut BaseDocument, style: NodeId, css: &str) {
++        let mut dom = doc.mutate();
++        for child in dom.child_ids(style) {
++            dom.remove_node(child);
++        }
++        let text = dom.create_text_node(css);
++        dom.append_children(style, &[text]);
++    }
++
++    fn fixture(css: &str) -> (BaseDocument, NodeId, NodeId, NodeId, NodeId) {
++        let mut doc = BaseDocument::new(DocumentConfig::default());
++        let root = doc.root_node().id;
++        let html = element(&mut doc, root, "html");
++        let head = element(&mut doc, html, "head");
++        let style = element(&mut doc, head, "style");
++        let body = element(&mut doc, html, "body");
++        let group = element(&mut doc, body, "div");
++        attribute(&mut doc, group, "class", "scope");
++        let a = element(&mut doc, group, "button");
++        attribute(&mut doc, a, "id", "old");
++        let b = element(&mut doc, group, "button");
++        attribute(&mut doc, b, "id", "other");
++        attribute(&mut doc, b, "class", "other");
++        doc.add_user_agent_stylesheet(
++            "button { opacity: 0.1 } button:focus { font-weight: 700 }
++             .scope:focus-within { opacity: 0.7 }",
++        );
++        replace_text(&mut doc, style, css);
++        doc.resolve(0.0);
++        (doc, style, group, a, b)
++    }
++
++    #[test]
++    fn stylesheet_snapshot_focused_text_replacement_and_character_data_restyle_ids() {
++        for replace_children in [true, false] {
++            let (mut doc, style, group, a, b) = fixture("");
++            doc.set_focus_to(a);
++            assert!(
++                doc.snapshots
++                    .values()
++                    .any(|snapshot| snapshot.attrs.is_none())
++            );
++            let css = "#old { display: none } #other { opacity: 0.4 }";
++            if replace_children {
++                replace_text(&mut doc, style, css);
++            } else {
++                let text = doc.nodes[style].children[0];
++                doc.mutate().set_node_text(text, css);
++            }
++            doc.resolve(0.0);
++            assert_eq!(doc.resolved_style_value(a, "display"), "none");
++            assert_eq!(doc.resolved_style_value(b, "opacity"), "0.4");
++            assert_eq!(doc.resolved_style_value(group, "opacity"), "0.7");
++        }
++    }
++
++    #[test]
++    fn stylesheet_snapshot_state_only_ancestors_allow_class_rule_invalidation() {
++        let (mut doc, style, _, a, b) = fixture("");
++        doc.set_focus_to(a);
++        replace_text(&mut doc, style, ".other { opacity: 0.4 }");
++        doc.resolve(0.0);
++        assert_eq!(doc.resolved_style_value(b, "opacity"), "0.4");
++        assert_eq!(doc.resolved_style_value(a, "font-weight"), "700");
++    }
++
++    #[test]
++    fn stylesheet_snapshot_preserves_pre_attribute_values_and_original_state() {
++        let (mut doc, style, _, a, b) = fixture("#old { opacity: 0.3 }");
++        assert_eq!(doc.resolved_style_value(a, "opacity"), "0.3");
++        doc.set_focus_to(a);
++        attribute(&mut doc, a, "id", "new");
++        let snapshot = doc.snapshots.get(&&doc.nodes[a]).unwrap();
++        assert!(snapshot.attrs.is_some());
++        assert!(!snapshot.state.unwrap().contains(ElementState::FOCUS));
++        replace_text(&mut doc, style, "#other { opacity: 0.4 }");
++        doc.resolve(0.0);
++        assert_eq!(doc.resolved_style_value(a, "opacity"), "0.1");
++        assert_eq!(doc.resolved_style_value(a, "font-weight"), "700");
++        assert_eq!(doc.resolved_style_value(b, "opacity"), "0.4");
++    }
++}

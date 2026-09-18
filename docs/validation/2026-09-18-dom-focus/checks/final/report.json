@@ -1,0 +1,63 @@
+[
+  {
+    "label": "input-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--test",
+      "input_delivery",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 25.08040761947632,
+    "log": "input-clippy.txt"
+  },
+  {
+    "label": "compiled-preserved-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 6.264299631118774,
+    "log": "compiled-preserved-clippy.txt"
+  },
+  {
+    "label": "compiled-restricted-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--no-default-features",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 3.5818049907684326,
+    "log": "compiled-restricted-clippy.txt"
+  }
+]

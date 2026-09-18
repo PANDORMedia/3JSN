@@ -79,6 +79,16 @@ Only a matching primary-button press/release target produces a click. Cursor
 exit, resize and blur clear pending pointer activation. See the fixture's
 [input limits](../../examples/dom-window/README.md).
 
+Element focus is owned by the native document. The shared adapter exposes
+`activeElement`, `focus()`/`blur()` and `tabIndex`; fresh keyboard targets propagate
+through Document to Window. Uncanceled primary mousedown focuses an eligible
+node/ancestor after handlers, and uncanceled Tab/Shift+Tab navigates candidates.
+OS window focus is separate. The [focus checkpoint](../../docs/validation/2026-09-18-dom-focus.md)
+records 44 bounded browser semantic matches in CPU/window runs across both
+parser modes and 120 Metal frames per mode. Events remain
+untrusted plain `Event` objects; focus-visible, forms, IME and focus scrolling
+remain open. Tab cycling at the window edge is an explicit policy difference from Chrome.
+
 Close interrupts executing JavaScript and cancels asynchronous module startup.
 The worker drops any acquired image, drains both GPU registries, unregisters
 canvas storage, releases persistent JS handles and disposes V8. The OS thread
@@ -93,6 +103,6 @@ Read the [hardware checkpoint](../../docs/validation/2026-09-18-dom-window.md).
 This is one opaque canvas, a simple HTML page and bounded keyboard/mouse behavior
 on one Mac. It does not certify WebGL, CtF, arbitrary project loading, multiple
 canvases, asset APIs, CSS animations, color management, transparent presentation,
-clip-aware input, focus/forms/IME, accessibility, scrolling, physical monitor/DPR
+clip-aware input, complete focus/forms/IME, accessibility, scrolling, physical monitor/DPR
 changes, device-loss recovery, other platforms or performance. The existing
 ancestor-clipping and broader HTML compatibility gates remain open.

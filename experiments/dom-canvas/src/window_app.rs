@@ -10,13 +10,13 @@ use winit::{
     dpi::LogicalSize,
     event::{ElementState, MouseButton, WindowEvent},
     event_loop::{ActiveEventLoop, ControlFlow, EventLoop, EventLoopProxy},
-    keyboard::{Key, NamedKey},
+    keyboard::{Key, KeyCode, ModifiersState, NamedKey, PhysicalKey},
     window::{Window, WindowId},
 };
 
 use crate::{
     Result,
-    window_input::{self, Input},
+    window_input::{self, Input, Modifiers},
     window_options::Options,
     window_runtime::{self, HostEvent, HostState, Interrupt, Worker},
 };
@@ -35,6 +35,7 @@ pub fn run(options: Options) -> Result<()> {
         input: None,
         interrupt: Arc::new(Mutex::new(None)),
         pointer: None,
+        modifiers: ModifiersState::empty(),
         limit: None,
         presented: 0,
         snapshots: 0,
@@ -74,6 +75,7 @@ struct App {
     input: Option<Sender<Input>>,
     interrupt: Interrupt,
     pointer: Option<(f64, f64)>,
+    modifiers: ModifiersState,
     limit: Option<u64>,
     presented: u64,
     snapshots: u64,
@@ -97,6 +99,17 @@ impl App {
     }
 
     fn input(&mut self, kind: &'static str, key: String, button: i32) {
+        self.send_input(kind, key, button, String::new(), false);
+    }
+
+    fn send_input(
+        &mut self,
+        kind: &'static str,
+        key: String,
+        button: i32,
+        code: String,
+        repeat: bool,
+    ) {
         if self
             .state
             .as_ref()
@@ -112,6 +125,14 @@ impl App {
                 y,
                 button,
                 key,
+                code,
+                repeat,
+                modifiers: Modifiers {
+                    shift: self.modifiers.shift_key(),
+                    control: self.modifiers.control_key(),
+                    alt: self.modifiers.alt_key(),
+                    meta: self.modifiers.super_key(),
+                },
             })
         {
             self.stop(Some(format!(
@@ -303,23 +324,36 @@ impl ApplicationHandler<HostEvent> for App {
                 ..
             } => {
                 let key = match event.logical_key {
-                    Key::Character(key) => Some(key.to_string()),
-                    Key::Named(NamedKey::Space) => Some(" ".into()),
-                    _ => None,
+                    Key::Character(key) => key.to_string(),
+                    Key::Named(NamedKey::Space) => " ".into(),
+                    Key::Named(NamedKey::Super) => "Meta".into(),
+                    Key::Named(key) => format!("{key:?}"),
+                    Key::Dead(_) => "Dead".into(),
+                    Key::Unidentified(_) => "Unidentified".into(),
                 };
-                if let Some(key) = key {
-                    self.input(
-                        if event.state == ElementState::Pressed {
-                            "keydown"
-                        } else {
-                            "keyup"
-                        },
-                        key,
-                        0,
-                    );
-                }
+                let code = match event.physical_key {
+                    PhysicalKey::Code(KeyCode::SuperLeft) => "MetaLeft".into(),
+                    PhysicalKey::Code(KeyCode::SuperRight) => "MetaRight".into(),
+                    PhysicalKey::Code(code) => format!("{code:?}"),
+                    PhysicalKey::Unidentified(_) => "Unidentified".into(),
+                };
+                self.send_input(
+                    if event.state == ElementState::Pressed {
+                        "keydown"
+                    } else {
+                        "keyup"
+                    },
+                    key,
+                    0,
+                    code,
+                    event.repeat,
+                );
             }
+            WindowEvent::ModifiersChanged(modifiers) => self.modifiers = modifiers.state(),
             WindowEvent::Focused(focused) => {
+                if !focused {
+                    self.modifiers = ModifiersState::empty();
+                }
                 self.input(if focused { "focus" } else { "blur" }, String::new(), 0);
             }
             _ => {}

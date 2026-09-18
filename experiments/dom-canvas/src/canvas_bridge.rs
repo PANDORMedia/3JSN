@@ -103,6 +103,10 @@ pub fn extension_with_document_and_parser(
             deno_core::ascii_str_include!("../../native-html-interop/src/bindings.js"),
         ),
         deno_core::ExtensionFileSource::new(
+            "ext:html_v8_probe/focus.js",
+            deno_core::ascii_str_include!("../../native-html-interop/src/focus.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
             "ext:dom_canvas/canvas.js",
             deno_core::ascii_str_include!("canvas.js"),
         ),

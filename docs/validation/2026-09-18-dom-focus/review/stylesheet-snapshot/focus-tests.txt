@@ -1,0 +1,22 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running unittests src/lib.rs (target/debug/deps/blitz_dom-720d81d51309afae)
+
+running 6 tests
+test focus_within::tests::focus_within_drop_all_children_clears_surviving_ancestors ... ok
+test focus_within::tests::focus_within_subtree_detach_clears_surviving_ancestors ... ok
+test focus_within::tests::dropping_all_children_invalidates_layout_without_focus ... ok
+test focus_within::tests::focus_within_reparenting_updates_both_chains_without_changing_focus_policy ... ok
+test focus_within::tests::focus_within_subtree_drop_clears_surviving_ancestors ... ok
+test focus_within::tests::focus_within_focus_switch_and_clear_restyle_ancestors_descendants_and_siblings ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 74 filtered out; finished in 0.02s
+

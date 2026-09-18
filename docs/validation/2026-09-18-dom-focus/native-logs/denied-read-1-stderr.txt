@@ -1,0 +1,1 @@
+cat: /Users/sean/dev/3JSN/fixtures/react-dom/dom-contract.mjs: Operation not permitted

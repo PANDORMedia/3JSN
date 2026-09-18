@@ -1,0 +1,49 @@
+
+thread 'main' (5747916) panicked at /Users/sean/dev/3JSN/.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/servo/selector_parser.rs:866:14:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'main' (5747916) panicked at library/core/src/panicking.rs:225:5:
+panic in a function that cannot unwind
+stack backtrace:
+   0:        0x1076bacf8 - std::backtrace_rs::backtrace::libunwind::trace::h7577bad47ee3e6ee
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/../../backtrace/src/backtrace/libunwind.rs:117:9
+   1:        0x1076bacf8 - std::backtrace_rs::backtrace::trace_unsynchronized::hf8c23094259ea49b
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/../../backtrace/src/backtrace/mod.rs:66:14
+   2:        0x1076bacf8 - std::sys::backtrace::_print_fmt::hec8e3b1f0ce9dbc4
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:68:9
+   3:        0x1076bacf8 - <std::sys::backtrace::BacktraceLock::print::DisplayBacktrace as core::fmt::Display>::fmt::h8c5ab870ebd4c242
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:38:26
+   4:        0x1076cb578 - core::fmt::rt::Argument::fmt::hc2e0c24e74ca59ff
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/fmt/rt.rs:152:76
+   5:        0x1076cb578 - core::fmt::write::h64810b21425781ec
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/fmt/mod.rs:1686:22
+   6:        0x10769ad0c - std::io::default_write_fmt::h1ab19e39432de194
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/io/mod.rs:639:11
+   7:        0x10769ad0c - std::io::Write::write_fmt::h947344a43c638468
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/io/mod.rs:1994:13
+   8:        0x1076a32bc - std::sys::backtrace::BacktraceLock::print::h17b78e7978fd7389
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:41:25
+   9:        0x1076a32bc - std::panicking::default_hook::{{closure}}::ha0993a93f6e4994d
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:292:27
+  10:        0x1076a31bc - std::panicking::default_hook::h7aae5c8c53b8a669
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:319:9
+  11:        0x1076a36b4 - std::panicking::panic_with_hook::hb885411bb59bebf4
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:825:13
+  12:        0x1076a3394 - std::panicking::panic_handler::{{closure}}::hb04320f9e43192c5
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:691:13
+  13:        0x1076a02a0 - std::sys::backtrace::__rust_end_short_backtrace::ha3c55a1c4767eecf
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:176:18
+  14:        0x107693b50 - __rustc[d131491b17107b07]::rust_begin_unwind
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:689:5
+  15:        0x10778376c - core::panicking::panic_nounwind_fmt::runtime::hb388857b28a2e612
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:122:22
+  16:        0x10778376c - core::panicking::panic_nounwind_fmt::hbf0afcf6d5b364a7
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/intrinsics/mod.rs:2449:9
+  17:        0x1077836f4 - core::panicking::panic_nounwind::h7d65473595109eb7
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:225:5
+  18:        0x107783848 - core::panicking::panic_cannot_unwind::h3992364626a126ab
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:337:5
+  19:        0x102f88284 - threejs_compiled_ui_runtime::dom_bridge::op_dom_read::op_dom_read::v8_fn_ptr::he5375f670b1dc242
+                               at /Users/sean/dev/3JSN/experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:155:1
+thread caused non-unwinding panic. aborting.

@@ -1,0 +1,106 @@
+{
+  "version": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "pageHadFocus": true,
+  "mutations": [
+    {
+      "name": "self-before",
+      "error": null,
+      "events": [
+        {
+          "type": "blur",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        },
+        {
+          "type": "focusout",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        }
+      ],
+      "active": "BODY"
+    },
+    {
+      "name": "append-last",
+      "error": null,
+      "events": [
+        {
+          "type": "blur",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        },
+        {
+          "type": "focusout",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        }
+      ],
+      "active": "BODY"
+    },
+    {
+      "name": "before-next",
+      "error": null,
+      "events": [
+        {
+          "type": "blur",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        },
+        {
+          "type": "focusout",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        }
+      ],
+      "active": "BODY"
+    },
+    {
+      "name": "invalid-remove",
+      "error": "NotFoundError",
+      "events": [],
+      "active": "a"
+    },
+    {
+      "name": "invalid-cycle",
+      "error": "HierarchyRequestError",
+      "events": [],
+      "active": "a"
+    },
+    {
+      "name": "text-ancestor",
+      "error": null,
+      "events": [
+        {
+          "type": "blur",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        },
+        {
+          "type": "focusout",
+          "connected": true,
+          "parent": true,
+          "active": "BODY"
+        }
+      ],
+      "active": "BODY"
+    },
+    {
+      "name": "text-self",
+      "error": null,
+      "events": [],
+      "active": "a"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+[
+  {
+    "path": "crates/js-sources/build.rs",
+    "bytes": 2456,
+    "sha256": "19f6244c36f3bb2c2f1232e0e9d33f86257f56b0004f45d1eae24e0b0a459346"
+  },
+  {
+    "path": "crates/js-sources/dom_event_parent.rs",
+    "bytes": 1530,
+    "sha256": "0db6aca7350a085ec72ee082f8f75b0d9f114f6c4dacc1401bea98228074298b"
+  },
+  {
+    "path": "crates/js-sources/src/lib.rs",
+    "bytes": 6583,
+    "sha256": "04e11daec1dc44ed6b05ec4fd7cec4fd5017f1b8f9fc7b8629b9bce6b2eb9a3a"
+  },
+  {
+    "path": "experiments/dom-canvas/patches/blitz-focus-within.patch",
+    "bytes": 13139,
+    "sha256": "cc5b35cb492b9cf964bc015c9e3773eec09d17b8804924ad807de9a719b74b63"
+  },
+  {
+    "path": "experiments/dom-canvas/patches/blitz-stylesheet-state-snapshots.patch",
+    "bytes": 5342,
+    "sha256": "fa344a40c56b6d4f581503f61d7605b5e5bedfbba5d0087beef661a6de5148ef"
+  },
+  {
+    "path": "experiments/dom-canvas/prepare-blitz.mjs",
+    "bytes": 6527,
+    "sha256": "3f6ac1e855eaab2375a6ec6b0f2ea33b51b4411a9f22266a7eaabefa799ecb38"
+  },
+  {
+    "path": "experiments/dom-canvas/prepare-positioned.mjs",
+    "bytes": 15986,
+    "sha256": "8badf747eb47442feb680f2547f5e746c20a84cb2d9715389e1ac3cf88e8e684"
+  },
+  {
+    "path": "experiments/dom-canvas/src/canvas_bridge.rs",
+    "bytes": 6643,
+    "sha256": "f1d7b013213d0ccf7ad53dc944cc5f02c5686f677dd1737f98c58079e47c5920"
+  },
+  {
+    "path": "experiments/dom-canvas/src/window.js",
+    "bytes": 5024,
+    "sha256": "5453b1229679c25567c461a06bdbcaf3678c963316cb3d606e4d0b65b19a6076"
+  },
+  {
+    "path": "experiments/dom-canvas/src/window_app.rs",
+    "bytes": 13338,
+    "sha256": "85afaf5de9f37a679502196a243562d485ad178fdfea08b5fe6276659e4f8081"
+  },
+  {
+    "path": "experiments/dom-canvas/src/window_input.rs",
+    "bytes": 766,
+    "sha256": "c9156f19883ecf87d2bd5a039aaf8da27159128b2f47d961ea1923c7c7d18d77"
+  },
+  {
+    "path": "experiments/dom-canvas/src/window_runtime.rs",
+    "bytes": 15607,
+    "sha256": "cd65ef7c691a627849cfd8fe286ed37e0b2e07972997f123db2f0b9521c1b6cb"
+  },
+  {
+    "path": "experiments/dom-canvas/tests/fixtures/focus-stylesheets.js",
+    "bytes": 1817,
+    "sha256": "1a76341f9ffa59fba802ac1397b850a0e4783a4dba675742765e46ba6499ff54"
+  },
+  {
+    "path": "experiments/dom-canvas/tests/input_delivery.rs",
+    "bytes": 26918,
+    "sha256": "d20c91fcb829750a6ff8ab3680b05ae118e9e8356fbb73305df2a316a10399a8"
+  },
+  {
+    "path": "experiments/html-v8/src/dom_focus.rs",
+    "bytes": 7620,
+    "sha256": "472be7a6ae7a7da8b768abed817f61157ec77f18882810ea2c094b1c5ffd6327"
+  },
+  {
+    "path": "experiments/html-v8/src/dom_focus_tests.rs",
+    "bytes": 17204,
+    "sha256": "1f19543997aea05c8edac1a3fe4893602ab8ceb48575d186160d749270a818ab"
+  },
+  {
+    "path": "experiments/html-v8/src/dom_ops.rs",
+    "bytes": 19047,
+    "sha256": "ddc8541e1956efffcf5dc45ccffdc43daf001e7d5fe436707cb981b9d90e6dd0"
+  },
+  {
+    "path": "experiments/html-v8/src/dom_tree.rs",
+    "bytes": 8798,
+    "sha256": "ae2b91828e71234b5677b2967d3153fb9295be0cd8abf1926dd542bf92f1cfa3"
+  },
+  {
+    "path": "experiments/native-html-interop/src/bindings.js",
+    "bytes": 15079,
+    "sha256": "107109edc7a2527218127ff23f3182c87bfbe7b5c4dee1682d7e5d3b38c2ae78"
+  },
+  {
+    "path": "experiments/native-html-interop/src/dom_bridge.rs",
+    "bytes": 1254,
+    "sha256": "b21060b7455f09c81297e9cdfeb0f5abbcb02565c8d36b5711a0ef5db0d03634"
+  },
+  {
+    "path": "experiments/native-html-interop/src/focus.js",
+    "bytes": 2829,
+    "sha256": "4427526b7beefbfa6b9b0715960c34e35d1033dbd4fc3d5a2c2bd028aca5aba8"
+  },
+  {
+    "path": "fixtures/dom-focus/3jsn.json",
+    "bytes": 117,
+    "sha256": "9e775ee72fb1f9f83978892eb535c06677d913d33a359d4cdd5bcb74d826671e"
+  },
+  {
+    "path": "fixtures/dom-focus/app.mjs",
+    "bytes": 1725,
+    "sha256": "3feb92651481898f5a5f79ed6bd3b3ca1535d0d7e2e83ed8c472fd09dd2abddc"
+  },
+  {
+    "path": "fixtures/dom-focus/behavior.mjs",
+    "bytes": 11234,
+    "sha256": "8b8d3448cda97c0e0dccfb41dc3c3907eb096581d2c445f50d213e4bf8016e46"
+  },
+  {
+    "path": "fixtures/dom-focus/index.html",
+    "bytes": 545,
+    "sha256": "6dab95beadab2f5fa66bf019681f3bac97824e26f0e62125943a3bf81b570c9e"
+  },
+  {
+    "path": "scripts/compatibility/dom-window.test.mjs",
+    "bytes": 13761,
+    "sha256": "6391bd6c317c9bb4caa0cdff217d8c21213b1b192f25465685fd7fb5298d9187"
+  },
+  {
+    "path": "scripts/probe-dom-focus.mjs",
+    "bytes": 19676,
+    "sha256": "128ca0a5688c77a7160e17b3ab00ce93167e6bad273959a4961f8c8f617f9825"
+  }
+]

@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "reportSha256": "0ccbafc3888ac90f90f3bc44b5379bd709bfa49ccce07d656b4008cf67a1e717",
+  "controls": 19,
+  "exactRepeat": true,
+  "allCapturedBrowserEventsTrusted": true,
+  "cleanupEventCountsUnchanged": true,
+  "nativeValidated": false,
+  "navigation": [
+    {
+      "name": "initial-forward",
+      "targets": [
+        "positive-one",
+        "positive-two",
+        "positive-two-later",
+        "natural-a",
+        "zero",
+        "natural-b",
+        "body",
+        "positive-one"
+      ]
+    },
+    {
+      "name": "initial-backward",
+      "targets": [
+        "natural-b",
+        "zero",
+        "natural-a",
+        "positive-two-later",
+        "positive-two",
+        "positive-one",
+        "body",
+        "natural-b"
+      ]
+    },
+    {
+      "name": "negative-forward",
+      "targets": [
+        "positive-one",
+        "positive-two",
+        "positive-two-later"
+      ]
+    },
+    {
+      "name": "negative-backward",
+      "targets": [
+        "natural-a",
+        "positive-two-later",
+        "positive-two"
+      ]
+    },
+    {
+      "name": "negative-before-forward",
+      "targets": [
+        "positive-two",
+        "positive-two-later",
+        "natural-a"
+      ]
+    },
+    {
+      "name": "negative-before-backward",
+      "targets": [
+        "body",
+        "natural-b",
+        "zero"
+      ]
+    },
+    {
+      "name": "negative-after-forward",
+      "targets": [
+        "natural-a",
+        "zero",
+        "natural-b"
+      ]
+    },
+    {
+      "name": "negative-after-backward",
+      "targets": [
+        "positive-two-later",
+        "positive-two",
+        "positive-one"
+      ]
+    },
+    {
+      "name": "first-backward-edge",
+      "targets": [
+        "body",
+        "natural-b",
+        "zero"
+      ]
+    },
+    {
+      "name": "last-forward-edge",
+      "targets": [
+        "body",
+        "positive-one",
+        "positive-two"
+      ]
+    }
+  ],
+  "mouse": [
+    {
+      "mode": "ordinary",
+      "target": "natural-b",
+      "events": [
+        {
+          "type": "blur",
+          "target": "natural-a",
+          "relatedTarget": "natural-b",
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        {
+          "type": "focus",
+          "target": "natural-b",
+          "relatedTarget": "natural-a",
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        }
+      ]
+    },
+    {
+      "mode": "cancel",
+      "target": "natural-a",
+      "events": []
+    },
+    {
+      "mode": "remove",
+      "target": "body",
+      "events": [
+        {
+          "type": "handler-before",
+          "mode": "remove",
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true,
+          "targetConnected": true
+        },
+        {
+          "type": "handler-after",
+          "mode": "remove",
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true,
+          "targetConnected": false
+        },
+        {
+          "type": "blur",
+          "target": "natural-a",
+          "relatedTarget": null,
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        }
+      ]
+    },
+    {
+      "mode": "disable",
+      "target": "body",
+      "events": [
+        {
+          "type": "handler-before",
+          "mode": "disable",
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true,
+          "targetConnected": true
+        },
+        {
+          "type": "handler-after",
+          "mode": "disable",
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true,
+          "targetConnected": true
+        },
+        {
+          "type": "blur",
+          "target": "natural-a",
+          "relatedTarget": null,
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        }
+      ]
+    },
+    {
+      "mode": "outside",
+      "target": "body",
+      "events": [
+        {
+          "type": "blur",
+          "target": "natural-a",
+          "relatedTarget": null,
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        }
+      ]
+    },
+    {
+      "mode": "negative",
+      "target": "negative",
+      "events": [
+        {
+          "type": "blur",
+          "target": "natural-a",
+          "relatedTarget": "negative",
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        {
+          "type": "focus",
+          "target": "negative",
+          "relatedTarget": "natural-a",
+          "isTrusted": true,
+          "key": null,
+          "shiftKey": null,
+          "defaultPrevented": false,
+          "targetConnected": true,
+          "activeElement": "negative",
+          "focus": "negative",
+          "hasFocus": true
+        }
+      ]
+    }
+  ],
+  "displayContents": [
+    {
+      "name": "div-own",
+      "computedDisplay": "contents",
+      "target": "natural-a",
+      "focusEvents": 0
+    },
+    {
+      "name": "button-own",
+      "computedDisplay": "contents",
+      "target": "natural-a",
+      "focusEvents": 0
+    },
+    {
+      "name": "ancestor",
+      "computedDisplay": "contents",
+      "target": "natural-b",
+      "focusEvents": 4
+    }
+  ],
+  "normativeDifference": {
+    "case": "negative-after-forward",
+    "htmlAlgorithm": "Exhausted DOM/tree-order search proceeds to document-edge handling.",
+    "chromeObserved": "natural-a (first tabindex-zero candidate)",
+    "sourceFile": "focus_controller.cc",
+    "sourceLines": [
+      1333,
+      1389
+    ]
+  },
+  "source": {
+    "chromiumUrl": "https://chromium.googlesource.com/chromium/src/+/583c5b4655acea7450a3b5224ea5121ae8caca9b/third_party/blink/renderer/core/page/focus_controller.cc",
+    "chromiumSha256": "5a6c9ae7ce474c8644f235fb0457026232092f19dd10b076e4fdabc20d096e64",
+    "htmlUrl": "https://html.spec.whatwg.org/multipage/interaction.html#sequential-focus-navigation"
+  }
+}

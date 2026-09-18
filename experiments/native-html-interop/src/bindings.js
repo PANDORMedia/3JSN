@@ -1,6 +1,7 @@
 import { core } from 'ext:core/mod.js';
+import { createFocusController } from 'ext:html_v8_probe/focus.js';
 
-const { op_dom_read: read, op_dom_mutate: mutate, op_observe: observe } = core.ops;
+const { op_dom_read: read, op_dom_mutate: nativeMutate, op_observe: observe } = core.ops;
 const ids = new WeakMap();
 const wrappers = new Map();
 const classLists = new WeakMap();
@@ -18,6 +19,17 @@ for (const name of ['HierarchyRequestError', 'NotFoundError']) {
 export function registerElementClass(tag, Type) { elementClasses.set(tag, Type); }
 export function observeAttributes(node, callback) { attributeObservers.set(node, callback); }
 export { HTMLElement, Document, idOf };
+export const focusController = createFocusController({
+  read, mutate: nativeMutate, idOf, wrap, document: () => document,
+  emit(target, type, relatedTarget, bubbles) {
+    const event = new Event(type, { bubbles, composed: true });
+    for (const [name, value] of Object.entries({ relatedTarget, view: globalThis, detail: 0 })) {
+      Object.defineProperty(event, name, { value, enumerable: true });
+    }
+    target.dispatchEvent(event);
+  },
+});
+const mutate = request => focusController.mutate(request);
 
 function idOf(node) {
   const id = ids.get(node);
@@ -179,14 +191,14 @@ class Element extends Node {
   getAttribute(name) { return read({ kind: 'attribute', id: idOf(this), name: String(name) }); }
   setAttribute(name, value) {
     name = String(name);
-    mutate({ kind: 'attribute', id: idOf(this), name, value: String(value) });
-    attributeObservers.get(this)?.(name);
+    const canonicalName = mutate({ kind: 'attribute', id: idOf(this), name, value: String(value) });
+    attributeObservers.get(this)?.(canonicalName);
   }
   hasAttribute(name) { return this.getAttribute(name) !== null; }
   removeAttribute(name) {
     name = String(name);
-    mutate({ kind: 'removeAttribute', id: idOf(this), name });
-    attributeObservers.get(this)?.(name);
+    const canonicalName = mutate({ kind: 'removeAttribute', id: idOf(this), name });
+    attributeObservers.get(this)?.(canonicalName);
   }
   querySelector(selector) { return wrap(read({ kind: 'query', id: idOf(this), selector: String(selector), all: false })); }
   querySelectorAll(selector) { return read({ kind: 'query', id: idOf(this), selector: String(selector), all: true }).map(wrap); }
@@ -240,6 +252,10 @@ class Element extends Node {
 class HTMLElement extends Element {
   get className() { return this.getAttribute('class') ?? ''; }
   set className(value) { this.setAttribute('class', value); }
+  get tabIndex() { return read({ kind: 'focusability', id: idOf(this) }).tabIndex; }
+  set tabIndex(value) { this.setAttribute('tabindex', String(+value | 0)); }
+  focus() { focusController.focus(this); }
+  blur() { focusController.blur(this); }
   click() { this.dispatchEvent(new Event('click', { bubbles: true, cancelable: true })); }
 }
 class HTMLInputElement extends HTMLElement {}
@@ -255,7 +271,7 @@ class Document extends Node {
   get head() { return this.querySelector('head'); }
   get documentElement() { return this.children.item(0); }
   get defaultView() { return globalThis; }
-  get activeElement() { return this.body ?? this.documentElement; }
+  get activeElement() { return focusController.activeElement(); }
 }
 
 let nextFrameId = 0;

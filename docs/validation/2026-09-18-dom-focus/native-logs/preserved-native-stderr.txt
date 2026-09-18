@@ -1,0 +1,1 @@
+2026-09-18 17:02:35.082 3jsn-dom-focus[64011:5764907] Metal API Validation Enabled

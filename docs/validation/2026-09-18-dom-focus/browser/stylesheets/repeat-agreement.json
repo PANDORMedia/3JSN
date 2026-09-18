@@ -1,0 +1,8 @@
+{
+  "exactReportBytesEqual": true,
+  "sha256": "a36d763fcf6a07d98e034e9707510480a92a74ca462229de32753c8b09ea1324",
+  "captures": [
+    "report.json",
+    "report-repeat.json"
+  ]
+}

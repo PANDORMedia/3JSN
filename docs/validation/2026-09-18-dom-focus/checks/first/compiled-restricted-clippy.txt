@@ -1,0 +1,24 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+    Checking threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/experiments/compiled-ui)
+warning: `blitz-paint` (lib) generated 1 warning
+    Checking threejs-compiled-ui-runtime-experiment v0.0.0 (/Users/sean/dev/3JSN/experiments/compiled-ui-runtime)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.82s

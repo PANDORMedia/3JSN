@@ -18,8 +18,8 @@ required work, not optional migrations for the application.
 | glTF, animation, textures | Not yet tested here | Native asset I/O and decoding; regression scenes |
 | Draco, KTX2/Basis, other Wasm decoders | Not implemented | Worker/Wasm and binary asset integration |
 | requestAnimationFrame | Host-driven scheduler and bounded lifecycle checks | Validate native presentation/input timing |
-| Keyboard, pointer, gamepad | Not implemented | winit events; explicit gamepad service |
-| DOM-based controls | Bounded V8/Blitz DOM identity, mutations, geometry and programmatic events | Complete compatible event, focus and physical input semantics |
+| Keyboard, pointer, gamepad | [Bounded native keyboard/mouse/wheel bridge](native-input.md); gamepad unimplemented | Broader DOM/physical input and explicit gamepad service |
+| DOM-based controls | Bounded V8/Blitz DOM identity, mutations, geometry and events; [bounded focus/key routing checkpoint passes](validation/2026-09-18-dom-focus.md), with explicit interface/navigation differences | Complete compatible event, focus and physical input semantics |
 | HTML/CSS UI, CSS2D/3DRenderer | Live HTML GPU paint and [DOM canvas probe](validation/2026-09-18-canvas-handoff.md); ancestor clipping still fails | Shipping integration, full paint/DOM behavior; CSS2D/3DRenderer still untested |
 | Web Audio / Three.js Audio | Not implemented | Evaluate native mixer/binding |
 | WebRTC, microphone capture, MediaRecorder | Not implemented | Required CtF voice track; permissions, device and connection lifecycle |

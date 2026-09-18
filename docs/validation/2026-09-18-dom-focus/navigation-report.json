@@ -1,0 +1,4442 @@
+{
+  "schemaVersion": 1,
+  "sourceBefore": [
+    {
+      "path": "tree.html",
+      "byteLength": 1022,
+      "sha256": "4b47ba8aec2e118ed389a5715ec6ff222a3c4b4f616b51871908f22dbb67dfdf"
+    },
+    {
+      "path": "page.js",
+      "byteLength": 2607,
+      "sha256": "2803b72180f28c0cf8b50a0a023adf43b29dff90dc1dd1c822b13bed19fba8ad"
+    },
+    {
+      "path": "capture.mjs",
+      "byteLength": 8385,
+      "sha256": "223a742e42cdc40dadbb4364143915356c1c442858d1f11e35c4199af7d5b464"
+    }
+  ],
+  "sourceAfter": [
+    {
+      "path": "tree.html",
+      "byteLength": 1022,
+      "sha256": "4b47ba8aec2e118ed389a5715ec6ff222a3c4b4f616b51871908f22dbb67dfdf"
+    },
+    {
+      "path": "page.js",
+      "byteLength": 2607,
+      "sha256": "2803b72180f28c0cf8b50a0a023adf43b29dff90dc1dd1c822b13bed19fba8ad"
+    },
+    {
+      "path": "capture.mjs",
+      "byteLength": 8385,
+      "sha256": "223a742e42cdc40dadbb4364143915356c1c442858d1f11e35c4199af7d5b464"
+    }
+  ],
+  "sourcePreserved": true,
+  "input": "CDP trusted keyboard/mouse dispatch, not physical OS input",
+  "freshDocumentPerControl": true,
+  "focusAssertedBeforeEveryControl": true,
+  "browser": {
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.50",
+      "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    },
+    "viewport": {
+      "width": 800,
+      "height": 600,
+      "deviceScaleFactor": 1
+    },
+    "tree": [
+      {
+        "id": "negative-before",
+        "tag": "div",
+        "tabIndex": -1,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "positive-two",
+        "tag": "button",
+        "tabIndex": 2,
+        "disabled": false,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "natural-a",
+        "tag": "button",
+        "tabIndex": 0,
+        "disabled": false,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "negative",
+        "tag": "div",
+        "tabIndex": -1,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "positive-one",
+        "tag": "button",
+        "tabIndex": 1,
+        "disabled": false,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "zero",
+        "tag": "div",
+        "tabIndex": 0,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "natural-b",
+        "tag": "button",
+        "tabIndex": 0,
+        "disabled": false,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "disabled",
+        "tag": "button",
+        "tabIndex": 0,
+        "disabled": true,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "inert-parent",
+        "tag": "div",
+        "tabIndex": -1,
+        "disabled": null,
+        "inert": true,
+        "ancestorInert": true
+      },
+      {
+        "id": "inert-child",
+        "tag": "button",
+        "tabIndex": 0,
+        "disabled": false,
+        "inert": false,
+        "ancestorInert": true
+      },
+      {
+        "id": "positive-two-later",
+        "tag": "div",
+        "tabIndex": 2,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "negative-after",
+        "tag": "div",
+        "tabIndex": -1,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      },
+      {
+        "id": "outside",
+        "tag": "div",
+        "tabIndex": -1,
+        "disabled": null,
+        "inert": false,
+        "ancestorInert": false
+      }
+    ],
+    "navigation": [
+      {
+        "name": "initial-forward",
+        "tabs": 8,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": false
+            },
+            "afterTask": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          }
+        ],
+        "events": [
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 42,
+          "eventsAfter": 42,
+          "detached": true
+        }
+      },
+      {
+        "name": "initial-backward",
+        "backward": true,
+        "tabs": 8,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": false
+            },
+            "afterTask": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          }
+        ],
+        "events": [
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 42,
+          "eventsAfter": 42,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-forward",
+        "start": "negative",
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative",
+          "focus": "negative",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 18,
+          "eventsAfter": 18,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-backward",
+        "start": "negative",
+        "backward": true,
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative",
+          "focus": "negative",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-a",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-a",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 18,
+          "eventsAfter": 18,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-before-forward",
+        "start": "negative-before",
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative-before",
+          "focus": "negative-before",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative-before",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative-before",
+            "focus": "negative-before",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative-before",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative-before",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "negative-before",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "negative-before",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two-later",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-a",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 18,
+          "eventsAfter": 18,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-before-backward",
+        "start": "negative-before",
+        "backward": true,
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": false
+            },
+            "afterTask": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative-before",
+          "focus": "negative-before",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative-before",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative-before",
+            "focus": "negative-before",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative-before",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative-before",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 14,
+          "eventsAfter": 14,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-after-forward",
+        "start": "negative-after",
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-a",
+              "focus": "natural-a",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative-after",
+          "focus": "negative-after",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative-after",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative-after",
+            "focus": "negative-after",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative-after",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative-after",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-a",
+            "relatedTarget": "negative-after",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-a",
+            "relatedTarget": "negative-after",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "zero",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 18,
+          "eventsAfter": 18,
+          "detached": true
+        }
+      },
+      {
+        "name": "negative-after-backward",
+        "start": "negative-after",
+        "backward": true,
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two-later",
+              "focus": "positive-two-later",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "negative-after",
+          "focus": "negative-after",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "negative-after",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative-after",
+            "focus": "negative-after",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "negative-after",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "negative-after",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two-later",
+            "relatedTarget": "negative-after",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two-later",
+            "relatedTarget": "negative-after",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two-later",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two-later",
+            "focus": "positive-two-later",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two-later",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-two-later",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 18,
+          "eventsAfter": 18,
+          "detached": true
+        }
+      },
+      {
+        "name": "first-backward-edge",
+        "start": "positive-one",
+        "backward": true,
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": false
+            },
+            "afterTask": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "natural-b",
+              "focus": "natural-b",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "zero",
+              "focus": "zero",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "positive-one",
+          "focus": "positive-one",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-b",
+            "relatedTarget": "zero",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "zero",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "zero",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": true,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "zero",
+            "focus": "zero",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 14,
+          "eventsAfter": 14,
+          "detached": true
+        }
+      },
+      {
+        "name": "last-forward-edge",
+        "start": "natural-b",
+        "tabs": 3,
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "steps": [
+          {
+            "afterKeyDown": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": false
+            },
+            "afterTask": {
+              "activeElement": "body",
+              "focus": null,
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-one",
+              "focus": "positive-one",
+              "hasFocus": true
+            }
+          },
+          {
+            "afterKeyDown": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            },
+            "afterTask": {
+              "activeElement": "positive-two",
+              "focus": "positive-two",
+              "hasFocus": true
+            }
+          }
+        ],
+        "programmatic": {
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "keydown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "body",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "keydown",
+            "target": "positive-one",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-one",
+            "focus": "positive-one",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "positive-one",
+            "relatedTarget": "positive-two",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "positive-two",
+            "relatedTarget": "positive-one",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          },
+          {
+            "type": "keyup",
+            "target": "positive-two",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": "Tab",
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "positive-two",
+            "focus": "positive-two",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 14,
+          "eventsAfter": 14,
+          "detached": true
+        }
+      }
+    ],
+    "mouse": [
+      {
+        "mode": "ordinary",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 208
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "mouseup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "click",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 7,
+          "eventsAfter": 7,
+          "detached": true
+        }
+      },
+      {
+        "mode": "cancel",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 208
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "mouseup",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "click",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 3,
+          "eventsAfter": 3,
+          "detached": true
+        }
+      },
+      {
+        "mode": "remove",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 208
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "handler-before",
+            "mode": "remove",
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true,
+            "targetConnected": true
+          },
+          {
+            "type": "handler-after",
+            "mode": "remove",
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true,
+            "targetConnected": false
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 5,
+          "eventsAfter": 5,
+          "detached": true
+        }
+      },
+      {
+        "mode": "disable",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 208
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "natural-b",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "handler-before",
+            "mode": "disable",
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true,
+            "targetConnected": true
+          },
+          {
+            "type": "handler-after",
+            "mode": "disable",
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true,
+            "targetConnected": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 5,
+          "eventsAfter": 5,
+          "detached": true
+        }
+      },
+      {
+        "mode": "outside",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 369
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "outside",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "mouseup",
+            "target": "outside",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "click",
+            "target": "outside",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 5,
+          "eventsAfter": 5,
+          "detached": true
+        }
+      },
+      {
+        "mode": "negative",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "point": {
+          "x": 131,
+          "y": 115
+        },
+        "before": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterMouseDown": {
+          "activeElement": "negative",
+          "focus": "negative",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "negative",
+          "focus": "negative",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "mousedown",
+            "target": "negative",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-a",
+            "focus": "natural-a",
+            "hasFocus": true
+          },
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "negative",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "negative",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "negative",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          },
+          {
+            "type": "mouseup",
+            "target": "negative",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          },
+          {
+            "type": "click",
+            "target": "negative",
+            "relatedTarget": null,
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": false,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "negative",
+            "focus": "negative",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 7,
+          "eventsAfter": 7,
+          "detached": true
+        }
+      }
+    ],
+    "displayContents": [
+      {
+        "name": "div-own",
+        "styled": "zero",
+        "target": "zero",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "computedDisplay": "contents",
+        "afterFocus": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "events": [],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 0,
+          "eventsAfter": 0,
+          "detached": true
+        }
+      },
+      {
+        "name": "button-own",
+        "styled": "natural-b",
+        "target": "natural-b",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "computedDisplay": "contents",
+        "afterFocus": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "natural-a",
+          "focus": "natural-a",
+          "hasFocus": true
+        },
+        "events": [],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 0,
+          "eventsAfter": 0,
+          "detached": true
+        }
+      },
+      {
+        "name": "ancestor",
+        "styled": "tree",
+        "target": "natural-b",
+        "initial": {
+          "activeElement": "body",
+          "focus": null,
+          "hasFocus": true
+        },
+        "computedDisplay": "contents",
+        "afterFocus": {
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        },
+        "afterTask": {
+          "activeElement": "natural-b",
+          "focus": "natural-b",
+          "hasFocus": true
+        },
+        "events": [
+          {
+            "type": "blur",
+            "target": "natural-a",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focusout",
+            "target": "natural-a",
+            "relatedTarget": "natural-b",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "body",
+            "focus": null,
+            "hasFocus": true
+          },
+          {
+            "type": "focus",
+            "target": "natural-b",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          },
+          {
+            "type": "focusin",
+            "target": "natural-b",
+            "relatedTarget": "natural-a",
+            "isTrusted": true,
+            "key": null,
+            "shiftKey": null,
+            "defaultPrevented": false,
+            "targetConnected": true,
+            "activeElement": "natural-b",
+            "focus": "natural-b",
+            "hasFocus": true
+          }
+        ],
+        "errors": [],
+        "cleanup": {
+          "eventsBefore": 4,
+          "eventsAfter": 4,
+          "detached": true
+        }
+      }
+    ]
+  },
+  "nativeValidated": false
+}

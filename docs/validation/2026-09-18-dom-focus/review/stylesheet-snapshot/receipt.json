@@ -1,0 +1,53 @@
+{
+  "sourceFiles": {
+    "experiments/dom-canvas/patches/blitz-stylesheet-state-snapshots.patch": "fa344a40c56b6d4f581503f61d7605b5e5bedfbba5d0087beef661a6de5148ef",
+    "experiments/dom-canvas/prepare-blitz.mjs": "3f6ac1e855eaab2375a6ec6b0f2ea33b51b4411a9f22266a7eaabefa799ecb38",
+    "experiments/dom-canvas/prepare-positioned.mjs": "8badf747eb47442feb680f2547f5e746c20a84cb2d9715389e1ac3cf88e8e684"
+  },
+  "patchedStyloSha256": "4af771b2589d7515f8361d7416e82beb334ccfbc8906475a5f67cdc2c3470ad0",
+  "change": "Before pending stylesheet invalidation, upgrade state-only snapshots through existing snapshot_node. Existing pre-attribute values and original state remain intact; ordinary focus/hover resolution does not gain attribute-copy work.",
+  "commands": [
+    "CARGO_HOME=/Users/sean/dev/3JSN/.cache/cargo CARGO_TARGET_DIR=/Users/sean/dev/3JSN/target CARGO_INCREMENTAL=0 RUSTY_V8_ARCHIVE=/Users/sean/dev/3JSN/target/release/gn_out/obj/librusty_v8.a cargo test --manifest-path experiments/dom-canvas/Cargo.toml -p blitz-dom --lib stylesheet_snapshot --offline --locked -j2",
+    "CARGO_HOME=/Users/sean/dev/3JSN/.cache/cargo CARGO_TARGET_DIR=/Users/sean/dev/3JSN/target CARGO_INCREMENTAL=0 RUSTY_V8_ARCHIVE=/Users/sean/dev/3JSN/target/release/gn_out/obj/librusty_v8.a cargo test --manifest-path experiments/dom-canvas/Cargo.toml -p blitz-dom --lib focus_within --offline --locked -j2"
+  ],
+  "results": [
+    {
+      "filter": "stylesheet_snapshot",
+      "exitCode": 0,
+      "passed": 3,
+      "failed": 0,
+      "filtered": 77,
+      "buildSeconds": 16.07,
+      "testSeconds": 0.03
+    },
+    {
+      "filter": "focus_within",
+      "exitCode": 0,
+      "passed": 6,
+      "failed": 0,
+      "filtered": 74,
+      "buildSeconds": 0.66,
+      "testSeconds": 0.02
+    }
+  ],
+  "preparationIdentityChecks": [
+    "normal",
+    "positioned-candidate",
+    "positioned-candidate-baseline"
+  ],
+  "preFixEvidence": {
+    "binary": "artifacts/dom-focus-native-01/Focus native preserved \u00e9 #/3jsn-dom-focus",
+    "binarySha256": "7fc4cf625ca270f6f47d40b7f7ebe83eac38bf1a657e5c79929d8215f6d1ab7a",
+    "case": "replace-stylesheet-text",
+    "exitSignal": "SIGABRT",
+    "stderr": "../abort-backtrace.stderr",
+    "isolatedResults": "../native-isolated.json",
+    "browser": "../browser.json"
+  },
+  "limits": [
+    "Dependency CPU tests only; root owns rebuilt native regression and JS fixup timing verification.",
+    "Candidate and baseline preparation verified, not executed.",
+    "Review event arrays include fixture cleanup events; action-boundary state and event counts are the bounded observation, not those arrays alone.",
+    "One initial test compile failure used SnapshotMap::get with OpaqueNode; corrected to its actual TElement API. Log retained."
+  ]
+}

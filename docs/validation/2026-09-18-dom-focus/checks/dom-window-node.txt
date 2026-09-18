@@ -1,0 +1,20 @@
+▶ DOM-window bootstrap connects standard globals to the bounded host protocol
+  ✔ initialization binds once and exposes CSS viewport getters (2.165917ms)
+  ✔ resize listeners observe the new dimensions before their microtasks run (0.200792ms)
+  ✔ pointer events use wrapped DOM targets, readonly coordinates and chord state (0.452625ms)
+  ✔ only a matching primary release produces exactly one click on its pressed target (0.232125ms)
+  ✔ pointer reset emits nothing and clears chord state and pending click activation (0.203792ms)
+  ✔ Space/R preserve key values, infer repeats, and release state on keyup or blur (0.228791ms)
+  ✔ keyboard routing re-reads focus, carries native fields and honors canceled Tab (0.224208ms)
+  ✔ pointer focus waits for uncanceled primary mousedown and fresh eligibility (0.141917ms)
+  ✔ production RAF scheduling snapshots callbacks and checkpoints cancellation (0.177917ms)
+  ✔ callback failures reach the host and invalid input does not silently succeed (4.036833ms)
+✔ DOM-window bootstrap connects standard globals to the bounded host protocol (13.201334ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.163917
