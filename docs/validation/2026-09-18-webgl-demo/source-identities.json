@@ -1,0 +1,9 @@
+{
+  "scripts/probe-webgl-demo-offscreen.mjs": "22403edc8430cc0b08949279e99f2c292c24a5e67e3c4b662f5715b83e4f5341",
+  "experiments/compiled-ui-runtime/tests/webgl_composition.rs": "0fe248b8927d5352cd2879d6def3acaaee21024eb79036b6caa2a597a8470b08",
+  "experiments/compiled-ui-runtime/tests/support/webgl_demo_offscreen.rs": "43d4e3d898f1a024aa5e3c1d63315f56911193bfc41e6a8f4feda50193e03078",
+  "experiments/compiled-ui-runtime/tests/support/demo_scheduler.js": "e16e10471f49431f8f6cbabae9a4332bbe6c046e91ecf930af2e7cfa129d2045",
+  "examples/webgl-window/index.html": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4",
+  "examples/webgl-window/main.mjs": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59",
+  "crates/runtime/src/animation.js": "128de03009c871a44813415c506d62e7b6376562d2147b065d996c215a113471"
+}

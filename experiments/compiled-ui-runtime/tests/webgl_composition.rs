@@ -111,14 +111,14 @@ fn runtime(document: BaseDocument, libraries: Option<&Path>) -> Result<JsRuntime
     ))
 }
 
-fn compose(
+fn compose_any(
     runtime: &mut JsRuntime,
     painter: &mut painter::Painter,
     canvas: &webgl_backend::Canvas,
     output: &wgpu::Texture,
     registration: &mut Option<ImageData>,
     generation: &mut Option<(String, u64)>,
-) -> Result<()> {
+) -> Result<serde_json::Value> {
     // SAFETY: this test alone submits to the paired device/queue. No encoder
     // crosses the handoff; subsequent painter and assertion reads use this queue.
     let (texture, revision) =
@@ -146,6 +146,18 @@ fn compose(
             .is_some_and(|items| items.len() == 1),
         "painter did not see exactly one connected canvas",
     )?;
+    Ok(report)
+}
+
+fn compose(
+    runtime: &mut JsRuntime,
+    painter: &mut painter::Painter,
+    canvas: &webgl_backend::Canvas,
+    output: &wgpu::Texture,
+    registration: &mut Option<ImageData>,
+    generation: &mut Option<(String, u64)>,
+) -> Result<()> {
+    let report = compose_any(runtime, painter, canvas, output, registration, generation)?;
     ensure(
         report["canvases"][0]["contentSize"] == serde_json::json!({"width":40.0,"height":40.0}),
         "canvas CSS dimensions changed",
@@ -376,3 +388,6 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
     }
     outcome
 }
+
+#[path = "support/webgl_demo_offscreen.rs"]
+mod demo_offscreen;

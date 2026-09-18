@@ -47,3 +47,26 @@ all five lifecycle checkpoints and 120 presentations, captures the final GPU
 composition, and checks fixture source preservation. It records failures as well
 as successes. ANGLE and the supplied font remain external inputs; this is not a
 packaged application. This runner has not yet passed a native-window run.
+
+## Offscreen integration check
+
+The separate offscreen runner exercises the same unchanged HTML and JavaScript
+through the compiled UI loader, actual DOM, ANGLE and GPU painter. Build the
+`webgl_composition` integration target with `--features native-webgl --no-run`,
+then supply the exact test executable reported by Cargo:
+
+```sh
+node scripts/probe-webgl-demo-offscreen.mjs \
+  /absolute/path/to/webgl_composition-test-binary \
+  .cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2 \
+  .cache/native-webgl/node_modules/gl \
+  .cache/native-webgl/demo-offscreen-run
+```
+
+This drives 60 deterministic animation frames without a native surface, saves
+`demo.png`, process logs and `report.json`, and requires all lifecycle assertions
+to pass. Build with `--no-default-features` to exercise the restricted parser mode.
+A passing offscreen run does not establish window presentation or native input.
+
+Both parser modes now pass this offscreen check with byte-identical final images.
+See the [GPU demo evidence](../../docs/validation/2026-09-18-webgl-demo.md).
