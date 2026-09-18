@@ -39,11 +39,55 @@ pub fn embed_extension_sources(extension: &mut Extension) {
     }
 }
 
+/// Remove bootstrap-only entry points before evaluating application code.
+/// Extension modules retain their captured core imports; this closes public
+/// raw-op access without claiming that trusted application modules are sandboxed.
+pub fn seal_application_realm(
+    runtime: &mut deno_core::JsRuntime,
+) -> Result<(), Box<deno_core::error::JsError>> {
+    runtime.execute_script(
+        "3jsn:seal-application-realm",
+        r#"(() => {
+          for (const name of ['Deno', '__bootstrap', '__infra']) {
+            if (!Reflect.deleteProperty(globalThis, name) || name in globalThis) {
+              throw new Error(`Cannot remove privileged bootstrap global: ${name}`);
+            }
+          }
+        })()"#,
+    )?;
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use std::{borrow::Cow, sync::Arc};
 
     use super::*;
+
+    #[test]
+    fn application_realm_removes_core_aliases_and_can_be_sealed_twice() {
+        let mut runtime = deno_core::JsRuntime::new(Default::default());
+        seal_application_realm(&mut runtime).unwrap();
+        seal_application_realm(&mut runtime).unwrap();
+        runtime.execute_script("sealed:assert", "for (const name of ['Deno','__bootstrap','__infra']) { if (name in globalThis) throw Error(name); }").unwrap();
+    }
+
+    #[test]
+    fn application_realm_rejects_nonremovable_bootstrap_globals() {
+        for name in ["Deno", "__bootstrap", "__infra"] {
+            let mut runtime = deno_core::JsRuntime::new(Default::default());
+            runtime
+                .execute_script(
+                    "sealed:nonconfigurable",
+                    format!(
+                        "Object.defineProperty(globalThis, '{name}', {{ configurable: false }});"
+                    ),
+                )
+                .unwrap();
+            let error = seal_application_realm(&mut runtime).unwrap_err();
+            assert!(error.to_string().contains(name));
+        }
+    }
 
     const UNAVAILABLE: &str = "/3jsn-embedding-test/source-must-not-be-read.js";
 

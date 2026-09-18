@@ -246,6 +246,9 @@ pub fn probe_extension(libraries: &Path) -> Result<Extension, String> {
 }
 
 /// Register native operations and importable modules without installing probe globals.
+/// The embedding host must remove Deno bootstrap globals after constructing its
+/// realm and before application execution; extension registration alone does not
+/// hide `Deno.core.ops`. The shared DOM host uses `seal_application_realm`.
 pub fn runtime_extension(libraries: &Path) -> Result<Extension, String> {
     let mut extension = probe_extension(libraries)?;
     extension.esm_entry_point = None;

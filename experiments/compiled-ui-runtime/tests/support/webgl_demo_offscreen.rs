@@ -85,6 +85,10 @@ async fn animated_three_demo_offscreen() -> Result<()> {
     let mut registration = None;
     let mut generation = None;
     let outcome = async {
+        runtime.execute_script("demo:host-boundary", "if ('Deno' in globalThis) throw Error('Host namespace exposed to application');")?;
+        let extension_blocked: bool = host::evaluate(&mut runtime,
+            "import('ext:core/mod.js').then(() => false, () => true)".into()).await?;
+        ensure(extension_blocked, "application imported privileged core module")?;
         if let Some(module) = &module {
             host::load(&mut runtime, module).await?;
         } else {

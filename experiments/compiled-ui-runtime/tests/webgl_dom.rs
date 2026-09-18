@@ -75,6 +75,11 @@ async fn webgl_dom_canvas() -> Result<()> {
         extensions,
         ..Default::default()
     });
+    threejs_native_js_sources::seal_application_realm(&mut runtime)?;
+    runtime.execute_script(
+        "test:host-boundary",
+        "if ('Deno' in globalThis) throw Error('Host namespace exposed');",
+    )?;
     runtime.execute_script("fixture:standard-three-dom", script)?;
     runtime.execute_script("test:dom-webgl", include_str!("webgl_dom_checks.js"))?;
     webgl_backend::release_all(&mut runtime)?;

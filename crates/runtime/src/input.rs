@@ -106,6 +106,45 @@ impl InteractiveRuntime {
 mod tests {
     use super::*;
 
+    deno_core::extension!(runtime_test, deps = [threejs_native_bootstrap]);
+
+    // Fixtures execute as trusted startup extensions, never as application
+    // modules. The production constructor seals their captured core afterward.
+    fn trusted_fixture(source: &'static str) -> Runtime {
+        let mut extension = runtime_test::init();
+        extension.esm_files = vec![deno_core::ExtensionFileSource::new_computed(
+            "ext:runtime_test/fixture.js",
+            std::sync::Arc::from(source),
+        )]
+        .into();
+        extension.esm_entry_point = Some("ext:runtime_test/fixture.js");
+        let mut runtime =
+            Runtime::construct_with_extensions(crate::new_instance(), None, None, vec![extension]);
+        runtime.js.execute_script("trusted-fixture:sealed", "for (const key of ['Deno', '__bootstrap', '__infra']) if (key in globalThis) throw Error('Bootstrap global leaked: ' + key);").unwrap();
+        runtime
+    }
+
+    #[tokio::test(flavor = "current_thread")]
+    async fn captured_input_and_animation_bindings_keep_trust_and_microtask_order() {
+        for source in [
+            include_str!("../tests/fixtures/input.mjs"),
+            include_str!("../tests/fixtures/animation.mjs"),
+        ] {
+            let _runtime = trusted_fixture(source);
+        }
+    }
+
+    fn bind_test_callback(runtime: &mut Runtime, source: &'static str) {
+        let callback = runtime
+            .js
+            .execute_script("input-test:callback", format!("({source})"))
+            .unwrap();
+        deno_core::scope!(scope, runtime.js);
+        let callback = v8::Local::new(scope, callback);
+        let callback = v8::Local::<v8::Function>::try_from(callback).unwrap();
+        *runtime.input.borrow_mut() = Some(v8::Global::new(scope, callback));
+    }
+
     #[tokio::test(flavor = "current_thread")]
     async fn input_values_cross_the_v8_boundary_and_failures_keep_the_phase() {
         let mut runtime = Runtime::new();
@@ -113,7 +152,10 @@ mod tests {
             runtime.dispatch_input(&NativeInput::Focus { focused: true }),
             Err(RuntimeError::ExecutionMode(_))
         ));
-        runtime.js.execute_script("input-test", "Deno.core.ops.op_native_bind_input(value => { globalThis.observedInput = value; });").unwrap();
+        bind_test_callback(
+            &mut runtime,
+            "value => { globalThis.observedInput = value; }",
+        );
         runtime
             .dispatch_input(&NativeInput::Key {
                 pressed: true,
@@ -127,7 +169,11 @@ mod tests {
                 },
             })
             .unwrap();
-        runtime.js.execute_script("input-test", "if (observedInput.kind !== 'key' || observedInput.key !== 'é' || observedInput.code !== 'Digit2' || !observedInput.repeat || !observedInput.modifiers.shiftKey || observedInput.modifiers.ctrlKey) throw Error('input record changed'); Deno.core.ops.op_native_bind_input(() => { throw Error('input callback failed'); });").unwrap();
+        runtime.js.execute_script("input-test", "if (observedInput.kind !== 'key' || observedInput.key !== 'é' || observedInput.code !== 'Digit2' || !observedInput.repeat || !observedInput.modifiers.shiftKey || observedInput.modifiers.ctrlKey) throw Error('input record changed');").unwrap();
+        bind_test_callback(
+            &mut runtime,
+            "() => { throw Error('input callback failed'); }",
+        );
         let error = runtime
             .dispatch_input(&NativeInput::Focus { focused: false })
             .unwrap_err();
@@ -137,13 +183,7 @@ mod tests {
 
     #[tokio::test(flavor = "current_thread")]
     async fn serialized_wheel_reaches_the_actual_javascript_event_dispatcher() {
-        let mut runtime = Runtime::new();
-        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/input-binding.mjs");
-        let module = runtime.load_module(&path).await.unwrap();
-        let evaluation = runtime.js.mod_evaluate(module);
-        runtime.js.run_event_loop(Default::default()).await.unwrap();
-        evaluation.await.unwrap();
+        let mut runtime = trusted_fixture(include_str!("../tests/fixtures/input-binding.mjs"));
         runtime
             .dispatch_input(&NativeInput::Wheel {
                 position: InputPosition { x: 120.5, y: 80.25 },
