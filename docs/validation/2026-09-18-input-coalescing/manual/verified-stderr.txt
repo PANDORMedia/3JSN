@@ -1,0 +1,1 @@
+2026-09-18 16:04:02.884 threejs-native-player[52371:5681364] Metal API Validation Enabled

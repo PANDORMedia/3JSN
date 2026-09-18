@@ -9,12 +9,13 @@ use std::{
 use blitz_dom::DocumentConfig;
 use blitz_traits::shell::{ColorScheme, Viewport};
 use deno_core::{JsRuntime, OpState, op2, v8};
-use tokio::sync::{mpsc, watch};
+use tokio::sync::watch;
 use winit::event_loop::EventLoopProxy;
 
 use crate::{
     Result, dom_bridge, host,
     package_resources::{PACKAGE_BASE_URL, PackageResources},
+    window_input::Input,
     window_options::DocumentInput,
     window_scene::WindowScene,
 };
@@ -34,14 +35,6 @@ impl HostState {
     fn drawable(self) -> bool {
         self.visible && self.width > 0 && self.height > 0 && !self.close
     }
-}
-
-pub struct Input {
-    pub kind: &'static str,
-    pub x: f64,
-    pub y: f64,
-    pub button: i32,
-    pub key: String,
 }
 
 #[derive(Debug)]
@@ -206,7 +199,7 @@ pub struct Worker {
     pub instance: wgpu::Instance,
     pub surface: wgpu::Surface<'static>,
     pub state: watch::Receiver<HostState>,
-    pub input: mpsc::Receiver<Input>,
+    pub input: threejs_native_input_queue::Receiver<Input>,
     pub proxy: EventLoopProxy<HostEvent>,
     pub interrupt: Interrupt,
 }

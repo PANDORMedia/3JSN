@@ -28,6 +28,8 @@ mod package_resources;
 mod painter;
 #[path = "../../dom-canvas/src/window_app.rs"]
 mod window_app;
+#[path = "../../dom-canvas/src/window_input.rs"]
+mod window_input;
 mod window_options;
 #[path = "../../dom-canvas/src/window_runtime.rs"]
 mod window_runtime;

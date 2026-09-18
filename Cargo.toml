@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/gpu-probe", "crates/runtime", "crates/player", "crates/package", "crates/js-sources"]
+members = ["crates/gpu-probe", "crates/runtime", "crates/player", "crates/package", "crates/js-sources", "crates/input-queue"]
 exclude = [".cache", "experiments"]
 resolver = "3"
 

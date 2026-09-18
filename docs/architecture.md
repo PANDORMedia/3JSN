@@ -74,6 +74,12 @@ Poll JS async work without blocking the OS loop. Drive a compatible
 frame the same monotonic timestamp. A callback requested during a frame belongs
 to a later frame; cancellation must work.
 
+Both native hosts use a separate bounded input queue. Only adjacent compatible
+motion samples combine; discrete transitions retain FIFO order. A slow worker
+therefore receives the latest motion without an unbounded backlog. Exhaustion by
+non-coalescible transitions remains an explicit failure. The
+[input contract](native-input.md) describes the boundary and its limits.
+
 Preserve the existing game loop, event and microtask semantics. Fixed-step
 simulation helpers can be optional engine APIs; never insert them automatically
 into an unchanged project. The worker lets the OS loop remain responsive during

@@ -17,6 +17,7 @@ dynamic-html = ["dep:blitz-html", "threejs-compiled-ui-experiment/dynamic-html"]
 [workspace]
 
 [dependencies]
+threejs-native-input-queue = { path = "../../crates/input-queue" }
 threejs-compiled-ui-experiment = { path = "../compiled-ui", default-features = false }
 threejs-native-js-sources = { path = "../../crates/js-sources" }
 threejs-native-package = { path = "../../crates/package" }

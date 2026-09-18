@@ -1,0 +1,46 @@
+{
+  "capturedAt": "2026-09-18T14:06:23.125958+00:00",
+  "backend": "Metal",
+  "runtime": {
+    "path": ".cache/input-coalescing/runtime-player",
+    "bytes": 127334328,
+    "sha256": "7b71ad94c4b514a3faab635853be6a6d4b50634b69c665cc9c592c996dd0d022"
+  },
+  "sourceFixture": "examples/runtime/input-contract.mjs",
+  "bundle": {
+    "bytes": 2174561,
+    "sha256": "f83785f84e9a880f84745efcc96188382c9eeb09bf8e15add330f779d0ceab65"
+  },
+  "observedViaComputerUse": [
+    "Three.js scene visibly rendered",
+    "Space paused, ArrowLeft and dragging changed camera",
+    "Wheel zoomed outward",
+    "In an earlier run reset reached JS and the reset scene appeared after raising the window"
+  ],
+  "snapshotEvents": {
+    "blur": 3,
+    "focus": 3,
+    "keydown": 6,
+    "keyup": 4,
+    "mouseleave": 2,
+    "mousedown": 3,
+    "mouseup": 3,
+    "wheel": 40
+  },
+  "snapshotControls": {
+    "drag": 87,
+    "Space": 1,
+    "ArrowLeft": 37,
+    "wheel": 163,
+    "ArrowUp": 1,
+    "ArrowDown": 13
+  },
+  "snapshotCompletions": [],
+  "limits": [
+    "Append-only input log captured while the user was interacting; its records are a snapshot, not a controlled performance or latency run.",
+    "Raw input observer caps at64 events; control records continue.",
+    "An earlier UI state query relaunched the app and overwritten logs were not recoverable. The retained stdout.txt shutdown records513frames and focus events in a separate process, not all previously observed actions.",
+    "Screenshots were inspected in computer use; no screenshot files archived.",
+    "No deliberate OS motion-flood/queue-overflow injection, hit-testing parity, input latency or other-platform hardware claim."
+  ]
+}

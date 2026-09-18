@@ -1,0 +1,65 @@
+[
+  {
+    "mode": "preserved",
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "build-preserved.log",
+    "binary": {
+      "path": ".cache/input-coalescing/runtime-preserved",
+      "bytes": 189373792,
+      "sha256": "448562c6daf78388b9d772273f15b407b1f528841ca3745a0b1cdb3c563aed1c"
+    },
+    "receiptNote": "Build and copy succeeded; receipt writer resumed after Python 3.9 lacks hashlib.file_digest."
+  },
+  {
+    "mode": "restricted",
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--no-default-features",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "build-restricted.log",
+    "binary": {
+      "path": ".cache/input-coalescing/runtime-restricted",
+      "bytes": 187509296,
+      "sha256": "dcf860c7c093d756cdccfc3076df258cfbe976bbf15e49c85e5e6d7e4ef0b3d6"
+    }
+  },
+  {
+    "mode": "player",
+    "command": [
+      "cargo",
+      "build",
+      "-p",
+      "threejs-native-player",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "build-player.log",
+    "binary": {
+      "path": ".cache/input-coalescing/runtime-player",
+      "bytes": 127334328,
+      "sha256": "7b71ad94c4b514a3faab635853be6a6d4b50634b69c665cc9c592c996dd0d022"
+    }
+  }
+]

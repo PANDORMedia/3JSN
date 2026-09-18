@@ -1,0 +1,96 @@
+[
+  {
+    "label": "workspace-metadata",
+    "command": [
+      "cargo",
+      "metadata",
+      "--offline",
+      "--format-version",
+      "1",
+      "--filter-platform",
+      "aarch64-apple-darwin"
+    ],
+    "exitCode": 0,
+    "log": "workspace-metadata.log"
+  },
+  {
+    "label": "dom-metadata",
+    "command": [
+      "cargo",
+      "metadata",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--offline",
+      "--format-version",
+      "1",
+      "--filter-platform",
+      "aarch64-apple-darwin"
+    ],
+    "exitCode": 0,
+    "log": "dom-metadata.log"
+  },
+  {
+    "label": "compiled-metadata",
+    "command": [
+      "cargo",
+      "metadata",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--offline",
+      "--format-version",
+      "1",
+      "--filter-platform",
+      "aarch64-apple-darwin"
+    ],
+    "exitCode": 0,
+    "log": "compiled-metadata.log"
+  },
+  {
+    "label": "workspace-fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all"
+    ],
+    "exitCode": 0,
+    "log": "workspace-fmt.log"
+  },
+  {
+    "label": "compiled-fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml"
+    ],
+    "exitCode": 0,
+    "log": "compiled-fmt.log"
+  },
+  {
+    "label": "queue-tests",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "threejs-native-input-queue",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "queue-tests.log"
+  },
+  {
+    "label": "core-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "core-tests.log"
+  }
+]

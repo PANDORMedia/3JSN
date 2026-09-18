@@ -1,0 +1,13 @@
+{"compiledUi":{"irNodes":16,"nativeNodes":15,"omittedDoctypeNodes":[1],"initialDocumentHtmlParserUsed":false,"dynamicHtmlParserProvider":"absent"}}
+{"packagedResources":{"requests":0,"stylesheetDeliveries":0,"fontDeliveries":0,"deliveredUrls":[],"transportDrained":true,"fontRegistrationVerified":true},"webFonts":{"requested":0,"registered":0,"pending":0,"decodedBytes":0}}
+{"completionProbe":"callback-start","callback":1}
+{"completionProbe":"callback-end","callback":1}
+{"completionProbe":"callback-start","callback":2}
+{"completionProbe":"callback-end","callback":2}
+{"completionProbe":"callback-start","callback":3}
+{"completionProbe":"callback-end","callback":3}
+{"completionProbe":"callback-start","callback":4}
+{"completionProbe":"callback-end","callback":4}
+{"completionProbe":"callback-start","callback":5}
+{"completionProbe":"callback-end","callback":5}
+{"nativeDomWindow":true,"backend":"Metal","presentedFrames":4,"canvasSnapshots":4,"cpuImageTransport":false,"nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true}

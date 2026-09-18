@@ -87,6 +87,11 @@ input reaching V8, visible camera changes, window resizing and clean shutdown.
 These events currently target the standalone canvas/global fixture; DOM input,
 IME, pointer capture and controllers remain open.
 
+The standalone and DOM hosts share a [bounded input queue](docs/validation/2026-09-18-input-coalescing.md)
+that combines adjacent mouse moves while preserving discrete transitions.
+CPU burst tests and native Metal regressions pass; general input support and
+hardware overload behavior remain open.
+
 The [experimental build command](docs/build.md) packages that fixture and a local
 player into a portable application directory. It records source preservation and
 file identities; the executable validates its manifest before startup and finds

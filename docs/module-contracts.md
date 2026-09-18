@@ -44,6 +44,10 @@ emits an experimental manifest and source/asset identities, while the shared
 accepts only its own profile. `crates/js-sources` embeds the common Deno extension
 sources at compile time; it owns no window, GPU device or application module.
 Node/esbuild remain developer tools and are not launched by the shipping player.
+`crates/input-queue` owns the bounded FIFO and consumer wakeup used by both
+native window hosts. Each host supplies its adjacent-motion coalescing rule;
+the queue owns no OS, DOM or V8 types. Receiver teardown releases queued records,
+and sender teardown wakes the consumer so it can drain and observe disconnection.
 The native-window and interim HTML-entry profiles do not implement the full
 application-manifest contract for generic projects, services or unchanged-game
 capabilities.

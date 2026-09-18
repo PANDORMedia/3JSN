@@ -3252,6 +3252,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "threejs-native-input-queue"
+version = "0.0.0"
+
+[[package]]
 name = "threejs-native-js-sources"
 version = "0.0.0"
 dependencies = [
@@ -3278,6 +3282,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "threejs-native-input-queue",
  "threejs-native-package",
  "threejs-native-runtime",
  "tokio",

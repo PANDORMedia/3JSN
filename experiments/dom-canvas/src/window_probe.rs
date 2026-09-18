@@ -25,6 +25,7 @@ mod metal;
 mod package_resources;
 mod painter;
 mod window_app;
+mod window_input;
 mod window_options;
 mod window_runtime;
 mod window_scene;

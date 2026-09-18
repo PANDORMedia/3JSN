@@ -64,6 +64,12 @@ physical input, pixel parity and bounded lifetime behavior remain open. The
 [custom-renderer comparison](react-ui.md) is brainstorming only; it does not
 replace the unchanged-source contract or introduce a second UI tree.
 
+The [input coalescing checkpoint](validation/2026-09-18-input-coalescing.md)
+shares a bounded queue between both native hosts. Adjacent mouse moves combine;
+discrete transitions retain order and overflow still fails explicitly. CPU burst
+and Metal regression checks pass. Full DOM input and overload behavior on real
+hardware remain open in #25/#18.
+
 ## Milestones
 
 | Phase | Deliverable | Completion gate |
