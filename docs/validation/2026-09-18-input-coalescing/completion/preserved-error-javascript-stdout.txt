@@ -1,0 +1,8 @@
+{"compiledUi":{"irNodes":16,"nativeNodes":15,"omittedDoctypeNodes":[1],"initialDocumentHtmlParserUsed":false,"dynamicHtmlParserProvider":"blitz-html"}}
+{"packagedResources":{"requests":0,"stylesheetDeliveries":0,"fontDeliveries":0,"deliveredUrls":[],"transportDrained":true,"fontRegistrationVerified":true},"webFonts":{"requested":0,"registered":0,"pending":0,"decodedBytes":0}}
+{"completionProbe":"callback-start","callback":1}
+{"completionProbe":"callback-end","callback":1}
+{"completionProbe":"callback-start","callback":2}
+{"completionProbe":"callback-end","callback":2}
+{"completionProbe":"callback-start","callback":3}
+{"completionProbe":"expected-failure","kind":"javascript","callback":3}

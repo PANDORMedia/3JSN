@@ -1,0 +1,170 @@
+{
+  "inputs": {
+    "node_modules/react/cjs/react.development.js": {
+      "bytes": 49165,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/react/index.js": {
+      "bytes": 186,
+      "imports": [
+        {
+          "path": "node_modules/react/cjs/react.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/scheduler/cjs/scheduler.development.js": {
+      "bytes": 12144,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/scheduler/index.js": {
+      "bytes": 194,
+      "imports": [
+        {
+          "path": "node_modules/scheduler/cjs/scheduler.development.js",
+          "kind": "require-call",
+          "original": "./cjs/scheduler.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/cjs/react-dom.development.js": {
+      "bytes": 18481,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "require-call",
+          "original": "react"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/index.js": {
+      "bytes": 1359,
+      "imports": [
+        {
+          "path": "node_modules/react-dom/cjs/react-dom.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react-dom.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/cjs/react-dom-client.development.js": {
+      "bytes": 1182785,
+      "imports": [
+        {
+          "path": "node_modules/scheduler/index.js",
+          "kind": "require-call",
+          "original": "scheduler"
+        },
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "require-call",
+          "original": "react"
+        },
+        {
+          "path": "node_modules/react-dom/index.js",
+          "kind": "require-call",
+          "original": "react-dom"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/client.js": {
+      "bytes": 1373,
+      "imports": [
+        {
+          "path": "node_modules/react-dom/cjs/react-dom-client.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react-dom-client.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "fixtures/react-dom/application.mjs": {
+      "bytes": 10869,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        },
+        {
+          "path": "node_modules/react-dom/client.js",
+          "kind": "import-statement",
+          "original": "react-dom/client"
+        }
+      ],
+      "format": "esm"
+    },
+    "fixtures/react-dom/dom-contract.mjs": {
+      "bytes": 21892,
+      "imports": [],
+      "format": "esm"
+    },
+    "fixtures/react-dom/behavior.mjs": {
+      "bytes": 350,
+      "imports": [
+        {
+          "path": "fixtures/react-dom/application.mjs",
+          "kind": "import-statement",
+          "original": "./application.mjs"
+        },
+        {
+          "path": "fixtures/react-dom/dom-contract.mjs",
+          "kind": "import-statement",
+          "original": "./dom-contract.mjs"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "artifacts/input-coalescing-react-02/behavior.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "fixtures/react-dom/behavior.mjs",
+      "inputs": {
+        "node_modules/react/cjs/react.development.js": {
+          "bytesInOutput": 48862
+        },
+        "node_modules/react/index.js": {
+          "bytesInOutput": 247
+        },
+        "node_modules/scheduler/cjs/scheduler.development.js": {
+          "bytesInOutput": 11904
+        },
+        "node_modules/scheduler/index.js": {
+          "bytesInOutput": 259
+        },
+        "node_modules/react-dom/cjs/react-dom.development.js": {
+          "bytesInOutput": 16846
+        },
+        "node_modules/react-dom/index.js": {
+          "bytesInOutput": 279
+        },
+        "node_modules/react-dom/cjs/react-dom-client.development.js": {
+          "bytesInOutput": 1145362
+        },
+        "node_modules/react-dom/client.js": {
+          "bytesInOutput": 284
+        },
+        "fixtures/react-dom/application.mjs": {
+          "bytesInOutput": 12334
+        },
+        "fixtures/react-dom/dom-contract.mjs": {
+          "bytesInOutput": 22377
+        },
+        "fixtures/react-dom/behavior.mjs": {
+          "bytesInOutput": 267
+        }
+      },
+      "bytes": 1262201
+    }
+  }
+}

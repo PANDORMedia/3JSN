@@ -3,7 +3,8 @@ use std::{
     thread::JoinHandle,
     time::{Duration, Instant},
 };
-use tokio::sync::{mpsc, watch};
+use threejs_native_input_queue::{Sender, TrySendError};
+use tokio::sync::watch;
 use winit::{
     application::ApplicationHandler,
     dpi::LogicalSize,
@@ -15,8 +16,9 @@ use winit::{
 
 use crate::{
     Result,
+    window_input::{self, Input},
     window_options::Options,
-    window_runtime::{self, HostEvent, HostState, Input, Interrupt, Worker},
+    window_runtime::{self, HostEvent, HostState, Interrupt, Worker},
 };
 
 pub fn run(options: Options) -> Result<()> {
@@ -69,7 +71,7 @@ struct App {
     window: Option<Arc<Window>>,
     worker: Option<JoinHandle<()>>,
     state: Option<watch::Sender<HostState>>,
-    input: Option<mpsc::Sender<Input>>,
+    input: Option<Sender<Input>>,
     interrupt: Interrupt,
     pointer: Option<(f64, f64)>,
     limit: Option<u64>,
@@ -104,7 +106,7 @@ impl App {
         }
         let (x, y) = self.pointer.unwrap_or_default();
         if let Some(sender) = &self.input
-            && let Err(mpsc::error::TrySendError::Full(_)) = sender.try_send(Input {
+            && let Err(TrySendError::Full(_)) = sender.try_send(Input {
                 kind,
                 x,
                 y,
@@ -112,7 +114,10 @@ impl App {
                 key,
             })
         {
-            self.stop(Some("native DOM input queue is full".into()));
+            self.stop(Some(format!(
+                "native DOM input queue exceeded {} non-coalescible records; stopping instead of losing input transitions",
+                window_input::CAPACITY,
+            )));
         }
         // A closed receiver is followed by Stopped, which carries the worker's
         // result. Do not replace that cause with a secondary channel error.
@@ -160,7 +165,7 @@ impl App {
             present: 0,
             close: false,
         });
-        let (input, events) = mpsc::channel(128);
+        let (input, events) = window_input::channel();
         let proxy = self.proxy.clone();
         let worker = Worker {
             frames: options.frames,

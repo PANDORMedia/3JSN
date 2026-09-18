@@ -8,10 +8,11 @@ use std::{
     time::{Duration, Instant},
 };
 
+use threejs_native_input_queue as input_queue;
 use threejs_native_runtime::{
     FrameOutcome, InteractiveRuntime, NativeInput, RuntimeError, RuntimeInterrupt, WindowSurface,
 };
-use tokio::sync::{mpsc, watch};
+use tokio::sync::watch;
 use winit::{
     application::ApplicationHandler,
     dpi::LogicalSize,
@@ -20,7 +21,7 @@ use winit::{
     window::{Window, WindowId},
 };
 
-use crate::input::{INPUT_CAPACITY, InputTranslator};
+use crate::input::{INPUT_CAPACITY, InputTranslator, coalesces_motion};
 
 enum HostEvent {
     Ready(RuntimeInterrupt),
@@ -128,7 +129,7 @@ struct PlayerWindow {
     window: Option<Arc<Window>>,
     worker: Option<JoinHandle<()>>,
     state: Option<watch::Sender<HostState>>,
-    input: Option<mpsc::Sender<NativeInput>>,
+    input: Option<input_queue::Sender<NativeInput>>,
     input_translator: InputTranslator,
     interrupt: Option<RuntimeInterrupt>,
     proxy: EventLoopProxy<HostEvent>,
@@ -249,7 +250,7 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
             close: false,
         };
         let (state, receiver) = watch::channel(initial);
-        let (input, input_receiver) = mpsc::channel(INPUT_CAPACITY);
+        let (input, input_receiver) = input_queue::channel(INPUT_CAPACITY, coalesces_motion);
         if let Some(focus) = self.input_translator.focus(window.has_focus()) {
             input
                 .try_send(focus)
@@ -429,7 +430,7 @@ async fn run_worker(
     module: PathBuf,
     frame_limit: Option<u64>,
     mut receiver: watch::Receiver<HostState>,
-    mut input: mpsc::Receiver<NativeInput>,
+    mut input: input_queue::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
 ) -> Result<u64, WorkerError> {
     let runtime = surface.into_runtime().map_err(WorkerError::from)?;
@@ -484,7 +485,7 @@ async fn drive_runtime(
     runtime: &mut InteractiveRuntime,
     frame_limit: Option<u64>,
     receiver: &mut watch::Receiver<HostState>,
-    input: &mut mpsc::Receiver<NativeInput>,
+    input: &mut input_queue::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
     mut current: HostState,
 ) -> Result<(), WorkerError> {
@@ -616,11 +617,14 @@ async fn drive_runtime(
     }
 }
 
-fn enqueue_input(sender: &mpsc::Sender<NativeInput>, input: NativeInput) -> Result<(), String> {
+fn enqueue_input(
+    sender: &input_queue::Sender<NativeInput>,
+    input: NativeInput,
+) -> Result<(), String> {
     match sender.try_send(input) {
-        Ok(()) | Err(mpsc::error::TrySendError::Closed(_)) => Ok(()),
-        Err(mpsc::error::TrySendError::Full(_)) => Err(format!(
-            "native input queue exceeded {INPUT_CAPACITY} events; stopping instead of losing input transitions"
+        Ok(()) | Err(input_queue::TrySendError::Closed(_)) => Ok(()),
+        Err(input_queue::TrySendError::Full(_)) => Err(format!(
+            "native input queue exceeded {INPUT_CAPACITY} non-coalescible records; stopping instead of losing input transitions"
         )),
     }
 }
@@ -628,10 +632,85 @@ fn enqueue_input(sender: &mpsc::Sender<NativeInput>, input: NativeInput) -> Resu
 #[cfg(test)]
 mod input_tests {
     use super::*;
+    use threejs_native_runtime::{InputModifiers, InputPosition, MouseInputKind};
+
+    fn mouse(event: MouseInputKind, x: f64, buttons: u16, shift_key: bool) -> NativeInput {
+        NativeInput::Mouse {
+            event,
+            position: InputPosition { x, y: 20.0 },
+            button: 0,
+            buttons,
+            modifiers: InputModifiers {
+                shift_key,
+                ..Default::default()
+            },
+        }
+    }
+
+    #[test]
+    fn motion_bursts_keep_latest_coordinates_without_crossing_input_transitions() {
+        let (sender, mut receiver) = input_queue::channel(INPUT_CAPACITY, coalesces_motion);
+        let focus = NativeInput::Focus { focused: true };
+        enqueue_input(&sender, focus.clone()).unwrap();
+        for x in 0..10_000 {
+            enqueue_input(&sender, mouse(MouseInputKind::Move, f64::from(x), 0, false)).unwrap();
+        }
+        let down = mouse(MouseInputKind::Down, 9999.0, 1, false);
+        enqueue_input(&sender, down.clone()).unwrap();
+        for x in 10_000..20_000 {
+            enqueue_input(&sender, mouse(MouseInputKind::Move, f64::from(x), 1, false)).unwrap();
+        }
+        let up = mouse(MouseInputKind::Up, 19999.0, 0, false);
+        let wheel = NativeInput::Wheel {
+            position: InputPosition {
+                x: 19999.0,
+                y: 20.0,
+            },
+            delta_x: 0.0,
+            delta_y: 3.0,
+            delta_mode: 1,
+            buttons: 0,
+            modifiers: InputModifiers::default(),
+        };
+        let key_down = NativeInput::Key {
+            pressed: true,
+            key: "a".into(),
+            code: "KeyA".into(),
+            location: 0,
+            repeat: false,
+            modifiers: InputModifiers::default(),
+        };
+        let mut key_up = key_down.clone();
+        if let NativeInput::Key { pressed, .. } = &mut key_up {
+            *pressed = false;
+        }
+        let tail = [
+            up,
+            mouse(MouseInputKind::Move, 20000.0, 0, false),
+            mouse(MouseInputKind::Move, 20001.0, 0, true),
+            mouse(MouseInputKind::Move, 20002.0, 1, true),
+            wheel,
+            key_down,
+            key_up,
+            NativeInput::Focus { focused: false },
+        ];
+        for event in &tail {
+            enqueue_input(&sender, event.clone()).unwrap();
+        }
+        let mut expected = vec![
+            focus,
+            mouse(MouseInputKind::Move, 9999.0, 0, false),
+            down,
+            mouse(MouseInputKind::Move, 19999.0, 1, false),
+        ];
+        expected.extend(tail);
+        let actual: Vec<_> = std::iter::from_fn(|| receiver.try_recv().ok()).collect();
+        assert_eq!(actual, expected);
+    }
 
     #[test]
     fn stalled_worker_preserves_focus_order_and_overflow_is_an_explicit_failure() {
-        let (sender, mut receiver) = mpsc::channel(INPUT_CAPACITY);
+        let (sender, mut receiver) = input_queue::channel(INPUT_CAPACITY, coalesces_motion);
         for index in 0..INPUT_CAPACITY {
             enqueue_input(
                 &sender,

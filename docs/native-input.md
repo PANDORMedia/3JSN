@@ -2,11 +2,18 @@
 
 Keyboard, mouse, wheel and window-focus input now reach Rust-hosted JavaScript
 in the native window fixture. The [Mac checkpoint](validation/2026-09-18-native-input.md)
-records an interactive Three.js scene, resize and clean close. DOM input,
+records an interactive Three.js scene, resize and clean close. The separate
+[DOM window experiment](../experiments/dom-canvas/WINDOW.md) has bounded mouse,
+keyboard and click delivery into native document nodes. General DOM input,
 UIEvent subclasses, forms, IME, pointer capture, controllers and other-platform
 hardware validation remain open in issues
 [#25](https://github.com/PANDORMedia/3JSN/issues/25) and
 [#33](https://github.com/PANDORMedia/3JSN/issues/33).
+
+The [input-coalescing checkpoint](validation/2026-09-18-input-coalescing.md)
+records bounded adjacent-motion batching, ordered discrete-event delivery, CPU
+burst/error controls and native React/completion regressions. Queue overflow
+remains explicit; this is not lossless pointer-trajectory or full input support.
 
 ## Ownership and delivery
 
@@ -16,13 +23,31 @@ handles, V8 values or callbacks. `crates/runtime/src/input.rs` serializes one
 record into the owning isolate and invokes its registered binding. The callback
 handle is released before isolate disposal, independently of surface handles.
 
-A separate 1,024-record FIFO preserves input transitions. The window thread never
-waits for capacity. Overflow requests cancellation and shuts the player down with
+A shared bounded [input queue](../crates/input-queue/src/lib.rs) connects each
+window thread to its owning runtime worker. The standalone player holds at most
+1,024 records; the experimental DOM window holds at most 128. Adjacent queued
+mouse moves retain the newest position. The standalone player also requires
+matching button and modifier snapshots before combining two moves. A button,
+key, wheel, focus or leave/reset record is a barrier: moves never cross it, and
+discrete records are not combined. This is delivery of the latest motion samples,
+not lossless recording of the pointer trajectory.
+
+The window thread never waits for queue capacity. If non-coalescible records fill
+the queue, overflow still requests cancellation and shuts the player down with
 an explicit error; it does not discard a key-up or grow an unbounded queue.
 The worker delivers at most 64 queued records per turn, with microtask checkpoints
 between events, while continuing to service frames, timers and IO. Input delivery
 does not require a visible window or an animation frame. Queue overflow has CPU
 coverage; deliberate overflow of a live GPU window has not been injected.
+
+The queue owns no window, V8 handles or input semantics. The host supplies the
+motion-combination rule; a short mutex protects FIFO state and the consumer's
+waker. Input destruction and wake callbacks run after unlocking. The asynchronous
+player registers a waker while empty, so input and sender disconnection can wake
+its event loop without periodic polling. Queued records drain after sender
+disconnection; dropping the receiver returns subsequent inputs as closed.
+The experimental DOM worker retains its existing 8 ms polling loop; sharing
+the queue does not change that worker's scheduling policy.
 
 Viewport and presentation state still use a separate coalescing channel.
 FIFO ordering between input records is guaranteed; ordering between an input

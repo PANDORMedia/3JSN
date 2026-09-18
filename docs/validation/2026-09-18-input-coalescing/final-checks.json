@@ -1,0 +1,129 @@
+[
+  {
+    "label": "fmt-workspace",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exitCode": 0,
+    "log": "fmt-workspace.log"
+  },
+  {
+    "label": "fmt-dom",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--",
+      "--check"
+    ],
+    "exitCode": 0,
+    "log": "fmt-dom.log"
+  },
+  {
+    "label": "fmt-compiled",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--",
+      "--check"
+    ],
+    "exitCode": 0,
+    "log": "fmt-compiled.log"
+  },
+  {
+    "label": "queue-final",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "threejs-native-input-queue",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "exitCode": 0,
+    "log": "queue-final.log"
+  },
+  {
+    "label": "clippy-workspace",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "log": "clippy-workspace.log"
+  },
+  {
+    "label": "clippy-dom-input",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--test",
+      "input_delivery",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "log": "clippy-dom-input.log"
+  },
+  {
+    "label": "clippy-preserved",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "log": "clippy-preserved.log"
+  },
+  {
+    "label": "clippy-restricted",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "experiments/compiled-ui-runtime/Cargo.toml",
+      "--bin",
+      "threejs-compiled-ui-runtime",
+      "--no-default-features",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "log": "clippy-restricted.log"
+  }
+]

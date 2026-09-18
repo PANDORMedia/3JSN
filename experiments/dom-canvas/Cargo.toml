@@ -32,6 +32,7 @@ path = "src/compiled_probe.rs"
 [workspace]
 
 [dependencies]
+threejs-native-input-queue = { path = "../../crates/input-queue" }
 threejs-compiled-ui-experiment = { path = "../compiled-ui" }
 threejs-native-js-sources = { path = "../../crates/js-sources" }
 threejs-native-package = { path = "../../crates/package" }

@@ -1,0 +1,6 @@
+2026-09-18 16:09:21.233 runtime-preserved[53430:5691484] Metal API Validation Enabled
+3JSN compiled UI experiment: TypeError: Failed to execute 'call' on 'GPUCommandEncoder': 'colorAttachments' of 'GPURenderPassDescriptor' (Argument 0) can not be converted to a sequence
+    at frame (file:///Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-descriptor.mjs:19:35)
+    at Object.dispatch (ext:dom_window/animation.js:25:24)
+    at ext:dom_window/window.js:113:25
+    at ext:dom_window/window.js:103:7

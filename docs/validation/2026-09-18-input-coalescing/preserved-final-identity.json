@@ -1,0 +1,7 @@
+{
+  "oldSha256": "448562c6daf78388b9d772273f15b407b1f528841ca3745a0b1cdb3c563aed1c",
+  "sha256": "674b11cec242a4e4b395fc5b1980a4d8b5663584c917026bd0dd91ff51a886e0",
+  "changed": true,
+  "path": ".cache/input-coalescing/runtime-preserved-final",
+  "bytes": 189373792
+}

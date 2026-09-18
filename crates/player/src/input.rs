@@ -11,6 +11,23 @@ use winit::{
 
 pub(super) const INPUT_CAPACITY: usize = 1024;
 
+pub(super) fn coalesces_motion(previous: &NativeInput, next: &NativeInput) -> bool {
+    matches!((previous, next), (
+        NativeInput::Mouse {
+            event: MouseInputKind::Move,
+            buttons: previous_buttons,
+            modifiers: previous_modifiers,
+            ..
+        },
+        NativeInput::Mouse {
+            event: MouseInputKind::Move,
+            buttons: next_buttons,
+            modifiers: next_modifiers,
+            ..
+        },
+    ) if previous_buttons == next_buttons && previous_modifiers == next_modifiers)
+}
+
 #[derive(Debug)]
 pub(super) enum InputError {
     UnknownPosition,

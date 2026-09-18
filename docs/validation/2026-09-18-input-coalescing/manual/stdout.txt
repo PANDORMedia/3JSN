@@ -1,0 +1,6 @@
+{"nativeThree":true,"three":"186","sameJavaScriptDevice":true,"adapter":{"vendor":"0","architecture":"","device":"0","description":"Apple M1 Pro","isFallbackAdapter":false},"controls":"Drag to orbit; wheel to zoom; arrows to orbit; Space to pause; R to reset"}
+{"nativeInputObserved":{"type":"blur","trusted":true,"width":960,"height":600,"scale":2}}
+{"nativeInputObserved":{"type":"focus","trusted":true,"width":960,"height":600,"scale":2}}
+{"nativeInputObserved":{"type":"mouseleave","trusted":true,"width":960,"height":600,"scale":2,"altKey":false,"ctrlKey":false,"metaKey":false,"shiftKey":false,"button":0,"buttons":0,"clientX":959.4765625,"clientY":562.203125}}
+{"nativeInputObserved":{"type":"blur","trusted":true,"width":960,"height":600,"scale":2}}
+{"nativeWindow":true,"backend":"metal","presentedFrames":513}

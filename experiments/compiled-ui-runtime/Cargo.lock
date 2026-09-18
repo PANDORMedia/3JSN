@@ -4091,6 +4091,7 @@ dependencies = [
  "serde_json",
  "sha2",
  "threejs-compiled-ui-experiment",
+ "threejs-native-input-queue",
  "threejs-native-js-sources",
  "threejs-native-package",
  "tokio",
@@ -4101,6 +4102,10 @@ dependencies = [
  "wgpu-types",
  "winit",
 ]
+
+[[package]]
+name = "threejs-native-input-queue"
+version = "0.0.0"
 
 [[package]]
 name = "threejs-native-js-sources"

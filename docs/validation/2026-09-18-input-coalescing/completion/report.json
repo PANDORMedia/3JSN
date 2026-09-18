@@ -1,0 +1,869 @@
+{
+  "status": "passed",
+  "nativeWindowValidated": true,
+  "frameLimits": [
+    1,
+    4,
+    120
+  ],
+  "repetitions": 2,
+  "steps": [
+    {
+      "label": "denied-original-html",
+      "executable": "/bin/cat",
+      "args": [
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/original.html"
+      ],
+      "expectedFailure": "Operation not permitted",
+      "exitCode": 1,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 14,
+      "stdout": "denied-original-html-stdout.txt",
+      "stderr": "denied-original-html-stderr.txt"
+    },
+    {
+      "label": "preserved-describe",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--describe"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1815,
+      "stdout": "preserved-describe-stdout.txt",
+      "stderr": "preserved-describe-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-1-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+        "--frames",
+        "1"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 781,
+      "stdout": "preserved-frames-1-repeat-1-stdout.txt",
+      "stderr": "preserved-frames-1-repeat-1-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-1-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+        "--frames",
+        "1"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 831,
+      "stdout": "preserved-frames-1-repeat-2-stdout.txt",
+      "stderr": "preserved-frames-1-repeat-2-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-4-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+        "--frames",
+        "4"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 673,
+      "stdout": "preserved-frames-4-repeat-1-stdout.txt",
+      "stderr": "preserved-frames-4-repeat-1-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-4-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+        "--frames",
+        "4"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 779,
+      "stdout": "preserved-frames-4-repeat-2-stdout.txt",
+      "stderr": "preserved-frames-4-repeat-2-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-120-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1724,
+      "stdout": "preserved-frames-120-repeat-1-stdout.txt",
+      "stderr": "preserved-frames-120-repeat-1-stderr.txt"
+    },
+    {
+      "label": "preserved-frames-120-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1682,
+      "stdout": "preserved-frames-120-repeat-2-stdout.txt",
+      "stderr": "preserved-frames-120-repeat-2-stderr.txt"
+    },
+    {
+      "label": "preserved-error-javascript",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-javascript.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": "COMPLETION_PROBE_ORDINARY_JS_ERROR",
+      "exitCode": 1,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 626,
+      "stdout": "preserved-error-javascript-stdout.txt",
+      "stderr": "preserved-error-javascript-stderr.txt"
+    },
+    {
+      "label": "preserved-error-descriptor",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-descriptor.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": "colorAttachments.*GPURenderPassDescriptor.*sequence",
+      "exitCode": 1,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 603,
+      "stdout": "preserved-error-descriptor-stdout.txt",
+      "stderr": "preserved-error-descriptor-stderr.txt"
+    },
+    {
+      "label": "restricted-describe",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--describe"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1749,
+      "stdout": "restricted-describe-stdout.txt",
+      "stderr": "restricted-describe-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-1-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+        "--frames",
+        "1"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 651,
+      "stdout": "restricted-frames-1-repeat-1-stdout.txt",
+      "stderr": "restricted-frames-1-repeat-1-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-1-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+        "--frames",
+        "1"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 604,
+      "stdout": "restricted-frames-1-repeat-2-stdout.txt",
+      "stderr": "restricted-frames-1-repeat-2-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-4-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+        "--frames",
+        "4"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 608,
+      "stdout": "restricted-frames-4-repeat-1-stdout.txt",
+      "stderr": "restricted-frames-4-repeat-1-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-4-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+        "--frames",
+        "4"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 636,
+      "stdout": "restricted-frames-4-repeat-2-stdout.txt",
+      "stderr": "restricted-frames-4-repeat-2-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-120-repeat-1",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1947,
+      "stdout": "restricted-frames-120-repeat-1-stdout.txt",
+      "stderr": "restricted-frames-120-repeat-1-stderr.txt"
+    },
+    {
+      "label": "restricted-frames-120-repeat-2",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": null,
+      "exitCode": 0,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1650,
+      "stdout": "restricted-frames-120-repeat-2-stdout.txt",
+      "stderr": "restricted-frames-120-repeat-2-stderr.txt"
+    },
+    {
+      "label": "restricted-error-javascript",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-javascript.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": "COMPLETION_PROBE_ORDINARY_JS_ERROR",
+      "exitCode": 1,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 1186,
+      "stdout": "restricted-error-javascript-stdout.txt",
+      "stderr": "restricted-error-javascript-stderr.txt"
+    },
+    {
+      "label": "restricted-error-descriptor",
+      "executable": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "args": [
+        "--compiled-ui",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+        "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-descriptor.mjs",
+        "--frames",
+        "120"
+      ],
+      "expectedFailure": "colorAttachments.*GPURenderPassDescriptor.*sequence",
+      "exitCode": 1,
+      "signal": null,
+      "killed": false,
+      "elapsedMs": 849,
+      "stdout": "restricted-error-descriptor-stdout.txt",
+      "stderr": "restricted-error-descriptor-stderr.txt"
+    }
+  ],
+  "modes": {
+    "preserved": {
+      "description": {
+        "schemaVersion": 1,
+        "playerVersion": "0.0.0",
+        "packageVersions": [
+          1
+        ],
+        "profiles": [
+          "compiled-dom-window-v1"
+        ],
+        "capabilities": [
+          "dom-package-fonts-v1"
+        ],
+        "target": "macos-arm64",
+        "backend": "metal",
+        "v8": "15.0.245.2-rusty",
+        "compiledUi": {
+          "format": "3jsn-static-ui-experiment",
+          "versions": [
+            1
+          ],
+          "htmlParser": "preserved"
+        },
+        "experiment": "compiled-ui-runtime",
+        "dynamicHtml": true,
+        "packageProfiles": [
+          "compiled-dom-window-v1"
+        ]
+      },
+      "positive": [
+        {
+          "label": "preserved-frames-1-repeat-1",
+          "limit": 1,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 1,
+            "canvasSnapshots": 1,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 2,
+            "completed": 2,
+            "first": 1,
+            "last": 2
+          }
+        },
+        {
+          "label": "preserved-frames-1-repeat-2",
+          "limit": 1,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 1,
+            "canvasSnapshots": 1,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 2,
+            "completed": 2,
+            "first": 1,
+            "last": 2
+          }
+        },
+        {
+          "label": "preserved-frames-4-repeat-1",
+          "limit": 4,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 4,
+            "canvasSnapshots": 4,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 5,
+            "completed": 5,
+            "first": 1,
+            "last": 5
+          }
+        },
+        {
+          "label": "preserved-frames-4-repeat-2",
+          "limit": 4,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 4,
+            "canvasSnapshots": 4,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 5,
+            "completed": 5,
+            "first": 1,
+            "last": 5
+          }
+        },
+        {
+          "label": "preserved-frames-120-repeat-1",
+          "limit": 120,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 120,
+            "canvasSnapshots": 120,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 121,
+            "completed": 121,
+            "first": 1,
+            "last": 121
+          }
+        },
+        {
+          "label": "preserved-frames-120-repeat-2",
+          "limit": 120,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 120,
+            "canvasSnapshots": 120,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 121,
+            "completed": 121,
+            "first": 1,
+            "last": 121
+          }
+        }
+      ],
+      "negative": [
+        {
+          "label": "preserved-error-javascript",
+          "kind": "javascript",
+          "frameLimit": 120,
+          "failedCallback": 3,
+          "callbacks": {
+            "started": 3,
+            "completed": 2,
+            "first": 1,
+            "last": 3
+          }
+        },
+        {
+          "label": "preserved-error-descriptor",
+          "kind": "descriptor",
+          "frameLimit": 120,
+          "failedCallback": 3,
+          "callbacks": {
+            "started": 3,
+            "completed": 2,
+            "first": 1,
+            "last": 3
+          }
+        }
+      ]
+    },
+    "restricted": {
+      "description": {
+        "schemaVersion": 1,
+        "playerVersion": "0.0.0",
+        "packageVersions": [
+          1
+        ],
+        "profiles": [
+          "compiled-dom-window-v1"
+        ],
+        "capabilities": [
+          "dom-package-fonts-v1"
+        ],
+        "target": "macos-arm64",
+        "backend": "metal",
+        "v8": "15.0.245.2-rusty",
+        "compiledUi": {
+          "format": "3jsn-static-ui-experiment",
+          "versions": [
+            1
+          ],
+          "htmlParser": "restricted"
+        },
+        "experiment": "compiled-ui-runtime",
+        "dynamicHtml": false,
+        "packageProfiles": [
+          "compiled-dom-window-v1"
+        ]
+      },
+      "positive": [
+        {
+          "label": "restricted-frames-1-repeat-1",
+          "limit": 1,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 1,
+            "canvasSnapshots": 1,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 2,
+            "completed": 2,
+            "first": 1,
+            "last": 2
+          }
+        },
+        {
+          "label": "restricted-frames-1-repeat-2",
+          "limit": 1,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 1,
+            "canvasSnapshots": 1,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 2,
+            "completed": 2,
+            "first": 1,
+            "last": 2
+          }
+        },
+        {
+          "label": "restricted-frames-4-repeat-1",
+          "limit": 4,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 4,
+            "canvasSnapshots": 4,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 5,
+            "completed": 5,
+            "first": 1,
+            "last": 5
+          }
+        },
+        {
+          "label": "restricted-frames-4-repeat-2",
+          "limit": 4,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 4,
+            "canvasSnapshots": 4,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 5,
+            "completed": 5,
+            "first": 1,
+            "last": 5
+          }
+        },
+        {
+          "label": "restricted-frames-120-repeat-1",
+          "limit": 120,
+          "repetition": 1,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 120,
+            "canvasSnapshots": 120,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 121,
+            "completed": 121,
+            "first": 1,
+            "last": 121
+          }
+        },
+        {
+          "label": "restricted-frames-120-repeat-2",
+          "limit": 120,
+          "repetition": 2,
+          "completion": {
+            "nativeDomWindow": true,
+            "backend": "Metal",
+            "presentedFrames": 120,
+            "canvasSnapshots": 120,
+            "cpuImageTransport": false,
+            "nativeDeviceIdentityChecked": true,
+            "nativeQueueIdentityChecked": true
+          },
+          "callbacks": {
+            "started": 121,
+            "completed": 121,
+            "first": 1,
+            "last": 121
+          }
+        }
+      ],
+      "negative": [
+        {
+          "label": "restricted-error-javascript",
+          "kind": "javascript",
+          "frameLimit": 120,
+          "failedCallback": 3,
+          "callbacks": {
+            "started": 3,
+            "completed": 2,
+            "first": 1,
+            "last": 3
+          }
+        },
+        {
+          "label": "restricted-error-descriptor",
+          "kind": "descriptor",
+          "frameLimit": 120,
+          "failedCallback": 3,
+          "callbacks": {
+            "started": 3,
+            "completed": 2,
+            "first": 1,
+            "last": 3
+          }
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Direct compiled-UI host invocation with one public WebGPU clear-pass canvas; no React, Three.js, pixel-parity or performance claim.",
+    "RAF count assumes a visible, unchanged window: one startup callback plus one callback per composed/presented frame. Resizing or occluding the window invalidates that control.",
+    "Exercises successful frame-budget completion and pre-limit application errors; user-close and deadline interruption are separate gates.",
+    "Parser feature descriptions do not establish binary linkage or parser omission."
+  ],
+  "binaryInputs": {
+    "preserved": {
+      "path": "/Users/sean/dev/3JSN/.cache/input-coalescing/runtime-preserved-final",
+      "bytes": 189373792,
+      "sha256": "674b11cec242a4e4b395fc5b1980a4d8b5663584c917026bd0dd91ff51a886e0"
+    },
+    "restricted": {
+      "path": "/Users/sean/dev/3JSN/.cache/input-coalescing/runtime-restricted",
+      "bytes": 187509296,
+      "sha256": "dcf860c7c093d756cdccfc3076df258cfbe976bbf15e49c85e5e6d7e4ef0b3d6"
+    }
+  },
+  "inputs": {
+    "harness": {
+      "path": "/Users/sean/dev/3JSN/scripts/probe-dom-window-completion.mjs",
+      "bytes": 12459,
+      "sha256": "9807838330f1d8a58013c7f8d4401317c1c7bed2bf26ae8d78e279d171e50482"
+    },
+    "compiler": {
+      "path": "/Users/sean/dev/3JSN/experiments/compiled-ui/compiler.mjs",
+      "bytes": 8910,
+      "sha256": "7d4390e34cf0aadb3d1316cdf26ec1f3344b4af687a833204272e0a53560bcc6"
+    },
+    "font": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "original": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/original.html",
+      "bytes": 357,
+      "sha256": "a6aac8f85d9dfd0cdc19e1710a9b98f463a9a7fcd3820c6aa8a66ab6bf094564"
+    },
+    "ui": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+      "bytes": 5992,
+      "sha256": "a76cb749162e1bd73718998879168939f4eba16c311efbfab6e19a5f9becd756"
+    },
+    "policy": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/native-offline.sb",
+      "bytes": 435,
+      "sha256": "edc85e4d8de90e4ddbd82d55df24150a5c2f59b649c325d56934c812e0d50991"
+    },
+    "preserved": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "bytes": 189373792,
+      "sha256": "674b11cec242a4e4b395fc5b1980a4d8b5663584c917026bd0dd91ff51a886e0"
+    },
+    "restricted": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "bytes": 187509296,
+      "sha256": "dcf860c7c093d756cdccfc3076df258cfbe976bbf15e49c85e5e6d7e4ef0b3d6"
+    },
+    "frames-1": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+      "bytes": 1714,
+      "sha256": "118a8a1ce6f72c3769025e7a0613b370991a1e43154abe042d08c66568ba0beb"
+    },
+    "frames-4": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+      "bytes": 1714,
+      "sha256": "5b5390eec91195407666fbb06ca5931beb1d7aa9431aba45bc736faaea6fd3fb"
+    },
+    "frames-120": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+      "bytes": 1716,
+      "sha256": "96bb39c9c5f4fee94922a0ce7f801ccc6629e4c7c5794a6b651dfb4606ac0b84"
+    },
+    "error-javascript": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-javascript.mjs",
+      "bytes": 1724,
+      "sha256": "0cdd05cd07f2ef5a52b0adc1bee2693fea07994ce1d0c1449cf8854badd6ccf3"
+    },
+    "error-descriptor": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-descriptor.mjs",
+      "bytes": 1724,
+      "sha256": "00987eeed9ef6404d2391faf4c582b680e94139b5bbac175b7098a1ef4f81efc"
+    }
+  },
+  "originalHtmlReadDenied": true,
+  "inputsAfter": {
+    "harness": {
+      "path": "/Users/sean/dev/3JSN/scripts/probe-dom-window-completion.mjs",
+      "bytes": 12459,
+      "sha256": "9807838330f1d8a58013c7f8d4401317c1c7bed2bf26ae8d78e279d171e50482"
+    },
+    "compiler": {
+      "path": "/Users/sean/dev/3JSN/experiments/compiled-ui/compiler.mjs",
+      "bytes": 8910,
+      "sha256": "7d4390e34cf0aadb3d1316cdf26ec1f3344b4af687a833204272e0a53560bcc6"
+    },
+    "font": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "original": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/original.html",
+      "bytes": 357,
+      "sha256": "a6aac8f85d9dfd0cdc19e1710a9b98f463a9a7fcd3820c6aa8a66ab6bf094564"
+    },
+    "ui": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/ui.json",
+      "bytes": 5992,
+      "sha256": "a76cb749162e1bd73718998879168939f4eba16c311efbfab6e19a5f9becd756"
+    },
+    "policy": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/native-offline.sb",
+      "bytes": 435,
+      "sha256": "edc85e4d8de90e4ddbd82d55df24150a5c2f59b649c325d56934c812e0d50991"
+    },
+    "preserved": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-preserved",
+      "bytes": 189373792,
+      "sha256": "674b11cec242a4e4b395fc5b1980a4d8b5663584c917026bd0dd91ff51a886e0"
+    },
+    "restricted": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/runtime-restricted",
+      "bytes": 187509296,
+      "sha256": "dcf860c7c093d756cdccfc3076df258cfbe976bbf15e49c85e5e6d7e4ef0b3d6"
+    },
+    "frames-1": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-1.mjs",
+      "bytes": 1714,
+      "sha256": "118a8a1ce6f72c3769025e7a0613b370991a1e43154abe042d08c66568ba0beb"
+    },
+    "frames-4": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-4.mjs",
+      "bytes": 1714,
+      "sha256": "5b5390eec91195407666fbb06ca5931beb1d7aa9431aba45bc736faaea6fd3fb"
+    },
+    "frames-120": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/frames-120.mjs",
+      "bytes": 1716,
+      "sha256": "96bb39c9c5f4fee94922a0ce7f801ccc6629e4c7c5794a6b651dfb4606ac0b84"
+    },
+    "error-javascript": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-javascript.mjs",
+      "bytes": 1724,
+      "sha256": "0cdd05cd07f2ef5a52b0adc1bee2693fea07994ce1d0c1449cf8854badd6ccf3"
+    },
+    "error-descriptor": {
+      "path": "/Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-descriptor.mjs",
+      "bytes": 1724,
+      "sha256": "00987eeed9ef6404d2391faf4c582b680e94139b5bbac175b7098a1ef4f81efc"
+    }
+  }
+}

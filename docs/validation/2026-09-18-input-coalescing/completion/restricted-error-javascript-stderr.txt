@@ -1,0 +1,6 @@
+2026-09-18 16:09:29.686 runtime-restricted[53439:5691683] Metal API Validation Enabled
+3JSN compiled UI experiment: Error: COMPLETION_PROBE_ORDINARY_JS_ERROR
+    at frame (file:///Users/sean/dev/3JSN/artifacts/input-coalescing-completion-02/Native completion é #/error-javascript.mjs:18:41)
+    at Object.dispatch (ext:dom_window/animation.js:25:24)
+    at ext:dom_window/window.js:113:25
+    at ext:dom_window/window.js:103:7

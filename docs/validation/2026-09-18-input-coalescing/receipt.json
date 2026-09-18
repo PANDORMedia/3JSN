@@ -1,0 +1,159 @@
+{
+  "status": "passed",
+  "recordedAt": "2026-09-18T14:06:23.172125+00:00",
+  "baseCommit": "67d105d1e2bea69e6fca652b334a98a1f1115026",
+  "branch": "codex/native-input-coalescing",
+  "workspaceTests": {
+    "passed": 46,
+    "failed": 0,
+    "ignored": 2,
+    "log": "cpu/workspace-final.log"
+  },
+  "queueTests": {
+    "passed": 12,
+    "failed": 0,
+    "log": "cpu/queue-final.log"
+  },
+  "domDeliveryTests": {
+    "passed": 15,
+    "failed": 0,
+    "sharedDomChecks": 12,
+    "newInputChecks": 3,
+    "log": "cpu/dom-input-tests.log"
+  },
+  "nativeReports": {
+    "react": "react/report.json",
+    "completion": "completion/report.json",
+    "manual": "manual/summary.json"
+  },
+  "builds": "builds.json",
+  "qualityChecks": "final-checks.json",
+  "sourceIdentities": {
+    "Cargo.lock": {
+      "bytes": 114540,
+      "sha256": "a7aa0c36f01b5a1071a31cfb5411ef14a78f56eafd1b4bcff2e3640d0c23a283"
+    },
+    "Cargo.toml": {
+      "bytes": 958,
+      "sha256": "a313164c3c1b9e15e212cd9543d475002fbc6ffe8d0ad8ea74b9753cda5542dd"
+    },
+    "crates/input-queue/Cargo.toml": {
+      "bytes": 151,
+      "sha256": "88a3c2811e1fcf23ddef8cf3bcabb6bfd77811843eca4c0c6d09bf52a6d5a879"
+    },
+    "crates/input-queue/src/lib.rs": {
+      "bytes": 11228,
+      "sha256": "e67cc8bf2d722b9cf3a96924a241db5ee8b40b0aee91ab1bfe8aa1a83fdba26e"
+    },
+    "crates/input-queue/tests/queue.rs": {
+      "bytes": 6601,
+      "sha256": "c65bc0f8bb4d46215eede6d5422b55e17733765a223e6a9fa8d5a40f4871501c"
+    },
+    "crates/player/Cargo.toml": {
+      "bytes": 456,
+      "sha256": "9d9f9b4b23a30ac846aa02660bc8233e8bb603ebfefe4ff92e3f7add46d6a647"
+    },
+    "crates/player/src/input.rs": {
+      "bytes": 14366,
+      "sha256": "d7b6d9c17ed1d647528140e486f755fdae257d03b3937645122efdeaf323a70d"
+    },
+    "crates/player/src/window.rs": {
+      "bytes": 25586,
+      "sha256": "2d283472b7ebad0265fc08d9120ed97748289a06de1182e5b467456ce6997f66"
+    },
+    "experiments/compiled-ui-runtime/Cargo.lock": {
+      "bytes": 134444,
+      "sha256": "a227b031d7b9b450f0d28b1d9165a8c2392756bb1fbd34facd3d787b7b2e1b0d"
+    },
+    "experiments/compiled-ui-runtime/Cargo.toml": {
+      "bytes": 2863,
+      "sha256": "90ecd4e74c02352cb76101b7953bf2b7f05099df75653c787d6fe4a9f3debe76"
+    },
+    "experiments/compiled-ui-runtime/src/main.rs": {
+      "bytes": 2115,
+      "sha256": "521aa0810d4084eb3706f5136c16277aeace73d0660144f672f1f5a5fe1327c7"
+    },
+    "experiments/dom-canvas/Cargo.lock": {
+      "bytes": 134432,
+      "sha256": "15c231ecfc9eebfec0fe2252dff63fc6eb5deef050168b363bc3afdc5c784c35"
+    },
+    "experiments/dom-canvas/Cargo.toml": {
+      "bytes": 3030,
+      "sha256": "0cdfb55b30073457b04e3682be8eb60e4b720ca7c05c7e903629a1854102d4e2"
+    },
+    "experiments/dom-canvas/src/window_app.rs": {
+      "bytes": 11908,
+      "sha256": "32b4b9d07c2b31682be6a18e033bf10e865e67d28e3d4e904d3290d2d1bb571a"
+    },
+    "experiments/dom-canvas/src/window_input.rs": {
+      "bytes": 460,
+      "sha256": "5e4aaa94e94282027764897ffecdf51666fbd59d3bb92e4e70c23a602d487b79"
+    },
+    "experiments/dom-canvas/src/window_probe.rs": {
+      "bytes": 1623,
+      "sha256": "36e82e263a2d3910fc83d15e631b381fe0a48a14f1241108e33f092b5592c5ed"
+    },
+    "experiments/dom-canvas/src/window_runtime.rs": {
+      "bytes": 15027,
+      "sha256": "688e0571ace07ae80ec8b60348c62f41adf9bb0ff297fc5b00efa26f14774f3a"
+    },
+    "experiments/dom-canvas/tests/fixtures/input-delivery.js": {
+      "bytes": 1557,
+      "sha256": "fc12f4704dfed35e1f09cbc44a287bb6ab70293c46a1cb4e3add5f907403d07d"
+    },
+    "experiments/dom-canvas/tests/input_delivery.rs": {
+      "bytes": 15040,
+      "sha256": "5bd8924aeccf258114fc3def83b4c955d94fa2b62d6b1119d1510609d7a4df68"
+    }
+  },
+  "notes": [
+    "Initial offline metadata without a host filter requested an uncached non-host package; corrected host-filtered metadata succeeded.",
+    "Preserved build receipt was resumed after Python3.9 lacked hashlib.file_digest; native build and copied binary had already succeeded.",
+    "CPU/GPU checks are scoped to this checkpoint. Motion sample coalescing deliberately changes intermediate sample delivery. No raw-input, performance or general compatibility guarantee.",
+    "The initial preserved binary preceded the final queue panic documentation and test-only additions. A final-source rebuild changed its debug identity; the archived React/completion reports now come from the final rebuild. Initial run-01 reports remain local; builds.json retains original build identities."
+  ],
+  "finalNativeChecks": "final-native-checks.json",
+  "finalPreservedBinary": {
+    "path": ".cache/input-coalescing/runtime-preserved-final",
+    "bytes": 189373792,
+    "sha256": "674b11cec242a4e4b395fc5b1980a4d8b5663584c917026bd0dd91ff51a886e0"
+  },
+  "testCommands": {
+    "workspace": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--offline",
+      "--locked",
+      "-j2"
+    ],
+    "domInput": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--test",
+      "input_delivery",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  "cargoEnvironment": {
+    "CARGO_HOME": "$PWD/.cache/cargo",
+    "CARGO_TARGET_DIR": "$PWD/target",
+    "CARGO_INCREMENTAL": "0",
+    "RUSTY_V8_ARCHIVE": "$PWD/target/release/gn_out/obj/librusty_v8.a"
+  },
+  "sourceCheck": {
+    "command": [
+      "npm",
+      "run",
+      "check"
+    ],
+    "exitCode": 0,
+    "log": "cpu/source-check-final.log"
+  }
+}

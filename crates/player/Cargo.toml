@@ -6,6 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+threejs-native-input-queue = { path = "../input-queue" }
 threejs-native-runtime = { path = "../runtime" }
 threejs-native-package = { path = "../package" }
 tokio.workspace = true
