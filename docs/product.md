@@ -53,6 +53,16 @@ keeping source preservation as the acceptance criterion.
 
 ## Native rendering and HTML
 
+The architecture is application-independent. CtF is one acceptance example;
+standard capabilities and independent fixtures define compatibility. Runtime code
+must not require that game's element IDs, UI structure or dependencies.
+
+The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
+moves static HTML/CSS processing into the build where semantics can be preserved.
+A live native UI tree and compatible JavaScript APIs remain at runtime. Dynamic
+markup and CSS may still require parsers; parser omission is a proven property of
+a particular artifact, not a requirement imposed on every unchanged application.
+
 The intended player is a Rust application using native GPU APIs. Chromium/CEF and
 OS WebViews are not the default runtime. Reusing HTML, CSS, text and layout
 libraries is compatible with that direction; those components still implement

@@ -2,7 +2,7 @@
 
 [Repository](https://github.com/PANDORMedia/3JSN) · [Project board](https://github.com/orgs/PANDORMedia/projects/4) · [Milestones](https://github.com/PANDORMedia/3JSN/milestones)
 
-The roadmap contains eight epics and 46 work items. GitHub holds current status,
+The roadmap contains eight epics and their implementation/research work items. GitHub holds current status,
 priorities and dependencies. Each work item has acceptance criteria and a native
 parent link; blocking relationships are recorded in GitHub as well as issue bodies.
 The additional paint regressions are children of the HTML painting work item;
@@ -49,6 +49,7 @@ shipping integration gates.
 - [#52 Preserve ancestor overflow clips for hoisted canvas paint nodes](https://github.com/PANDORMedia/3JSN/issues/52)
 - [#53 Clear stale paint lists when an HTML stacking context is removed](https://github.com/PANDORMedia/3JSN/issues/53)
 - [#54 Resolve absolute and fixed containing blocks across layout, paint and DOM geometry](https://github.com/PANDORMedia/3JSN/issues/54)
+- [#55 Compile static UI and prove optional HTML-parser packaging across generic applications](https://github.com/PANDORMedia/3JSN/issues/55)
 
 ## M4 — Web services and CtF
 

@@ -23,6 +23,13 @@ do not cement this candidate into public runtime contracts before that gate.
 
 ## Compatibility components
 
+Compile static UI inputs where possible, then construct one authoritative native
+UI tree. Keep dynamic DOM/CSS behavior available according to the application's
+capabilities. The [compiled UI decision](adr/0003-compiled-ui-and-generic-compatibility.md)
+defines the build/runtime boundary and the evidence needed to omit parsers.
+This is a generic application architecture; CtF-specific behavior belongs in
+acceptance tests, never runtime branches.
+
 Keep JS/WebGPU execution, WebGL compatibility, HTML/DOM rendering and platform
 services behind explicit boundaries. Evaluate ANGLE for WebGL/GLSL; the host must
 also implement the required WebGL semantics and bindings. Evaluate maintained

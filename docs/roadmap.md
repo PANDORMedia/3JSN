@@ -8,9 +8,10 @@ JavaScript, shaders, HTML or CSS. Configuration for entry points, build commands
 assets, application identity and service endpoints is allowed. Generated build
 artifacts may be transformed; the source tree stays unchanged.
 
-This is the destination, not current compatibility. Start with a versioned profile
-and CaptureTheFrog (CtF) as a demanding acceptance project. Expand support with
-evidence. Unsupported APIs must produce useful diagnostics rather than a
+This is the destination, not current compatibility. Start with versioned capability
+profiles and independent redistributable fixtures. CaptureTheFrog (CtF) is one
+demanding acceptance project; it does not define runtime architecture. Expand
+support with evidence. Unsupported APIs must produce useful diagnostics rather than a
 misleading successful build. See the [product contract](product.md).
 
 The [GitHub issue index](issues.md) maps each milestone to its epic and work items.
@@ -21,6 +22,11 @@ combines one Three.js canvas with interactive HTML and resizing on Metal. The
 separate [DPR cache repair](validation/2026-09-18-dpr-cache.md) passes its CPU
 regressions. Next integration gates are broader DOM/input semantics and project
 loading, alongside unchanged WebGL support; these checkpoints do not complete M3.
+
+The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
+adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.
+The runtime retains live UI state and required dynamic parsing. This work is
+planned; current HTML experiments still carry their parsers.
 
 ## Milestones
 

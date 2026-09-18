@@ -14,13 +14,15 @@ The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
 projects and dynamic HTML/CSS interfaces are part of the target, alongside WebGPU.
 Application configuration is allowed; rewriting game code, shaders or UI is not
 required by the intended product contract. Support will advance through explicit,
-verified compatibility profiles, with CtF as a demanding acceptance application.
+verified capability profiles and independent applications, with CtF as one
+demanding acceptance example. No game-specific behavior belongs in the runtime.
 
 ## Direction
 
 - [Product contract](docs/product.md): CLI behavior and the meaning of no code changes.
 - [Architecture](docs/architecture.md) and [updated decision](docs/adr/0002-unchanged-project-compatibility.md): native host and compatibility boundaries.
 - [HTML/CSS research](docs/html-rendering.md): DOM, layout, interaction and GPU composition.
+- [Compiled UI direction](docs/adr/0003-compiled-ui-and-generic-compatibility.md): build-time HTML/CSS processing, live native UI state and proven parser omission.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.

@@ -19,6 +19,12 @@ invalidation pass the recorded comparisons.
 
 ## The complete pipeline
 
+The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
+adds build-time processing of static HTML/CSS before this runtime pipeline.
+It does not precompute all layout, eliminate live element identity, or require
+applications to abandon runtime markup creation. Parser-enabled and proven
+parser-omitted artifacts should share the same native tree and rendering path.
+
 ```mermaid
 flowchart LR
   JS[Game JavaScript] <--> DOM[DOM objects and events]
