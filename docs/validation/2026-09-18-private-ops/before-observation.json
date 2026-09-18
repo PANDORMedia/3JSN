@@ -1,0 +1,11 @@
+{
+  "kind": "compact observed result, not raw process output",
+  "realm": "actual DOM WebGL integration realm before sealing",
+  "query": "typeof Deno?.core?.ops?.op_angle_dispose / op_angle_resize / op_webgl_canvas_register",
+  "result": {
+    "dispose": "function",
+    "resize": "function",
+    "register": "function"
+  },
+  "operationsInvoked": false
+}

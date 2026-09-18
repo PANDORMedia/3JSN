@@ -1,6 +1,6 @@
-import { createInputDispatcher } from '../../src/input.js';
+import { core } from 'ext:core/mod.js';
+import { createInputDispatcher } from 'ext:threejs_native_bootstrap/input.js';
 
-const core = Deno.core;
 const events = core.loadExtScript('ext:deno_web/02_event.js');
 const webidl = core.loadExtScript('ext:deno_webidl/00_webidl.js');
 const canvas = new EventTarget();

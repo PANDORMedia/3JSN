@@ -1,0 +1,4 @@
+   Compiling threejs-native-js-sources v0.0.0 (/Users/sean/dev/3JSN/crates/js-sources)
+    Checking deno_webgpu v0.226.0
+    Checking threejs-native-runtime v0.0.0 (/Users/sean/dev/3JSN/crates/runtime)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.73s

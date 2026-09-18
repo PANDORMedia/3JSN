@@ -1,6 +1,6 @@
-import { createInputDispatcher } from '../../src/input.js';
+import { core } from 'ext:core/mod.js';
+import { createInputDispatcher } from 'ext:threejs_native_bootstrap/input.js';
 
-const core = Deno.core;
 const events = core.loadExtScript('ext:deno_web/02_event.js');
 const webidl = core.loadExtScript('ext:deno_webidl/00_webidl.js');
 const keys = new EventTarget();
@@ -19,7 +19,7 @@ let retained;
 keys.addEventListener('keydown', event => {
   retained = event;
   assert(event.isTrusted && event.target === keys && event.currentTarget === keys, 'native target/trust');
-  assert(event.key === 'é' && event.code === 'Digit2' && event.ctrlKey && event.shiftKey, 'keyboard identity');
+  assert(event.key === '\u00e9' && event.code === 'Digit2' && event.ctrlKey && event.shiftKey, 'keyboard identity');
   assert(event.repeat && event.location === 0 && event.isComposing === false, 'keyboard state');
   for (const target of [keys, empty]) {
     let error;
@@ -29,14 +29,14 @@ keys.addEventListener('keydown', event => {
   try { Object.defineProperty(event, 'isTrusted', { value: false }); } catch {}
   assert(event.isTrusted, 'native trust getter was shadowed');
   try { event.key = 'changed'; } catch {}
-  assert(event.key === 'é', 'native fields are writable');
+  assert(event.key === '\u00e9', 'native fields are writable');
   event.preventDefault();
   assert(event.defaultPrevented, 'input cancellation missing');
   order.push('down');
   Promise.resolve().then(() => order.push('microtask'));
 }, { once: true });
 keys.addEventListener('keyup', event => { assert(event.isTrusted, 'keyup trust'); order.push('up'); });
-deliver({ kind: 'key', pressed: true, key: 'é', code: 'Digit2', location: 0, repeat: true, modifiers });
+deliver({ kind: 'key', pressed: true, key: '\u00e9', code: 'Digit2', location: 0, repeat: true, modifiers });
 let receiverError;
 try { EventTarget.prototype.dispatchEvent.call({}, retained); } catch (error) { receiverError = error; }
 assert(receiverError instanceof TypeError && retained.isTrusted, 'invalid receiver changed native trust');
@@ -44,7 +44,7 @@ assert(empty.dispatchEvent(retained) === false, 'canceled redispatch must return
 assert(!retained.isTrusted && retained.target === empty, 'public redispatch must reset trust even without listeners');
 empty.addEventListener('keydown', event => assert(!event.isTrusted, 'public listener redispatch became trusted'));
 assert(empty.dispatchEvent(retained) === false, 'canceled listener redispatch must return false');
-deliver({ kind: 'key', pressed: false, key: 'é', code: 'Digit2', location: 0, repeat: false, modifiers });
+deliver({ kind: 'key', pressed: false, key: '\u00e9', code: 'Digit2', location: 0, repeat: false, modifiers });
 assert(JSON.stringify(order) === JSON.stringify(['down', 'microtask', 'up']), 'input microtask/order mismatch');
 keys.addEventListener('blur', event => { assert(event.isTrusted, 'blur trust'); order.push('blur'); });
 deliver({ kind: 'focus', focused: false });

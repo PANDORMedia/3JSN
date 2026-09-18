@@ -1,0 +1,48 @@
+   Compiling threejs-native-runtime v0.0.0 (/Users/sean/dev/3JSN/crates/runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.01s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_js_sources-4c2e78635d0211e1)
+
+running 8 tests
+test tests::table_is_sorted_and_specifiers_are_unique ... ok
+test tests::document_event_repair_also_replaces_in_memory_dependency_source ... ok
+test tests::replaces_every_source_category_without_accessing_declared_paths ... ok
+test tests::existing_in_memory_sources_are_preserved ... ok
+test tests::missing_compiled_source_fails_closed - should panic ... ok
+test tests::table_covers_current_dependency_declarations ... ok
+test tests::application_realm_removes_core_aliases_and_can_be_sealed_twice ... ok
+test tests::application_realm_rejects_nonremovable_bootstrap_globals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_runtime-5d7fdeb8d07fa92a)
+
+running 4 tests
+test surface::deferred::tests::deferred_gpu_snapshot_survives_js_expiry_and_rejects_destroyed_source ... ignored, requires an actual native GPU; readback validates the retained copy only
+test input::tests::serialized_wheel_reaches_the_actual_javascript_event_dispatcher ... ok
+test input::tests::input_values_cross_the_v8_boundary_and_failures_keep_the_phase ... ok
+test input::tests::captured_input_and_animation_bindings_keep_trust_and_microtask_order ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/execution.rs (target/debug/deps/execution-814ca7f424e69a8a)
+
+running 2 tests
+test application_cannot_reach_bootstrap_ops_or_extension_modules ... ok
+test modules_web_globals_and_errors ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+   Doc-tests threejs_native_js_sources
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests threejs_native_runtime
+
+running 1 test
+test .cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deno_core-0.412.0/extensions.rs - threejs_native_bootstrap (line 486) ... ignored
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.91s; merged doctests compilation took 0.61s

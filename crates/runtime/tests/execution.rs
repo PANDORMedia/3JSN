@@ -8,14 +8,6 @@ async fn modules_web_globals_and_errors() {
         .execute_module(&fixture.join("modules.mjs"))
         .await
         .unwrap();
-    Runtime::new()
-        .execute_module(&fixture.join("animation.mjs"))
-        .await
-        .unwrap();
-    Runtime::new()
-        .execute_module(&fixture.join("input.mjs"))
-        .await
-        .unwrap();
     let thrown = Runtime::new()
         .execute_module(&fixture.join("throws.mjs"))
         .await
@@ -73,5 +65,24 @@ async fn modules_web_globals_and_errors() {
     assert!(
         !interrupt.terminate(),
         "disposed isolates reject further interrupts safely"
+    );
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn application_cannot_reach_bootstrap_ops_or_extension_modules() {
+    let fixtures = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures");
+    Runtime::new()
+        .execute_module(&fixtures.join("sealed-realm.mjs"))
+        .await
+        .unwrap();
+    let error = Runtime::new()
+        .execute_module(&fixtures.join("privileged-static-import.mjs"))
+        .await
+        .unwrap_err();
+    let message = error.to_string();
+    assert!(message.contains("ext:core/mod.js"), "{message}");
+    assert!(
+        !message.contains("Privileged static import unexpectedly succeeded"),
+        "{message}"
     );
 }

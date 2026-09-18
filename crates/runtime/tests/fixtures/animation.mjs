@@ -1,4 +1,5 @@
-import { createAnimationFrames } from '../../src/animation.js';
+import { core } from 'ext:core/mod.js';
+import { createAnimationFrames } from 'ext:threejs_native_bootstrap/animation.js';
 
 const observed = [];
 let now = 100;
@@ -6,7 +7,7 @@ let pending;
 let cancelled;
 const frames = createAnimationFrames({
   now: () => now,
-  checkpoint: () => Deno.core.runMicrotasks(),
+  checkpoint: () => core.runMicrotasks(),
   reportError: error => reportError(error),
   setPending: value => { pending = value; },
 });

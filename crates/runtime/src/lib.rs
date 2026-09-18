@@ -89,6 +89,15 @@ impl Runtime {
         surface: Option<SharedSurface>,
         window_owner: Option<Box<dyn Any>>,
     ) -> Self {
+        Self::construct_with_extensions(instance, surface, window_owner, Vec::new())
+    }
+
+    fn construct_with_extensions(
+        instance: deno_webgpu::Instance,
+        surface: Option<SharedSurface>,
+        window_owner: Option<Box<dyn Any>>,
+        extra_extensions: Vec<deno_core::Extension>,
+    ) -> Self {
         let input = InputCallback::default();
         let mut bootstrap =
             threejs_native_bootstrap::init(instance, surface.clone(), input.clone());
@@ -104,6 +113,7 @@ impl Runtime {
             deno_webgpu::deno_webgpu::init(),
             bootstrap,
         ];
+        extensions.extend(extra_extensions);
         extensions
             .iter_mut()
             .for_each(threejs_native_js_sources::embed_extension_sources);
@@ -112,6 +122,8 @@ impl Runtime {
             extensions,
             ..Default::default()
         });
+        threejs_native_js_sources::seal_application_realm(&mut js)
+            .expect("trusted runtime bootstrap must remove privileged globals");
         let interrupt = RuntimeInterrupt::new(js.v8_isolate().thread_safe_handle());
         Self {
             js,

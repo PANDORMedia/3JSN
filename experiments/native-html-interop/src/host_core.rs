@@ -51,11 +51,14 @@ pub fn create_with_dom_extension(
     ];
     installed.extend(extensions);
     installed.iter_mut().for_each(prepare);
-    JsRuntime::new(RuntimeOptions {
+    let mut runtime = JsRuntime::new(RuntimeOptions {
         module_loader: Some(Rc::new(FsModuleLoader)),
         extensions: installed,
         ..Default::default()
-    })
+    });
+    threejs_native_js_sources::seal_application_realm(&mut runtime)
+        .expect("host bootstrap must hide its application-internal ops");
+    runtime
 }
 
 pub async fn load(runtime: &mut JsRuntime, path: &Path) -> Result<()> {
