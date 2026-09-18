@@ -1,0 +1,110 @@
+{
+  "baseCommit": "65d930f27877ed9240488dc18c2b0eb0733d2b9a",
+  "files": [
+    {
+      "path": "package.json",
+      "bytes": 1067,
+      "sha256": "5a53df1e9fee310e151d45ab07c87e3cb3c8a5a911295a2f7af683d7eb3ad5c6"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 20711,
+      "sha256": "a09767b52526d841dc16bf452c9efc961d5b817f98cd0f60413074eeae5e39be"
+    },
+    {
+      "path": "experiments/html-v8/src/dom_ops.rs",
+      "bytes": 14650,
+      "sha256": "5a461deb6368f7f496751cf1df6fe6cc5937f09a3e2fcc8d334ebc078d94f613"
+    },
+    {
+      "path": "experiments/html-v8/src/dom_tree.rs",
+      "bytes": 8568,
+      "sha256": "864f49ab259e03934a845a0d03b5eace2a97360bbeaf1c92bb6d2e373de6bce1"
+    },
+    {
+      "path": "experiments/html-v8/src/dom_tree_tests.rs",
+      "bytes": 14978,
+      "sha256": "815655242f0dac7e599c80d1d288022c59d4f21e63ce8c3c5e6d05e2300f2675"
+    },
+    {
+      "path": "experiments/html-v8/src/bindings.js",
+      "bytes": 8599,
+      "sha256": "d69eb7a0e3ab8fca2a1bda5d0055199b25237e84c91b320867d32aaa7816a329"
+    },
+    {
+      "path": "experiments/native-html-interop/src/bindings.js",
+      "bytes": 14189,
+      "sha256": "8b017d7ce938cf976daedbe401ef24bf5324f404762ab796db9ac256576bb5f8"
+    },
+    {
+      "path": "experiments/dom-canvas/prepare-blitz.mjs",
+      "bytes": 6198,
+      "sha256": "45f3c52f659e9333b556b942ccde58398083c96712cd6bf8e64a5b2930ec595d"
+    },
+    {
+      "path": "experiments/dom-canvas/prepare-positioned.mjs",
+      "bytes": 14697,
+      "sha256": "1f5b1fb67f6a08452430d4f02ff11aaa066cfff56214644563c209c9934381b2"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/blitz-cssom-empty-value.patch",
+      "bytes": 6977,
+      "sha256": "c1115c4b2b2791d09d95ab4128b154168af17fb4b6b4269073ff0b7a2372b44b"
+    },
+    {
+      "path": "scripts/probe-react-dom.mjs",
+      "bytes": 15945,
+      "sha256": "5a3ad4200b6060b372154d49b2938302b6b780d36c2dd4c7c447ea5114ba3957"
+    },
+    {
+      "path": "scripts/probe-dom-window-completion.mjs",
+      "bytes": 12459,
+      "sha256": "9807838330f1d8a58013c7f8d4401317c1c7bed2bf26ae8d78e279d171e50482"
+    },
+    {
+      "path": "experiments/dom-canvas/src/window_app.rs",
+      "bytes": 11701,
+      "sha256": "3573ab6e3783ea874de6af9a1e620fa49044e9c09501702c775130e145d43d50"
+    },
+    {
+      "path": "experiments/dom-canvas/src/window_runtime.rs",
+      "bytes": 15112,
+      "sha256": "d4d31a19defed52dbd3268d9f803a9f40d72610f53d78df4c3b431f0d2985412"
+    },
+    {
+      "path": "fixtures/react-dom/3jsn.json",
+      "bytes": 123,
+      "sha256": "f99f323fc70a94af24f04928be31cde16a8fdca5fcc2c1380c580c3161f22add"
+    },
+    {
+      "path": "fixtures/react-dom/README.md",
+      "bytes": 5361,
+      "sha256": "897653e999b07e710f339927385dcfbeed43075fc34dc9180f0e8c1bc4be57a5"
+    },
+    {
+      "path": "fixtures/react-dom/app.mjs",
+      "bytes": 1957,
+      "sha256": "9ef145e7c4aa336a6dbc33f28bbb479f5b0dceef9c79527d825356df3ff3a0b1"
+    },
+    {
+      "path": "fixtures/react-dom/application.mjs",
+      "bytes": 10869,
+      "sha256": "5f682768162dc2ffa65f58f6a3187f77b82f55dcb34029364e05c06567e09b5c"
+    },
+    {
+      "path": "fixtures/react-dom/behavior.mjs",
+      "bytes": 350,
+      "sha256": "41e2bb26160f17e54e404e0b84e7127253b895d9d417a4d0299e433e9914e8ff"
+    },
+    {
+      "path": "fixtures/react-dom/dom-contract.mjs",
+      "bytes": 21892,
+      "sha256": "341ed309415c09f4a5e2b1c008d3ff50696731021e29eb24e294b93b054bfb67"
+    },
+    {
+      "path": "fixtures/react-dom/index.html",
+      "bytes": 1594,
+      "sha256": "7a82d8c06dfd3ba7a30d9168e406661cf528ebfe968a3c7db9584ad0b3e717fc"
+    }
+  ]
+}

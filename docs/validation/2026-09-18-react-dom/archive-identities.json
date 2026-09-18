@@ -1,0 +1,202 @@
+[
+  {
+    "source": "artifacts/react-dom-native-05/report.json",
+    "archive": "react-report.json",
+    "sourceBytes": 155688,
+    "sourceSha256": "44f812567d6db62970e5f609393e5ca863873808502c53064dac29a90d8ccbe8",
+    "archiveBytes": 67759,
+    "archiveSha256": "115b49d2266cade261e792fc78725c6883a0892fe340a97a69f603fa38b57312"
+  },
+  {
+    "source": "artifacts/react-dom-native-05/native-offline.sb",
+    "archive": "react-native-offline.sb",
+    "sourceBytes": 394,
+    "sourceSha256": "b3f65c917f74780195872663ee67a1079bb681d5a7e05b2de05ee2171824ccc5",
+    "archiveBytes": 394,
+    "archiveSha256": "b3f65c917f74780195872663ee67a1079bb681d5a7e05b2de05ee2171824ccc5"
+  },
+  {
+    "source": "artifacts/react-dom-native-05/React native preserved \u00e9 #/app.json",
+    "archive": "preserved-manifest.json",
+    "sourceBytes": 939,
+    "sourceSha256": "df9f87a9158cd23f5df21e56b98dfde2b3babfda44bafea3f2efbd01b85cb227",
+    "archiveBytes": 740,
+    "archiveSha256": "d1b0163ea63c47e46c3dd5094b04d4d5a2e75fb5996d5261abbed1d45077f79b"
+  },
+  {
+    "source": "artifacts/react-dom-native-05/React native preserved \u00e9 #/metadata/build.json",
+    "archive": "preserved-build.json",
+    "sourceBytes": 19726,
+    "sourceSha256": "aebcca2ad0446f7caa50af453b7b1d15590b004b60defbb89a093c9e4660afd8",
+    "archiveBytes": 14069,
+    "archiveSha256": "8a136ce8809073d7fc5a6e19280d51d8a43810c8ecf4165f12dabce1a78ceecd"
+  },
+  {
+    "source": "artifacts/react-dom-native-05/React native restricted \u00e9 #/app.json",
+    "archive": "restricted-manifest.json",
+    "sourceBytes": 940,
+    "sourceSha256": "abd95b7ffed621435b8de29ffa6517c36a23a4179f7e0dc452cea8a8b05a3b8e",
+    "archiveBytes": 741,
+    "archiveSha256": "80d38adcb44207a2303d162539fe5584d93b3aa936eb0d6d1dfe12909078c275"
+  },
+  {
+    "source": "artifacts/react-dom-native-05/React native restricted \u00e9 #/metadata/build.json",
+    "archive": "restricted-build.json",
+    "sourceBytes": 19796,
+    "sourceSha256": "9c265343e8927d643bbc900da47459353085beed8b407ec66776ec7702db2a72",
+    "archiveBytes": 14139,
+    "archiveSha256": "c404e7e2f49c5af09f5612b82b008aeefb0e9db6f6bce9d516580988ce079a86"
+  },
+  {
+    "source": "artifacts/react-dom-parser-regression-02/report.json",
+    "archive": "parser-report.json",
+    "sourceBytes": 22222,
+    "sourceSha256": "8584ce12c4b93246c77acf3f030d7ad48d0e5d2f68fe9cac2e43fd6c97a13ac1",
+    "archiveBytes": 12202,
+    "archiveSha256": "ce5621986c7d61356fdda964baaf1c88faad67326abfe81fff86c4696d517226"
+  },
+  {
+    "source": "artifacts/react-dom-parser-regression-02/restricted-inputs.sb",
+    "archive": "parser-restricted-inputs.sb",
+    "sourceBytes": 431,
+    "sourceSha256": "ae77a8e503c075a08cef08b543f782ceb467262d883248de07e563d7c5d29d8a",
+    "archiveBytes": 431,
+    "archiveSha256": "ae77a8e503c075a08cef08b543f782ceb467262d883248de07e563d7c5d29d8a"
+  },
+  {
+    "source": "artifacts/react-dom-font-regression-02/report.json",
+    "archive": "fonts-report.json",
+    "sourceBytes": 41690,
+    "sourceSha256": "c31a3a0ea9dcb1fa8953548ff73c69a0c8263fe4591281ddc63efaacd713cc5d",
+    "archiveBytes": 29287,
+    "archiveSha256": "f772a14647019109a47e7f3e6fac83453d533323117f2c3e57bbc7bb1d1a15d7"
+  },
+  {
+    "source": "artifacts/react-dom-font-regression-02/native-offline.sb",
+    "archive": "fonts-native-offline.sb",
+    "sourceBytes": 472,
+    "sourceSha256": "a5a907797f36c87831b9c32a0336ff1102bcaf771bb738df57f54963715abe02",
+    "archiveBytes": 472,
+    "archiveSha256": "a5a907797f36c87831b9c32a0336ff1102bcaf771bb738df57f54963715abe02"
+  },
+  {
+    "source": "artifacts/dom-window-completion-01/report.json",
+    "archive": "completion-report.json",
+    "sourceBytes": 31378,
+    "sourceSha256": "d857ed13aec86461efd303362df683d2119fe29b0ea4465d35a4562c685f14d2",
+    "archiveBytes": 23285,
+    "archiveSha256": "d4acd00c779cc2e01098324c3ad70f794e15bcfd103377491b16d1ad595e12ab"
+  },
+  {
+    "source": "artifacts/dom-window-completion-01/native-offline.sb",
+    "archive": "completion-native-offline.sb",
+    "sourceBytes": 429,
+    "sourceSha256": "f6a8537411cbaee8e9f43f8a29f4b1f1175e14d181b7962a520c5708d726447e",
+    "archiveBytes": 429,
+    "archiveSha256": "f6a8537411cbaee8e9f43f8a29f4b1f1175e14d181b7962a520c5708d726447e"
+  },
+  {
+    "source": "artifacts/react-dom-native-04/report.json",
+    "archive": "react-failure-report.json",
+    "sourceBytes": 66460,
+    "sourceSha256": "c803f9608ce50e9ed1af30193828c0f95bfe3d7f7e622e9c1d3f6eb6489784f7",
+    "archiveBytes": 34870,
+    "archiveSha256": "03d043ad4f776cccd81ced07edb2b84b2639efee4d13b14759d86c72d41156d3"
+  },
+  {
+    "source": "artifacts/react-dom-shutdown-diagnostic-01/report.json",
+    "archive": "shutdown-diagnostic-report.json",
+    "sourceBytes": 939,
+    "sourceSha256": "23cc792ca180e5a01ebc9a195e2f9ae56818bef9483511d824891e7189151652",
+    "archiveBytes": 718,
+    "archiveSha256": "93342324184bfcba13b894142de9cfabf33d7d975a28e48e5fc0e0fc5f365d6c"
+  },
+  {
+    "source": ".cache/react-dom/build-checks.json",
+    "archive": "build-checks.json",
+    "sourceBytes": 1278,
+    "sourceSha256": "469f33dc942deffd87ad7868422bc9c1e2af13fddecd47f720318d05bbe148e5",
+    "archiveBytes": 878,
+    "archiveSha256": "a001b35b9c4c738a460783c4da606fcef106b950c24a2a95842734e575674c95"
+  },
+  {
+    "source": ".cache/react-dom/shutdown-build-checks.json",
+    "archive": "shutdown-build-checks.json",
+    "sourceBytes": 704,
+    "sourceSha256": "991ab3e09035eecf2bf13783470baf24983ee6096417b2ff704a7c27df619522",
+    "archiveBytes": 500,
+    "archiveSha256": "ba5510eb172c79996ee7d7a3f30c28b35dc65fb05255602ea28377d4642e2e05"
+  },
+  {
+    "source": ".cache/react-dom/quality-checks.json",
+    "archive": "quality-checks.json",
+    "sourceBytes": 2082,
+    "sourceSha256": "85914b84a84aedddd45f301cf8f3971170666fe4616d0eccfe8239a6d7e4bd3b",
+    "archiveBytes": 1423,
+    "archiveSha256": "525cf184a11a4e96bcb836383e73d2666612d188ddc9df4a9a19a91709774f0c"
+  },
+  {
+    "source": ".cache/react-dom/final-quality-checks.json",
+    "archive": "final-quality-checks.json",
+    "sourceBytes": 1156,
+    "sourceSha256": "059e539e302054618b435b595606690bf846823069e770f79e4c8780b06b7df8",
+    "archiveBytes": 812,
+    "archiveSha256": "3ea0af9d3d7cdbd43666e496673f1fc6cf77741decedb0073b4d4d00a1617a7a"
+  },
+  {
+    "source": ".cache/react-dom/final-native-checks.json",
+    "archive": "final-native-checks.json",
+    "sourceBytes": 1777,
+    "sourceSha256": "b9f59afd88ab751aba2e9068d0553abc4460bfed125d5b1147b7a2515a192366",
+    "archiveBytes": 1419,
+    "archiveSha256": "9e255a552317d1fb19880a94a631d1c9cd674880fe54929e3dc42c5544c58f95"
+  },
+  {
+    "source": ".cache/react-dom/custom-whitespace-browser.json",
+    "archive": "custom-whitespace-browser.json",
+    "sourceBytes": 704,
+    "sourceSha256": "36a2b015a83ca2873614bf77fd357deeaa9318836e6ca322d31bf53add763dc8",
+    "archiveBytes": 633,
+    "archiveSha256": "fa60a6b671cb45b73368611097a85db58577937f659db60309594a4673cc29be"
+  },
+  {
+    "source": ".cache/react-dom/cssom-update-browser.json",
+    "archive": "cssom-update-browser.json",
+    "sourceBytes": 1287,
+    "sourceSha256": "8c2bd06ead2e582469e0aa1683a903d955017f27df5ad2fa98f2f48e85004170",
+    "archiveBytes": 1216,
+    "archiveSha256": "fccea6c1e77891fac8a3c1f181b51ba266265ee1637c87c3f962b58f88b5f561"
+  },
+  {
+    "source": ".cache/react-dom/cssom-priority-initial-browser.json",
+    "archive": "cssom-priority-initial-browser.json",
+    "sourceBytes": 709,
+    "sourceSha256": "17fa74b604dc5b9a59805bec7aa7b9071acb1bf0ba46aa46359cd3a83752f642",
+    "archiveBytes": 638,
+    "archiveSha256": "e79019f901666c480f6154541f822bb6eebc040516b1810b134109bac43ec392"
+  },
+  {
+    "source": "/private/tmp/3jsn-cssom-whitespace-normal-check.json",
+    "archive": "normal-preparation.json",
+    "sourceBytes": 4549,
+    "sourceSha256": "4d43bef8feab43c2c86195b5fc92490fa3e33b0974d1d008e38e88baa286f7ca",
+    "archiveBytes": 3894,
+    "archiveSha256": "8b059969ecb63f618b8d3912a5b58682aa7a14b7bb392aa8532d7748446845ec"
+  },
+  {
+    "source": "/private/tmp/3jsn-cssom-whitespace-positioned-check.json",
+    "archive": "positioned-preparation.json",
+    "sourceBytes": 6214,
+    "sourceSha256": "de99b1731afbf6705319ceb816b288757b6798e2cf17e1c4086fda94490b8d25",
+    "archiveBytes": 5560,
+    "archiveSha256": "1d744bf2185bcdd77f0ab5f0bc1c355d722978499c08c0603f18ea9fbf85d909"
+  },
+  {
+    "source": "/private/tmp/3jsn-cssom-whitespace-baseline-check.json",
+    "archive": "baseline-preparation.json",
+    "sourceBytes": 2401,
+    "sourceSha256": "f186e368cfda52844d553770ac8f979591e2a1fbe1546bef90ed2ad43f545d85",
+    "archiveBytes": 2155,
+    "archiveSha256": "ee317a65f980748ffa11dbd43a611ccfa860be9ab17fd6c16585a5dc383e4a2c"
+  }
+]

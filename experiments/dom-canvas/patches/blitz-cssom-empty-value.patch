@@ -1,0 +1,175 @@
+diff --git a/packages/blitz-dom/src/resolved_style.rs b/packages/blitz-dom/src/resolved_style.rs
+--- a/packages/blitz-dom/src/resolved_style.rs
++++ b/packages/blitz-dom/src/resolved_style.rs
+@@ -10,7 +10,9 @@
+ use style::computed_values::box_sizing::T as BoxSizing;
+ use style::computed_values::position::T as Position;
+ use style::parser::ParserContext;
+-use style::properties::declaration_block::{Importance, parse_style_attribute};
++use style::properties::declaration_block::{
++    Importance, SourcePropertyDeclarationUpdate, parse_style_attribute,
++};
+ use style::properties::{
+     ComputedValues, NonCustomPropertyId, PropertyDeclaration, PropertyDeclarationBlock, PropertyId,
+     ShorthandId, SourcePropertyDeclaration, parse_one_declaration_into,
+@@ -230,7 +232,7 @@
+         let property_id = PropertyId::parse_enabled_for_all_content(property).ok()?;
+         let mut block = self.parse_style_attr_block(style_attr);
+ 
+-        if value.trim().is_empty() {
++        if value.is_empty() {
+             if let Some(first_declaration) = block.first_declaration_to_remove(&property_id) {
+                 block.remove_property(&property_id, first_declaration);
+             }
+@@ -253,7 +255,11 @@
+             } else {
+                 Importance::Normal
+             };
+-            block.extend(source.drain(), importance);
++            // CSSOM replacement preserves position and can change importance; parsing uses extend.
++            let mut updates = SourcePropertyDeclarationUpdate::default();
++            if block.prepare_for_update(&source, importance, &mut updates) {
++                block.update(source.drain(), importance, &mut updates);
++            }
+         }
+ 
+         let mut css = CssStringWriter::new();
+@@ -647,3 +653,138 @@
+     let _ = shorthand.longhands_to_css(&declaration_refs, &mut css);
+     css
+ }
++
++#[cfg(test)]
++mod cssom_empty_value_tests {
++    use crate::BaseDocument;
++    use style::properties::PropertyId;
++    use style::properties::declaration_block::Importance;
++
++    #[test]
++    fn exact_empty_value_removes_ordinary_and_custom_properties() {
++        let document = BaseDocument::new(Default::default());
++        for (property, value) in [("width", "12px"), ("--tone", "gold")] {
++            let initial = document
++                .style_attr_set_property("height: 3px;", property, value, false)
++                .unwrap();
++            let removed = document
++                .style_attr_set_property(&initial, property, "", false)
++                .unwrap();
++            assert_eq!(document.style_attr_get_property(&removed, property), "");
++            assert_eq!(document.style_attr_get_property(&removed, "height"), "3px");
++            assert_eq!(removed, document.style_attr_serialize("height: 3px;"));
++        }
++    }
++
++    #[test]
++    fn whitespace_is_invalid_for_width_instead_of_removing_it() {
++        let document = BaseDocument::new(Default::default());
++        let initial = "width: 12px; height: 3px;";
++        for value in [" ", "\t\n\r\u{000c}", "\u{00a0}"] {
++            assert_eq!(
++                document.style_attr_set_property(initial, "width", value, false),
++                None
++            );
++        }
++    }
++
++    #[test]
++    fn whitespace_custom_property_values_reach_the_css_parser() {
++        let document = BaseDocument::new(Default::default());
++        for (value, expected_value, expected_style) in [
++            (" ", "", "--tone: ; width: 12px;"),
++            ("\u{00a0}", "\u{00a0}", "--tone: \u{00a0}; width: 12px;"),
++        ] {
++            let updated = document
++                .style_attr_set_property("--tone: gold; width: 12px;", "--tone", value, false)
++                .unwrap();
++            assert_eq!(updated, expected_style);
++            assert_eq!(
++                document.style_attr_get_property(&updated, "--tone"),
++                expected_value
++            );
++            assert_eq!(document.style_attr_get_property(&updated, "width"), "12px");
++        }
++    }
++
++    #[test]
++    fn cssom_replacement_retains_position_and_appends_new_properties() {
++        let document = BaseDocument::new(Default::default());
++        for (initial, property, value, expected) in [
++            (
++                "width: 12px; height: 3px;",
++                "width",
++                "20px",
++                "width: 20px; height: 3px;",
++            ),
++            (
++                "--tone: gold; width: 12px;",
++                "--tone",
++                "silver",
++                "--tone: silver; width: 12px;",
++            ),
++            (
++                "width: 12px; height: 3px;",
++                "color",
++                "red",
++                "width: 12px; height: 3px; color: red;",
++            ),
++            (
++                "width: 12px; height: 3px;",
++                "width",
++                "12px",
++                "width: 12px; height: 3px;",
++            ),
++        ] {
++            assert_eq!(
++                document.style_attr_set_property(initial, property, value, false),
++                Some(expected.to_owned())
++            );
++        }
++    }
++
++    #[test]
++    fn cssom_replacement_can_raise_and_lower_importance() {
++        let document = BaseDocument::new(Default::default());
++        let width = PropertyId::parse_enabled_for_all_content("width").unwrap();
++        let raised = document
++            .style_attr_set_property("width: 12px; height: 3px;", "width", "20px", true)
++            .unwrap();
++        assert_eq!(document.style_attr_get_property(&raised, "width"), "20px");
++        assert_eq!(document.style_attr_get_property(&raised, "height"), "3px");
++        assert_eq!(
++            document
++                .parse_style_attr_block(&raised)
++                .property_priority(&width),
++            Importance::Important
++        );
++        let lowered = document
++            .style_attr_set_property(&raised, "width", "30px", false)
++            .unwrap();
++        assert_eq!(document.style_attr_get_property(&lowered, "width"), "30px");
++        assert_eq!(document.style_attr_get_property(&lowered, "height"), "3px");
++        assert_eq!(
++            document
++                .parse_style_attr_block(&lowered)
++                .property_priority(&width),
++            Importance::Normal
++        );
++    }
++
++    #[test]
++    fn cssom_shorthand_replacement_retains_position() {
++        let document = BaseDocument::new(Default::default());
++        let updated = document
++            .style_attr_set_property("margin: 1px; width: 12px;", "margin", "2px 3px", false)
++            .unwrap();
++        assert_eq!(updated, "margin: 2px 3px; width: 12px;");
++        for (property, value) in [
++            ("margin-top", "2px"),
++            ("margin-right", "3px"),
++            ("margin-bottom", "2px"),
++            ("margin-left", "3px"),
++        ] {
++            assert_eq!(document.style_attr_get_property(&updated, property), value);
++        }
++    }
++}

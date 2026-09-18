@@ -8,6 +8,11 @@ use serde_json::{Value, json};
 
 #[path = "capabilities.rs"]
 mod capabilities;
+#[path = "dom_tree.rs"]
+mod dom_tree;
+#[cfg(test)]
+#[path = "dom_tree_tests.rs"]
+mod dom_tree_tests;
 
 /// Hosts supply HTML parsing explicitly; ordinary tree operations do not depend on it.
 pub type HtmlFragmentParser = for<'document> fn(&mut DocumentMutator<'document>, NodeId, &str);
@@ -40,6 +45,10 @@ enum Read {
     Text {
         id: String,
     },
+    Style {
+        id: String,
+        name: Option<String>,
+    },
     Rect {
         id: String,
     },
@@ -54,9 +63,20 @@ enum Mutation {
     Create {
         tag: String,
     },
+    CreateText {
+        value: String,
+    },
     Attribute {
         id: String,
         name: String,
+        value: String,
+    },
+    RemoveAttribute {
+        id: String,
+        name: String,
+    },
+    CharacterData {
+        id: String,
         value: String,
     },
     Text {
@@ -71,6 +91,11 @@ enum Mutation {
         id: String,
         child: String,
     },
+    Insert {
+        id: String,
+        child: String,
+        before: Option<String>,
+    },
     Remove {
         id: String,
         child: String,
@@ -78,6 +103,12 @@ enum Mutation {
     Style {
         id: String,
         name: String,
+        value: String,
+        #[serde(default)]
+        important: bool,
+    },
+    StyleText {
+        id: String,
         value: String,
     },
 }
@@ -108,7 +139,10 @@ fn op_dom_read(
     state: &mut OpState,
     #[serde] request: Read,
 ) -> Result<serde_json::Value, JsErrorBox> {
-    let state = state.borrow_mut::<DomState>();
+    read_dom(state.borrow_mut::<DomState>(), request)
+}
+
+fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
     let doc = &mut state.document;
     match request {
         Read::FindById { value } => Ok(id_value(doc.get_element_by_id(&value))),
@@ -117,14 +151,7 @@ fn op_dom_read(
                 Some(id) => node_id(doc, &id)?,
                 None => doc.root_node().id,
             };
-            let node = doc.get_node(id).unwrap();
-            let tag = match &node.data {
-                NodeData::Document(_) => "#document".into(),
-                NodeData::Text(_) => "#text".into(),
-                NodeData::Element(element) => element.name.local.to_string(),
-                _ => "#other".into(),
-            };
-            Ok(json!({"id": id_value(Some(id)), "tag": tag, "parent": id_value(node.parent)}))
+            dom_tree::describe(doc, id)
         }
         Read::Query { id, selector, all } => {
             let id = node_id(doc, &id)?;
@@ -153,7 +180,15 @@ fn op_dom_read(
         }
         Read::Text { id } => {
             let id = node_id(doc, &id)?;
-            Ok(json!(doc.get_node(id).unwrap().text_content()))
+            dom_tree::text_content(doc, id)
+        }
+        Read::Style { id, name } => {
+            let id = node_id(doc, &id)?;
+            let attribute = dom_tree::style_attribute(doc, id)?;
+            Ok(json!(match name {
+                Some(name) => doc.style_attr_get_property(attribute, &name),
+                None => doc.style_attr_serialize(attribute),
+            }))
         }
         Read::Rect { id } => {
             let id = node_id(doc, &id)?;
@@ -209,22 +244,26 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
             let name = QualName::new(None, ns!(html), LocalName::from(tag));
             Ok(id_value(Some(doc.mutate().create_element(name, vec![]))))
         }
+        Mutation::CreateText { value } => Ok(id_value(Some(doc.mutate().create_text_node(&value)))),
         Mutation::Attribute { id, name, value } => {
             let id = node_id(doc, &id)?;
             doc.mutate().set_attribute(id, attr_name(name), &value);
             Ok(Value::Null)
         }
+        Mutation::RemoveAttribute { id, name } => {
+            let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
+            doc.mutate().clear_attribute(id, attr_name(name));
+            Ok(Value::Null)
+        }
+        Mutation::CharacterData { id, value } => {
+            let id = node_id(doc, &id)?;
+            dom_tree::set_character_data(doc, id, &value)?;
+            Ok(Value::Null)
+        }
         Mutation::Text { id, value } => {
             let id = node_id(doc, &id)?;
-            let mut mutator = doc.mutate();
-            // Keep removed nodes alive because existing JS wrappers remain observable.
-            for child in mutator.child_ids(id) {
-                mutator.remove_node(child);
-            }
-            if !value.is_empty() {
-                let text = mutator.create_text_node(&value);
-                mutator.append_children(id, &[text]);
-            }
+            dom_tree::set_text_content(doc, id, &value)?;
             Ok(Value::Null)
         }
         Mutation::Html { id, value } => {
@@ -242,30 +281,49 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
         Mutation::Append { id, child } => {
             let parent = node_id(doc, &id)?;
             let child = node_id(doc, &child)?;
-            let mut current = Some(parent);
-            while let Some(id) = current {
-                if id == child {
-                    return Err(JsErrorBox::generic("HierarchyRequestError"));
-                }
-                current = doc.get_node(id).unwrap().parent;
-            }
-            let mut mutator = doc.mutate();
-            mutator.remove_node(child);
-            mutator.append_children(parent, &[child]);
+            dom_tree::insert(doc, parent, child, None)?;
+            Ok(id_value(Some(child)))
+        }
+        Mutation::Insert { id, child, before } => {
+            let parent = node_id(doc, &id)?;
+            let child = node_id(doc, &child)?;
+            let before = before.map(|id| node_id(doc, &id)).transpose()?;
+            dom_tree::insert(doc, parent, child, before)?;
             Ok(id_value(Some(child)))
         }
         Mutation::Remove { id, child } => {
             let parent = node_id(doc, &id)?;
             let child = node_id(doc, &child)?;
-            if doc.get_node(child).unwrap().parent != Some(parent) {
-                return Err(JsErrorBox::generic("NotFoundError"));
-            }
+            dom_tree::require_child(doc, parent, child)?;
             doc.mutate().remove_node(child);
             Ok(id_value(Some(child)))
         }
-        Mutation::Style { id, name, value } => {
+        Mutation::Style {
+            id,
+            name,
+            value,
+            important,
+        } => {
             let id = node_id(doc, &id)?;
-            doc.mutate().set_style_property(id, &name, &value);
+            let attribute = dom_tree::style_attribute(doc, id)?;
+            if let Some(attribute) =
+                doc.style_attr_set_property(attribute, &name, &value, important)
+            {
+                // A no-op must retain the original attribute, including absence
+                // and author formatting, instead of emitting a mutation.
+                if attribute != doc.style_attr_serialize(dom_tree::style_attribute(doc, id)?) {
+                    doc.mutate()
+                        .set_attribute(id, attr_name("style".into()), &attribute);
+                }
+            }
+            Ok(Value::Null)
+        }
+        Mutation::StyleText { id, value } => {
+            let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
+            let attribute = doc.style_attr_serialize(&value);
+            doc.mutate()
+                .set_attribute(id, attr_name("style".into()), &attribute);
             Ok(Value::Null)
         }
     }

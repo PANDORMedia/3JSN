@@ -163,6 +163,7 @@ impl App {
         let (input, events) = mpsc::channel(128);
         let proxy = self.proxy.clone();
         let worker = Worker {
+            frames: options.frames,
             resources: options.resources,
             document: options.document,
             module: options.module,
@@ -226,9 +227,9 @@ impl ApplicationHandler<HostEvent> for App {
             }
             HostEvent::Presented(frames) => {
                 self.presented = frames;
-                if self.limit.is_some_and(|limit| frames >= limit) {
-                    self.stop(None);
-                } else if let Some(window) = &self.window {
+                if self.limit.is_none_or(|limit| frames < limit)
+                    && let Some(window) = &self.window
+                {
                     window.request_redraw();
                 }
             }

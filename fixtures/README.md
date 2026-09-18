@@ -60,6 +60,14 @@ Static-only servers cannot run this fixture's service-dependent assertions.
 match the patched native DOM query. This does not certify transformed geometry
 or general browser DOM behavior.
 
+[`react-dom`](react-dom/README.md) uses upstream React DOM over a generic live
+native document: asynchronous effects, delegated clicks, keyed updates, style/text
+mutation, cleanup and remount. Its separate harness compares browser/native
+observations and runs the adjacent Three.js canvas. The
+[checkpoint](../docs/validation/2026-09-18-react-dom.md) records the tested scope,
+including a generic collection lookup difference; it does not certify React,
+physical input or pixel equivalence.
+
 The separate paint runner captures the [overflow](overflow-paint/README.md),
 [positioned layout](positioned-layout/README.md),
 [initial containing block](initial-containing-block/README.md),

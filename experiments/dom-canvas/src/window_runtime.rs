@@ -198,6 +198,7 @@ fn dispatch_input(
 }
 
 pub struct Worker {
+    pub frames: Option<u64>,
     pub resources: Option<Vec<threejs_native_package::Resource>>,
     pub document: DocumentInput,
     pub module: PathBuf,
@@ -357,6 +358,11 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
                 presented += 1;
                 composed = false;
                 worker.proxy.send_event(HostEvent::Presented(presented))?;
+                // Finish on the worker before another callback can start. A
+                // main-thread interrupt here can turn WebIDL calls into errors.
+                if worker.frames.is_some_and(|limit| presented >= limit) {
+                    break;
+                }
             }
             for _ in 0..64 {
                 let Ok(input) = worker.input.try_recv() else {

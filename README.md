@@ -150,6 +150,17 @@ presents 120 Metal frames in each mode after relocation, with packaged fonts and
 no HTML payload. CSS compilation, complete browser parity and a stable shipping
 format remain open.
 
+The [React DOM fixture](fixtures/react-dom/README.md) runs upstream React 19.3.0
+over the same generic native document, with no custom renderer or alternate tree.
+The [React checkpoint](docs/validation/2026-09-18-react-dom.md) matches the tested
+React state, event, keyed-node and effect observations with Chrome and presents
+120 Metal frames in each parser mode after relocation. One generic DOM
+ID/name-collision lookup differs from Chrome; the report retains that difference
+rather than claiming complete DOM parity. Broader framework behavior, physical
+input, pixel equivalence and lifetime bounds remain open. The
+[renderer comparison](docs/react-ui.md) is research, not an adopted custom-renderer
+direction or React certification.
+
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout
 candidate repairs viewport ownership, dynamic grid state and
