@@ -60,6 +60,20 @@ Static-only servers cannot run this fixture's service-dependent assertions.
 match the patched native DOM query. This does not certify transformed geometry
 or general browser DOM behavior.
 
+The separate paint runner captures the [overflow](overflow-paint/README.md),
+[positioned layout](positioned-layout/README.md),
+[initial containing block](initial-containing-block/README.md), and
+[paint order](paint-order/README.md) matrices:
+
+```sh
+node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-order/browser paint-order
+node scripts/compatibility/paint-hit-reference.mjs /path/to/chrome artifacts/paint-order/browser-hit-reference.json
+```
+
+Paint comparisons require matching source identities, viewport and ordered
+mutations, plus geometry and visible pixels. The hit reference uses the same
+HTML and point expectations as the native paint-order tests.
+
 The fixture uses the repository's Three.js r186 baseline, not CtF's pinned r168
 dependency. Broader version compatibility, post-processing, media/voice,
 full lifecycle/failure behavior and physical input fixtures remain required.

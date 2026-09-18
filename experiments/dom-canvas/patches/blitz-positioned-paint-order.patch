@@ -1,0 +1,226 @@
+diff --git a/packages/blitz-dom/src/layout/mod.rs b/packages/blitz-dom/src/layout/mod.rs
+--- a/packages/blitz-dom/src/layout/mod.rs
++++ b/packages/blitz-dom/src/layout/mod.rs
+@@ -26,6 +26,7 @@
+ pub(crate) mod initial_containing_block;
+ pub(crate) mod inline;
+ pub(crate) mod list;
++pub(crate) mod paint_order;
+ pub(crate) mod replaced;
+ pub(crate) mod table;
+ 
+diff --git a/packages/blitz-dom/src/layout/paint_order.rs b/packages/blitz-dom/src/layout/paint_order.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-dom/src/layout/paint_order.rs
+@@ -0,0 +1,171 @@
++//! Geometry ownership can split one stacking context across containing blocks.
++//! Merge those paint lists using order-modified box-tree order, independently of
++//! containing-block coordinates and the order in which owners were visited.
++
++use std::collections::{HashMap, HashSet};
++
++use style::values::specified::box_::DisplayInside;
++
++use crate::{BaseDocument, NodeId};
++
++use super::damage::{HoistedPaintChildren, node_to_paint_order};
++
++pub(crate) struct PaintOrder {
++    ranks: HashMap<NodeId, usize>,
++    nonparticipants: HashSet<NodeId>,
++}
++
++impl PaintOrder {
++    pub(crate) fn new(document: &BaseDocument) -> Self {
++        let root = document.root_node().id;
++        let mut source_ranks = HashMap::new();
++        let mut nonparticipants = HashSet::new();
++        let mut source_nodes = Vec::new();
++        let mut source_pending = vec![(root, false)];
++        while let Some((id, ancestor_suppressed)) = source_pending.pop() {
++            let Some(node) = document.nodes.get(id) else {
++                continue;
++            };
++            if source_ranks.contains_key(&id) || nonparticipants.contains(&id) {
++                continue;
++            }
++            let display = node.display_style().map(|display| display.inside());
++            let suppressed = ancestor_suppressed
++                || display == Some(DisplayInside::None)
++                || (display.is_none() && node.element_data().is_some());
++            if suppressed
++                || node.element_data().is_none()
++                || display == Some(DisplayInside::Contents)
++            {
++                nonparticipants.insert(id);
++            }
++            // Classify hidden descendants through DOM links only: their retained
++            // layout_parent may name a freed wrapper. Text still anchors generated
++            // boxes; display:contents contributes source order through its children.
++            if !suppressed {
++                source_ranks.insert(id, source_nodes.len());
++                source_nodes.push(id);
++            }
++            source_pending.extend(node.after().map(|id| (id, suppressed)));
++            source_pending.extend(node.children.iter().rev().map(|&id| (id, suppressed)));
++            source_pending.extend(node.before().map(|id| (id, suppressed)));
++        }
++
++        // Generated wrappers are absent from DOM children. Anchor each at its
++        // first source descendant; source_nodes is already in ascending order.
++        // Equal anchors occur only along that descendant's parent chain, never
++        // between distinct formatting siblings.
++        for id in source_nodes {
++            let rank = source_ranks[&id];
++            let mut parent = document.nodes[id].layout_parent.get();
++            while let Some(id) = parent {
++                if source_ranks.contains_key(&id) || nonparticipants.contains(&id) {
++                    break;
++                }
++                let Some(node) = document.nodes.get(id) else {
++                    break;
++                };
++                if !node.is_anonymous()
++                    || !node.display_style().is_some_and(|display| {
++                        !matches!(
++                            display.inside(),
++                            DisplayInside::None | DisplayInside::Contents
++                        )
++                    })
++                {
++                    break;
++                }
++                source_ranks.insert(id, rank);
++                parent = node.layout_parent.get();
++            }
++        }
++
++        let mut children: HashMap<NodeId, Vec<NodeId>> = HashMap::new();
++        for &id in source_ranks.keys() {
++            if id == root {
++                continue;
++            }
++            let node = &document.nodes[id];
++            // Only live, participating formatting links may enter the graph.
++            // The rooted walk below excludes chains that no longer reach Document.
++            if let Some(parent) = node.layout_parent.get()
++                && source_ranks.contains_key(&parent)
++            {
++                children.entry(parent).or_default().push(id);
++            }
++        }
++        for (&parent, siblings) in &mut children {
++            // Tables use Taffy's grid algorithm without CSS grid item ordering.
++            let flex_or_grid = document.nodes[parent]
++                .display_style()
++                .is_some_and(|display| {
++                    matches!(display.inside(), DisplayInside::Flex | DisplayInside::Grid)
++                });
++            siblings.sort_by_key(|id| {
++                // Only the order component applies within an equal-z group.
++                // The helper treats absolute/fixed children as order: 0.
++                let order = node_to_paint_order(&document.nodes[*id], flex_or_grid).1;
++                (order, source_ranks[id])
++            });
++        }
++
++        let mut ranks = HashMap::with_capacity(source_ranks.len());
++        let mut pending = vec![root];
++        while let Some(id) = pending.pop() {
++            if ranks.contains_key(&id) {
++                continue;
++            }
++            ranks.insert(id, ranks.len());
++            if let Some(siblings) = children.get(&id) {
++                pending.extend(siblings.iter().rev().copied());
++            }
++        }
++        Self {
++            ranks,
++            nonparticipants,
++        }
++    }
++
++    pub(crate) fn contains_node(&self, id: NodeId) -> bool {
++        self.ranks.contains_key(&id)
++    }
++
++    /// Call after z-index sorting. Zero-z attachment is a separate paint phase
++    /// and deliberately retains its existing order.
++    pub(crate) fn sort_nonzero_ties(&self, context: &mut HoistedPaintChildren) {
++        for siblings in context.children.chunk_by_mut(|a, b| a.z_index == b.z_index) {
++            if siblings[0].z_index == 0 || siblings.len() < 2 {
++                continue;
++            }
++            let rank = |id: NodeId| {
++                *self
++                    .ranks
++                    .get(&id)
++                    .expect("painted stacking child must belong to the formatting tree")
++            };
++            if siblings
++                .iter()
++                .all(|child| !self.nonparticipants.contains(&child.node_id))
++            {
++                siblings.sort_by_key(|child| rank(child.node_id));
++                continue;
++            }
++
++            // Hidden/boxless entries can remain hittable in the existing hit
++            // path. Preserve their slots; sorting must not raise their priority.
++            let mut participating: Vec<_> = siblings
++                .iter()
++                .filter(|child| !self.nonparticipants.contains(&child.node_id))
++                .map(|child| (rank(child.node_id), child.clone()))
++                .collect();
++            participating.sort_by_key(|(rank, _)| *rank);
++            for (slot, (_, child)) in siblings
++                .iter_mut()
++                .filter(|child| !self.nonparticipants.contains(&child.node_id))
++                .zip(participating)
++            {
++                *slot = child;
++            }
++        }
++    }
++}
+diff --git a/packages/blitz-dom/src/resolve.rs b/packages/blitz-dom/src/resolve.rs
+--- a/packages/blitz-dom/src/resolve.rs
++++ b/packages/blitz-dom/src/resolve.rs
+@@ -464,11 +464,33 @@
+ 
+         modified_stacking_roots.sort_unstable();
+         modified_stacking_roots.dedup();
+-        for sc_root in modified_stacking_roots {
++        let mut ordering_roots = modified_stacking_roots.clone();
++        // Unmodified contexts are already z-sorted by the style flush. Include
++        // their nonzero ties too: flex/grid order can change without OOF boxes.
++        ordering_roots.extend(self.nodes.iter().filter_map(|(id, node)| {
++            let sc = node.stacking_context.as_ref()?;
++            sc.children
++                .windows(2)
++                .any(|pair| pair[0].z_index != 0 && pair[0].z_index == pair[1].z_index)
++                .then_some(id)
++        }));
++        ordering_roots.sort_unstable();
++        ordering_roots.dedup();
++        if ordering_roots.is_empty() {
++            return;
++        }
++        let paint_order = crate::layout::paint_order::PaintOrder::new(self);
++        for sc_root in ordering_roots {
+             let mut sc = self.nodes[sc_root].stacking_context.take();
+             if let Some(sc) = sc.as_mut() {
+                 sc.sort();
+-                sc.compute_content_size(self);
++                // Detached retained nodes may still have old stacking lists.
++                if paint_order.contains_node(sc_root) {
++                    paint_order.sort_nonzero_ties(sc);
++                }
++                if modified_stacking_roots.binary_search(&sc_root).is_ok() {
++                    sc.compute_content_size(self);
++                }
+             }
+             self.nodes[sc_root].stacking_context = sc;
+         }

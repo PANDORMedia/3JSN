@@ -1,0 +1,28 @@
+<!doctype html>
+<html id="root" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Paint order across layout owners reference</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: white; }
+    #middle[data-pseudos="ties"]::before,
+    #middle[data-pseudos="flipped"]::before {
+      content: ""; position: relative; grid-area: 1 / 1;
+      width: 96px; height: 64px; margin-left: 32px; margin-top: 16px;
+      background: #2060e0; z-index: 1; order: 0;
+    }
+    #middle[data-pseudos="ties"]::after,
+    #middle[data-pseudos="flipped"]::after {
+      content: ""; position: relative; grid-area: 1 / 1;
+      width: 64px; height: 40px; margin-left: 80px; margin-top: 48px;
+      background: #20a060; z-index: 1; order: 0;
+    }
+    #middle[data-pseudos="flipped"]::before { order: 2; }
+    #middle[data-pseudos="flipped"]::after { order: -2; }
+  </style>
+</head>
+<body id="body">
+  <div id="outer"><div id="middle"><div id="bridge"></div><div id="peer"></div><div id="subject"></div></div></div>
+  <script src="fixture.js"></script>
+</body>
+</html>

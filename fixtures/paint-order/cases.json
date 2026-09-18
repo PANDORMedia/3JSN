@@ -1,0 +1,22 @@
+[
+  { "name": "owners-positive" },
+  { "name": "owners-negative" },
+  { "name": "effect-auto-order" },
+  { "name": "flex-order-forward" },
+  { "name": "flex-order-reverse" },
+  { "name": "flex-order-reset" },
+  { "name": "flex-oof-order-negative" },
+  { "name": "flex-oof-order-positive" },
+  { "name": "grid-order-forward" },
+  { "name": "grid-order-reverse" },
+  { "name": "grid-order-reset" },
+  { "name": "grid-oof-order-positive" },
+  { "name": "contents-flex-order" },
+  { "name": "contents-grid-order" },
+  { "name": "pseudo-order-ties" },
+  { "name": "pseudo-order-flipped" },
+  { "name": "dom-peer-last" },
+  { "name": "dom-order-restored" },
+  { "name": "flex-order-forward", "scale": 2 },
+  { "name": "contents-grid-order", "scale": 2 }
+]

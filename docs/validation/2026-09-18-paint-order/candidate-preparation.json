@@ -1,0 +1,58 @@
+{
+  "status": "prepared-research-candidate",
+  "adopted": false,
+  "directory": ".cache/positioned-candidate",
+  "revision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+  "taffyRevision": "dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c",
+  "profile": "initial-owner",
+  "changedFiles": {
+    "packages/blitz-dom/src/node/node.rs": "b4373fb4266c3d503ba63bb360258c86bd6c8daa66ea94c0ddc1d848176be56f",
+    "packages/blitz-dom/src/resolve.rs": "d7c19ad6b3914c71d356b58d7cd0f12f1a6b8e68a7dbe6a0bd7f3fa1f7dcaf13",
+    "packages/blitz-dom/src/layout/damage.rs": "6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603",
+    "packages/blitz-paint/src/render.rs": "f0c5ae546a9c79c7045f30ee8c34fd6afd6cd3000d8692b9842caf2054e66c26",
+    "packages/blitz-dom/src/layout/mod.rs": "2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1",
+    "packages/blitz-dom/src/layout/initial_containing_block.rs": "3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099",
+    "packages/blitz-dom/src/layout/paint_order.rs": "cadd83c4b39c4be911b74c1f4a859fae4323106712e53f07d48fe3de5db642c1"
+  },
+  "addedFiles": [
+    "packages/blitz-dom/src/layout/initial_containing_block.rs",
+    "packages/blitz-dom/src/layout/paint_order.rs"
+  ],
+  "patches": [
+    {
+      "name": "blitz-stacking-demotion.patch",
+      "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+    },
+    {
+      "name": "blitz-positioned-grid-state.patch",
+      "sha256": "83140eaab44b000cd5213279087486e37329c1f3ce121a4ec1d65ef512e6bc79"
+    },
+    {
+      "name": "blitz-initial-containing-block-layout.patch",
+      "sha256": "aa34a7f82fc02c97d5fc72cf09f6da58e326cc8e5dec5b7196aa801851c188f1"
+    },
+    {
+      "name": "blitz-initial-containing-block-paint.patch",
+      "sha256": "e799909a4c00764944356cbddfa2ae7e1cb58786e79b0baca6acb2ade2acbec3"
+    },
+    {
+      "name": "blitz-positioned-paint-order.patch",
+      "sha256": "29e0a1c4b14a1655391c74d0e353255bfd128a9f1e667bf15ecb02affcba43de"
+    }
+  ],
+  "verifiedTrackedFiles": 416,
+  "verifiedAddedFiles": 2,
+  "manifestInputSha256": "dc6fb82e70ef65b3fd38038a9cfca81b2b452adebad6d3b77c0227eb225ebba8",
+  "lockInputSha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+  "generatedManifestSha256": "32bfd787008d50935f9deaa875422e8b84bc46285a3e2e5bf422101651a2bbbb",
+  "generatedLockSha256": "0aef17fce6d078514e9536204cbeddb6d80d54ff5bc136dcb569fd0508882e90",
+  "deno": {
+    "package": "deno_webgpu",
+    "version": "0.226.0",
+    "directory": ".cache/dom-canvas/deno_webgpu",
+    "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+    "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+    "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+    "verifiedPackagedFiles": 32
+  }
+}

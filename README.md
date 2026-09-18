@@ -103,8 +103,10 @@ clipping still fails, so the integration result remains explicitly partial.
 
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout
-candidate improves containing-block ownership, but viewport, transformed geometry
-and dynamic grid failures keep it outside the default experiment.
+candidate repairs viewport ownership, dynamic grid state and
+[equal-z painting across geometry owners](docs/validation/2026-09-18-paint-order.md).
+It matches 19/20 paint-order cases and 19/21 initial-owner cases; effect ordering,
+transformed geometry, clipping and input/scrolling gaps still prevent adoption.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

@@ -1,5 +1,8 @@
 # Initial containing block candidate — 2026-09-18
 
+Historical checkpoint: the [subsequent paint-order repair](2026-09-18-paint-order.md)
+resolves the two equal-z regressions described here; the candidate remains unadopted.
+
 **Partial; not adopted.** Separating the viewport's geometry owner from HTML's
 box repairs short/tall-document positioning, root margins, percentage sizing,
 static anchors and cached resize behavior. It also exposes paint-order regressions.

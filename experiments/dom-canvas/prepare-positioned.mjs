@@ -24,13 +24,17 @@ const changedFiles = baseline ? {
   'packages/blitz-dom/src/layout/damage.rs': '47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85',
 } : {
   'packages/blitz-dom/src/node/node.rs': 'b4373fb4266c3d503ba63bb360258c86bd6c8daa66ea94c0ddc1d848176be56f',
-  'packages/blitz-dom/src/resolve.rs': 'd8564b17e36873a805300eb9b67295a9dafe0d702f8594f63646325da465de44',
+  'packages/blitz-dom/src/resolve.rs': 'd7c19ad6b3914c71d356b58d7cd0f12f1a6b8e68a7dbe6a0bd7f3fa1f7dcaf13',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
   'packages/blitz-paint/src/render.rs': 'f0c5ae546a9c79c7045f30ee8c34fd6afd6cd3000d8692b9842caf2054e66c26',
-  'packages/blitz-dom/src/layout/mod.rs': '1b55e089f41924523501bbd441979b87300961e8073fe477845d9ca502a51587',
-  'packages/blitz-dom/src/layout/initial_containing_block.rs': '3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099'
+  'packages/blitz-dom/src/layout/mod.rs': '2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1',
+  'packages/blitz-dom/src/layout/initial_containing_block.rs': '3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099',
+  'packages/blitz-dom/src/layout/paint_order.rs': 'cadd83c4b39c4be911b74c1f4a859fae4323106712e53f07d48fe3de5db642c1'
 };
-const addedFiles = baseline ? [] : ['packages/blitz-dom/src/layout/initial_containing_block.rs'];
+const addedFiles = baseline ? [] : [
+  'packages/blitz-dom/src/layout/initial_containing_block.rs',
+  'packages/blitz-dom/src/layout/paint_order.rs',
+];
 const patchInputs = [
   {
     'name': 'blitz-stacking-demotion.patch',
@@ -47,6 +51,10 @@ const patchInputs = [
   {
     'name': 'blitz-initial-containing-block-paint.patch',
     'sha256': 'e799909a4c00764944356cbddfa2ae7e1cb58786e79b0baca6acb2ade2acbec3'
+  },
+  {
+    'name': 'blitz-positioned-paint-order.patch',
+    'sha256': '29e0a1c4b14a1655391c74d0e353255bfd128a9f1e667bf15ecb02affcba43de'
   }
 ];
 const selectedPatches = baseline ? patchInputs.slice(0, 1) : patchInputs;

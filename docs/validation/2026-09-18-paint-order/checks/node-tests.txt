@@ -1,0 +1,28 @@
+
+> 3jsn@0.0.0 test
+> node --test scripts/compatibility/*.test.mjs
+
+✔ native frames snapshot callbacks, share time, and honor cancellation during dispatch (1.428958ms)
+✔ reference runner cleans up after SIGINT during startup (2565.836083ms)
+✔ reference runner cleans up after SIGTERM during command (424.971875ms)
+✔ static read failures return 404 and leave the fixture service usable (72.91175ms)
+✔ initial profile makes no unsupported certification and evidence paths exist (4.750333ms)
+✔ probe and browser reference cannot promote a native support claim (1.156042ms)
+✔ malformed and duplicate declarations fail validation (1.206166ms)
+✔ content identity is deterministic across ordering and timestamps, with explicit exclusions (11.952917ms)
+✔ same-size edits, deletion, addition and empty directory removal are reported (4.452292ms)
+✔ exclusions are root-relative, not a blanket exclusion of nested assets (6.991875ms)
+✔ manifest tampering, traversal, duplicates and invalid hashes fail closed (3.945375ms)
+✔ malformed JSON and unsupported manifest versions retain structured read errors (4.608542ms)
+✔ contained links preserve target content and link identity without walking aliases (9.693333ms)
+✔ external, excluded, dangling and cyclic links cannot hide unmeasured content (7.656042ms)
+✔ CLI captures outside the input tree and returns preservation failure after mutation (227.906667ms)
+✔ CLI rejects output aliases into the source tree (34.523667ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3056.229041

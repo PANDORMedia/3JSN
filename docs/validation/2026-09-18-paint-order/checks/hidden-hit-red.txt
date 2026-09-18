@@ -1,0 +1,36 @@
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.33s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/positioned_tests.rs (target/debug/deps/positioned_layout-e6eeada9d58d9512)
+
+running 1 test
+test paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority ... FAILED
+
+failures:
+
+---- paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority stdout ----
+
+thread 'paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority' (4641276) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/paint_order_hidden_tests.rs:102:13:
+assertion `left == right` failed
+  left: ([NodeId(10v1), NodeId(12v1), NodeId(8v1)], Some(NodeId(8v1)))
+ right: ([NodeId(8v1), NodeId(10v1), NodeId(12v1)], Some(NodeId(10v1)))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test positioned-layout`
