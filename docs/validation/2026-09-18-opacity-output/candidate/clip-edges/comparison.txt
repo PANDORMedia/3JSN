@@ -1,0 +1,27 @@
+┌─────────┬────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                           │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'polygon-single'               │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'polygon-duplicate-red'        │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'polygon-covered-blue'         │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'polygon-single'               │ 2     │ 0                   │ 0                   │ true  │
+│ 4       │ 'polygon-duplicate-red'        │ 2     │ 0                   │ 0                   │ true  │
+│ 5       │ 'polygon-covered-blue'         │ 2     │ 0                   │ 0                   │ true  │
+│ 6       │ 'rounded-single'               │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'rounded-duplicate-red'        │ 1     │ 0                   │ 0                   │ true  │
+│ 8       │ 'inset-single'                 │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'inset-covered-blue'           │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'opacity-single'               │ 1     │ 0                   │ 0                   │ true  │
+│ 11      │ 'opacity-covered-blue'         │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'nested-single'                │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'nested-covered-blue'          │ 1     │ 0                   │ 0                   │ true  │
+│ 14      │ 'rounded-single'               │ 2     │ 0                   │ 0                   │ true  │
+│ 15      │ 'rounded-duplicate-red'        │ 2     │ 0                   │ 0                   │ true  │
+│ 16      │ 'rounded-opacity-single'       │ 1     │ 0                   │ 0                   │ true  │
+│ 17      │ 'rounded-opacity-covered-blue' │ 1     │ 0                   │ 0                   │ true  │
+│ 18      │ 'rounded-opacity-single'       │ 2     │ 0                   │ 0                   │ true  │
+│ 19      │ 'rounded-opacity-covered-blue' │ 2     │ 0                   │ 0                   │ true  │
+│ 20      │ 'polygon-restored'             │ 1     │ 0                   │ 0                   │ true  │
+│ 21      │ 'opacity-restored'             │ 1     │ 0                   │ 0                   │ true  │
+└─────────┴────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PASSED: 22/22 cases match browser geometry and uniform interior pixels.

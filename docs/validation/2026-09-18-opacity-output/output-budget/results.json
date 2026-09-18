@@ -1,0 +1,34 @@
+[
+  {
+    "limit": "total",
+    "limits": {
+      "maxTotalLayers": 1,
+      "maxLayerDepth": 1024
+    },
+    "exitCode": 1,
+    "cleanupComplete": true,
+    "attemptedLayer": 2,
+    "acceptedLayers": 1,
+    "layerKind": "Effect",
+    "submittedFailedFrame": false,
+    "failedFramePngWritten": false,
+    "successReportWritten": false,
+    "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4"
+  },
+  {
+    "limit": "depth",
+    "limits": {
+      "maxTotalLayers": 1024,
+      "maxLayerDepth": 1
+    },
+    "exitCode": 1,
+    "cleanupComplete": true,
+    "attemptedLayer": 2,
+    "acceptedLayers": 1,
+    "layerKind": "Effect",
+    "submittedFailedFrame": false,
+    "failedFramePngWritten": false,
+    "successReportWritten": false,
+    "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4"
+  }
+]

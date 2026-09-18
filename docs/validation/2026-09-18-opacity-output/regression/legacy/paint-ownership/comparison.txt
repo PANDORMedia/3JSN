@@ -1,0 +1,23 @@
+┌─────────┬────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                           │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'relative-auto-positive'       │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'absolute-auto-positive'       │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'zero-parent-positive'         │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'fixed-auto-positive'          │ 1     │ 3354                │ 0                   │ false │
+│ 4       │ 'sticky-auto-positive'         │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'zero-peer-first'              │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'zero-order-restored'          │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'opacity-fixed-escape'         │ 1     │ 7812                │ 0                   │ false │
+│ 8       │ 'opacity-relative-clipped'     │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'clip-group-fixed-escape'      │ 1     │ 7103                │ 0                   │ false │
+│ 10      │ 'clip-group-relative-clipped'  │ 1     │ 0                   │ 0                   │ true  │
+│ 11      │ 'effect-own-overflow-absolute' │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'relative-in-escaping-carrier' │ 1     │ 14787               │ 0                   │ false │
+│ 13      │ 'css-rect-on-auto-carrier'     │ 1     │ 2491                │ 0                   │ false │
+│ 14      │ 'rounded-overflow'             │ 1     │ 12359               │ 0                   │ false │
+│ 15      │ 'rounded-overflow'             │ 2     │ 355                 │ 0                   │ false │
+│ 16      │ 'clip-group-fixed-restored'    │ 1     │ 7103                │ 0                   │ false │
+│ 17      │ 'auto-parent-restored'         │ 1     │ 0                   │ 0                   │ true  │
+└─────────┴────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 10/18 cases match browser geometry and uniform interior pixels.

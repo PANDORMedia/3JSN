@@ -161,8 +161,12 @@ diff --git a/packages/blitz-paint/src/render/ownership.rs b/packages/blitz-paint
 new file mode 100644
 --- /dev/null
 +++ b/packages/blitz-paint/src/render/ownership.rs
-@@ -0,0 +1,633 @@
-+use std::{collections::HashMap, error::Error, fmt};
+@@ -0,0 +1,743 @@
++use std::{
++    collections::{HashMap, HashSet},
++    error::Error,
++    fmt,
++};
 +
 +use anyrender::PaintScene;
 +use blitz_dom::{
@@ -182,7 +186,7 @@ new file mode 100644
 +
 +use super::{
 +    BlitzDomPainter,
-+    ownership_clips::{ClipRouteError, ClipRoutes},
++    ownership_clips::{ClipPrefix, ClipRouteError, ClipRoutes},
 +};
 +use crate::{
 +    PaintError,
@@ -206,6 +210,7 @@ new file mode 100644
 +    UnsupportedWidgetTransform,
 +    UnsupportedOverlay,
 +    InvalidGeometry,
++    InconsistentClipPrefix,
 +}
 +
 +#[derive(Debug)]
@@ -278,6 +283,7 @@ new file mode 100644
 +    transforms: HashMap<NodeId, Affine>,
 +    flow_kind: HashMap<NodeId, InFlowKind>,
 +    clips: ClipRoutes,
++    opacity_output_prefixes: HashMap<NodeId, ClipPrefix>,
 +    root: NodeId,
 +    viewport: Rect,
 +    canvas_background: (NodeId, Color),
@@ -322,6 +328,7 @@ new file mode 100644
 +        let canvas_background = canvas_background(painter, root)?;
 +        let mut transforms: HashMap<NodeId, Affine> = HashMap::new();
 +        let mut flow_kind = HashMap::new();
++        let mut opacity_groups = HashSet::new();
 +        for entry in plan.entries() {
 +            let node = doc
 +                .get_node(entry.node)
@@ -380,6 +387,9 @@ new file mode 100644
 +                ));
 +            }
 +            let effects = styles.get_effects();
++            if effects.opacity > 0.0 && effects.opacity < 1.0 {
++                opacity_groups.insert(entry.node);
++            }
 +            if !effects.filter.0.is_empty()
 +                || !effects.backdrop_filter.0.is_empty()
 +                || styles
@@ -515,11 +525,14 @@ new file mode 100644
 +                ));
 +            }
 +        }
++        let opacity_output_prefixes =
++            prepare_opacity_output_prefixes(&plan, &clips, &opacity_groups)?;
 +        Ok(Self {
 +            plan,
 +            transforms,
 +            flow_kind,
 +            clips,
++            opacity_output_prefixes,
 +            root,
 +            canvas_background,
 +            viewport: Rect::from_origin_size(
@@ -528,6 +541,68 @@ new file mode 100644
 +            ),
 +        })
 +    }
++}
++
++fn prepare_opacity_output_prefixes(
++    plan: &PaintOwnershipPlan<'_>,
++    clips: &ClipRoutes,
++    opacity_groups: &HashSet<NodeId>,
++) -> Result<HashMap<NodeId, ClipPrefix>> {
++    if opacity_groups.is_empty() {
++        return Ok(HashMap::new());
++    }
++    let mut summaries: HashMap<NodeId, ClipPrefix> = HashMap::new();
++    let mut output = HashMap::new();
++    // Plan owners precede their children. All routes participate conservatively,
++    // including hidden/zero-opacity nodes, so no second visibility walk is needed.
++    for entry in plan.entries().iter().rev() {
++        let id = entry.node;
++        let decoration = clips
++            .decoration(id)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let content = clips
++            .content(id)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let mut common = decoration.prefix();
++        common.retain_common_prefix(&content.prefix());
++        for child in plan.children(id) {
++            let summary = summaries
++                .get(&child.node)
++                .ok_or_else(|| unsupported(child.node, OwnershipPaintIssue::MissingPreparedNode))?;
++            common.retain_common_prefix(summary);
++        }
++        if opacity_groups.contains(&id) {
++            output.insert(id, common.clone());
++        }
++        summaries.insert(id, common);
++    }
++
++    let empty = ClipPrefix::default();
++    let mut active_by_node: HashMap<NodeId, &ClipPrefix> = HashMap::new();
++    for entry in plan.entries() {
++        let id = entry.node;
++        let inherited = match entry.paint_owner {
++            Some(owner) => *active_by_node
++                .get(&owner)
++                .ok_or_else(|| unsupported(owner, OwnershipPaintIssue::MissingPreparedNode))?,
++            None => &empty,
++        };
++        let active = output.get(&id).unwrap_or(inherited);
++        if active.clips_after(inherited).is_none()
++            || clips
++                .decoration(id)
++                .and_then(|route| route.clips_after(active))
++                .is_none()
++            || clips
++                .content(id)
++                .and_then(|route| route.clips_after(active))
++                .is_none()
++        {
++            return Err(unsupported(id, OwnershipPaintIssue::InconsistentClipPrefix));
++        }
++        active_by_node.insert(id, active);
++    }
++    Ok(output)
 +}
 +
 +fn canvas_background(painter: &BlitzDomPainter<'_, '_>, root: NodeId) -> Result<(NodeId, Color)> {
@@ -614,7 +689,7 @@ new file mode 100644
 +            None,
 +            &prepared.viewport,
 +        );
-+        self.paint_owned_group(scene, &prepared, prepared.root)
++        self.paint_owned_group(scene, &prepared, prepared.root, &ClipPrefix::default())
 +    }
 +
 +    fn paint_owned_group(
@@ -622,6 +697,7 @@ new file mode 100644
 +        scene: &mut impl PaintScene,
 +        prepared: &PreparedFrame<'_>,
 +        id: NodeId,
++        inherited_prefix: &ClipPrefix,
 +    ) -> Result<()> {
 +        let node = self
 +            .dom
@@ -635,7 +711,23 @@ new file mode 100644
 +            return Ok(());
 +        }
 +        let _location = self.paint_context.enter(self.dom.id(), Some(id));
-+        let grouped = opacity < 1.0;
++        let grouped = opacity > 0.0 && opacity < 1.0;
++        let active_prefix = if grouped {
++            prepared
++                .opacity_output_prefixes
++                .get(&id)
++                .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?
++        } else {
++            inherited_prefix
++        };
++        let output_clips = active_prefix
++            .clips_after(inherited_prefix)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::InconsistentClipPrefix))?;
++        let mut output_layers = 0usize;
++        for clip in output_clips {
++            scene.push_layer(Mix::Normal, 1.0, clip.transform, &clip.shape, None, None);
++            output_layers += 1;
++        }
 +        if grouped {
 +            // Geometry-overflow bounds omit escaping descendants. The viewport is
 +            // conservative for every contribution that can reach this surface.
@@ -648,8 +740,11 @@ new file mode 100644
 +                None,
 +            );
 +        }
-+        let result = self.paint_owned_group_contents(scene, prepared, id);
++        let result = self.paint_owned_group_contents(scene, prepared, id, active_prefix);
 +        if grouped {
++            scene.pop_layer();
++        }
++        for _ in 0..output_layers {
 +            scene.pop_layer();
 +        }
 +        result
@@ -660,24 +755,25 @@ new file mode 100644
 +        scene: &mut impl PaintScene,
 +        prepared: &PreparedFrame<'_>,
 +        id: NodeId,
++        active_prefix: &ClipPrefix,
 +    ) -> Result<()> {
-+        self.paint_owned_contribution(scene, prepared, id, true)?;
++        self.paint_owned_contribution(scene, prepared, id, true, active_prefix)?;
 +        for child in prepared
 +            .plan
 +            .children(id)
 +            .filter(|entry| matches!(entry.phase, PaintPhase::Negative(_)))
 +        {
-+            self.paint_owned_group(scene, prepared, child.node)?;
++            self.paint_owned_group(scene, prepared, child.node, active_prefix)?;
 +        }
-+        self.paint_inflow_decorations(scene, prepared, id)?;
-+        self.paint_owned_contribution(scene, prepared, id, false)?;
-+        self.paint_inflow_contents(scene, prepared, id)?;
++        self.paint_inflow_decorations(scene, prepared, id, active_prefix)?;
++        self.paint_owned_contribution(scene, prepared, id, false, active_prefix)?;
++        self.paint_inflow_contents(scene, prepared, id, active_prefix)?;
 +        for child in prepared
 +            .plan
 +            .children(id)
 +            .filter(|entry| matches!(entry.phase, PaintPhase::Zero | PaintPhase::Positive(_)))
 +        {
-+            self.paint_owned_group(scene, prepared, child.node)?;
++            self.paint_owned_group(scene, prepared, child.node, active_prefix)?;
 +        }
 +        Ok(())
 +    }
@@ -687,6 +783,7 @@ new file mode 100644
 +        scene: &mut impl PaintScene,
 +        prepared: &PreparedFrame<'_>,
 +        owner: NodeId,
++        active_prefix: &ClipPrefix,
 +    ) -> Result<()> {
 +        for child in prepared
 +            .plan
@@ -694,8 +791,8 @@ new file mode 100644
 +            .filter(|entry| entry.phase == PaintPhase::InFlow)
 +        {
 +            if matches!(prepared.flow_kind.get(&child.node), Some(InFlowKind::Block)) {
-+                self.paint_owned_contribution(scene, prepared, child.node, true)?;
-+                self.paint_inflow_decorations(scene, prepared, child.node)?;
++                self.paint_owned_contribution(scene, prepared, child.node, true, active_prefix)?;
++                self.paint_inflow_decorations(scene, prepared, child.node, active_prefix)?;
 +            }
 +        }
 +        Ok(())
@@ -706,6 +803,7 @@ new file mode 100644
 +        scene: &mut impl PaintScene,
 +        prepared: &PreparedFrame<'_>,
 +        owner: NodeId,
++        active_prefix: &ClipPrefix,
 +    ) -> Result<()> {
 +        for child in prepared
 +            .plan
@@ -714,10 +812,18 @@ new file mode 100644
 +        {
 +            match prepared.flow_kind.get(&child.node) {
 +                Some(InFlowKind::Block) => {
-+                    self.paint_owned_contribution(scene, prepared, child.node, false)?;
-+                    self.paint_inflow_contents(scene, prepared, child.node)?;
++                    self.paint_owned_contribution(
++                        scene,
++                        prepared,
++                        child.node,
++                        false,
++                        active_prefix,
++                    )?;
++                    self.paint_inflow_contents(scene, prepared, child.node, active_prefix)?;
 +                }
-+                Some(InFlowKind::Atomic) => self.paint_owned_group(scene, prepared, child.node)?,
++                Some(InFlowKind::Atomic) => {
++                    self.paint_owned_group(scene, prepared, child.node, active_prefix)?;
++                }
 +                None => {
 +                    return Err(unsupported(
 +                        child.node,
@@ -735,6 +841,7 @@ new file mode 100644
 +        prepared: &PreparedFrame<'_>,
 +        id: NodeId,
 +        decoration: bool,
++        active_prefix: &ClipPrefix,
 +    ) -> Result<()> {
 +        let node = self
 +            .dom
@@ -773,7 +880,10 @@ new file mode 100644
 +        let cx = self.element_cx(node, *node.final_layout(), transform, custom_widget);
 +        let _location = self.paint_context.enter(self.dom.id(), Some(id));
 +        let mut layers = 0usize;
-+        for clip in route.clips() {
++        let local_clips = route
++            .clips_after(active_prefix)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::InconsistentClipPrefix))?;
++        for clip in local_clips {
 +            scene.push_clip_layer(clip.transform, &clip.shape);
 +            layers += 1;
 +        }
@@ -799,7 +909,7 @@ diff --git a/packages/blitz-paint/src/render/ownership_clips.rs b/packages/blitz
 new file mode 100644
 --- /dev/null
 +++ b/packages/blitz-paint/src/render/ownership_clips.rs
-@@ -0,0 +1,753 @@
+@@ -0,0 +1,870 @@
 +//! Contribution clips for the experimental ownership renderer. Overflow follows
 +//! resolved containing blocks; CSS rect is reparented for escaping descendants.
 +//! Clip-path captures the incoming chain, matching the recorded Chrome controls.
@@ -880,8 +990,14 @@ new file mode 100644
 +        self.empty
 +    }
 +
-+    pub(super) fn clips(&self) -> impl Iterator<Item = &ResolvedClip> {
-+        self.clips.iter().map(Arc::as_ref)
++    pub(super) fn prefix(&self) -> ClipPrefix {
++        ClipPrefix {
++            clips: self.clips.clone(),
++        }
++    }
++
++    pub(super) fn clips_after(&self, prefix: &ClipPrefix) -> Option<&[Arc<ResolvedClip>]> {
++        prefix.strip_from(&self.clips)
 +    }
 +
 +    fn append(&self, shape: &Arc<ResolvedClip>, empty: bool) -> Self {
@@ -889,6 +1005,41 @@ new file mode 100644
 +        route.clips.push(Arc::clone(shape));
 +        route.empty |= empty;
 +        route
++    }
++}
++
++/// A frame-local identity prefix, without a route's suffix-dependent emptiness.
++#[derive(Clone, Debug, Default)]
++pub(super) struct ClipPrefix {
++    clips: Vec<Arc<ResolvedClip>>,
++}
++
++impl ClipPrefix {
++    pub(super) fn retain_common_prefix(&mut self, other: &Self) {
++        let length = self
++            .clips
++            .iter()
++            .zip(&other.clips)
++            .take_while(|(left, right)| Arc::ptr_eq(left, right))
++            .count();
++        self.clips.truncate(length);
++    }
++
++    pub(super) fn clips_after(&self, prefix: &Self) -> Option<&[Arc<ResolvedClip>]> {
++        prefix.strip_from(&self.clips)
++    }
++
++    fn strip_from<'a>(&self, clips: &'a [Arc<ResolvedClip>]) -> Option<&'a [Arc<ResolvedClip>]> {
++        if clips.len() < self.clips.len()
++            || !self
++                .clips
++                .iter()
++                .zip(clips)
++                .all(|(left, right)| Arc::ptr_eq(left, right))
++        {
++            return None;
++        }
++        Some(&clips[self.clips.len()..])
 +    }
 +}
 +
@@ -1236,7 +1387,9 @@ new file mode 100644
 +
 +    fn markers(route: &ClipRoute) -> Vec<f64> {
 +        route
-+            .clips()
++            .clips_after(&ClipPrefix::default())
++            .unwrap()
++            .iter()
 +            .map(|clip| clip.shape.bounding_box().x0)
 +            .collect()
 +    }
@@ -1551,6 +1704,80 @@ new file mode 100644
 +            )
 +            .is_err()
 +        );
++    }
++
++    #[test]
++    fn common_prefix_uses_shared_identity_not_equal_geometry() {
++        let shared = shape(1.0).0;
++        let equal_geometry = shape(1.0).0;
++        let route = ClipRoute::default().append(&shared, false);
++        let mut prefix = route.prefix();
++        prefix.retain_common_prefix(&route.clone().prefix());
++        assert_eq!(prefix.clips.len(), 1);
++        prefix.retain_common_prefix(&ClipRoute::default().append(&equal_geometry, false).prefix());
++        assert!(prefix.clips.is_empty());
++    }
++
++    #[test]
++    fn prefix_is_capped_by_decoration_and_retains_only_shared_ancestry() {
++        let outer = shape(1.0).0;
++        let incoming = shape(2.0).0;
++        let own_overflow = shape(3.0).0;
++        let decoration = ClipRoute::default()
++            .append(&outer, false)
++            .append(&incoming, false);
++        let content = decoration.append(&own_overflow, false);
++        let mut common = decoration.prefix();
++        common.retain_common_prefix(&content.prefix());
++        assert_eq!(common.clips.len(), 2);
++        let escaped = ClipRoute::default().append(&outer, false);
++        common.retain_common_prefix(&escaped.prefix());
++        assert_eq!(common.clips.len(), 1);
++        assert!(Arc::ptr_eq(&common.clips[0], &outer));
++        common.retain_common_prefix(&ClipPrefix::default());
++        assert!(common.clips.is_empty());
++    }
++
++    #[test]
++    fn suffix_rejects_wrong_identity_order_and_overlong_prefixes() {
++        let first = shape(1.0).0;
++        let second = shape(2.0).0;
++        let prefix = ClipRoute::default().append(&first, false).prefix();
++        let route = ClipRoute::default()
++            .append(&first, false)
++            .append(&second, false);
++        let suffix = route.clips_after(&prefix).unwrap();
++        assert_eq!(suffix.len(), 1);
++        assert!(Arc::ptr_eq(&suffix[0], &second));
++        assert_eq!(route.prefix().clips_after(&prefix).unwrap().len(), 1);
++        assert!(route.clips_after(&route.prefix()).unwrap().is_empty());
++        assert!(ClipRoute::default().clips_after(&prefix).is_none());
++        let reversed = ClipRoute::default()
++            .append(&second, false)
++            .append(&first, false);
++        assert!(reversed.clips_after(&prefix).is_none());
++        let same_geometry = ClipRoute::default().append(&shape(1.0).0, false);
++        assert!(same_geometry.clips_after(&prefix).is_none());
++    }
++
++    #[test]
++    fn empty_suffix_does_not_mark_a_shorter_prefix_empty() {
++        let visible = shape(1.0).0;
++        let empty = resolved(id(2), BezPath::new(), Affine::IDENTITY).unwrap().0;
++        let decoration = ClipRoute::default().append(&visible, false);
++        let content = decoration.append(&empty, true);
++        assert!(!decoration.is_empty());
++        assert!(content.is_empty());
++        let mut prefix = content.prefix();
++        prefix.retain_common_prefix(&decoration.prefix());
++        assert_eq!(prefix.clips.len(), 1);
++        assert!(!prefix.clips[0].shape.elements().is_empty());
++        let suffix = content.clips_after(&prefix).unwrap();
++        assert_eq!(suffix.len(), 1);
++        assert!(Arc::ptr_eq(&suffix[0], &empty));
++        let empty_prefix = content.prefix();
++        assert_eq!(empty_prefix.clips.len(), 2);
++        assert!(empty_prefix.clips[1].shape.elements().is_empty());
 +    }
 +}
 diff --git a/packages/blitz-paint/src/render.rs b/packages/blitz-paint/src/render.rs

@@ -43,9 +43,9 @@ const changedFiles = baseline ? {
   'packages/blitz-paint/src/render/border.rs': '420e6bd5c30186a76aca4a0a33e83b344480371c4ca409a6376f6e43b96cf07d',
   'packages/blitz-paint/src/checked_scene.rs': '398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925',
   'packages/blitz-paint/src/layers.rs': '65bc4da97aef8c456be403eb10330ae85b42b5f2484e93f79de9f258642b4ec2',
-  'packages/blitz-paint/src/render/ownership.rs': 'c358d5e5240e6ec6ea947b250579b84bfe0e44fb93bb2d64947fd00d5b7ab459',
+  'packages/blitz-paint/src/render/ownership.rs': 'e907f4fb6646db0cfa2a06cf47b864d72f2186c38ceeac5b588d78126b7d8e6d',
   'packages/blitz-paint/src/render/clip_path.rs': '659d27be9a16c433140cddd887c9dbb2838089df5298767b14486d1639dff8c4',
-  'packages/blitz-paint/src/render/ownership_clips.rs': '0ddf5b2f3fdb9d23320cf91f289b56194bf06998d4ac3f2091670aaf8414115b',
+  'packages/blitz-paint/src/render/ownership_clips.rs': 'c7b70522dc70fccd784e6128b4dcf43062a8fa8c8a84c8a8973f0f0986eb652d',
 };
 const addedFiles = baseline ? ['packages/blitz-paint/src/checked_scene.rs'] : [
   'packages/blitz-paint/src/checked_scene.rs',
@@ -106,7 +106,7 @@ const patchInputs = [
   },
   {
     'name': 'blitz-ownership-renderer.patch',
-    'sha256': 'e60d81b21cb08515f3da429e42368d8cc91a9cc974132a92f1ff491ddf02e6e9'
+    'sha256': '91c6656f16b321320da1a39d5912b373a74fb5ce83fce50d6345811f7d4db5d5'
   }
 ];
 const selectedPatches = baseline

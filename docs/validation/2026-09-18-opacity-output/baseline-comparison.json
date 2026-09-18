@@ -1,0 +1,662 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "passed": 26,
+  "total": 26,
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "nativeDevice": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "criteria": {
+    "maxChannelDifference": 2,
+    "maxGeometryDifferenceCssPixels": 0.1,
+    "rasterEdgeExclusion": "Non-uniform browser 3x3 neighborhoods and outermost image pixels",
+    "nativePaintCallsPerCase": 1
+  },
+  "limits": [
+    "Edges are counted separately; interior parity does not prove identical antialiasing.",
+    "Only the recorded ordered cases, viewport and device scales were compared."
+  ],
+  "inputs": {
+    "browserReportSha256": "1171a6c8a71d0d474d469a917c8b66f0262abd92c291237f30c56965e8c3e6b6",
+    "nativeReportSha256": "a406a26aef6eed4ec00e52336b2ae694ee6331a37c0ae0812e475073cae67350",
+    "comparatorSha256": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "subjectColorHelperSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "cases": [
+    {
+      "name": "own-inset-single",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 4,
+      "interiorPixels": 111164,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 28720,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-inset-single-1x.png",
+        "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b"
+      },
+      "native": {
+        "file": "000-case.png",
+        "pixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c"
+      }
+    },
+    {
+      "name": "own-inset-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 696,
+      "interiorPixels": 111164,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 28720,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-inset-covered-blue-1x.png",
+        "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b"
+      },
+      "native": {
+        "file": "001-case.png",
+        "pixelSha256": "a46ceb655631ce824c32b99024280953d9a535f2d86fd3e7b4ef806725aa76f5"
+      }
+    },
+    {
+      "name": "own-inset-single",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 4,
+      "interiorPixels": 451694,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 115990,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-inset-single-2x.png",
+        "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3"
+      },
+      "native": {
+        "file": "002-case.png",
+        "pixelSha256": "b231a175b5fadcbdc5bc401270dc82db9c90448082eb2ff846c5c937379ec3f8"
+      }
+    },
+    {
+      "name": "own-inset-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 1394,
+      "interiorPixels": 451694,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 115990,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-inset-covered-blue-2x.png",
+        "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3"
+      },
+      "native": {
+        "file": "003-case.png",
+        "pixelSha256": "03c4dd73aebc93bd0a0245bb3479e6a3aa73940cbc62d13cb59ade41d0cba2b4"
+      }
+    },
+    {
+      "name": "ancestor-inset-single",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 4,
+      "interiorPixels": 111164,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 28720,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "ancestor-inset-single-1x.png",
+        "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b"
+      },
+      "native": {
+        "file": "004-case.png",
+        "pixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c"
+      }
+    },
+    {
+      "name": "ancestor-inset-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 696,
+      "interiorPixels": 111164,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 28720,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "ancestor-inset-covered-blue-1x.png",
+        "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b"
+      },
+      "native": {
+        "file": "005-case.png",
+        "pixelSha256": "a46ceb655631ce824c32b99024280953d9a535f2d86fd3e7b4ef806725aa76f5"
+      }
+    },
+    {
+      "name": "ancestor-inset-single",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 4,
+      "interiorPixels": 451694,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 115990,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "ancestor-inset-single-2x.png",
+        "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3"
+      },
+      "native": {
+        "file": "006-case.png",
+        "pixelSha256": "b231a175b5fadcbdc5bc401270dc82db9c90448082eb2ff846c5c937379ec3f8"
+      }
+    },
+    {
+      "name": "ancestor-inset-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 1394,
+      "interiorPixels": 451694,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 115990,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "ancestor-inset-covered-blue-2x.png",
+        "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3"
+      },
+      "native": {
+        "file": "007-case.png",
+        "pixelSha256": "03c4dd73aebc93bd0a0245bb3479e6a3aa73940cbc62d13cb59ade41d0cba2b4"
+      }
+    },
+    {
+      "name": "own-rounded-single",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 180,
+      "interiorPixels": 111472,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 37584,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-rounded-single-1x.png",
+        "pixelSha256": "8cad97315b6ab89854186b022fadeffa3e7f9cb791ebecdac3c081ecb8db4139"
+      },
+      "native": {
+        "file": "008-case.png",
+        "pixelSha256": "2a57985c4d7a3bd812ed83f2bcc0069d01662f14850b5b3178ebf1acc30b12ed"
+      }
+    },
+    {
+      "name": "own-rounded-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 184,
+      "interiorPixels": 111472,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 37580,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-rounded-covered-blue-1x.png",
+        "pixelSha256": "d73592f2fccac2dd307589087d97ec86347543496989fc1972b1f16a661a2a4d"
+      },
+      "native": {
+        "file": "009-case.png",
+        "pixelSha256": "de3255e87a6e99e4e193c4bcadaefbcf0dc1ca950f692d94acb80df33a5b9fc4"
+      }
+    },
+    {
+      "name": "own-rounded-single",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 388,
+      "interiorPixels": 452316,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 150504,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-rounded-single-2x.png",
+        "pixelSha256": "126d956965850b9a96402a9e56e769ef917996b471580cafa205dcbe6733a682"
+      },
+      "native": {
+        "file": "010-case.png",
+        "pixelSha256": "bb0cb88e4ad994021aadb0daeaa6164f161c9591d45e76ea5c4ead0d1fad6355"
+      }
+    },
+    {
+      "name": "own-rounded-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 384,
+      "interiorPixels": 452316,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 150504,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-rounded-covered-blue-2x.png",
+        "pixelSha256": "77c109a35c587cbf26f064c345b062686187526035b3317ead0f424e47f0e004"
+      },
+      "native": {
+        "file": "011-case.png",
+        "pixelSha256": "a7b4265a22a8e85f767ca521fbf4d81d3ed10819f84f29e1d0af5486fd72c685"
+      }
+    },
+    {
+      "name": "nested-prefix-single",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 545,
+      "interiorPixels": 111520,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22178,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-prefix-single-1x.png",
+        "pixelSha256": "d38aca9d23509d7c17b231c04a5aae634edc62a2d0daf1e538f86d57282f2f89"
+      },
+      "native": {
+        "file": "012-case.png",
+        "pixelSha256": "edda52543c621ad4dd484c317e3bd9ae886beb6105de72c6459fcedf30ba81d7"
+      }
+    },
+    {
+      "name": "nested-prefix-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 591,
+      "interiorPixels": 111520,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22178,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-prefix-covered-blue-1x.png",
+        "pixelSha256": "d38aca9d23509d7c17b231c04a5aae634edc62a2d0daf1e538f86d57282f2f89"
+      },
+      "native": {
+        "file": "013-case.png",
+        "pixelSha256": "adba28a5fef20118e30267b80a65cbccb12f676245749b03306d1decfd637943"
+      }
+    },
+    {
+      "name": "nested-prefix-single",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 1565,
+      "interiorPixels": 452644,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 89216,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-prefix-single-2x.png",
+        "pixelSha256": "f940e31b63b32bc66269a96d7b3506da5da114d0154363f99666767c202566bc"
+      },
+      "native": {
+        "file": "014-case.png",
+        "pixelSha256": "5e907d8238a378cea5f590da38c82c8e94b05c8db10875252ddc67cc28503138"
+      }
+    },
+    {
+      "name": "nested-prefix-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 1658,
+      "interiorPixels": 452644,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 89216,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-prefix-covered-blue-2x.png",
+        "pixelSha256": "f940e31b63b32bc66269a96d7b3506da5da114d0154363f99666767c202566bc"
+      },
+      "native": {
+        "file": "015-case.png",
+        "pixelSha256": "520a53d3c16f5dbbf6acdfc7b3f5844a10d8fbfad0f908ff1a323bef357d8dad"
+      }
+    },
+    {
+      "name": "nested-escape-single",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 280,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22472,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-escape-single-1x.png",
+        "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5"
+      },
+      "native": {
+        "file": "016-case.png",
+        "pixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6"
+      }
+    },
+    {
+      "name": "nested-escape-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 374,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22472,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-escape-covered-blue-1x.png",
+        "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5"
+      },
+      "native": {
+        "file": "017-case.png",
+        "pixelSha256": "45268d5e8b8545fed8a3ddc4ea42df788d96fe650623c2ae2f465eac41a76f8c"
+      }
+    },
+    {
+      "name": "nested-escape-single",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 552,
+      "interiorPixels": 452620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 90195,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-escape-single-2x.png",
+        "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540"
+      },
+      "native": {
+        "file": "018-case.png",
+        "pixelSha256": "3f08f618a4f1e9216ed002d58760b7d4d40bbb32faafccdc51f0325c6d1e8135"
+      }
+    },
+    {
+      "name": "nested-escape-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 735,
+      "interiorPixels": 452620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 90195,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-escape-covered-blue-2x.png",
+        "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540"
+      },
+      "native": {
+        "file": "019-case.png",
+        "pixelSha256": "9ccfe8ca6a2f0ba1571bc153062ce44f5783466ac74f6c7cd0811b59284d9f42"
+      }
+    },
+    {
+      "name": "signed-escape-single",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 280,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22472,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "signed-escape-single-1x.png",
+        "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5"
+      },
+      "native": {
+        "file": "020-case.png",
+        "pixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6"
+      }
+    },
+    {
+      "name": "signed-escape-covered-blue",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 374,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22472,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "signed-escape-covered-blue-1x.png",
+        "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5"
+      },
+      "native": {
+        "file": "021-case.png",
+        "pixelSha256": "45268d5e8b8545fed8a3ddc4ea42df788d96fe650623c2ae2f465eac41a76f8c"
+      }
+    },
+    {
+      "name": "signed-escape-single",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 552,
+      "interiorPixels": 452620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 90195,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "signed-escape-single-2x.png",
+        "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540"
+      },
+      "native": {
+        "file": "022-case.png",
+        "pixelSha256": "3f08f618a4f1e9216ed002d58760b7d4d40bbb32faafccdc51f0325c6d1e8135"
+      }
+    },
+    {
+      "name": "signed-escape-covered-blue",
+      "scale": 2,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 735,
+      "interiorPixels": 452620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 90195,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "signed-escape-covered-blue-2x.png",
+        "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540"
+      },
+      "native": {
+        "file": "023-case.png",
+        "pixelSha256": "9ccfe8ca6a2f0ba1571bc153062ce44f5783466ac74f6c7cd0811b59284d9f42"
+      }
+    },
+    {
+      "name": "own-inset-restored",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 4,
+      "interiorPixels": 111164,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 28720,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "own-inset-restored-1x.png",
+        "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b"
+      },
+      "native": {
+        "file": "024-case.png",
+        "pixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c"
+      }
+    },
+    {
+      "name": "nested-escape-restored",
+      "scale": 1,
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 280,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 22472,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-escape-restored-1x.png",
+        "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5"
+      },
+      "native": {
+        "file": "025-case.png",
+        "pixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6"
+      }
+    }
+  ]
+}

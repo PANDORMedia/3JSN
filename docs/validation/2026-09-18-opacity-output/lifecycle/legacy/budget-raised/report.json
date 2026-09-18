@@ -1,0 +1,197 @@
+{
+  "status": "captured",
+  "fixture": "ordinary-html-clipping",
+  "backend": "Metal",
+  "paintTraversal": "legacy",
+  "offscreen": true,
+  "device": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "v8": "15.0.245.2-rusty",
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "cases": [
+    {
+      "name": "small",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 448.0,
+          "height": 256.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 448.0,
+          "bottom": 256.0
+        },
+        "middle": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        },
+        "subject": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "0fbaa6c1ba7444a3a89f128a3628d45a29521a429873aae4f838febb501394b2",
+      "file": "000-case.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "wide",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 448.0,
+          "height": 256.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 448.0,
+          "bottom": 256.0
+        },
+        "middle": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        },
+        "subject": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "c24c3e1c823b1c6a209a56badb8a6b5c2ad03b9e49703cfab5a35560253d1ba1",
+      "file": "001-case.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "small",
+      "scale": 2.0,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 448.0,
+          "height": 256.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 448.0,
+          "bottom": 256.0
+        },
+        "middle": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        },
+        "subject": {
+          "x": 220.0,
+          "y": 120.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 120.0,
+          "left": 220.0,
+          "right": 348.0,
+          "bottom": 184.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 2.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "4e1a8c7c988c634373692691e8e327f6056b7ea4d00f5abe24846dce61206678",
+      "file": "002-case.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "31a248e33e492223a84922b3d39b5a8ce7070f8d56c2a236b48ac44708bbaab7",
+    "scriptSha256": "68bb416be81536bd25462924f93d8302b94b0fc04a533166062174c415bffb8e",
+    "casesSha256": "61071e2855c5677cac9006918e98850271daa278cbbb60ea056268fb16a1baf0"
+  },
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "paintLimits": {
+    "maxTotalLayers": 2048,
+    "maxLayerDepth": 1024
+  },
+  "cpuReadbackPurpose": "verification PNGs only",
+  "limits": [
+    "Metal-only offscreen captures; no visible presentation or performance claim.",
+    "Browser comparison is a separate step; capture completion is not a compatibility pass.",
+    "Ordinary box fixtures with no font or text requirements; bounded existing DOM adapter."
+  ]
+}

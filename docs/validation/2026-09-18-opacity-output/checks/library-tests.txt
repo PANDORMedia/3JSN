@@ -1,0 +1,38 @@
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-dom)
+   Compiling blitz-paint v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint)
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.53s
+     Running unittests src/lib.rs (target/debug/deps/blitz_paint-b9fc9bfdfd94d1f0)
+
+running 18 tests
+test checked_scene::tests::malformed_streams_return_errors_without_popping_the_callers_layers ... ok
+test checked_scene::tests::nested_failure_unwinds_accepted_layers_and_suppresses_later_siblings ... ok
+test checked_scene::tests::reset_is_an_error_and_does_not_erase_preexisting_commands ... ok
+test checked_scene::tests::exact_total_boundary_does_not_drop_a_required_effect ... ok
+test checked_scene::tests::recorded_fragments_replay_through_the_budget_and_restore_document_context ... ok
+test checked_scene::tests::zero_budget_preserves_unlayered_drawing_but_rejects_the_first_layer ... ok
+test render::ownership_clips::tests::a_resolved_owner_disagreement_is_an_error ... ok
+test render::ownership_clips::tests::an_empty_clip_is_not_absent_and_can_be_escaped_only_by_the_correct_route ... ok
+test render::ownership_clips::tests::clip_path_captures_incoming_chain_but_not_its_own_later_overflow ... ok
+test render::ownership_clips::tests::common_prefix_uses_shared_identity_not_equal_geometry ... ok
+test render::ownership_clips::tests::css_rect_is_reparented_without_importing_ineligible_overflow ... ok
+test render::ownership_clips::tests::device_space_shapes_keep_the_supplied_transform_without_double_scaling ... ok
+test render::ownership_clips::tests::empty_suffix_does_not_mark_a_shorter_prefix_empty ... ok
+test render::ownership_clips::tests::overflow_is_content_only_and_fixed_escape_survives_an_ordinary_effect_group ... ok
+test render::ownership_clips::tests::positioned_context_is_selected_before_creating_its_clip_path ... ok
+test render::ownership_clips::tests::prefix_is_capped_by_decoration_and_retains_only_shared_ancestry ... ok
+test render::ownership_clips::tests::relative_content_in_an_escaping_absolute_carrier_keeps_the_selected_route ... ok
+test render::ownership_clips::tests::suffix_rejects_wrong_identity_order_and_overlong_prefixes ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

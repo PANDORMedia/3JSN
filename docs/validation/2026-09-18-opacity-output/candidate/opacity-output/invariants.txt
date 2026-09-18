@@ -1,0 +1,17 @@
+┌─────────┬───────────────────────────────────┬───────┬───────────┬─────────────────┐
+│ (index) │ group                             │ scale │ identical │ differingPixels │
+├─────────┼───────────────────────────────────┼───────┼───────────┼─────────────────┤
+│ 0       │ 'own-inset-opacity-1x'            │ 1     │ true      │ 0               │
+│ 1       │ 'own-inset-opacity-2x'            │ 2     │ true      │ 0               │
+│ 2       │ 'ancestor-inset-inner-opacity-1x' │ 1     │ true      │ 0               │
+│ 3       │ 'ancestor-inset-inner-opacity-2x' │ 2     │ true      │ 0               │
+│ 4       │ 'own-rounded-overflow-opacity-1x' │ 1     │ false     │ 228             │
+│ 5       │ 'own-rounded-overflow-opacity-2x' │ 2     │ false     │ 456             │
+│ 6       │ 'nested-opacity-shared-prefix-1x' │ 1     │ true      │ 0               │
+│ 7       │ 'nested-opacity-shared-prefix-2x' │ 2     │ true      │ 0               │
+│ 8       │ 'nested-opacity-fixed-escape-1x'  │ 1     │ true      │ 0               │
+│ 9       │ 'nested-opacity-fixed-escape-2x'  │ 2     │ true      │ 0               │
+│ 10      │ 'signed-owned-fixed-escape-1x'    │ 1     │ true      │ 0               │
+│ 11      │ 'signed-owned-fixed-escape-2x'    │ 2     │ true      │ 0               │
+└─────────┴───────────────────────────────────┴───────┴───────────┴─────────────────┘
+PARTIAL: 10/12 declared image-invariance groups.

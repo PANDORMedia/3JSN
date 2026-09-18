@@ -13,6 +13,14 @@ mismatches remain. See the [current validation](../../docs/validation/2026-09-18
 These box fixtures do not establish text, antialias-edge, input, scrolling or
 complete HTML support. The default renderer remains unchanged.
 
+The [opacity-output repair](../../docs/validation/2026-09-18-opacity-output.md)
+extends only the opt-in traversal. It factors a shared clip prefix outside an
+existing fractional-opacity group and retains local clip suffixes. All 48 old/new
+clip-edge captures match browser geometry and uniform interiors; exact image
+invariance remains a separate, partial result. The earlier 142 case payloads are
+unchanged in both traversals. See [the renderer contract](OWNERSHIP.md) for the
+conservative identity-prefix rule and its limits.
+
 ## Ownership and patch boundaries
 
 The viewport-sized Document owns the initial containing block. HTML remains a
@@ -36,7 +44,7 @@ Eleven ordered patches define this candidate:
 | `blitz-shared-clip-geometry.patch` | Move the existing rounded-box geometry into DOM for painting and future clip predicates, removing its old paint-side copy. |
 | `blitz-paint-ownership.patch` | Build a read-only post-layout ownership plan with explicit unsupported errors; does not replace legacy rendering or hit lists. |
 | `blitz-layer-budget.patch` | Return explicit whole-paint layer errors before GPU submission, covering direct clips/effects, widgets and subdocuments. Also applied to the default and upstream baseline profiles. |
-| `blitz-ownership-renderer.patch` | Add an explicit ownership traversal, per-contribution clip routes and typed eligibility errors while sharing checked lifecycle and primitives with legacy paint. |
+| `blitz-ownership-renderer.patch` | Add an explicit ownership traversal, contribution clip routes, shared opacity-output prefixes and typed preflight errors while sharing checked lifecycle and primitives with legacy paint. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
@@ -53,7 +61,8 @@ or overflowing subtree bounds.
 
 Legacy root effects expose a z:auto ordering failure that cannot be fixed by
 sorting existing lists. The new traversal consumes the read-only ownership plan
-and retains contribution clips inside effects. Reverse hit traversal remains
+and retains contribution-specific clip suffixes inside effects, with proven
+common prefixes around fractional-opacity groups. Reverse hit traversal remains
 a separate consumer to implement. The existing hit
 path also lacks complete no-box rejection; preserving hidden entries' slots
 avoids promoting them but does not certify general hidden-content input behavior.
@@ -274,3 +283,20 @@ node experiments/dom-canvas/compare-clips.mjs artifacts/ownership-render/browser
 Keep unsupported errors and geometry mismatches visible. The ordinary overflow
 probe still selects legacy traversal. Do not replace it silently in existing
 benchmarks or interpret the new box-only paint path as backend adoption.
+
+For the opacity-output fixture, use the same capture/comparison tools with its
+own inputs and preserve exact within-renderer invariants separately:
+
+```sh
+node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/opacity-output/browser opacity-output
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-ownership-paint-probe fixtures/opacity-output/index.html fixtures/opacity-output/fixture.js fixtures/opacity-output/cases.json artifacts/opacity-output/native
+node experiments/dom-canvas/compare-clips.mjs artifacts/opacity-output/browser artifacts/opacity-output/native artifacts/opacity-output/comparison.json
+node experiments/dom-canvas/compare-clip-invariants.mjs fixtures/opacity-output artifacts/opacity-output/browser artifacts/opacity-output/browser-invariants.json
+node experiments/dom-canvas/compare-clip-invariants.mjs fixtures/opacity-output artifacts/opacity-output/native artifacts/opacity-output/native-invariants.json
+```
+
+Use fresh capture directories. The two invariant commands intentionally exit 1
+for the recorded 10/12 classification: same-owner rounded overflow remains
+noninvariant at both scales. The independent browser/native comparison passes
+26/26 geometry/interior checks, excluding raster edges as documented by that
+comparator. These results do not certify equal antialiased pixels or performance.

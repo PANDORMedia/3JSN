@@ -1,0 +1,18 @@
+{
+  "legacy-clip-probe": {
+    "source": "target/debug/threejs-positioned-overflow-paint-probe",
+    "sha256": "fefdb6c7f4d1d1b169aba28e2fcd123abed89f6bdc47ca5e155c7b212314dc38"
+  },
+  "candidate-canvas-probe": {
+    "source": "target/debug/threejs-positioned-dom-canvas-probe",
+    "sha256": "ee2ad7c9c0389f36837335b7e4de5de8b9af9cd3f95f66d8e2d6505a68b0c469"
+  },
+  "default-clip-probe": {
+    "source": "target/debug/threejs-overflow-paint-probe",
+    "sha256": "2e9799894afc51feb18afb1167298e71d053d1eaf0d7ca2235f2f0bb21c1eba2"
+  },
+  "default-canvas-probe": {
+    "source": "target/debug/threejs-dom-canvas-probe",
+    "sha256": "e997a180554385e0ba3858ff9057a75ccc2600c7590ed5d22bf782bbc4510497"
+  }
+}

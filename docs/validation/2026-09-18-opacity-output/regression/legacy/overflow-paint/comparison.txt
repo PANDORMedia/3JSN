@@ -1,0 +1,27 @@
+┌─────────┬─────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼─────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'visible'           │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'one-clip'          │ 1     │ 6639                │ 0                   │ false │
+│ 2       │ 'negative-z'        │ 1     │ 6991                │ 0                   │ false │
+│ 3       │ 'nested-clips'      │ 1     │ 12811               │ 0                   │ false │
+│ 4       │ 'rounded-padding'   │ 1     │ 16785               │ 0                   │ false │
+│ 5       │ 'relative-subject'  │ 1     │ 6639                │ 0                   │ false │
+│ 6       │ 'transformed-clip'  │ 1     │ 0                   │ 7                   │ false │
+│ 7       │ 'moved-clip'        │ 1     │ 7335                │ 0                   │ false │
+│ 8       │ 'resized-clip'      │ 1     │ 6277                │ 0                   │ false │
+│ 9       │ 'hidden'            │ 1     │ 0                   │ 6                   │ false │
+│ 10      │ 'visible-again'     │ 1     │ 6639                │ 0                   │ false │
+│ 11      │ 'reparented'        │ 1     │ 6991                │ 0                   │ false │
+│ 12      │ 'restored'          │ 1     │ 6639                │ 0                   │ false │
+│ 13      │ 'stacking-control'  │ 1     │ 0                   │ 0                   │ true  │
+│ 14      │ 'stacking-demoted'  │ 1     │ 6639                │ 0                   │ false │
+│ 15      │ 'one-clip'          │ 2     │ 27439               │ 0                   │ false │
+│ 16      │ 'rounded-padding'   │ 2     │ 69987               │ 0                   │ false │
+│ 17      │ 'moved-clip'        │ 2     │ 29503               │ 0                   │ false │
+│ 18      │ 'absolute-escape'   │ 1     │ 0                   │ 0                   │ true  │
+│ 19      │ 'absolute-auto'     │ 1     │ 0                   │ 0                   │ true  │
+│ 20      │ 'viewport-fixed'    │ 1     │ 0                   │ 0                   │ true  │
+│ 21      │ 'transformed-fixed' │ 1     │ 0                   │ 4                   │ false │
+└─────────┴─────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 5/22 cases match browser geometry and uniform interior pixels.

@@ -1,0 +1,44 @@
+{
+  "trailingWhitespaceNormalized": [
+    {
+      "path": "checks/final/candidate-format.txt",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "lifecycle/candidate/failure/stdout.txt",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "lifecycle/default/failure/stdout.txt",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "checks/final/candidate-tests.txt",
+      "rawSha256": "af7adc5387133b51f9938ecf5bedff587c39eb8cc310af6b7de9b3a17056aa7a",
+      "archivedSha256": "21d5a35898236896ce26a0d1567f410677089aa25494bcaf56e3d8eedfac39ae"
+    },
+    {
+      "path": "checks/final/library-tests.txt",
+      "rawSha256": "cc6af96d546a12a9a1aeeee8734a8aa89e0b9c1ab93fbf58468bf63f80cc5845",
+      "archivedSha256": "c2f533e28409b4e7138873aad0efa1a1d5d019e78280019d8faf32a95fd69d62"
+    },
+    {
+      "path": "checks/library-tests.txt",
+      "rawSha256": "0a2865597365e15e7c95cf388fb63888613241d4834d11e4e93a3108a27c0fcb",
+      "archivedSha256": "02234f08e18af405f24872b37495be9878b63270dd36240f06aa8fff9b84382a"
+    },
+    {
+      "path": "checks/ownership-tests.txt",
+      "rawSha256": "28cc8dcfb687a9b9b30daf56c9ccf2e939ad9030adba5e44816e386e1274c359",
+      "archivedSha256": "cbfcda753b7e63556c9005656f57e426813da7a0cc772cf06eeb7e8e307a484c"
+    }
+  ],
+  "rawArtifactRoot": "artifacts/opacity-output",
+  "independentAuditScope": "original 144 PNGs and seven comparator reports; repeat and full regression excluded",
+  "currentFocusedCheckReceipt": "checks/final/results.json",
+  "priorOutputTestsFinal": "checks/prior-output-tests-final.txt",
+  "priorOutputTestsDraft": "checks/prior-output-tests.txt"
+}

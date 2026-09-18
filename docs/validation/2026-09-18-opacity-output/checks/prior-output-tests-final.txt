@@ -1,0 +1,92 @@
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.82s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render_tests.rs (target/debug/deps/ownership_render-476dea5bcde8b93e)
+
+running 9 tests
+test output_clip_tests::own_overflow_does_not_clip_the_effects_decoration_or_escaping_child ... ok
+test output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced ... FAILED
+test output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip ... FAILED
+test output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix ... FAILED
+test output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background ... FAILED
+test output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content ... FAILED
+test output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr ... FAILED
+test output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects ... FAILED
+test output_clip_tests::visibility_empty_clip_and_opacity_mutations_restore_output_scope ... ok
+
+failures:
+
+---- output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced stdout ----
+
+thread 'output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced' (4885584) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:287:5:
+assertion `left == right` failed
+  left: TotalLayerLimit { attempted: 2, layer: Clip }
+ right: TotalLayerLimit { attempted: 2, layer: Effect }
+
+---- output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip stdout ----
+
+thread 'output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip' (4885586) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:179:5:
+assertion `left == right` failed
+  left: [0.5, 1.0, 1.0]
+ right: [1.0, 0.5, 1.0]
+
+---- output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix stdout ----
+
+thread 'output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix' (4885579) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:315:9:
+assertion `left == right` failed
+  left: [0.5, 1.0]
+ right: [1.0, 0.5]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background stdout ----
+
+thread 'output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background' (4885581) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:249:5:
+assertion `left == right` failed
+  left: [0.5, 1.0]
+ right: [1.0, 0.5]
+
+---- output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content stdout ----
+
+thread 'output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content' (4885582) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:101:5:
+assertion `left == right` failed
+  left: [0.5, 0.5, 1.0]
+ right: [1.0, 0.5, 0.5]
+
+---- output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr stdout ----
+
+thread 'output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr' (4885583) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:31:9:
+assertion `left == right` failed
+  left: 0.5
+ right: 1.0
+
+---- output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects stdout ----
+
+thread 'output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects' (4885580) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/output_clip_tests.rs:128:5:
+assertion `left == right` failed
+  left: [0.5, 0.5, 1.0, 1.0]
+ right: [1.0, 0.5, 1.0, 0.5]
+
+
+failures:
+    output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix
+    output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects
+    output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background
+    output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content
+    output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr
+    output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced
+    output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip
+
+test result: FAILED. 2 passed; 7 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `--test ownership-render`

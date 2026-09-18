@@ -1,0 +1,2 @@
+2026-09-18 07:59:10.154 threejs-positioned-ownership-paint-probe[61508:4903130] Metal API Validation Enabled
+Error: "paint failed in document 1 at node Some(NodeId(19v1)): LayerDepthLimit { attempted: 2, layer: Effect }; accepted 1 layers, peak depth 1; limits total=1024, depth=1; shared GPU cleanup completed"

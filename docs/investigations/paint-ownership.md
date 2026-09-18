@@ -5,6 +5,8 @@ Status: a read-only ownership plan, shared clip geometry, and an explicit
 rendering and hit traversal remain available. The bounded renderer is not adopted
 as the default backend; [validation](../validation/2026-09-18-ownership-renderer.md)
 separates interior pixels, geometry and remaining fidelity gates.
+The [opacity-output checkpoint](../validation/2026-09-18-opacity-output.md)
+implements a bounded shared-prefix composition repair in that explicit consumer.
 The [positioned candidate](../../experiments/dom-canvas/POSITIONED.md)
 already has correct geometry for the public auto-paint fixture, but its recursive
 paint lists cannot express the required order across containing blocks.
@@ -118,9 +120,11 @@ Replacing `draw_children` alone is insufficient: the current element traversal
 draws its own image, canvas or text before visiting negative-z children. Split
 decoration, negative contexts, ordinary content, and zero/positive phases while
 reusing existing paint primitives. Apply opacity once around a group's content.
-The first implementation applies each contribution's eligible clips inside that
-group; the [clip-edge controls](../validation/2026-09-18-clip-edges.md) show why
-eligible common output clips need a distinct composition boundary. Retain separate
+The first implementation replayed each contribution's full clip route inside
+that group; the [clip-edge controls](../validation/2026-09-18-clip-edges.md)
+exposed repeated edge coverage. The current explicit consumer factors an eligible
+common output prefix at fractional opacity, retaining contribution-specific
+suffixes inside the group. Retain separate
 normal, absolute and fixed clip references with explicit shape coordinate spaces.
 Never change DOM or layout parents to obtain paint order.
 
@@ -150,26 +154,49 @@ discriminating cases. Its 17 captures are not sufficient for all gates above.
 Issues [#54](https://github.com/PANDORMedia/3JSN/issues/54) and
 [#52](https://github.com/PANDORMedia/3JSN/issues/52) remain separate adoption gates.
 
-## Next clip-composition experiment
+<a id="next-clip-composition-experiment"></a>
+
+## Implemented opacity-output boundary
 
 The complete-image controls distinguish polygon, inset and ordinary rounded
 overflow behavior in the tested Chrome revision. Do not infer that every
-`clip-path` needs the same isolated group. The first proposed repair is narrower:
-at an existing effect with `0 < opacity < 1`, compute the longest shared clip prefix of
-its decoration route and every contribution owned by that group. Compare clip
-identity and order, not equal geometry. Capping the prefix at the group's own
-decoration route prevents promoting a descendant's clip or the owner's later
-content overflow. An escaping fixed descendant can shorten that prefix to empty.
+`clip-path` needs the same isolated group. The implemented repair activates only
+at an existing effect with `0 < opacity < 1`. A bottom-up fold computes the longest
+common prefix of its decoration route and both routes of every entry in the
+paint-owned subtree. It includes negative/in-flow/zero/positive phases, nested
+effects and conservatively hidden/zero-opacity entries. Shared `Arc` pointer
+identity and order define equality; equal geometry is insufficient. The decoration
+cap prevents promoting a descendant's clip or the owner's later content overflow.
+An escaping fixed descendant can shorten the prefix, including to empty.
 
-Apply the proven prefix to the composed opacity output, and remove only that
-prefix from contribution routes. Retain the existing viewport opacity group when
-there is no common prefix. Preserve one opacity operation, unchanged paint order,
-CheckedScene budgets and explicit errors; no new DOM/layout ownership or texture
-transport is needed. This is a proposal, not implemented behavior.
+Normal-blend output layers surround the existing viewport opacity layer. Nested
+effects open only prefix clips not already active; contributions remove the
+entire active prefix from their local routes. Both in-flow traversals and atomic boxes
+preserve that prefix. Empty route suffixes stay local, and the propagated canvas
+background stays outside all element groups. There is still exactly one opacity
+operation per active opacity owner. The change neither rewrites DOM/layout
+ownership nor introduces texture transport.
 
-Validate contained and escaping descendants, nested effects, geometry-equal but
-distinct clips, empty clips, hidden/zero-opacity nodes, root backgrounds, offsets,
-DPR, own/ancestor inset with opacity, same-owner rounded overflow with opacity,
-mutation restoration and layer-budget failure. Ordinary alpha-one polygon
-grouping is a separate follow-up with its own evidence. Plain inset/rounded
-controls must remain recorded, including Chrome's nonidentical pairs.
+Frame preparation validates prefix extension and contribution membership before
+scene commands. Inconsistency returns the typed `InconsistentClipPrefix` issue;
+there is no legacy fallback. Private helper tests exercise wrong identity/order,
+overlong-prefix rejection and empty suffixes, but do not inject that complete
+preflight error branch. Public command tests cover nested and atomic traversal,
+partial escape, own overflow/content clips, hidden/zero-opacity behavior, root
+backgrounds, offsets, DPR, restoration and checked budget cleanup. The checkpoint
+records 76 host tests, 18 private painter tests and 36 Node tests passing.
+
+On Metal, exact within-renderer invariance improves from 0/9 to 3/9 in the earlier
+22 captures and from 0/12 to 10/12 in the 26 new opacity controls. Chrome also has
+10/12 in the new set; same-owner rounded-overflow groups remain noninvariant in
+both. All 48 browser/native geometry and uniform-interior comparisons pass, and
+all 142 older payloads remain unchanged in each traversal. This is not complete
+edge equality: the older Chrome ancestor-rounded/inner-opacity 2× pair still has
+11 differing pixels with maximum channel delta 1, while native is now exact.
+
+Ordinary alpha-one polygon and nested-polygon grouping remain unresolved and
+unchanged. Plain inset/rounded controls retain Chrome's nonidentical pairs.
+Conservative route summaries may leave additional clips local; storage, traversal,
+layer cost and tighter effect bounds have no performance evidence. Text, input,
+scrolling, other backends and the maintenance/adoption decision remain separate
+gates.

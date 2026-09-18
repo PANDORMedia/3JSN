@@ -1,0 +1,1253 @@
+{
+  "schemaVersion": 1,
+  "kind": "opacity-output-browser-reference",
+  "capturedAt": "2026-09-18T05:50:47.900Z",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "inputs": {
+    "htmlSha256": "3b6c1d87791db0d44663b950e45d13699fa96ce83e57f93afd4b2481f65dda33",
+    "scriptSha256": "ee2a6f0eb78068cf90f25e1f4f4c1feef96571124a6c59ae34310de6cd4f5577",
+    "casesSha256": "eb154a957176744d4d6b10cc9b9e40264104d885daf62cecb6d1ca5761e8f788"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/opacity-output/index.html",
+      "sha256": "3b6c1d87791db0d44663b950e45d13699fa96ce83e57f93afd4b2481f65dda33"
+    },
+    {
+      "path": "fixtures/opacity-output/fixture.js",
+      "sha256": "ee2a6f0eb78068cf90f25e1f4f4c1feef96571124a6c59ae34310de6cd4f5577"
+    },
+    {
+      "path": "fixtures/opacity-output/cases.json",
+      "sha256": "eb154a957176744d4d6b10cc9b9e40264104d885daf62cecb6d1ca5761e8f788"
+    },
+    {
+      "path": "scripts/compatibility/paint-reference.mjs",
+      "sha256": "d6228093fa09ce2ad03c1ca96f227ca71d909dcb15ba7694385deb5af8fdbeae"
+    },
+    {
+      "path": "scripts/compatibility/browser-session.mjs",
+      "sha256": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/paint-colors.mjs",
+      "sha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+    }
+  ],
+  "cases": [
+    {
+      "name": "own-inset-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b",
+      "file": "own-inset-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-inset-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b",
+      "file": "own-inset-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-inset-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3",
+      "file": "own-inset-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-inset-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3",
+      "file": "own-inset-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "ancestor-inset-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b",
+      "file": "ancestor-inset-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "ancestor-inset-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b",
+      "file": "ancestor-inset-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "ancestor-inset-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3",
+      "file": "ancestor-inset-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "ancestor-inset-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "6af16e6abac0dfe8b2164db0873ad75783cfd33050a181b432e9b2c88da860a3",
+      "file": "ancestor-inset-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-rounded-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "8cad97315b6ab89854186b022fadeffa3e7f9cb791ebecdac3c081ecb8db4139",
+      "file": "own-rounded-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-rounded-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "d73592f2fccac2dd307589087d97ec86347543496989fc1972b1f16a661a2a4d",
+      "file": "own-rounded-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-rounded-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "126d956965850b9a96402a9e56e769ef917996b471580cafa205dcbe6733a682",
+      "file": "own-rounded-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "own-rounded-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "77c109a35c587cbf26f064c345b062686187526035b3317ead0f424e47f0e004",
+      "file": "own-rounded-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "nested-prefix-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 66.375,
+          "y": 48.25,
+          "width": 216,
+          "height": 144,
+          "top": 48.25,
+          "right": 282.375,
+          "bottom": 192.25,
+          "left": 66.375
+        },
+        "subject": {
+          "x": 50.375,
+          "y": 32.25,
+          "width": 272,
+          "height": 192,
+          "top": 32.25,
+          "right": 322.375,
+          "bottom": 224.25,
+          "left": 50.375
+        }
+      },
+      "pixelSha256": "d38aca9d23509d7c17b231c04a5aae634edc62a2d0daf1e538f86d57282f2f89",
+      "file": "nested-prefix-single-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-prefix-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 66.375,
+          "y": 48.25,
+          "width": 216,
+          "height": 144,
+          "top": 48.25,
+          "right": 282.375,
+          "bottom": 192.25,
+          "left": 66.375
+        },
+        "subject": {
+          "x": 50.375,
+          "y": 32.25,
+          "width": 272,
+          "height": 192,
+          "top": 32.25,
+          "right": 322.375,
+          "bottom": 224.25,
+          "left": 50.375
+        }
+      },
+      "pixelSha256": "d38aca9d23509d7c17b231c04a5aae634edc62a2d0daf1e538f86d57282f2f89",
+      "file": "nested-prefix-covered-blue-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-prefix-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 66.375,
+          "y": 48.25,
+          "width": 216,
+          "height": 144,
+          "top": 48.25,
+          "right": 282.375,
+          "bottom": 192.25,
+          "left": 66.375
+        },
+        "subject": {
+          "x": 50.375,
+          "y": 32.25,
+          "width": 272,
+          "height": 192,
+          "top": 32.25,
+          "right": 322.375,
+          "bottom": 224.25,
+          "left": 50.375
+        }
+      },
+      "pixelSha256": "f940e31b63b32bc66269a96d7b3506da5da114d0154363f99666767c202566bc",
+      "file": "nested-prefix-single-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-prefix-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 66.375,
+          "y": 48.25,
+          "width": 216,
+          "height": 144,
+          "top": 48.25,
+          "right": 282.375,
+          "bottom": 192.25,
+          "left": 66.375
+        },
+        "subject": {
+          "x": 50.375,
+          "y": 32.25,
+          "width": 272,
+          "height": 192,
+          "top": 32.25,
+          "right": 322.375,
+          "bottom": 224.25,
+          "left": 50.375
+        }
+      },
+      "pixelSha256": "f940e31b63b32bc66269a96d7b3506da5da114d0154363f99666767c202566bc",
+      "file": "nested-prefix-covered-blue-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-escape-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5",
+      "file": "nested-escape-single-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-escape-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5",
+      "file": "nested-escape-covered-blue-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-escape-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540",
+      "file": "nested-escape-single-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "nested-escape-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540",
+      "file": "nested-escape-covered-blue-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "signed-escape-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5",
+      "file": "signed-escape-single-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "signed-escape-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5",
+      "file": "signed-escape-covered-blue-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "signed-escape-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540",
+      "file": "signed-escape-single-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "signed-escape-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "304ffa423d3d54ec80b39dc9e511417e08f6a652e4089d8e668cc65a8a47a540",
+      "file": "signed-escape-covered-blue-2x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    },
+    {
+      "name": "own-inset-restored",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "03d484319c854520a4f9ec570be146c918c61ccd18e42e247d4598ae0086cd5b",
+      "file": "own-inset-restored-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "nested-escape-restored",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 72.375,
+          "y": 56.25,
+          "width": 144,
+          "height": 104,
+          "top": 56.25,
+          "right": 216.375,
+          "bottom": 160.25,
+          "left": 72.375
+        },
+        "subject": {
+          "x": 160,
+          "y": 16,
+          "width": 192,
+          "height": 224,
+          "top": 16,
+          "right": 352,
+          "bottom": 240,
+          "left": 160
+        }
+      },
+      "pixelSha256": "0e40318ca6dafdbc22d771719110dc52c84df56d5b0df9681aec054fbca9bfc5",
+      "file": "nested-escape-restored-1x.png",
+      "subjectColor": [
+        247,
+        199,
+        203,
+        255
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "-j2",
+    "--manifest-path",
+    ".cache/positioned-candidate/probe/Cargo.toml",
+    "--tests"
+  ],
+  "exitCode": 101,
+  "result": "four pre-existing DOM geometry failures; broad suite stops at this binary",
+  "failingTests": [
+    "contents_are_boxless_without_suppressing_nested_descendants",
+    "hidden_ancestor_suppresses_retained_descendant_geometry_and_restore_recovers_it",
+    "inline_fragments_survive_hide_restore_and_empty_lists_have_zero_bounds",
+    "retained_detached_subtree_has_zero_geometry_until_reattached"
+  ],
+  "priorEvidence": "docs/validation/2026-09-18-ownership-renderer/checks/candidate-broad-tests.txt"
+}

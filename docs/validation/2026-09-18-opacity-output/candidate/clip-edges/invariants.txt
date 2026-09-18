@@ -1,0 +1,14 @@
+┌─────────┬────────────────────────────┬───────┬───────────┬─────────────────┐
+│ (index) │ group                      │ scale │ identical │ differingPixels │
+├─────────┼────────────────────────────┼───────┼───────────┼─────────────────┤
+│ 0       │ 'fractional-polygon-1x'    │ 1     │ false     │ 1338            │
+│ 1       │ 'fractional-polygon-2x'    │ 2     │ false     │ 2677            │
+│ 2       │ 'rounded-overflow-1x'      │ 1     │ false     │ 224             │
+│ 3       │ 'rounded-overflow-2x'      │ 2     │ false     │ 456             │
+│ 4       │ 'fractional-inset-1x'      │ 1     │ false     │ 696             │
+│ 5       │ 'opacity-group-1x'         │ 1     │ true      │ 0               │
+│ 6       │ 'nested-polygon-1x'        │ 1     │ false     │ 650             │
+│ 7       │ 'rounded-inner-opacity-1x' │ 1     │ true      │ 0               │
+│ 8       │ 'rounded-inner-opacity-2x' │ 2     │ true      │ 0               │
+└─────────┴────────────────────────────┴───────┴───────────┴─────────────────┘
+PARTIAL: 3/9 declared image-invariance groups.

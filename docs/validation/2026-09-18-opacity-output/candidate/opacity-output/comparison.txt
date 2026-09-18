@@ -1,0 +1,31 @@
+┌─────────┬───────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                          │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼───────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'own-inset-single'            │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'own-inset-covered-blue'      │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'own-inset-single'            │ 2     │ 0                   │ 0                   │ true  │
+│ 3       │ 'own-inset-covered-blue'      │ 2     │ 0                   │ 0                   │ true  │
+│ 4       │ 'ancestor-inset-single'       │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'ancestor-inset-covered-blue' │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'ancestor-inset-single'       │ 2     │ 0                   │ 0                   │ true  │
+│ 7       │ 'ancestor-inset-covered-blue' │ 2     │ 0                   │ 0                   │ true  │
+│ 8       │ 'own-rounded-single'          │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'own-rounded-covered-blue'    │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'own-rounded-single'          │ 2     │ 0                   │ 0                   │ true  │
+│ 11      │ 'own-rounded-covered-blue'    │ 2     │ 0                   │ 0                   │ true  │
+│ 12      │ 'nested-prefix-single'        │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'nested-prefix-covered-blue'  │ 1     │ 0                   │ 0                   │ true  │
+│ 14      │ 'nested-prefix-single'        │ 2     │ 0                   │ 0                   │ true  │
+│ 15      │ 'nested-prefix-covered-blue'  │ 2     │ 0                   │ 0                   │ true  │
+│ 16      │ 'nested-escape-single'        │ 1     │ 0                   │ 0                   │ true  │
+│ 17      │ 'nested-escape-covered-blue'  │ 1     │ 0                   │ 0                   │ true  │
+│ 18      │ 'nested-escape-single'        │ 2     │ 0                   │ 0                   │ true  │
+│ 19      │ 'nested-escape-covered-blue'  │ 2     │ 0                   │ 0                   │ true  │
+│ 20      │ 'signed-escape-single'        │ 1     │ 0                   │ 0                   │ true  │
+│ 21      │ 'signed-escape-covered-blue'  │ 1     │ 0                   │ 0                   │ true  │
+│ 22      │ 'signed-escape-single'        │ 2     │ 0                   │ 0                   │ true  │
+│ 23      │ 'signed-escape-covered-blue'  │ 2     │ 0                   │ 0                   │ true  │
+│ 24      │ 'own-inset-restored'          │ 1     │ 0                   │ 0                   │ true  │
+│ 25      │ 'nested-escape-restored'      │ 1     │ 0                   │ 0                   │ true  │
+└─────────┴───────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PASSED: 26/26 cases match browser geometry and uniform interior pixels.

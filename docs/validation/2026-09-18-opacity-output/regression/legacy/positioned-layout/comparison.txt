@@ -1,0 +1,19 @@
+┌─────────┬──────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                         │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼──────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'short-root-absolute-bottom' │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'short-root-fixed-stretch'   │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'absolute-percent-escape'    │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'block-auto-anchor'          │ 1     │ 0                   │ 0                   │ true  │
+│ 4       │ 'flex-auto-anchor'           │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'grid-static-anchor'         │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'grid-owner-area'            │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'viewport-fixed'             │ 1     │ 0                   │ 0                   │ true  │
+│ 8       │ 'transformed-fixed'          │ 1     │ 0                   │ 4                   │ false │
+│ 9       │ 'viewport-fixed-restored'    │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'relative-descendant-escape' │ 1     │ 0                   │ 0                   │ true  │
+│ 11      │ 'absolute-percent-restored'  │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'block-auto-anchor'          │ 2     │ 0                   │ 0                   │ true  │
+│ 13      │ 'grid-static-anchor'         │ 2     │ 0                   │ 0                   │ true  │
+└─────────┴──────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 13/14 cases match browser geometry and uniform interior pixels.

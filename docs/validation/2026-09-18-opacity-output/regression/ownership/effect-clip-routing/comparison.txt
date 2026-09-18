@@ -1,0 +1,19 @@
+┌─────────┬───────────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                                  │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼───────────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'clip-baseline'                       │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'opacity-baseline'                    │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'no-effect'                           │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'clip-expanded-2000'                  │ 1     │ 0                   │ 0                   │ true  │
+│ 4       │ 'clip-on-fixed-subject'               │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'clip-on-overflow-ancestor'           │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'clip-with-opacity'                   │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'clip-with-ancestor-overflow-visible' │ 1     │ 0                   │ 0                   │ true  │
+│ 8       │ 'clip-with-own-overflow-only'         │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'css-rect-absolute-middle'            │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'clip-absolute-middle'                │ 1     │ 0                   │ 0                   │ true  │
+│ 11      │ 'clip-fixed-middle'                   │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'clip-middle-escapes-static-ancestor' │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'clip-restored'                       │ 1     │ 0                   │ 0                   │ true  │
+└─────────┴───────────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PASSED: 14/14 cases match browser geometry and uniform interior pixels.

@@ -1,0 +1,594 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 0,
+  "total": 12,
+  "criteria": {
+    "completeRgbaEquality": true,
+    "crossRendererComparison": false,
+    "excludedPixels": 0,
+    "channelTolerance": 0,
+    "secondaryDifferenceCountThreshold": 2,
+    "backgroundColor": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  "inputs": {
+    "captureReportSha256": "a406a26aef6eed4ec00e52336b2ae694ee6331a37c0ae0812e475073cae67350",
+    "invariantsSha256": "acda4db21b4ed5c9e896069e1a6300710f6c795049be9aceb67664e6fad86edf",
+    "comparatorSha256": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc",
+    "subjectColorMatcherSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "limits": [
+    "These are proposed within-renderer image invariants, not a general browser-conformance result.",
+    "The intermediate-color guard assumes these monochrome controls over their declared flat background; it is not a general edge detector.",
+    "A nonidentical group is an observed classification, not automatically a standards violation.",
+    "The secondary difference count never changes the exact-equality result.",
+    "Cross-renderer antialias fidelity requires separate evidence."
+  ],
+  "groups": [
+    {
+      "name": "own-inset-opacity-1x",
+      "scale": 1,
+      "cases": [
+        "own-inset-single",
+        "own-inset-covered-blue",
+        "own-inset-restored"
+      ],
+      "rationale": "One element owns the fractional inset and opacity 0.5. Coincident opaque red completely covers the toggled blue underlay before the unchanged group operation. Compare complete equal-scale RGBA images, including restored output. Equality is a proposed within-renderer diagnostic; browser behavior is not assumed.",
+      "referencePixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c",
+      "referenceIntermediatePixels": 696,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "own-inset-covered-blue",
+          "identical": false,
+          "differingPixels": 696,
+          "differingPixelsOverTwo": 696,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 65,
+            "top": 49,
+            "right": 274,
+            "bottom": 188
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 49,
+            "reference": [
+              247,
+              194,
+              198,
+              255
+            ],
+            "actual": [
+              219,
+              175,
+              195,
+              255
+            ]
+          },
+          "pixelSha256": "a46ceb655631ce824c32b99024280953d9a535f2d86fd3e7b4ef806725aa76f5",
+          "subjectPixels": 28720
+        },
+        {
+          "name": "own-inset-restored",
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "pixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c",
+          "subjectPixels": 28720
+        }
+      ]
+    },
+    {
+      "name": "own-inset-opacity-2x",
+      "scale": 2,
+      "cases": [
+        "own-inset-single",
+        "own-inset-covered-blue"
+      ],
+      "rationale": "Repeat the own-inset opacity pair at DPR 2 without changing CSS geometry. Fractional device edges remain. Compare this pair only, not images across scales; browser classification is pending.",
+      "referencePixelSha256": "b231a175b5fadcbdc5bc401270dc82db9c90448082eb2ff846c5c937379ec3f8",
+      "referenceIntermediatePixels": 1394,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "own-inset-covered-blue",
+          "identical": false,
+          "differingPixels": 1394,
+          "differingPixelsOverTwo": 1394,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 130,
+            "top": 98,
+            "right": 548,
+            "bottom": 377
+          },
+          "firstDifference": {
+            "x": 130,
+            "y": 98,
+            "reference": [
+              252,
+              234,
+              236,
+              255
+            ],
+            "actual": [
+              235,
+              222,
+              233,
+              255
+            ]
+          },
+          "pixelSha256": "03c4dd73aebc93bd0a0245bb3479e6a3aa73940cbc62d13cb59ade41d0cba2b4",
+          "subjectPixels": 115990
+        }
+      ]
+    },
+    {
+      "name": "ancestor-inset-inner-opacity-1x",
+      "scale": 1,
+      "cases": [
+        "ancestor-inset-single",
+        "ancestor-inset-covered-blue"
+      ],
+      "rationale": "The fractional inset belongs to an ancestor of one opacity 0.5 group. All group contributions share that clip and the later red fill fully covers the blue underlay. This isolates inherited output clipping from the same-owner inset control; only pair members are proposed identical.",
+      "referencePixelSha256": "7f93e119984089b038e23a20ab5c035ffbabf802542696d93e85576e8924d84c",
+      "referenceIntermediatePixels": 696,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "ancestor-inset-covered-blue",
+          "identical": false,
+          "differingPixels": 696,
+          "differingPixelsOverTwo": 696,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 65,
+            "top": 49,
+            "right": 274,
+            "bottom": 188
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 49,
+            "reference": [
+              247,
+              194,
+              198,
+              255
+            ],
+            "actual": [
+              219,
+              175,
+              195,
+              255
+            ]
+          },
+          "pixelSha256": "a46ceb655631ce824c32b99024280953d9a535f2d86fd3e7b4ef806725aa76f5",
+          "subjectPixels": 28720
+        }
+      ]
+    },
+    {
+      "name": "ancestor-inset-inner-opacity-2x",
+      "scale": 2,
+      "cases": [
+        "ancestor-inset-single",
+        "ancestor-inset-covered-blue"
+      ],
+      "rationale": "Repeat inherited inset clipping around the opacity group at DPR 2. The unchanged source image and equal geometry motivate exact equality, but browser and native outcomes must be recorded separately.",
+      "referencePixelSha256": "b231a175b5fadcbdc5bc401270dc82db9c90448082eb2ff846c5c937379ec3f8",
+      "referenceIntermediatePixels": 1394,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "ancestor-inset-covered-blue",
+          "identical": false,
+          "differingPixels": 1394,
+          "differingPixelsOverTwo": 1394,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 130,
+            "top": 98,
+            "right": 548,
+            "bottom": 377
+          },
+          "firstDifference": {
+            "x": 130,
+            "y": 98,
+            "reference": [
+              252,
+              234,
+              236,
+              255
+            ],
+            "actual": [
+              235,
+              222,
+              233,
+              255
+            ]
+          },
+          "pixelSha256": "03c4dd73aebc93bd0a0245bb3479e6a3aa73940cbc62d13cb59ade41d0cba2b4",
+          "subjectPixels": 115990
+        }
+      ]
+    },
+    {
+      "name": "own-rounded-overflow-opacity-1x",
+      "scale": 1,
+      "cases": [
+        "own-rounded-single",
+        "own-rounded-covered-blue"
+      ],
+      "rationale": "Rounded overflow and opacity 0.5 belong to the same element. A covered blue underlay changes no abstract opaque group content. This is separate from an ancestor rounded clip around an inner opacity effect; do not presume identical byte-level browser behavior between those arrangements.",
+      "referencePixelSha256": "2a57985c4d7a3bd812ed83f2bcc0069d01662f14850b5b3178ebf1acc30b12ed",
+      "referenceIntermediatePixels": 200,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "own-rounded-covered-blue",
+          "identical": false,
+          "differingPixels": 228,
+          "differingPixelsOverTwo": 204,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 48,
+            "top": 40,
+            "right": 287,
+            "bottom": 199
+          },
+          "firstDifference": {
+            "x": 71,
+            "y": 40,
+            "reference": [
+              253,
+              243,
+              244,
+              255
+            ],
+            "actual": [
+              243,
+              235,
+              243,
+              255
+            ]
+          },
+          "pixelSha256": "de3255e87a6e99e4e193c4bcadaefbcf0dc1ca950f692d94acb80df33a5b9fc4",
+          "subjectPixels": 37544
+        }
+      ]
+    },
+    {
+      "name": "own-rounded-overflow-opacity-2x",
+      "scale": 2,
+      "cases": [
+        "own-rounded-single",
+        "own-rounded-covered-blue"
+      ],
+      "rationale": "Repeat same-owner rounded overflow and opacity at DPR 2, retaining fractional placement and radii. Compare every RGBA byte within this pair only; a difference remains an observed classification.",
+      "referencePixelSha256": "bb0cb88e4ad994021aadb0daeaa6164f161c9591d45e76ea5c4ead0d1fad6355",
+      "referenceIntermediatePixels": 408,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "own-rounded-covered-blue",
+          "identical": false,
+          "differingPixels": 456,
+          "differingPixelsOverTwo": 396,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 96,
+            "top": 80,
+            "right": 575,
+            "bottom": 399
+          },
+          "firstDifference": {
+            "x": 147,
+            "y": 80,
+            "reference": [
+              254,
+              249,
+              250,
+              255
+            ],
+            "actual": [
+              249,
+              245,
+              249,
+              255
+            ]
+          },
+          "pixelSha256": "a7b4265a22a8e85f767ca521fbf4d81d3ed10819f84f29e1d0af5486fd72c685",
+          "subjectPixels": 150444
+        }
+      ]
+    },
+    {
+      "name": "nested-opacity-shared-prefix-1x",
+      "scale": 1,
+      "cases": [
+        "nested-prefix-single",
+        "nested-prefix-covered-blue"
+      ],
+      "rationale": "An outer polygon and opacity 0.5 enclose an inner inset and opacity 0.5. Fully covered content receives the same two opacity operations and fixed clip chain. This exercises nested effect boundaries while preserving a quarter-opacity red source image. Exact equality is a hypothesis, not an asserted browser result.",
+      "referencePixelSha256": "edda52543c621ad4dd484c317e3bd9ae886beb6105de72c6459fcedf30ba81d7",
+      "referenceIntermediatePixels": 598,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "nested-prefix-covered-blue",
+          "identical": false,
+          "differingPixels": 607,
+          "differingPixelsOverTwo": 589,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 83,
+            "top": 57,
+            "right": 268,
+            "bottom": 180
+          },
+          "firstDifference": {
+            "x": 83,
+            "y": 57,
+            "reference": [
+              251,
+              225,
+              227,
+              255
+            ],
+            "actual": [
+              237,
+              215,
+              225,
+              255
+            ]
+          },
+          "pixelSha256": "adba28a5fef20118e30267b80a65cbccb12f676245749b03306d1decfd637943",
+          "subjectPixels": 22103
+        }
+      ]
+    },
+    {
+      "name": "nested-opacity-shared-prefix-2x",
+      "scale": 2,
+      "cases": [
+        "nested-prefix-single",
+        "nested-prefix-covered-blue"
+      ],
+      "rationale": "Repeat the nested polygon/inset opacity pair at DPR 2. There is no cross-scale comparison and no raster-edge exclusion. Record any nonidentical browser result rather than weakening the gate.",
+      "referencePixelSha256": "5e907d8238a378cea5f590da38c82c8e94b05c8db10875252ddc67cc28503138",
+      "referenceIntermediatePixels": 1199,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "nested-prefix-covered-blue",
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1182,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 166,
+            "top": 114,
+            "right": 536,
+            "bottom": 361
+          },
+          "firstDifference": {
+            "x": 166,
+            "y": 114,
+            "reference": [
+              254,
+              245,
+              245,
+              255
+            ],
+            "actual": [
+              245,
+              238,
+              244,
+              255
+            ]
+          },
+          "pixelSha256": "520a53d3c16f5dbbf6acdfc7b3f5844a10d8fbfad0f908ff1a323bef357d8dad",
+          "subjectPixels": 89262
+        }
+      ]
+    },
+    {
+      "name": "nested-opacity-fixed-escape-1x",
+      "scale": 1,
+      "cases": [
+        "nested-escape-single",
+        "nested-escape-covered-blue",
+        "nested-escape-restored"
+      ],
+      "rationale": "Outer polygon P and opacity 0.5 enclose overflow Q, then an inner opacity 0.5 effect. Its ordinary contribution has route P+Q; coincident viewport-fixed fills retain P while escaping Q. The later opaque fixed red fill covers the toggled blue fill. This tests a shortened common clip prefix without moving either opacity or changing geometry, and ends with restoration. Exact equality requires measurement.",
+      "referencePixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6",
+      "referenceIntermediatePixels": 395,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "nested-escape-covered-blue",
+          "identical": false,
+          "differingPixels": 343,
+          "differingPixelsOverTwo": 316,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 160,
+            "top": 54,
+            "right": 272,
+            "bottom": 183
+          },
+          "firstDifference": {
+            "x": 160,
+            "y": 54,
+            "reference": [
+              251,
+              229,
+              231,
+              255
+            ],
+            "actual": [
+              238,
+              219,
+              229,
+              255
+            ]
+          },
+          "pixelSha256": "45268d5e8b8545fed8a3ddc4ea42df788d96fe650623c2ae2f465eac41a76f8c",
+          "subjectPixels": 22435
+        },
+        {
+          "name": "nested-escape-restored",
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "pixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6",
+          "subjectPixels": 22432
+        }
+      ]
+    },
+    {
+      "name": "nested-opacity-fixed-escape-2x",
+      "scale": 2,
+      "cases": [
+        "nested-escape-single",
+        "nested-escape-covered-blue"
+      ],
+      "rationale": "Repeat the mixed P+Q/P contribution routes inside nested opacity effects at DPR 2. The comparison preserves the viewport-fixed geometry and ordinary clipped witness. Exact within-renderer equality is proposed; clip escape still requires the independent browser/native image comparison.",
+      "referencePixelSha256": "3f08f618a4f1e9216ed002d58760b7d4d40bbb32faafccdc51f0325c6d1e8135",
+      "referenceIntermediatePixels": 774,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "nested-escape-covered-blue",
+          "identical": false,
+          "differingPixels": 689,
+          "differingPixelsOverTwo": 632,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 320,
+            "top": 109,
+            "right": 545,
+            "bottom": 367
+          },
+          "firstDifference": {
+            "x": 320,
+            "y": 109,
+            "reference": [
+              248,
+              202,
+              206,
+              255
+            ],
+            "actual": [
+              245,
+              200,
+              205,
+              255
+            ]
+          },
+          "pixelSha256": "9ccfe8ca6a2f0ba1571bc153062ce44f5783466ac74f6c7cd0811b59284d9f42",
+          "subjectPixels": 90128
+        }
+      ]
+    },
+    {
+      "name": "signed-owned-fixed-escape-1x",
+      "scale": 1,
+      "cases": [
+        "signed-escape-single",
+        "signed-escape-covered-blue"
+      ],
+      "rationale": "Keep the partial-prefix nested-opacity tree, with negative-z fixed blue underlay and positive-z fixed red subject owned by the inner paint context. Red fully covers blue; the ordinary clipped contributor remains between their paint phases. Pair equality probes whether all owned phases participate in prefix selection without replacing the separate browser order and escape checks.",
+      "referencePixelSha256": "a492f8db3aa3b596da00c98d31d4ca8665f18ca23fa0a2231115a080dc1605d6",
+      "referenceIntermediatePixels": 395,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "signed-escape-covered-blue",
+          "identical": false,
+          "differingPixels": 343,
+          "differingPixelsOverTwo": 316,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 160,
+            "top": 54,
+            "right": 272,
+            "bottom": 183
+          },
+          "firstDifference": {
+            "x": 160,
+            "y": 54,
+            "reference": [
+              251,
+              229,
+              231,
+              255
+            ],
+            "actual": [
+              238,
+              219,
+              229,
+              255
+            ]
+          },
+          "pixelSha256": "45268d5e8b8545fed8a3ddc4ea42df788d96fe650623c2ae2f465eac41a76f8c",
+          "subjectPixels": 22435
+        }
+      ]
+    },
+    {
+      "name": "signed-owned-fixed-escape-2x",
+      "scale": 2,
+      "cases": [
+        "signed-escape-single",
+        "signed-escape-covered-blue"
+      ],
+      "rationale": "Repeat negative/positive paint-owned fixed contributors at DPR 2 with the same CSS and group order. Exact equality is a diagnostic hypothesis; neither an unchanged failure nor a passing pair independently proves correct clip ownership.",
+      "referencePixelSha256": "3f08f618a4f1e9216ed002d58760b7d4d40bbb32faafccdc51f0325c6d1e8135",
+      "referenceIntermediatePixels": 774,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "signed-escape-covered-blue",
+          "identical": false,
+          "differingPixels": 689,
+          "differingPixelsOverTwo": 632,
+          "maxChannelDifference": 14,
+          "differenceBounds": {
+            "left": 320,
+            "top": 109,
+            "right": 545,
+            "bottom": 367
+          },
+          "firstDifference": {
+            "x": 320,
+            "y": 109,
+            "reference": [
+              248,
+              202,
+              206,
+              255
+            ],
+            "actual": [
+              245,
+              200,
+              205,
+              255
+            ]
+          },
+          "pixelSha256": "9ccfe8ca6a2f0ba1571bc153062ce44f5783466ac74f6c7cd0811b59284d9f42",
+          "subjectPixels": 90128
+        }
+      ]
+    }
+  ]
+}

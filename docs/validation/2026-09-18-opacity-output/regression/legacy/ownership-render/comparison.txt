@@ -1,0 +1,21 @@
+┌─────────┬─────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                            │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼─────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'negative-before-inflow'        │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'zero-after-inflow'             │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'negative-restored'             │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'hidden-ancestor-visible-child' │ 1     │ 7812                │ 0                   │ false │
+│ 4       │ 'visibility-restored'           │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'opacity-fixed-escape'          │ 1     │ 7812                │ 0                   │ false │
+│ 6       │ 'opacity-relative-clipped'      │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'opacity-fixed-restored'        │ 1     │ 7812                │ 0                   │ false │
+│ 8       │ 'opacity-owner-offscreen'       │ 1     │ 7812                │ 0                   │ false │
+│ 9       │ 'opacity-owner-zero-size'       │ 1     │ 7812                │ 0                   │ false │
+│ 10      │ 'opacity-owner-restored'        │ 1     │ 7812                │ 0                   │ false │
+│ 11      │ 'nested-opacity-fixed'          │ 1     │ 7688                │ 0                   │ false │
+│ 12      │ 'offset-root-fixed'             │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'offset-root-fixed'             │ 2     │ 0                   │ 0                   │ true  │
+│ 14      │ 'transformed-fixed'             │ 1     │ 0                   │ 8                   │ false │
+│ 15      │ 'all-styles-restored'           │ 1     │ 0                   │ 0                   │ true  │
+└─────────┴─────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 8/16 cases match browser geometry and uniform interior pixels.

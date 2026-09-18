@@ -1,0 +1,25 @@
+┌─────────┬───────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                      │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼───────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'owners-positive'         │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'owners-negative'         │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'effect-auto-order'       │ 1     │ 4602                │ 0                   │ false │
+│ 3       │ 'flex-order-forward'      │ 1     │ 0                   │ 0                   │ true  │
+│ 4       │ 'flex-order-reverse'      │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'flex-order-reset'        │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'flex-oof-order-negative' │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'flex-oof-order-positive' │ 1     │ 0                   │ 0                   │ true  │
+│ 8       │ 'grid-order-forward'      │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'grid-order-reverse'      │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'grid-order-reset'        │ 1     │ 0                   │ 0                   │ true  │
+│ 11      │ 'grid-oof-order-positive' │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'contents-flex-order'     │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'contents-grid-order'     │ 1     │ 0                   │ 0                   │ true  │
+│ 14      │ 'pseudo-order-ties'       │ 1     │ 0                   │ 0                   │ true  │
+│ 15      │ 'pseudo-order-flipped'    │ 1     │ 0                   │ 0                   │ true  │
+│ 16      │ 'dom-peer-last'           │ 1     │ 0                   │ 0                   │ true  │
+│ 17      │ 'dom-order-restored'      │ 1     │ 0                   │ 0                   │ true  │
+│ 18      │ 'flex-order-forward'      │ 2     │ 0                   │ 0                   │ true  │
+│ 19      │ 'contents-grid-order'     │ 2     │ 0                   │ 0                   │ true  │
+└─────────┴───────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 19/20 cases match browser geometry and uniform interior pixels.

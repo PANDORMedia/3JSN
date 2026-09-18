@@ -1,0 +1,6 @@
+{
+  "binary": ".cache/opacity-output-checkpoint/ownership-probe",
+  "sha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04",
+  "reason": "Frozen after broad cargo --tests rebuilt debug executables; initial captures retain their original recorded identity.",
+  "originalCaptureSha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4"
+}

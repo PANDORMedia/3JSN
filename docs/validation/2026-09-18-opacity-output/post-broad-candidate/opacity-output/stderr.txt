@@ -1,0 +1,1 @@
+2026-09-18 08:14:22.423 ownership-probe[66821:4930416] Metal API Validation Enabled

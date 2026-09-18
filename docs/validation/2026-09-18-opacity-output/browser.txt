@@ -1,0 +1,1 @@
+PASS: 26 browser paint references. Report: /Users/sean/dev/3JSN/artifacts/opacity-output/browser/report.json

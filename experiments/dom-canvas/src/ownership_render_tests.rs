@@ -641,6 +641,9 @@ mod clip_contract_tests;
 #[path = "ownership_render/replaced_content_tests.rs"]
 mod replaced_content_tests;
 
+#[path = "ownership_render/output_clip_tests.rs"]
+mod output_clip_tests;
+
 #[test]
 fn propagated_canvas_background_stays_outside_root_clip() {
     let mut doc = document("<div style='width:160px;height:112px;background:#e02030'></div>");

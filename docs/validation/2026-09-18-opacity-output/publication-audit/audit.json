@@ -1,0 +1,475 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "createdAt": "2026-09-18T06:19:49.044Z",
+  "scope": "Read-only publication audit of existing artifacts; no build, capture or preparation.",
+  "sourceIdentity": {
+    "path": "docs/validation/2026-09-18-opacity-output/source-identity.json",
+    "sha256": "161682ce7e5f213201751b6ad30b82aecbf89bdd494ef743d13635f822bdcb31",
+    "verifiedCurrentSourceFiles": 106,
+    "capturedExecutables": "Historical identities remain in the source receipt; the three candidate debug paths were rebuilt by broad tests.",
+    "frozenRebuiltOwnership": {
+      "binary": ".cache/opacity-output-checkpoint/ownership-probe",
+      "sha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04",
+      "reason": "Frozen after broad cargo --tests rebuilt debug executables; initial captures retain their original recorded identity.",
+      "originalCaptureSha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+      "verified": true
+    }
+  },
+  "pngVerification": {
+    "total": 534,
+    "allExpectedDecodedRgbaHashesMatched": true,
+    "inventoryDigestMethod": "SHA256 of JSON.stringify sorted array of {path,fileSha256,rgbaSha256,width,height}",
+    "inventorySha256": "c021c77b52717f2be7ee108e3a047c9acbe3adbb142c6f501ed136a3db4b52dd",
+    "captureReports": [
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/baseline/report.json",
+        "sha256": "a406a26aef6eed4ec00e52336b2ae694ee6331a37c0ae0812e475073cae67350",
+        "pngs": 26
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/browser/report.json",
+        "sha256": "1171a6c8a71d0d474d469a917c8b66f0262abd92c291237f30c56965e8c3e6b6",
+        "pngs": 26
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/clip-edges/report.json",
+        "sha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+        "pngs": 22
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/opacity-output/report.json",
+        "sha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+        "pngs": 26
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate-repeat/clip-edges/report.json",
+        "sha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+        "pngs": 22
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate-repeat/opacity-output/report.json",
+        "sha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+        "pngs": 26
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/candidate/canvas/report.json",
+        "sha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+        "pngs": 21
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/default/budget-raised/report.json",
+        "sha256": "92eabd49ae0b61bb303668bf9c7371f5b163e987b84eb0aabebab34b62c1f65c",
+        "pngs": 3
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/default/canvas/report.json",
+        "sha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+        "pngs": 21
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/legacy/budget-raised/report.json",
+        "sha256": "92eabd49ae0b61bb303668bf9c7371f5b163e987b84eb0aabebab34b62c1f65c",
+        "pngs": 3
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/ownership/budget-raised/report.json",
+        "sha256": "dd7a724634cac0c298f3957ed81a7dba27d42484c89a5391b1e13f586d88b043",
+        "pngs": 3
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/post-broad-candidate/clip-edges/report.json",
+        "sha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+        "pngs": 22
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/post-broad-candidate/opacity-output/report.json",
+        "sha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+        "pngs": 26
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/auto-paint/report.json",
+        "sha256": "dafe240fc207b0e68b9908552971ec282a560068b3555784e9a6eca925671d42",
+        "pngs": 17
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/effect-clip-routing/report.json",
+        "sha256": "47add67f4b72a38146e2c9b61aebbae232381bfdae75d35177cee5ab3bdcb8a2",
+        "pngs": 14
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/initial-containing-block/report.json",
+        "sha256": "52c8072ac1c1624649753e5fbd4bb518c44cc6d2472aedb09a65e819d8b8bcff",
+        "pngs": 21
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/overflow-paint/report.json",
+        "sha256": "da79199e1963a1dd166e033057d147d73c175db41b82a84c32e4f9f3d9dc8c61",
+        "pngs": 22
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/ownership-render/report.json",
+        "sha256": "fa1810098c233e17b86331f87e547b9807847d4a20f0d6c952516598f3e6d7ce",
+        "pngs": 16
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/paint-order/report.json",
+        "sha256": "5eaa66e4c3eb94f7340e3af967cbee4b005fd235bcbfb7db1ab01e2904b2584a",
+        "pngs": 20
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/paint-ownership/report.json",
+        "sha256": "484381c20edd8329bd75a8a66e4441e4117a3bc6748be5d1ee666b4923b42110",
+        "pngs": 18
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/positioned-layout/report.json",
+        "sha256": "8ef1e79a3de2bf5257c5bdfa29cd067a11acbb4edf3eeef9e453bd584933d7aa",
+        "pngs": 14
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/auto-paint/report.json",
+        "sha256": "3660c4cbe20168f1f774d4c42b6a242b942db45a50506e20a9670879f550c4c1",
+        "pngs": 17
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/effect-clip-routing/report.json",
+        "sha256": "6a5dec662625977776f42f46f04ef1a79a2a321e084eadceaf8fc723f54c58ef",
+        "pngs": 14
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/initial-containing-block/report.json",
+        "sha256": "326c3025f07c513c39583dd9463cfb3644d9bd98b152a01c5f25a0649b55681d",
+        "pngs": 21
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/overflow-paint/report.json",
+        "sha256": "bbe5ae6c529f229c76149cf191867bfb438e0bb704934d354a6b7923d0850bb2",
+        "pngs": 22
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/ownership-render/report.json",
+        "sha256": "424e60dfc6bd24b9ab2d4ba00ef9cd8e500c349edb53f0a1e6f160e44568f213",
+        "pngs": 16
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-order/report.json",
+        "sha256": "8f92bf298f467d3f32a7b85e5d341e1af3a57ee5d38629e377a81fb45e6169a4",
+        "pngs": 20
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-ownership/report.json",
+        "sha256": "61304bb95dedd0ae7a472cfe17e8a77333ab96118ac9435f556457852441cd7d",
+        "pngs": 18
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/positioned-layout/report.json",
+        "sha256": "ddecc0e6433aa859cc7acfcf7ac16fa8adf40d518fc2aab7bbf962ce8c9fcbba",
+        "pngs": 14
+      }
+    ],
+    "survivingPreFailureFrames": [
+      {
+        "file": "docs/validation/2026-09-18-opacity-output/lifecycle/default/budget-rejected/000-case.png",
+        "reference": "docs/validation/2026-09-18-opacity-output/lifecycle/default/budget-raised/000-case.png",
+        "rgbaSha256": "0fbaa6c1ba7444a3a89f128a3628d45a29521a429873aae4f838febb501394b2",
+        "meaning": "Successful small frame before wide frame rejects; no failed-wide PNG or success report."
+      },
+      {
+        "file": "docs/validation/2026-09-18-opacity-output/lifecycle/legacy/budget-rejected/000-case.png",
+        "reference": "docs/validation/2026-09-18-opacity-output/lifecycle/legacy/budget-raised/000-case.png",
+        "rgbaSha256": "0fbaa6c1ba7444a3a89f128a3628d45a29521a429873aae4f838febb501394b2",
+        "meaning": "Successful small frame before wide frame rejects; no failed-wide PNG or success report."
+      },
+      {
+        "file": "docs/validation/2026-09-18-opacity-output/lifecycle/ownership/budget-rejected/000-case.png",
+        "reference": "docs/validation/2026-09-18-opacity-output/lifecycle/ownership/budget-raised/000-case.png",
+        "rgbaSha256": "0fbaa6c1ba7444a3a89f128a3628d45a29521a429873aae4f838febb501394b2",
+        "meaning": "Successful small frame before wide frame rejects; no failed-wide PNG or success report."
+      }
+    ]
+  },
+  "repeatChecks": [
+    {
+      "receipt": "docs/validation/2026-09-18-opacity-output/repeatability.json",
+      "fixture": "clip-edges",
+      "cases": 22,
+      "reportSha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+      "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+      "fullReportsAndPngBytesIdentical": true
+    },
+    {
+      "receipt": "docs/validation/2026-09-18-opacity-output/repeatability.json",
+      "fixture": "opacity-output",
+      "cases": 26,
+      "reportSha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+      "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+      "fullReportsAndPngBytesIdentical": true
+    },
+    {
+      "receipt": "docs/validation/2026-09-18-opacity-output/post-broad-comparison.json",
+      "fixture": "clip-edges",
+      "cases": 22,
+      "reportSha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+      "binarySha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04",
+      "fullReportsAndPngBytesIdentical": true
+    },
+    {
+      "receipt": "docs/validation/2026-09-18-opacity-output/post-broad-comparison.json",
+      "fixture": "opacity-output",
+      "cases": 26,
+      "reportSha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+      "binarySha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04",
+      "fullReportsAndPngBytesIdentical": true
+    }
+  ],
+  "priorRegressionPayloads": {
+    "allUnchanged": true,
+    "totals": {
+      "legacy": {
+        "cases": 142,
+        "combinedPassed": 87
+      },
+      "ownership": {
+        "cases": 142,
+        "combinedPassed": 136
+      }
+    }
+  },
+  "canvas": [
+    {
+      "profile": "candidate",
+      "report": "docs/validation/2026-09-18-opacity-output/lifecycle/candidate/canvas/report.json",
+      "previous": "docs/validation/2026-09-18-paint-budget/regression/canvas/report.json",
+      "paintAndContractsUnchanged": true,
+      "captures": 21,
+      "contractsPassed": 27,
+      "status": "partial"
+    },
+    {
+      "profile": "default",
+      "report": "docs/validation/2026-09-18-opacity-output/lifecycle/default/canvas/report.json",
+      "previous": "docs/validation/2026-09-18-paint-budget/default-canvas/report.json",
+      "paintAndContractsUnchanged": true,
+      "captures": 21,
+      "contractsPassed": 27,
+      "status": "partial"
+    }
+  ],
+  "comparisonMath": {
+    "reportCount": 26,
+    "allByteIdentical": true,
+    "reports": [
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/browser-invariants.json",
+        "sha256": "35566613ccea3015758a1454fe172ac313a16cf434e39bc1f19f53107192c4af",
+        "passed": 10,
+        "total": 12,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/baseline-invariants.json",
+        "sha256": "28e1947579b9798eb25fcbf7f4ef00cfd8b2c63e10947def64db295bef7cbf0e",
+        "passed": 0,
+        "total": 12,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/opacity-output/invariants.json",
+        "sha256": "ab61303f6edfb90973e6622fd427fe4ec3382304a51e89dadb4a71aa6cd08980",
+        "passed": 10,
+        "total": 12,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/clip-edges/invariants.json",
+        "sha256": "bf1bce96ff2cb986d49212a50bcfdb706af6405053d98d66e39af61e307980e0",
+        "passed": 3,
+        "total": 9,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/baseline-comparison.json",
+        "sha256": "6e082dacc7dff695fd222404683e7244c775cd25e534caec27648a5a594304aa",
+        "passed": 26,
+        "total": 26,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/opacity-output/comparison.json",
+        "sha256": "8c0668fbbc2d6a1f2b50fd7e9b8d2081ca546a9566ac351d72e1c93090d8d8a7",
+        "passed": 26,
+        "total": 26,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/candidate/clip-edges/comparison.json",
+        "sha256": "064bb88418b33e45d89ec580bbd99a356cc7fe80b34e0b981206439da2644fd3",
+        "passed": 22,
+        "total": 22,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/paint-ownership/comparison.json",
+        "sha256": "42ef4b9107cbb7685911914fc6ab5727c1944ec8e746d3f952447f44db479cab",
+        "passed": 10,
+        "total": 18,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-ownership/comparison.json",
+        "sha256": "a95628403556467741f297e61207f9bc1efd46f703b7ce715897431f5d22be81",
+        "passed": 18,
+        "total": 18,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/effect-clip-routing/comparison.json",
+        "sha256": "f601ed459af7b95b926abf1c11b7b266ccb088479d2e8f872fffb0feb6c21447",
+        "passed": 8,
+        "total": 14,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/effect-clip-routing/comparison.json",
+        "sha256": "3640615758fb13febda1bada23c7124a59e836ae7fd1e8460042055067b6f336",
+        "passed": 14,
+        "total": 14,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/auto-paint/comparison.json",
+        "sha256": "c11708ffe79b60453269a0e2ddf3d6a0b2b0d1073387d932bfb751d235853cb8",
+        "passed": 5,
+        "total": 17,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/auto-paint/comparison.json",
+        "sha256": "e757191f498a2e6458f384df8259e330cc69cbb777ac15559eb476f41750d17e",
+        "passed": 17,
+        "total": 17,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/paint-order/comparison.json",
+        "sha256": "deaa42e2b83afc0f5fe379d805aa4a6ff920d9b518cfd9bbb13763a64a77f9b3",
+        "passed": 19,
+        "total": 20,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-order/comparison.json",
+        "sha256": "70ac9febd6978ec679ce48b2dade3aaad4f67b2a16d64f64511542fc0b4b9576",
+        "passed": 20,
+        "total": 20,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/initial-containing-block/comparison.json",
+        "sha256": "a80810a376fbe8d132a9cd89af62be28f5a36e2de23c7189b7a32390126a5430",
+        "passed": 19,
+        "total": 21,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/initial-containing-block/comparison.json",
+        "sha256": "15bdbc9f4cc7c636817c6c878b5cb2b423416d0e3f27a0ac6968e3b5ec4ec350",
+        "passed": 20,
+        "total": 21,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/positioned-layout/comparison.json",
+        "sha256": "533a3198b37e6f66d86f89cdac3ae409368c65e1d44d03df97187827714c35ee",
+        "passed": 13,
+        "total": 14,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/positioned-layout/comparison.json",
+        "sha256": "40db241e1a988ce0b7faa6455dd2290f42f2a948628c0ab85c9e370bce484032",
+        "passed": 13,
+        "total": 14,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/overflow-paint/comparison.json",
+        "sha256": "76db64caa849c99d4323fb75623705f9147b9bedf0ecba65ca53a630e7b41c37",
+        "passed": 5,
+        "total": 22,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/overflow-paint/comparison.json",
+        "sha256": "54e39063b8782fcd4a308e6e76b03b19fb097141422c270765d9a0c7f0bd33ce",
+        "passed": 19,
+        "total": 22,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/legacy/ownership-render/comparison.json",
+        "sha256": "3ad856e062731ec985edf3820ffa1d0c78e057f9300ea9e0cf796fee8bd0d9bc",
+        "passed": 8,
+        "total": 16,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/regression/ownership/ownership-render/comparison.json",
+        "sha256": "776768d9b2534d8020a2514a30cb785d0193f961bf3c3405305d39646bdfc2db",
+        "passed": 15,
+        "total": 16,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/default/budget-raised/comparison.json",
+        "sha256": "a9a38d38e5e0d6660b5b570eb3cb36345e1ae0b17279f754eef3c621fbf2dbaf",
+        "passed": 3,
+        "total": 3,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/legacy/budget-raised/comparison.json",
+        "sha256": "a9a38d38e5e0d6660b5b570eb3cb36345e1ae0b17279f754eef3c621fbf2dbaf",
+        "passed": 3,
+        "total": 3,
+        "byteIdenticalRegeneration": true
+      },
+      {
+        "report": "docs/validation/2026-09-18-opacity-output/lifecycle/ownership/budget-raised/comparison.json",
+        "sha256": "c126e3c2fd60ad560c7730b0339e5ff2ad2da24b46a95a981ffd3ef24825ee45",
+        "passed": 3,
+        "total": 3,
+        "byteIdenticalRegeneration": true
+      }
+    ]
+  },
+  "document": {
+    "path": "docs/validation/2026-09-18-opacity-output.md",
+    "sha256": "cd7da840bdb1bf0f3e6f9de9cda38b6af0b1314477baa95cd75efcb52fe31dda",
+    "relativeLinksChecked": 25,
+    "allExist": true
+  },
+  "limits": [
+    "Original physical witness details remain in independent-audit/audit.json; this audit adds archive PNG/report/source verification.",
+    "Historical capture hashes are not relabeled with the rebuilt executable identity.",
+    "This checks stored evidence, not live GPU execution or general compatibility."
+  ],
+  "archiveNormalization": {
+    "notes": "docs/validation/2026-09-18-opacity-output/archive-notes.json",
+    "sha256": "54f7b52e55a9ad9287a02c0e20e874bd0b5d05a1759ef06f7ce424fcda8b9fc0",
+    "entriesVerified": 7,
+    "onlyTrailingWhitespaceAndFinalNewlineChanged": true,
+    "verifiedAt": "2026-09-18T06:22:41.618Z",
+    "verifiedPaths": [
+      "checks/final/candidate-format.txt",
+      "lifecycle/candidate/failure/stdout.txt",
+      "lifecycle/default/failure/stdout.txt",
+      "checks/final/candidate-tests.txt",
+      "checks/final/library-tests.txt",
+      "checks/library-tests.txt",
+      "checks/ownership-tests.txt"
+    ],
+    "scope": "Bounded follow-up: raw/archive identities and normalization for these seven text receipts only. The prior 534-PNG and 26-report checks were not rerun and remain unchanged."
+  }
+}

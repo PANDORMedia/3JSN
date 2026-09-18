@@ -1,0 +1,22 @@
+[
+  {
+    "fixture": "clip-edges",
+    "captureExitCode": 0,
+    "cases": 22,
+    "completeReportUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+    "reportSha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "opacity-output",
+    "captureExitCode": 0,
+    "cases": 26,
+    "completeReportUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "binarySha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+    "reportSha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+    "metalValidationObserved": true
+  }
+]

@@ -1,0 +1,26 @@
+┌─────────┬────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                           │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'short-absolute-bottom'        │ 1     │ 0                   │ 0                   │ true  │
+│ 1       │ 'tall-absolute-bottom'         │ 1     │ 0                   │ 0                   │ true  │
+│ 2       │ 'tall-fixed-stretch'           │ 1     │ 0                   │ 0                   │ true  │
+│ 3       │ 'short-viewport-percent'       │ 1     │ 0                   │ 0                   │ true  │
+│ 4       │ 'root-box-absolute-percent'    │ 1     │ 0                   │ 0                   │ true  │
+│ 5       │ 'root-box-fixed-percent'       │ 1     │ 0                   │ 0                   │ true  │
+│ 6       │ 'relative-root-absolute'       │ 1     │ 0                   │ 0                   │ true  │
+│ 7       │ 'absolute-root-absolute'       │ 1     │ 0                   │ 0                   │ true  │
+│ 8       │ 'relative-root-fixed'          │ 1     │ 0                   │ 0                   │ true  │
+│ 9       │ 'fixed-root-fixed'             │ 1     │ 0                   │ 0                   │ true  │
+│ 10      │ 'transformed-root-fixed'       │ 1     │ 0                   │ 6                   │ false │
+│ 11      │ 'root-fixed-restored'          │ 1     │ 0                   │ 0                   │ true  │
+│ 12      │ 'viewport-absolute-restored'   │ 1     │ 0                   │ 0                   │ true  │
+│ 13      │ 'short-auto-anchor'            │ 1     │ 0                   │ 0                   │ true  │
+│ 14      │ 'root-box-auto-anchor'         │ 1     │ 0                   │ 0                   │ true  │
+│ 15      │ 'auto-anchor-restored'         │ 1     │ 0                   │ 0                   │ true  │
+│ 16      │ 'root-effect-fixed-auto-order' │ 1     │ 0                   │ 0                   │ true  │
+│ 17      │ 'root-positive-z-merge-order'  │ 1     │ 0                   │ 0                   │ true  │
+│ 18      │ 'root-negative-z-merge-order'  │ 1     │ 0                   │ 0                   │ true  │
+│ 19      │ 'root-box-fixed-percent'       │ 2     │ 0                   │ 0                   │ true  │
+│ 20      │ 'short-absolute-bottom'        │ 2     │ 0                   │ 0                   │ true  │
+└─────────┴────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 20/21 cases match browser geometry and uniform interior pixels.
