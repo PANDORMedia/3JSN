@@ -88,3 +88,17 @@ remain in snapshot identity. Twelve local snapshot tests pass, retaining exact
 excluded/external rejection assertions and adding a contained absolute-link
 control. Windows execution still requires the next CI run; this local result
 alone is not Windows validation.
+
+The next Windows run still rejected the nested-dependency junction with
+`EXTERNAL_LINK` instead of `EXCLUDED_LINK`. A root-ancestor alias reproduces that
+failure locally on baseline `324e288`: the supplied root spelling and its
+`realpath` spelling differ. Windows temporary-directory short names are the
+inferred cause of the runner mismatch; that specific spelling awaits live CI.
+Lexical checks now accept either supplied or canonical root spelling, while the
+final physical containment and exclusion checks remain mandatory. Raw link text
+and strict excluded/external assertions are preserved. The added regression
+fails on the baseline and passes with this correction; all 13 snapshot tests
+pass. The full Node suite passes 197 tests with one skip, and 785 source/config/
+document checks pass. The full suite required localhost access; the initial
+sandboxed attempt failed to bind its fixture servers. These local checks do not
+replace Windows execution evidence.

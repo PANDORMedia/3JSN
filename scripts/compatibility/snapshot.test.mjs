@@ -236,3 +236,21 @@ test('absolute directory links preserve raw spelling and match canonical root sc
   await symlink(outside, alias, process.platform === 'win32' ? 'junction' : 'dir');
   await assert.rejects(snapshotTree(root), { code: 'EXTERNAL_LINK' });
 });
+
+
+test('root ancestor aliases retain lexical exclusions and canonical containment', async t => {
+  const { root, temporary } = await setup(t);
+  const aliasParent = join(temporary, 'root-parent-alias');
+  await symlink(await realpath(temporary), aliasParent, process.platform === 'win32' ? 'junction' : 'dir');
+  const inputRoot = join(aliasParent, 'project');
+  await mkdir(join(root, 'included'));
+  await writeFile(join(root, 'included/value.txt'), 'measured');
+  await symlink(join(inputRoot, 'included'), join(root, 'source-alias'), process.platform === 'win32' ? 'junction' : 'dir');
+  const snapshot = await snapshotTree(inputRoot);
+  assert.ok(snapshot.entries.some(entry => entry.path === 'included/value.txt'));
+  await assert.rejects(snapshotTree(inputRoot, { exclude: ['included'] }), { code: 'EXCLUDED_LINK' });
+  await unlink(join(root, 'source-alias'));
+  await mkdir(join(temporary, 'outside'));
+  await symlink(join(aliasParent, 'outside'), join(root, 'source-alias'), process.platform === 'win32' ? 'junction' : 'dir');
+  await assert.rejects(snapshotTree(inputRoot), { code: 'EXTERNAL_LINK' });
+});

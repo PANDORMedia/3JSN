@@ -70,6 +70,7 @@ export async function snapshotTree(inputRoot, { exclude = [], excludeBasenames =
   // Windows junction readlink values use namespace paths; compare both sides
   // in that form while retaining the original link spelling in the manifest.
   const canonicalRoot = toNamespacedPath(await realpath(root));
+  const lexicalRoot = toNamespacedPath(root);
   const entries = [];
   const links = [];
 
@@ -83,9 +84,13 @@ export async function snapshotTree(inputRoot, { exclude = [], excludeBasenames =
       const stat = await lstat(absolute, { bigint: true });
       if (stat.isSymbolicLink()) {
         const target = await readlink(absolute);
-        const lexicalTarget = toNamespacedPath(resolve(canonicalRoot, dirname(path), target));
-        if (!within(canonicalRoot, lexicalTarget)) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);
-        if (isExcluded(relative(canonicalRoot, lexicalTarget).split(sep).join('/'), excluded, basenames)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
+        const lexicalTarget = toNamespacedPath(resolve(lexicalRoot, dirname(path), target));
+        // A root ancestor may have an alias (including Windows short names).
+        // Accept either declared spelling here, then enforce physical containment
+        // with realpath below before recording any target.
+        const targetRoot = [lexicalRoot, canonicalRoot].find(candidate => within(candidate, lexicalTarget));
+        if (!targetRoot) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);
+        if (isExcluded(relative(targetRoot, lexicalTarget).split(sep).join('/'), excluded, basenames)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
         let resolved;
         try { resolved = toNamespacedPath(await realpath(absolute)); } catch (cause) {
           throw new SnapshotError('INVALID_LINK', `Dangling or cyclic symbolic link: ${path}`, { cause });
