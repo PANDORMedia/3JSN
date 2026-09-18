@@ -1,0 +1,47 @@
+{
+  "base": "f3a03fbf93ab8b0aef63198c48fdf701392b2530",
+  "files": {
+    "experiments/html-v8/src/dom_ops.rs": "edb37d31e804dbfc550fa09b19f36b3230fbfd84ebb64bb853cebd80b2263252",
+    "experiments/html-v8/src/dom_tree.rs": "61aa7a77b1bf267e34ff60267de3375b5b3297eed93155034cfb89572285caf5",
+    "experiments/compiled-ui-runtime/tests/dom_receivers.rs": "246f0ec87a9f8c43309c908914496a944dcf9357601e6c92935a61fc7f20e60f"
+  },
+  "tests": {
+    "baseline": "new receiver guard test fails: non-element receiver reached the fragment parser",
+    "preserved": {
+      "passed": 24,
+      "failed": 0,
+      "log": ".cache/dom-receivers-preserved.log"
+    },
+    "restricted": {
+      "passed": 24,
+      "failed": 0,
+      "log": ".cache/dom-receivers-restricted.log"
+    }
+  },
+  "scope": "CPU shared DOM operations and actual V8 bindings; no GPU, native window or platform support claim",
+  "sourceChanges": "Element guard before HTML detachment/parser and geometry resolve; selector scope allows Element or Document; unchanged live tree/identity and positive parser/query/geometry controls",
+  "generatedDependencyChanges": false,
+  "clippy": {
+    "preserved": "passed strict -D warnings",
+    "restricted": "passed strict -D warnings"
+  },
+  "commands": {
+    "environment": {
+      "CARGO_HOME": "/Users/sean/dev/3JSN/.cache/cargo",
+      "CARGO_TARGET_DIR": "/Users/sean/dev/3JSN/target",
+      "CARGO_INCREMENTAL": "0",
+      "RUSTY_V8_ARCHIVE": "/Users/sean/dev/3JSN/target/release/gn_out/obj/librusty_v8.a"
+    },
+    "preservedTest": "cargo test --manifest-path experiments/compiled-ui-runtime/Cargo.toml --offline --locked -j2 --test dom_receivers",
+    "restrictedTest": "cargo test --manifest-path experiments/compiled-ui-runtime/Cargo.toml --offline --locked -j2 --no-default-features --test dom_receivers",
+    "preservedClippy": "cargo clippy --manifest-path experiments/compiled-ui-runtime/Cargo.toml --offline --locked -j2 --test dom_receivers -- -D warnings",
+    "restrictedClippy": "cargo clippy --manifest-path experiments/compiled-ui-runtime/Cargo.toml --offline --locked -j2 --no-default-features --test dom_receivers -- -D warnings"
+  },
+  "logs": {
+    ".cache/dom-receivers-clippy-preserved.log": "a383b048704da9386a00b4d933302283f091d48a45248ff6039d92ae915a5218",
+    ".cache/dom-receivers-clippy-restricted.log": "b2674557c1e2cad16ab5309ae0fdf732d0f70f5fc2bf892e474b8b2021e3add7",
+    ".cache/dom-receivers-preserved.log": "53bbd9b9c430ec4d9bfa1ecfba9886d9546be3b7d6c450412b6d87415c8894c8",
+    ".cache/dom-receivers-red.log": "44a7803e34edb6a59cb70288d09c5c01bc3e14c26dd6f835fca27a8268f5940c",
+    ".cache/dom-receivers-restricted.log": "22b851b9c7e2a2b8e2e0cf3027fce959451965dcdd2ab5d6dc5a33e1ea413eb6"
+  }
+}

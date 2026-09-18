@@ -1,0 +1,43 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/review-pr62/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/review-pr62/.cache/dom-canvas/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-compiled-ui-runtime-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr62/experiments/compiled-ui-runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.47s
+     Running tests/dom_receivers.rs (/Users/sean/dev/3JSN/target/debug/deps/dom_receivers-88ef9810b31a3e24)
+
+running 1 test
+test dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation ... FAILED
+
+failures:
+
+---- dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation stdout ----
+
+thread 'dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation' (5877594) panicked at tests/../src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:508:13:
+non-element receiver reached the fragment parser
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 23 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test dom_receivers`
