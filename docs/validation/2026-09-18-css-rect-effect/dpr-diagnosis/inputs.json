@@ -1,0 +1,44 @@
+[
+  {
+    "path": "artifacts/css-rect-boundary/dpr-transition-failure.txt",
+    "sha256": "1b10f73b80443e3748e9deab920fc2209afd0c1e5c5514e4aed1ae6d343e556b",
+    "note": "Parent preserved the initial 31/32 failure separately while replacing candidate-command-tests.txt with later checks."
+  },
+  {
+    "path": "experiments/dom-canvas/src/ownership_render/css_rect_effect_tests.rs",
+    "sha256": "6267ba7969a680db48568a98e842dccfc6753d5cba729ef09790f990b6f5a6b1",
+    "note": "Parent rewrote this to a fresh document per DPR during diagnosis; this hash is not the failed-run test identity."
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-traits/src/shell.rs",
+    "sha256": "e9f91a7bb8ba5b31532d5873181185f931e1727e38ee6581ec46f8fc0fcc9ddf"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-dom/src/stylo_device.rs",
+    "sha256": "69e5812f2fb5eff9a1a6abeace78ad485e4bbb4459250de8aeaf0224178c0497"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-dom/src/document.rs",
+    "sha256": "f7e1e0779ac1ca04d189ab6179ffdf8a30d85676f65c813281a424f36b882510"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-dom/src/layout/damage.rs",
+    "sha256": "6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-dom/src/node/node.rs",
+    "sha256": "b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-dom/src/resolve.rs",
+    "sha256": "6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/packages/blitz-paint/src/render/ownership.rs",
+    "sha256": "dc7079bcd929b6657682e9f98c170448a2465c6350134f86540655404fabc5ef"
+  },
+  {
+    "path": ".cache/positioned-candidate/blitz/tests/blitz-tests/tests/transform_viewport_scale.rs",
+    "sha256": "b9fd8639be3341a28c21ea1bc157dccfd542937077c6d4bb959a10bcf179a042"
+  }
+]

@@ -161,7 +161,7 @@ diff --git a/packages/blitz-paint/src/render/ownership.rs b/packages/blitz-paint
 new file mode 100644
 --- /dev/null
 +++ b/packages/blitz-paint/src/render/ownership.rs
-@@ -0,0 +1,743 @@
+@@ -0,0 +1,748 @@
 +use std::{
 +    collections::{HashMap, HashSet},
 +    error::Error,
@@ -572,7 +572,12 @@ new file mode 100644
 +            common.retain_common_prefix(summary);
 +        }
 +        if opacity_groups.contains(&id) {
-+            output.insert(id, common.clone());
++            let effect_input = clips
++                .effect_input(id)
++                .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++            let mut effect_output = common.clone();
++            effect_output.retain_common_prefix(effect_input);
++            output.insert(id, effect_output);
 +        }
 +        summaries.insert(id, common);
 +    }
@@ -909,7 +914,7 @@ diff --git a/packages/blitz-paint/src/render/ownership_clips.rs b/packages/blitz
 new file mode 100644
 --- /dev/null
 +++ b/packages/blitz-paint/src/render/ownership_clips.rs
-@@ -0,0 +1,870 @@
+@@ -0,0 +1,1048 @@
 +//! Contribution clips for the experimental ownership renderer. Overflow follows
 +//! resolved containing blocks; CSS rect is reparented for escaping descendants.
 +//! Clip-path captures the incoming chain, matching the recorded Chrome controls.
@@ -1057,6 +1062,7 @@ new file mode 100644
 +}
 +
 +struct Contributions {
++    effect_input: ClipPrefix,
 +    decoration: ClipRoute,
 +    content: ClipRoute,
 +}
@@ -1181,6 +1187,10 @@ new file mode 100644
 +    pub(super) fn content(&self, node: NodeId) -> Option<&ClipRoute> {
 +        self.nodes.get(&node).map(|routes| &routes.content)
 +    }
++
++    pub(super) fn effect_input(&self, node: NodeId) -> Option<&ClipPrefix> {
++        self.nodes.get(&node).map(|routes| &routes.effect_input)
++    }
 +}
 +
 +struct OwnClips {
@@ -1207,6 +1217,9 @@ new file mode 100644
 +        context.absolute.route = context.normal.clone();
 +        context.fixed.route = context.normal.clone();
 +    }
++    // The element's effect receives its incoming clips and own clip-path.
++    // Its own CSS rect belongs to contributions inside that effect.
++    let effect_input = context.normal.prefix();
 +    if let Some((shape, empty)) = &own.css_rect {
 +        context.normal = context.normal.append(shape, *empty);
 +    }
@@ -1236,6 +1249,7 @@ new file mode 100644
 +    Ok((
 +        context,
 +        Contributions {
++            effect_input,
 +            decoration,
 +            content,
 +        },
@@ -1778,6 +1792,175 @@ new file mode 100644
 +        let empty_prefix = content.prefix();
 +        assert_eq!(empty_prefix.clips.len(), 2);
 +        assert!(empty_prefix.clips[1].shape.elements().is_empty());
++    }
++
++    fn prefix_markers(prefix: &ClipPrefix) -> Vec<f64> {
++        prefix
++            .clips
++            .iter()
++            .map(|clip| clip.shape.bounding_box().x0)
++            .collect()
++    }
++
++    #[test]
++    fn effect_input_excludes_own_css_rect_without_shortening_contribution_routes() {
++        let (_, contribution) = route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                css_rect: Some(shape(1.0)),
++                overflow: Some(shape(2.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert!(prefix_markers(&contribution.effect_input).is_empty());
++        assert_eq!(markers(&contribution.decoration), [1.0]);
++        assert_eq!(markers(&contribution.content), [1.0, 2.0]);
++        let common = contribution.decoration.prefix();
++        let mut output = common.clone();
++        output.retain_common_prefix(&contribution.effect_input);
++        assert!(prefix_markers(&output).is_empty());
++        assert_eq!(prefix_markers(&common), [1.0]);
++    }
++
++    #[test]
++    fn incoming_css_rect_remains_eligible_when_fixed_content_escapes_overflow() {
++        let (parent, _) = route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                css_rect: Some(shape(1.0)),
++                overflow: Some(shape(2.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        let (effect, contribution) = route_box(
++            parent,
++            id(2),
++            Position::Static,
++            id(1),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert_eq!(prefix_markers(&contribution.effect_input), [1.0, 2.0]);
++        let (_, fixed) = route_box(
++            effect,
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert_eq!(prefix_markers(&fixed.effect_input), [1.0]);
++        let mut common = contribution.decoration.prefix();
++        common.retain_common_prefix(&fixed.decoration.prefix());
++        common.retain_common_prefix(&contribution.effect_input);
++        assert_eq!(prefix_markers(&common), [1.0]);
++    }
++
++    #[test]
++    fn effect_input_includes_own_path_and_ancestors_rect_but_not_own_rect() {
++        let (parent, first) = route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                path: Some(shape(1.0)),
++                css_rect: Some(shape(2.0)),
++                overflow: Some(shape(3.0)),
++            },
++        )
++        .unwrap();
++        assert_eq!(prefix_markers(&first.effect_input), [1.0]);
++        assert_eq!(markers(&first.decoration), [1.0, 2.0]);
++        let (_, second) = route_box(
++            parent,
++            id(2),
++            Position::Absolute,
++            id(1),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                path: Some(shape(4.0)),
++                css_rect: Some(shape(5.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert_eq!(prefix_markers(&second.effect_input), [1.0, 2.0, 3.0, 4.0]);
++        assert_eq!(markers(&second.decoration), [1.0, 2.0, 3.0, 4.0, 5.0]);
++        let mut output = second.decoration.prefix();
++        output.retain_common_prefix(&second.effect_input);
++        assert_eq!(prefix_markers(&output), [1.0, 2.0, 3.0, 4.0]);
++    }
++
++    #[test]
++    fn empty_own_rect_does_not_empty_effect_input_but_empty_incoming_path_is_retained() {
++        let empty = resolved(id(1), BezPath::new(), Affine::IDENTITY).unwrap();
++        let (_, contribution) = route_box(
++            initial(),
++            id(1),
++            Position::Static,
++            id(0),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                path: Some(shape(1.0)),
++                css_rect: Some(empty.clone()),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert!(contribution.decoration.is_empty());
++        assert!(contribution.content.is_empty());
++        assert_eq!(prefix_markers(&contribution.effect_input), [1.0]);
++        let mut output = contribution.content.prefix();
++        output.retain_common_prefix(&contribution.effect_input);
++        assert_eq!(prefix_markers(&output), [1.0]);
++        assert!(!output.clips[0].shape.elements().is_empty());
++        let (parent, _) = route_box(
++            initial(),
++            id(1),
++            Position::Static,
++            id(0),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                path: Some(empty),
++                ..own()
++            },
++        )
++        .unwrap();
++        let (_, descendant) = route_box(
++            parent,
++            id(2),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert!(descendant.decoration.is_empty());
++        assert_eq!(descendant.effect_input.clips.len(), 1);
++        assert!(descendant.effect_input.clips[0].shape.elements().is_empty());
 +    }
 +}
 diff --git a/packages/blitz-paint/src/render.rs b/packages/blitz-paint/src/render.rs

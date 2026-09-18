@@ -1,0 +1,51 @@
+[
+  {
+    "name": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--all",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "node-tests",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exitCode": 0,
+    "sandboxExitCode": 1,
+    "rerunWithLoopbackAccess": true
+  },
+  {
+    "name": "preparation-identity",
+    "command": [
+      "node",
+      "experiments/dom-canvas/prepare-positioned.mjs",
+      ".cache/positioned-upstream/blitz",
+      "--check"
+    ],
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,68 @@
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-dom)
+   Compiling blitz-paint v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint)
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+   Compiling blitz-html v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-html)
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.57s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render_tests.rs (target/debug/deps/ownership_render-476dea5bcde8b93e)
+
+running 32 tests
+test css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect ... ok
+test clip_contract_tests::valid_empty_parent_path_suppresses_own_and_captured_fixed_pixels_then_restores ... ok
+test css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase ... FAILED
+test css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup ... ok
+test clip_contract_tests::valid_empty_subject_path_does_not_suppress_ancestor_or_unrelated_sibling ... ok
+test canvas_body_propagation_distinguishes_visibility_from_missing_box ... ok
+test boxless_body_canvas_propagation_is_explicitly_unsupported_and_recovers ... ok
+test clip_contract_tests::unsupported_clip_declarations_fail_typed_before_commands_and_each_restore ... ok
+test hidden_ancestor_does_not_cull_explicitly_visible_descendant ... ok
+test opacity_bounds_keep_fixed_content_when_owner_moves_offscreen_or_becomes_empty ... ok
+test one_opacity_group_keeps_per_contribution_clips_and_restores ... ok
+test negative_context_precedes_owners_widget_then_zero_and_positive_restore ... ok
+test nested_opacity_keeps_both_groups_around_escaping_fixed_content ... ok
+test output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects ... ok
+test output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix ... ok
+test output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background ... ok
+test output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr ... ok
+test output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content ... ok
+test output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced ... ok
+test output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip ... ok
+test propagated_canvas_background_stays_outside_root_clip ... ok
+test planar_transform_captures_fixed_geometry_and_restores_without_double_prefix ... ok
+test output_clip_tests::own_overflow_does_not_clip_the_effects_decoration_or_escaping_child ... ok
+test ownership_budget_failure_balances_and_does_not_poison_next_scene ... ok
+test replaced_content_tests::rounded_widget_clips_only_own_content_with_padding_dpr_and_restore ... ok
+test replaced_content_tests::raster_cover_and_position_clip_to_rounded_content_edge_at_both_scales ... ok
+test root_compensation_device_scale_and_scene_offset_apply_once ... ok
+test root_rgba_and_propagated_body_background_each_emit_once_and_restore ... ok
+test output_clip_tests::visibility_empty_clip_and_opacity_mutations_restore_output_scope ... ok
+test unsupported_root_effect_and_canvas_images_fail_before_any_background ... ok
+test unavailable_replaced_content_rejects_independently_of_build_features ... ok
+test unsupported_text_filter_3d_and_scroll_fail_explicitly_before_drawing ... ok
+
+failures:
+
+---- css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase stdout ----
+
+thread 'css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase' (4973594) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render_tests.rs:158:9:
+103.375 != 103.75
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase
+
+test result: FAILED. 31 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `--test ownership-render`

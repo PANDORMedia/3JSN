@@ -1,0 +1,948 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-recorded-dpr2-pixels-only",
+  "priorAudit": {
+    "path": ".cache/css-rect-boundary-audit/audit.json",
+    "sha256": "8890d4b8f8b2f2fc48213f4b4330590fa013fca3316dbdd1323b10da42d14217"
+  },
+  "scope": "Read existing files only; no capture, build, source preparation, renderer change or CPU-test execution. Output is limited to this audit directory.",
+  "deviceGeometryHypotheses": {
+    "scaledTranslation": {
+      "left": 144.75,
+      "top": 112.5,
+      "right": 512.75,
+      "bottom": 352.5
+    },
+    "unscaledTranslation": {
+      "left": 144.375,
+      "top": 112.25,
+      "right": 512.375,
+      "bottom": 352.25
+    },
+    "sharedInclusivePixelBounds": {
+      "left": 144,
+      "top": 112,
+      "right": 512,
+      "bottom": 352
+    }
+  },
+  "method": "Use single-fill states to avoid repeated per-contribution clipping. On opaque white, infer coverage as (255 - edge green)/(255 - interior green). Compare RGB against white/interior interpolation, retaining channel quantization tolerance. Strips exclude corners; no general corner antialias equivalence is inferred.",
+  "counts": {
+    "verifiedDpr2Pngs": 16,
+    "singleFillPngsWithStrips": 8,
+    "straightEdgePixelsChecked": 9632
+  },
+  "captures": [
+    {
+      "renderer": "browser",
+      "name": "rect-alpha-one-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/rect-alpha-one-single-2x.png",
+      "encodedSha256": "d8de66a4c23409fe24c698b14148f69de6cb2e1c6eee52c05439c854f8e70d7a",
+      "rgbaSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25112107623318386,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            232,
+            88,
+            100,
+            255
+          ],
+          "coverageInferredFromGreen": 0.7488789237668162,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 55.25
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 56.25
+        }
+      }
+    },
+    {
+      "renderer": "browser",
+      "name": "rect-alpha-one-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/rect-alpha-one-covered-blue-2x.png",
+      "encodedSha256": "98ddebc0929ee66b47798351541c783e21cf338f73545c484032714f64133aff",
+      "rgbaSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "browser",
+      "name": "rect-opacity-half-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/rect-opacity-half-single-2x.png",
+      "encodedSha256": "dec41fc6d9ddb07d3e076c55a39a5e417e261e74481f3c6676d89f4ce0c28ed5",
+      "rgbaSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          239,
+          143,
+          151,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            251,
+            227,
+            229,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            243,
+            171,
+            177,
+            255
+          ],
+          "coverageInferredFromGreen": 0.75,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        }
+      }
+    },
+    {
+      "renderer": "browser",
+      "name": "rect-opacity-half-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/rect-opacity-half-covered-blue-2x.png",
+      "encodedSha256": "254e5a4d6116ca26b4d3f5c7413dfa109d963847d6945cbdc42a8943a5a33157",
+      "rgbaSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "browser",
+      "name": "polygon-rect-alpha-one-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-single-2x.png",
+      "encodedSha256": "d8de66a4c23409fe24c698b14148f69de6cb2e1c6eee52c05439c854f8e70d7a",
+      "rgbaSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25112107623318386,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            232,
+            88,
+            100,
+            255
+          ],
+          "coverageInferredFromGreen": 0.7488789237668162,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 55.25
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 56.25
+        }
+      }
+    },
+    {
+      "renderer": "browser",
+      "name": "polygon-rect-alpha-one-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-covered-blue-2x.png",
+      "encodedSha256": "98ddebc0929ee66b47798351541c783e21cf338f73545c484032714f64133aff",
+      "rgbaSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "browser",
+      "name": "polygon-rect-opacity-half-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-single-2x.png",
+      "encodedSha256": "dec41fc6d9ddb07d3e076c55a39a5e417e261e74481f3c6676d89f4ce0c28ed5",
+      "rgbaSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          239,
+          143,
+          151,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            251,
+            227,
+            229,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            243,
+            171,
+            177,
+            255
+          ],
+          "coverageInferredFromGreen": 0.75,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        }
+      }
+    },
+    {
+      "renderer": "browser",
+      "name": "polygon-rect-opacity-half-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-covered-blue-2x.png",
+      "encodedSha256": "254e5a4d6116ca26b4d3f5c7413dfa109d963847d6945cbdc42a8943a5a33157",
+      "rgbaSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "native",
+      "name": "rect-alpha-one-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/002-case.png",
+      "encodedSha256": "7a2c0527b7fffca741c4fecada37feb8d71135aba4fa02cd569c7a5d0ce58a4a",
+      "rgbaSha256": "4ab38c9b11566825a5b865cc9ef4eb75d8802b0adab860ab7d64af00a2659454",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25112107623318386,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            232,
+            88,
+            100,
+            255
+          ],
+          "coverageInferredFromGreen": 0.7488789237668162,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 55.25
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 56.25
+        }
+      }
+    },
+    {
+      "renderer": "native",
+      "name": "rect-alpha-one-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/003-case.png",
+      "encodedSha256": "21c38e06bf5abe8123b26b7ee538d50d354f3cb163f0efbb9d4616babc24d307",
+      "rgbaSha256": "4c4f9162cac2cc85599fa0cb3090ae77cfd75ecffeb22be1219c5bda4b9c7fa6",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "native",
+      "name": "rect-opacity-half-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/006-case.png",
+      "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+      "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          239,
+          143,
+          151,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            251,
+            227,
+            229,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            243,
+            171,
+            177,
+            255
+          ],
+          "coverageInferredFromGreen": 0.75,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        }
+      }
+    },
+    {
+      "renderer": "native",
+      "name": "rect-opacity-half-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/007-case.png",
+      "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+      "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "native",
+      "name": "polygon-rect-alpha-one-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/010-case.png",
+      "encodedSha256": "7a2c0527b7fffca741c4fecada37feb8d71135aba4fa02cd569c7a5d0ce58a4a",
+      "rgbaSha256": "4ab38c9b11566825a5b865cc9ef4eb75d8802b0adab860ab7d64af00a2659454",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25112107623318386,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            232,
+            88,
+            100,
+            255
+          ],
+          "coverageInferredFromGreen": 0.7488789237668162,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0.25,
+          "minUnscaledGreenResidual": 83.375
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 55.25
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            239,
+            143,
+            151,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5022421524663677,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0.5,
+          "minUnscaledGreenResidual": 56.25
+        }
+      }
+    },
+    {
+      "renderer": "native",
+      "name": "polygon-rect-alpha-one-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/011-case.png",
+      "encodedSha256": "21c38e06bf5abe8123b26b7ee538d50d354f3cb163f0efbb9d4616babc24d307",
+      "rgbaSha256": "4c4f9162cac2cc85599fa0cb3090ae77cfd75ecffeb22be1219c5bda4b9c7fa6",
+      "usedForTranslationInference": false
+    },
+    {
+      "renderer": "native",
+      "name": "polygon-rect-opacity-half-single",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/014-case.png",
+      "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+      "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+      "usedForTranslationInference": true,
+      "interiorSample": {
+        "x": 200,
+        "y": 200,
+        "rgba": [
+          239,
+          143,
+          151,
+          255
+        ]
+      },
+      "edgeStrips": {
+        "left": {
+          "boundsInclusive": {
+            "x0": 144,
+            "y0": 114,
+            "x1": 144,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            251,
+            227,
+            229,
+            255
+          ],
+          "coverageInferredFromGreen": 0.25,
+          "scaledTranslationExpectedCoverage": 0.25,
+          "unscaledTranslationExpectedCoverage": 0.625,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "right": {
+          "boundsInclusive": {
+            "x0": 512,
+            "y0": 114,
+            "x1": 512,
+            "y1": 350
+          },
+          "pixels": 237,
+          "rgba": [
+            243,
+            171,
+            177,
+            255
+          ],
+          "coverageInferredFromGreen": 0.75,
+          "scaledTranslationExpectedCoverage": 0.75,
+          "unscaledTranslationExpectedCoverage": 0.375,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 42
+        },
+        "top": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 112,
+            "x1": 510,
+            "y1": 112
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.75,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        },
+        "bottom": {
+          "boundsInclusive": {
+            "x0": 146,
+            "y0": 352,
+            "x1": 510,
+            "y1": 352
+          },
+          "pixels": 365,
+          "rgba": [
+            247,
+            199,
+            203,
+            255
+          ],
+          "coverageInferredFromGreen": 0.5,
+          "scaledTranslationExpectedCoverage": 0.5,
+          "unscaledTranslationExpectedCoverage": 0.25,
+          "maxScaledRgbResidual": 0,
+          "minUnscaledGreenResidual": 28
+        }
+      }
+    },
+    {
+      "renderer": "native",
+      "name": "polygon-rect-opacity-half-covered-blue",
+      "scale": 2,
+      "path": "artifacts/css-rect-boundary/native/015-case.png",
+      "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+      "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+      "usedForTranslationInference": false
+    }
+  ],
+  "binary": {
+    "path": ".cache/opacity-output-checkpoint/ownership-probe",
+    "sha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04"
+  },
+  "sourceAndReportSha256": {
+    "fixtures/opacity-css-rect/index.html": "3bc311884694bf8de69bd820e595f62b65bef9868430b3ab3fe572f15a7edba4",
+    "fixtures/opacity-css-rect/fixture.js": "80c6ad1905e6f1981d3cb157b9d2b179b340ca8f91f7c0189133f6449163c598",
+    "fixtures/opacity-css-rect/cases.json": "678aaef2daec30f274c3bcac386383a4ff45370be4be2f2646d1eb385b4890d7",
+    "fixtures/opacity-css-rect/invariants.json": "6e5e12c7e2a454353602dd8a6c13c529cc1ac1d661bed1e6c8282692092e6edc",
+    "experiments/dom-canvas/compare-clip-invariants.mjs": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc",
+    "experiments/dom-canvas/compare-clips.mjs": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "scripts/compatibility/paint-colors.mjs": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258",
+    "artifacts/css-rect-boundary/browser/report.json": "58240542dcdb595f786367f5b6c435642dd46e8451f1163ec7a5835c19f468ad",
+    "scripts/compatibility/paint-reference.mjs": "d29ac85247af1f072186311a18eb9be8da30d774068d9c6aed93f415a48e74f7",
+    "scripts/compatibility/browser-session.mjs": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a",
+    "scripts/compatibility/fixture-server.mjs": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980",
+    "artifacts/css-rect-boundary/native/report.json": "f66588df1b16a9bd1ed0c8b480338b05ea247d53477d087a13fb6684bfe609cc",
+    "artifacts/css-rect-boundary/native-binary.json": "d2b29efefa2ae80a7767c4eae2df1e77104f3b08c423d3cae312239de643b064",
+    "artifacts/css-rect-boundary/native.txt": "6b38f2ab051c55f02d2eba6645763e396b83ee1f75c72fb2bfca51f00e35f8d0",
+    "artifacts/css-rect-boundary/browser-invariants.json": "e22a9f29825388f7162dbfa80f88ef6572be3a1eb8cf5ff973a49149cbf9a118",
+    "artifacts/css-rect-boundary/native-invariants.json": "e0e5cb62bb09bdf39e1faf8d9a480b949263d38e215f64e87691f45de9202a1c",
+    "artifacts/css-rect-boundary/comparison.json": "1750851b17fe6edb7dd62b24ecc1de3f514853d52af8a143326ed897bc75ac12"
+  },
+  "separateCpuFailure": {
+    "path": "artifacts/css-rect-boundary/dpr-transition-failure.txt",
+    "sha256": "1b10f73b80443e3748e9deab920fc2209afd0c1e5c5514e4aed1ae6d343e556b",
+    "assertion": "103.375 != 103.75",
+    "relation": "The preserved failure was observed during a resolved-document DPR transition. This audit does not execute or diagnose invalidation. Fresh fixture style mutation and the recorded GPU capture path do not establish cached DPR-transition correctness."
+  },
+  "conclusion": "The recorded browser and native DPR 2 straight edges agree with the scaled .75/.5 translation, and reject the unscaled .375/.25 hypothesis by at least 28 green-channel levels on every sampled edge. Inclusive support alone could not prove that result. The earlier physical-paint statement is supported for these captures by fractional coverage, and must not be generalized to cached document DPR transitions."
+}

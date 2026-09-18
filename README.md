@@ -141,6 +141,12 @@ remain unchanged. Plain polygon edges, text/input integration and backend
 adoption remain open. The [clip-edge diagnostic](docs/validation/2026-09-18-clip-edges.md)
 records why uniform-interior checks alone cannot certify composition.
 
+The [own CSS rect correction](docs/validation/2026-09-18-css-rect-effect.md)
+keeps that clip inside its owner's opacity effect. New controls match Chrome's
+composition classification and uniform interiors, while all 190 prior ownership
+captures remain unchanged. Transformed DOM queries and live display-scale
+transitions still have recorded failures.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

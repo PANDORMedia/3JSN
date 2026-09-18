@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 0,
+  "total": 8,
+  "criteria": {
+    "completeRgbaEquality": true,
+    "crossRendererComparison": false,
+    "excludedPixels": 0,
+    "channelTolerance": 0,
+    "secondaryDifferenceCountThreshold": 2,
+    "backgroundColor": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  "inputs": {
+    "captureReportSha256": "58240542dcdb595f786367f5b6c435642dd46e8451f1163ec7a5835c19f468ad",
+    "invariantsSha256": "6e5e12c7e2a454353602dd8a6c13c529cc1ac1d661bed1e6c8282692092e6edc",
+    "comparatorSha256": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc",
+    "subjectColorMatcherSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "limits": [
+    "These are proposed within-renderer image invariants, not a general browser-conformance result.",
+    "The intermediate-color guard assumes these monochrome controls over their declared flat background; it is not a general edge detector.",
+    "A nonidentical group is an observed classification, not automatically a standards violation.",
+    "The secondary difference count never changes the exact-equality result.",
+    "Cross-renderer antialias fidelity requires separate evidence."
+  ],
+  "groups": [
+    {
+      "name": "rect-alpha-one-1x",
+      "scale": 1,
+      "cases": [
+        "rect-alpha-one-single",
+        "rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, without a clip-path. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+      "referenceIntermediatePixels": 608,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 52,
+          "differenceBounds": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "firstDifference": {
+            "x": 72,
+            "y": 56,
+            "reference": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "actual": [
+              184,
+              79,
+              119,
+              255
+            ]
+          },
+          "pixelSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+          "subjectPixels": 21777
+        }
+      ]
+    },
+    {
+      "name": "rect-alpha-one-2x",
+      "scale": 2,
+      "cases": [
+        "rect-alpha-one-single",
+        "rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, without a clip-path. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "referenceIntermediatePixels": 1216,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "firstDifference": {
+            "x": 144,
+            "y": 112,
+            "reference": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "actual": [
+              205,
+              169,
+              197,
+              255
+            ]
+          },
+          "pixelSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+          "subjectPixels": 87713
+        }
+      ]
+    },
+    {
+      "name": "rect-opacity-half-1x",
+      "scale": 1,
+      "cases": [
+        "rect-opacity-half-single",
+        "rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, without a clip-path. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+      "referenceIntermediatePixels": 608,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 26,
+          "differenceBounds": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "firstDifference": {
+            "x": 72,
+            "y": 56,
+            "reference": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "actual": [
+              219,
+              167,
+              187,
+              255
+            ]
+          },
+          "pixelSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+          "subjectPixels": 21777
+        }
+      ]
+    },
+    {
+      "name": "rect-opacity-half-2x",
+      "scale": 2,
+      "cases": [
+        "rect-opacity-half-single",
+        "rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, without a clip-path. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "referenceIntermediatePixels": 1216,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "firstDifference": {
+            "x": 144,
+            "y": 112,
+            "reference": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "actual": [
+              230,
+              212,
+              226,
+              255
+            ]
+          },
+          "pixelSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+          "subjectPixels": 87713
+        }
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-1x",
+      "scale": 1,
+      "cases": [
+        "polygon-rect-alpha-one-single",
+        "polygon-rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, with a broad nonrectangular polygon P strictly containing R. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+      "referenceIntermediatePixels": 608,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 52,
+          "differenceBounds": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "firstDifference": {
+            "x": 72,
+            "y": 56,
+            "reference": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "actual": [
+              184,
+              79,
+              119,
+              255
+            ]
+          },
+          "pixelSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+          "subjectPixels": 21777
+        }
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-2x",
+      "scale": 2,
+      "cases": [
+        "polygon-rect-alpha-one-single",
+        "polygon-rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, with a broad nonrectangular polygon P strictly containing R. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "referenceIntermediatePixels": 1216,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "firstDifference": {
+            "x": 144,
+            "y": 112,
+            "reference": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "actual": [
+              205,
+              169,
+              197,
+              255
+            ]
+          },
+          "pixelSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+          "subjectPixels": 87713
+        }
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-1x",
+      "scale": 1,
+      "cases": [
+        "polygon-rect-opacity-half-single",
+        "polygon-rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, with a broad nonrectangular polygon P strictly containing R. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+      "referenceIntermediatePixels": 608,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 26,
+          "differenceBounds": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "firstDifference": {
+            "x": 72,
+            "y": 56,
+            "reference": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "actual": [
+              219,
+              167,
+              187,
+              255
+            ]
+          },
+          "pixelSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+          "subjectPixels": 21777
+        }
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-2x",
+      "scale": 2,
+      "cases": [
+        "polygon-rect-opacity-half-single",
+        "polygon-rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, with a broad nonrectangular polygon P strictly containing R. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors.",
+      "referencePixelSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "referenceIntermediatePixels": 1216,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "firstDifference": {
+            "x": 144,
+            "y": 112,
+            "reference": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "actual": [
+              230,
+              212,
+              226,
+              255
+            ]
+          },
+          "pixelSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+          "subjectPixels": 87713
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,12 @@ invariance remains a separate, partial result. The earlier 142 case payloads are
 unchanged in both traversals. See [the renderer contract](OWNERSHIP.md) for the
 conservative identity-prefix rule and its limits.
 
+The [own CSS rect follow-up](../../docs/validation/2026-09-18-css-rect-effect.md)
+keeps the owner's CSS rect inside its opacity effect while preserving eligible
+incoming clips. All 190 previous ownership captures remain unchanged. Its 16
+new captures match uniform interiors and Chrome's group classification; DOM
+geometry, edge-color parity and live DPR transitions remain open.
+
 ## Ownership and patch boundaries
 
 The viewport-sized Document owns the initial containing block. HTML remains a

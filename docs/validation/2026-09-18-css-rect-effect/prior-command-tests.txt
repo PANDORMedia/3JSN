@@ -1,0 +1,54 @@
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.66s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render_tests.rs (target/debug/deps/ownership_render-476dea5bcde8b93e)
+
+running 3 tests
+test css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup ... FAILED
+test css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect ... FAILED
+test css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase ... FAILED
+
+failures:
+
+---- css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup stdout ----
+
+thread 'css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup' (4965306) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/css_rect_effect_tests.rs:109:13:
+assertion `left == right` failed
+  left: [1.0, 0.5]
+ right: [0.5, 1.0]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect stdout ----
+
+thread 'css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect' (4965305) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/css_rect_effect_tests.rs:71:5:
+assertion `left == right` failed
+  left: [1.0, 0.5]
+ right: [0.5, 1.0]
+
+---- css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase stdout ----
+
+thread 'css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase' (4965307) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/ownership_render/css_rect_effect_tests.rs:29:17:
+assertion `left == right` failed
+  left: 1.0
+ right: 0.5
+
+
+failures:
+    css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect
+    css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup
+    css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 29 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test ownership-render`

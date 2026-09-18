@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "backgroundColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "groups": [
+    {
+      "name": "rect-alpha-one-1x",
+      "scale": 1,
+      "cases": [
+        "rect-alpha-one-single",
+        "rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, without a clip-path. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "rect-alpha-one-2x",
+      "scale": 2,
+      "cases": [
+        "rect-alpha-one-single",
+        "rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, without a clip-path. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "rect-opacity-half-1x",
+      "scale": 1,
+      "cases": [
+        "rect-opacity-half-single",
+        "rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, without a clip-path. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "rect-opacity-half-2x",
+      "scale": 2,
+      "cases": [
+        "rect-opacity-half-single",
+        "rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, without a clip-path. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "polygon-rect-alpha-one-1x",
+      "scale": 1,
+      "cases": [
+        "polygon-rect-alpha-one-single",
+        "polygon-rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, with a broad nonrectangular polygon P strictly containing R. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "polygon-rect-alpha-one-2x",
+      "scale": 2,
+      "cases": [
+        "polygon-rect-alpha-one-single",
+        "polygon-rect-alpha-one-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 1, with a broad nonrectangular polygon P strictly containing R. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "polygon-rect-opacity-half-1x",
+      "scale": 1,
+      "cases": [
+        "polygon-rect-opacity-half-single",
+        "polygon-rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, with a broad nonrectangular polygon P strictly containing R. At DPR 1, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    },
+    {
+      "name": "polygon-rect-opacity-half-2x",
+      "scale": 2,
+      "cases": [
+        "polygon-rect-opacity-half-single",
+        "polygon-rect-opacity-half-covered-blue"
+      ],
+      "rationale": "Own integer CSS rect R on a fractionally translated owner at opacity 0.5, with a broad nonrectangular polygon P strictly containing R. At DPR 2, only the fully covered blue underlay changes. Compare complete equal-scale RGBA images within each renderer; exact equality is a hypothesis, not an assumed Chrome result. Record whether the reference contains intermediate edge colors."
+    }
+  ]
+}

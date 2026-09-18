@@ -1,0 +1,793 @@
+{
+  "schemaVersion": 1,
+  "kind": "opacity-css-rect-browser-reference",
+  "capturedAt": "2026-09-18T06:31:36.882Z",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "inputs": {
+    "htmlSha256": "3bc311884694bf8de69bd820e595f62b65bef9868430b3ab3fe572f15a7edba4",
+    "scriptSha256": "80c6ad1905e6f1981d3cb157b9d2b179b340ca8f91f7c0189133f6449163c598",
+    "casesSha256": "678aaef2daec30f274c3bcac386383a4ff45370be4be2f2646d1eb385b4890d7"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/opacity-css-rect/index.html",
+      "sha256": "3bc311884694bf8de69bd820e595f62b65bef9868430b3ab3fe572f15a7edba4"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/fixture.js",
+      "sha256": "80c6ad1905e6f1981d3cb157b9d2b179b340ca8f91f7c0189133f6449163c598"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/cases.json",
+      "sha256": "678aaef2daec30f274c3bcac386383a4ff45370be4be2f2646d1eb385b4890d7"
+    },
+    {
+      "path": "scripts/compatibility/paint-reference.mjs",
+      "sha256": "d29ac85247af1f072186311a18eb9be8da30d774068d9c6aed93f415a48e74f7"
+    },
+    {
+      "path": "scripts/compatibility/browser-session.mjs",
+      "sha256": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/paint-colors.mjs",
+      "sha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+    }
+  ],
+  "cases": [
+    {
+      "name": "rect-alpha-one-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+      "file": "rect-alpha-one-single-1x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "rect-alpha-one-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+      "file": "rect-alpha-one-covered-blue-1x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "rect-alpha-one-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "file": "rect-alpha-one-single-2x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "rect-alpha-one-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+      "file": "rect-alpha-one-covered-blue-2x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "rect-opacity-half-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+      "file": "rect-opacity-half-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rect-opacity-half-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+      "file": "rect-opacity-half-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rect-opacity-half-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "file": "rect-opacity-half-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rect-opacity-half-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+      "file": "rect-opacity-half-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+      "file": "polygon-rect-alpha-one-single-1x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+      "file": "polygon-rect-alpha-one-covered-blue-1x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+      "file": "polygon-rect-alpha-one-single-2x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-alpha-one-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+      "file": "polygon-rect-alpha-one-covered-blue-2x.png",
+      "subjectColor": [
+        224,
+        32,
+        48,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+      "file": "polygon-rect-opacity-half-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+      "file": "polygon-rect-opacity-half-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+      "file": "polygon-rect-opacity-half-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "polygon-rect-opacity-half-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+      "file": "polygon-rect-opacity-half-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    }
+  ]
+}

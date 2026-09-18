@@ -1,0 +1,2310 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-classification-divergence",
+  "createdAt": "2026-09-18T06:39:32.141Z",
+  "scope": {
+    "captures": false,
+    "builds": false,
+    "preparation": false,
+    "rendererEdits": false,
+    "pngsVerified": 32
+  },
+  "sourceFixture": {
+    "directory": "fixtures/opacity-css-rect",
+    "cases": 16,
+    "groups": 8,
+    "allCasesGroupedExactlyOnce": true,
+    "fullStylesReset": true,
+    "pairMutation": "Only underlay visibility changes; all measured element styles unchanged.",
+    "reversePreparationReproducesStyles": true
+  },
+  "geometry": {
+    "ownerTranslation": [
+      0.375,
+      0.25
+    ],
+    "localR": {
+      "left": 24,
+      "top": 16,
+      "right": 208,
+      "bottom": 136
+    },
+    "sceneR": {
+      "left": 72.375,
+      "top": 56.25,
+      "right": 256.375,
+      "bottom": 176.25
+    },
+    "localP": [
+      [
+        -16,
+        -8
+      ],
+      [
+        256,
+        0
+      ],
+      [
+        248,
+        176
+      ],
+      [
+        -8,
+        168
+      ]
+    ],
+    "pStrictlyContainsR": true,
+    "minimumRCornerDistanceFromPEdgeCssPixels": 17.4042385483205,
+    "physicalBoundsAreTranslated": true,
+    "cssomComparison": {
+      "combinedPassed": 0,
+      "total": 16,
+      "interiorPixelsPassed": 16,
+      "geometryDifferencesPerCase": [
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 48.375,
+          "native": 48
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 40.25,
+          "native": 40
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 32.375,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 24.25,
+          "native": 24
+        }
+      ],
+      "scope": "Four differences in the comparator x/y/width/height fields; derived DOMRect edge properties share the same omitted translations."
+    }
+  },
+  "runs": [
+    {
+      "renderer": "browser",
+      "report": "artifacts/css-rect-boundary/browser/report.json",
+      "reportSha256": "58240542dcdb595f786367f5b6c435642dd46e8451f1163ec7a5835c19f468ad",
+      "passed": 0,
+      "total": 8,
+      "captures": [
+        {
+          "name": "rect-alpha-one-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/rect-alpha-one-single-1x.png",
+          "encodedSha256": "2abbd5e0877376edc695482ea236169f267fd5df6c7be6ea9689a6b78ede94c9",
+          "rgbaSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.6233183856502242
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.37668161434977576
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            }
+          }
+        },
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/rect-alpha-one-covered-blue-1x.png",
+          "encodedSha256": "36baaa6e68cb9d21b8a4a3464b1e6d88693871353ca464cf0189cbb33eb52939",
+          "rgbaSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              184,
+              79,
+              119,
+              255
+            ],
+            "right": [
+              191,
+              134,
+              170,
+              255
+            ],
+            "top": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "bottom": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-alpha-one-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/rect-alpha-one-single-2x.png",
+          "encodedSha256": "d8de66a4c23409fe24c698b14148f69de6cb2e1c6eee52c05439c854f8e70d7a",
+          "rgbaSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "right": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "top": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "bottom": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            }
+          }
+        },
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/rect-alpha-one-covered-blue-2x.png",
+          "encodedSha256": "98ddebc0929ee66b47798351541c783e21cf338f73545c484032714f64133aff",
+          "rgbaSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "right": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "top": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "bottom": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-opacity-half-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/rect-opacity-half-single-1x.png",
+          "encodedSha256": "b6919617f736fceca91f3a1e850655590e7981380083fa58562535a977a20d69",
+          "rgbaSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.625
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.375
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            }
+          }
+        },
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/rect-opacity-half-covered-blue-1x.png",
+          "encodedSha256": "6f81fb25c2d82cb14ce4d7af4f852d08dc9a64fa6003d141016fc2bc43e5ee9a",
+          "rgbaSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              219,
+              167,
+              187,
+              255
+            ],
+            "right": [
+              223,
+              195,
+              213,
+              255
+            ],
+            "top": [
+              223,
+              156,
+              174,
+              255
+            ],
+            "bottom": [
+              230,
+              212,
+              226,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-opacity-half-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/rect-opacity-half-single-2x.png",
+          "encodedSha256": "dec41fc6d9ddb07d3e076c55a39a5e417e261e74481f3c6676d89f4ce0c28ed5",
+          "rgbaSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            }
+          }
+        },
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/rect-opacity-half-covered-blue-2x.png",
+          "encodedSha256": "254e5a4d6116ca26b4d3f5c7413dfa109d963847d6945cbdc42a8943a5a33157",
+          "rgbaSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              230,
+              212,
+              226,
+              255
+            ],
+            "right": [
+              223,
+              156,
+              174,
+              255
+            ],
+            "top": [
+              219,
+              179,
+              199,
+              255
+            ],
+            "bottom": [
+              219,
+              179,
+              199,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-single-1x.png",
+          "encodedSha256": "2abbd5e0877376edc695482ea236169f267fd5df6c7be6ea9689a6b78ede94c9",
+          "rgbaSha256": "a9e7fe3529be3ad5e9bb638b84f369d249cece411e062d7cfe93e578f358935b",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.6233183856502242
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.37668161434977576
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-covered-blue-1x.png",
+          "encodedSha256": "36baaa6e68cb9d21b8a4a3464b1e6d88693871353ca464cf0189cbb33eb52939",
+          "rgbaSha256": "a8c409b2753a7495ef2c59035fb674983140f27dafec365a77c129daffb8d2e9",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              184,
+              79,
+              119,
+              255
+            ],
+            "right": [
+              191,
+              134,
+              170,
+              255
+            ],
+            "top": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "bottom": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-single-2x.png",
+          "encodedSha256": "d8de66a4c23409fe24c698b14148f69de6cb2e1c6eee52c05439c854f8e70d7a",
+          "rgbaSha256": "c28256ac9d17d5190de8572caf08175b0c83c2ae04e732ec42f37d7262562b3f",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "right": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "top": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "bottom": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-alpha-one-covered-blue-2x.png",
+          "encodedSha256": "98ddebc0929ee66b47798351541c783e21cf338f73545c484032714f64133aff",
+          "rgbaSha256": "f30926010ebd7977881ab9c0d9321e7c5a6b7a0994a59b462569c944537eb6cd",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "right": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "top": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "bottom": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-single-1x.png",
+          "encodedSha256": "b6919617f736fceca91f3a1e850655590e7981380083fa58562535a977a20d69",
+          "rgbaSha256": "ef45252fe5b12a1f6c7d63ff436e2f20eb30c27f4630e3fc86b1b9eaee9f987e",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.625
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.375
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-covered-blue-1x.png",
+          "encodedSha256": "6f81fb25c2d82cb14ce4d7af4f852d08dc9a64fa6003d141016fc2bc43e5ee9a",
+          "rgbaSha256": "ab17274065f764624028471852189cf5bbc4a5ae6d72ccf1c94a22b712d14af8",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              219,
+              167,
+              187,
+              255
+            ],
+            "right": [
+              223,
+              195,
+              213,
+              255
+            ],
+            "top": [
+              223,
+              156,
+              174,
+              255
+            ],
+            "bottom": [
+              230,
+              212,
+              226,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-single-2x.png",
+          "encodedSha256": "dec41fc6d9ddb07d3e076c55a39a5e417e261e74481f3c6676d89f4ce0c28ed5",
+          "rgbaSha256": "c6f56862ab1976188f9aa5f657574ccf7d70b99bfe57cb9e43bee94272bc53c3",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/browser/polygon-rect-opacity-half-covered-blue-2x.png",
+          "encodedSha256": "254e5a4d6116ca26b4d3f5c7413dfa109d963847d6945cbdc42a8943a5a33157",
+          "rgbaSha256": "3c4529003fb970861f7fcb9b8ec333fb18dd818a74c9470a656031c89b017404",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              230,
+              212,
+              226,
+              255
+            ],
+            "right": [
+              223,
+              156,
+              174,
+              255
+            ],
+            "top": [
+              219,
+              179,
+              199,
+              255
+            ],
+            "bottom": [
+              219,
+              179,
+              199,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "rect-alpha-one-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 52,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-alpha-one-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-opacity-half-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 26,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-opacity-half-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 28,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-alpha-one-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 52,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-alpha-one-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-opacity-half-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 26,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-opacity-half-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 28,
+          "differencesConfinedToRPerimeter": true
+        }
+      ],
+      "polygonControls": [
+        {
+          "opacity": "alpha-one",
+          "state": "single",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "single",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "covered-blue",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "covered-blue",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "single",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "single",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "covered-blue",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "covered-blue",
+          "scale": 2,
+          "identical": true
+        }
+      ]
+    },
+    {
+      "renderer": "native",
+      "report": "artifacts/css-rect-boundary/native/report.json",
+      "reportSha256": "f66588df1b16a9bd1ed0c8b480338b05ea247d53477d087a13fb6684bfe609cc",
+      "passed": 4,
+      "total": 8,
+      "captures": [
+        {
+          "name": "rect-alpha-one-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/000-case.png",
+          "encodedSha256": "b26c2b64a5451878bf59853a3af490527de0d7e5b1b14a77cc86d89be7337e16",
+          "rgbaSha256": "8dafd475dce713c7229402898acd713a6f92cc64562c05c1e499b4d098a6f7c6",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.6233183856502242
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.37668161434977576
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            }
+          }
+        },
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/001-case.png",
+          "encodedSha256": "e55d27807e3c58cfda06d15eec31009cd99ccbdd80f9bb5f8ff88f5530cffd2d",
+          "rgbaSha256": "341171cab3f803229e5d06e61a411657d60b68207ef8791b7531c63156240687",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              184,
+              78,
+              118,
+              255
+            ],
+            "right": [
+              191,
+              134,
+              170,
+              255
+            ],
+            "top": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "bottom": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-alpha-one-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/002-case.png",
+          "encodedSha256": "7a2c0527b7fffca741c4fecada37feb8d71135aba4fa02cd569c7a5d0ce58a4a",
+          "rgbaSha256": "4ab38c9b11566825a5b865cc9ef4eb75d8802b0adab860ab7d64af00a2659454",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "right": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "top": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "bottom": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            }
+          }
+        },
+        {
+          "name": "rect-alpha-one-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/003-case.png",
+          "encodedSha256": "21c38e06bf5abe8123b26b7ee538d50d354f3cb163f0efbb9d4616babc24d307",
+          "rgbaSha256": "4c4f9162cac2cc85599fa0cb3090ae77cfd75ecffeb22be1219c5bda4b9c7fa6",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "right": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "top": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "bottom": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-opacity-half-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/004-case.png",
+          "encodedSha256": "24202cc00a998bbabc49fb1be794e63c28bd47783fb84a6a2d7ef0a2eb013942",
+          "rgbaSha256": "00e1743e952966f42b2abf601a518547bc51dfd2e4b4e76bba68cfee828ba191",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.625
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.375
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            }
+          }
+        },
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/005-case.png",
+          "encodedSha256": "24202cc00a998bbabc49fb1be794e63c28bd47783fb84a6a2d7ef0a2eb013942",
+          "rgbaSha256": "00e1743e952966f42b2abf601a518547bc51dfd2e4b4e76bba68cfee828ba191",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "rect-opacity-half-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/006-case.png",
+          "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+          "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            }
+          }
+        },
+        {
+          "name": "rect-opacity-half-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/007-case.png",
+          "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+          "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/008-case.png",
+          "encodedSha256": "b26c2b64a5451878bf59853a3af490527de0d7e5b1b14a77cc86d89be7337e16",
+          "rgbaSha256": "8dafd475dce713c7229402898acd713a6f92cc64562c05c1e499b4d098a6f7c6",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              236,
+              116,
+              126,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.6233183856502242
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.37668161434977576
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/009-case.png",
+          "encodedSha256": "e55d27807e3c58cfda06d15eec31009cd99ccbdd80f9bb5f8ff88f5530cffd2d",
+          "rgbaSha256": "341171cab3f803229e5d06e61a411657d60b68207ef8791b7531c63156240687",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              184,
+              78,
+              118,
+              255
+            ],
+            "right": [
+              191,
+              134,
+              170,
+              255
+            ],
+            "top": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "bottom": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/010-case.png",
+          "encodedSha256": "7a2c0527b7fffca741c4fecada37feb8d71135aba4fa02cd569c7a5d0ce58a4a",
+          "rgbaSha256": "4ab38c9b11566825a5b865cc9ef4eb75d8802b0adab860ab7d64af00a2659454",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "right": [
+              232,
+              88,
+              100,
+              255
+            ],
+            "top": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "bottom": [
+              239,
+              143,
+              151,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25112107623318386
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.7488789237668162
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5022421524663677
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-alpha-one-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/011-case.png",
+          "encodedSha256": "21c38e06bf5abe8123b26b7ee538d50d354f3cb163f0efbb9d4616babc24d307",
+          "rgbaSha256": "4c4f9162cac2cc85599fa0cb3090ae77cfd75ecffeb22be1219c5bda4b9c7fa6",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              205,
+              169,
+              197,
+              255
+            ],
+            "right": [
+              190,
+              58,
+              94,
+              255
+            ],
+            "top": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "bottom": [
+              183,
+              104,
+              143,
+              255
+            ],
+            "interior": [
+              224,
+              32,
+              48,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-single",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/012-case.png",
+          "encodedSha256": "24202cc00a998bbabc49fb1be794e63c28bd47783fb84a6a2d7ef0a2eb013942",
+          "rgbaSha256": "00e1743e952966f42b2abf601a518547bc51dfd2e4b4e76bba68cfee828ba191",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.625,
+              "inferredFromGreen": 0.625
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.375,
+              "inferredFromGreen": 0.375
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "scale": 1,
+          "file": "artifacts/css-rect-boundary/native/013-case.png",
+          "encodedSha256": "24202cc00a998bbabc49fb1be794e63c28bd47783fb84a6a2d7ef0a2eb013942",
+          "rgbaSha256": "00e1743e952966f42b2abf601a518547bc51dfd2e4b4e76bba68cfee828ba191",
+          "paintedBoundsInclusive": {
+            "left": 72,
+            "top": 56,
+            "right": 256,
+            "bottom": 176
+          },
+          "nonwhitePixels": 22385,
+          "subjectPixels": 21777,
+          "intermediatePixels": 608,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              245,
+              185,
+              190,
+              255
+            ],
+            "right": [
+              249,
+              213,
+              216,
+              255
+            ],
+            "top": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "bottom": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-single",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/014-case.png",
+          "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+          "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          },
+          "straightEdgeCoverage": {
+            "left": {
+              "expectedGeometricCoverage": 0.25,
+              "inferredFromGreen": 0.25
+            },
+            "right": {
+              "expectedGeometricCoverage": 0.75,
+              "inferredFromGreen": 0.75
+            },
+            "top": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            },
+            "bottom": {
+              "expectedGeometricCoverage": 0.5,
+              "inferredFromGreen": 0.5
+            }
+          }
+        },
+        {
+          "name": "polygon-rect-opacity-half-covered-blue",
+          "scale": 2,
+          "file": "artifacts/css-rect-boundary/native/015-case.png",
+          "encodedSha256": "27295e75933c2e52ad2db737979e047e63e41b6c093d653e6dac4a50d6ea2aa4",
+          "rgbaSha256": "da49bbc0f80d0414bf7dd3f983bbc9f428215730f6a46bccd097898cc538b717",
+          "paintedBoundsInclusive": {
+            "left": 144,
+            "top": 112,
+            "right": 512,
+            "bottom": 352
+          },
+          "nonwhitePixels": 88929,
+          "subjectPixels": 87713,
+          "intermediatePixels": 1216,
+          "allOutsideBoundsWhite": true,
+          "fullInteriorMatchesSubject": true,
+          "edgeSamples": {
+            "left": [
+              251,
+              227,
+              229,
+              255
+            ],
+            "right": [
+              243,
+              171,
+              177,
+              255
+            ],
+            "top": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "bottom": [
+              247,
+              199,
+              203,
+              255
+            ],
+            "interior": [
+              239,
+              143,
+              151,
+              255
+            ]
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "rect-alpha-one-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 55,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-alpha-one-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-opacity-half-1x",
+          "scale": 1,
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "rect-opacity-half-2x",
+          "scale": 2,
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-alpha-one-1x",
+          "scale": 1,
+          "identical": false,
+          "differingPixels": 608,
+          "differingPixelsOverTwo": 608,
+          "maxChannelDifference": 55,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-alpha-one-2x",
+          "scale": 2,
+          "identical": false,
+          "differingPixels": 1216,
+          "differingPixelsOverTwo": 1216,
+          "maxChannelDifference": 56,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-opacity-half-1x",
+          "scale": 1,
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "differencesConfinedToRPerimeter": true
+        },
+        {
+          "name": "polygon-rect-opacity-half-2x",
+          "scale": 2,
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "differencesConfinedToRPerimeter": true
+        }
+      ],
+      "polygonControls": [
+        {
+          "opacity": "alpha-one",
+          "state": "single",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "single",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "covered-blue",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "alpha-one",
+          "state": "covered-blue",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "single",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "single",
+          "scale": 2,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "covered-blue",
+          "scale": 1,
+          "identical": true
+        },
+        {
+          "opacity": "opacity-half",
+          "state": "covered-blue",
+          "scale": 2,
+          "identical": true
+        }
+      ]
+    }
+  ],
+  "binary": {
+    "receipt": "artifacts/css-rect-boundary/native-binary.json",
+    "binary": ".cache/opacity-output-checkpoint/ownership-probe",
+    "sha256": "8802b1fdcea6b3fa5d06fb8500c4f6be3ed2d19957dc21faf9afe0ac16867f04",
+    "reason": "Frozen after broad cargo --tests rebuilt debug executables; initial captures retain their original recorded identity.",
+    "originalCaptureSha256": "84e852d9d9b263d8065ed620e9db1bd9a1564c4d1fc9e395f0c1479c58125da4",
+    "verifiedFrozenFile": true
+  },
+  "gpu": {
+    "metalValidationObserved": true,
+    "perCasePaintCalls": 1,
+    "perCaseErrorsEmpty": true,
+    "nativeDeviceAndQueueIdentityChecked": true
+  },
+  "regeneratedReports": [
+    {
+      "report": "artifacts/css-rect-boundary/browser-invariants.json",
+      "sha256": "e22a9f29825388f7162dbfa80f88ef6572be3a1eb8cf5ff973a49149cbf9a118",
+      "byteIdentical": true,
+      "exitCode": 1
+    },
+    {
+      "report": "artifacts/css-rect-boundary/native-invariants.json",
+      "sha256": "e0e5cb62bb09bdf39e1faf8d9a480b949263d38e215f64e87691f45de9202a1c",
+      "byteIdentical": true,
+      "exitCode": 1
+    },
+    {
+      "report": "artifacts/css-rect-boundary/comparison.json",
+      "sha256": "1750851b17fe6edb7dd62b24ecc1de3f514853d52af8a143326ed897bc75ac12",
+      "byteIdentical": true,
+      "exitCode": 1
+    }
+  ],
+  "sourceAndReportSha256": {
+    "fixtures/opacity-css-rect/index.html": "3bc311884694bf8de69bd820e595f62b65bef9868430b3ab3fe572f15a7edba4",
+    "fixtures/opacity-css-rect/fixture.js": "80c6ad1905e6f1981d3cb157b9d2b179b340ca8f91f7c0189133f6449163c598",
+    "fixtures/opacity-css-rect/cases.json": "678aaef2daec30f274c3bcac386383a4ff45370be4be2f2646d1eb385b4890d7",
+    "fixtures/opacity-css-rect/invariants.json": "6e5e12c7e2a454353602dd8a6c13c529cc1ac1d661bed1e6c8282692092e6edc",
+    "experiments/dom-canvas/compare-clip-invariants.mjs": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc",
+    "experiments/dom-canvas/compare-clips.mjs": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "scripts/compatibility/paint-colors.mjs": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258",
+    "artifacts/css-rect-boundary/browser/report.json": "58240542dcdb595f786367f5b6c435642dd46e8451f1163ec7a5835c19f468ad",
+    "scripts/compatibility/paint-reference.mjs": "d29ac85247af1f072186311a18eb9be8da30d774068d9c6aed93f415a48e74f7",
+    "scripts/compatibility/browser-session.mjs": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a",
+    "scripts/compatibility/fixture-server.mjs": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980",
+    "artifacts/css-rect-boundary/native/report.json": "f66588df1b16a9bd1ed0c8b480338b05ea247d53477d087a13fb6684bfe609cc",
+    "artifacts/css-rect-boundary/native-binary.json": "d2b29efefa2ae80a7767c4eae2df1e77104f3b08c423d3cae312239de643b064",
+    "artifacts/css-rect-boundary/native.txt": "6b38f2ab051c55f02d2eba6645763e396b83ee1f75c72fb2bfca51f00e35f8d0",
+    "artifacts/css-rect-boundary/browser-invariants.json": "e22a9f29825388f7162dbfa80f88ef6572be3a1eb8cf5ff973a49149cbf9a118",
+    "artifacts/css-rect-boundary/native-invariants.json": "e0e5cb62bb09bdf39e1faf8d9a480b949263d38e215f64e87691f45de9202a1c",
+    "artifacts/css-rect-boundary/comparison.json": "1750851b17fe6edb7dd62b24ecc1de3f514853d52af8a143326ed897bc75ac12"
+  },
+  "interpretation": [
+    "Chrome is noninvariant in all eight groups; native is invariant in the four half-opacity groups and noninvariant in the four alpha-one groups. Native 4/8 is a captured classification disagreement, not a browser-compatibility improvement.",
+    "The with-P and without-P PNGs are identical for every state/scale in each renderer. R alone supplies the observed boundary.",
+    "All pair differences are on R perimeter pixels; no interior or outside-bound changes were observed.",
+    "Measured straight-edge color samples are consistent with the fractional translation within two channel levels; corner antialias behavior can still differ between rasterizers.",
+    "This is neither full antialias parity nor evidence that a nonidentical pair by itself violates a standard."
+  ],
+  "documentationNote": "Fixture README still said capture had not occurred at audit time; source/capture evidence above is current."
+}

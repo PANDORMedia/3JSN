@@ -1,0 +1,112 @@
+[
+  {
+    "fixture": "clip-edges",
+    "cases": 22,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/candidate/clip-edges/report.json",
+    "priorReportSha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+    "reportSha256": "edc9fe7c27dc982aa644d5b934ce22f2cd9d696ecab9e2915828ac643fad3f5a",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "opacity-output",
+    "cases": 26,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/candidate/opacity-output/report.json",
+    "priorReportSha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+    "reportSha256": "86ef9e42433c35ebe58d9526253492f930d698ec4d1f4c0bfde79a2e946bab9d",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "paint-ownership",
+    "cases": 18,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-ownership/report.json",
+    "priorReportSha256": "61304bb95dedd0ae7a472cfe17e8a77333ab96118ac9435f556457852441cd7d",
+    "reportSha256": "61304bb95dedd0ae7a472cfe17e8a77333ab96118ac9435f556457852441cd7d",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "effect-clip-routing",
+    "cases": 14,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/effect-clip-routing/report.json",
+    "priorReportSha256": "6a5dec662625977776f42f46f04ef1a79a2a321e084eadceaf8fc723f54c58ef",
+    "reportSha256": "6a5dec662625977776f42f46f04ef1a79a2a321e084eadceaf8fc723f54c58ef",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "auto-paint",
+    "cases": 17,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/auto-paint/report.json",
+    "priorReportSha256": "3660c4cbe20168f1f774d4c42b6a242b942db45a50506e20a9670879f550c4c1",
+    "reportSha256": "3660c4cbe20168f1f774d4c42b6a242b942db45a50506e20a9670879f550c4c1",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "paint-order",
+    "cases": 20,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/paint-order/report.json",
+    "priorReportSha256": "8f92bf298f467d3f32a7b85e5d341e1af3a57ee5d38629e377a81fb45e6169a4",
+    "reportSha256": "8f92bf298f467d3f32a7b85e5d341e1af3a57ee5d38629e377a81fb45e6169a4",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "initial-containing-block",
+    "cases": 21,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/initial-containing-block/report.json",
+    "priorReportSha256": "326c3025f07c513c39583dd9463cfb3644d9bd98b152a01c5f25a0649b55681d",
+    "reportSha256": "326c3025f07c513c39583dd9463cfb3644d9bd98b152a01c5f25a0649b55681d",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "positioned-layout",
+    "cases": 14,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/positioned-layout/report.json",
+    "priorReportSha256": "ddecc0e6433aa859cc7acfcf7ac16fa8adf40d518fc2aab7bbf962ce8c9fcbba",
+    "reportSha256": "ddecc0e6433aa859cc7acfcf7ac16fa8adf40d518fc2aab7bbf962ce8c9fcbba",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "overflow-paint",
+    "cases": 22,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/overflow-paint/report.json",
+    "priorReportSha256": "bbe5ae6c529f229c76149cf191867bfb438e0bb704934d354a6b7923d0850bb2",
+    "reportSha256": "bbe5ae6c529f229c76149cf191867bfb438e0bb704934d354a6b7923d0850bb2",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  },
+  {
+    "fixture": "ownership-render",
+    "cases": 16,
+    "allCasePayloadsUnchanged": true,
+    "allPngFilesByteIdentical": true,
+    "priorReport": "docs/validation/2026-09-18-opacity-output/regression/ownership/ownership-render/report.json",
+    "priorReportSha256": "424e60dfc6bd24b9ab2d4ba00ef9cd8e500c349edb53f0a1e6f160e44568f213",
+    "reportSha256": "424e60dfc6bd24b9ab2d4ba00ef9cd8e500c349edb53f0a1e6f160e44568f213",
+    "binarySha256": "85742ec2efcdd5e517a7ca8de6a40534fd248f04afb01c4366a5414a6ac8a86a",
+    "metalValidationObserved": true
+  }
+]

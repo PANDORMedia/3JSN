@@ -1,0 +1,85 @@
+{
+  "baselineCommit": "9987d894cdd61a1b80eb756c1bef9d0f0b73d8a9",
+  "files": [
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-dom/src/node/node.rs",
+      "sha256": "b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24"
+    },
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-paint/src/lib.rs",
+      "sha256": "9d0f391a00c4539c59e14508bc356ca7e8e6923b194947442a66141e862c8760"
+    },
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-paint/src/render/clip_path.rs",
+      "sha256": "659d27be9a16c433140cddd887c9dbb2838089df5298767b14486d1639dff8c4"
+    },
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-paint/src/render/ownership.rs",
+      "sha256": "dc7079bcd929b6657682e9f98c170448a2465c6350134f86540655404fabc5ef"
+    },
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-paint/src/render/ownership_clips.rs",
+      "sha256": "74f7e79fb835d909e379281de4efecff610d9d65feb10887ada311420941750b"
+    },
+    {
+      "path": ".cache/css-rect-effect-full/modified/packages/blitz-paint/src/render.rs",
+      "sha256": "e18f773798fd56632c2f4a6b5b838fefa83825523662ac73dc96d1cc5518b967"
+    },
+    {
+      "path": ".cache/positioned-candidate/probe/Cargo.lock",
+      "sha256": "0aef17fce6d078514e9536204cbeddb6d80d54ff5bc136dcb569fd0508882e90"
+    },
+    {
+      "path": ".cache/positioned-candidate/probe/Cargo.toml",
+      "sha256": "34bdbbeec951f8fb0255f7f94d72f6eff24879226e3ade642f86b2e5d1bf8cac"
+    },
+    {
+      "path": "experiments/dom-canvas/compare-clip-invariants.mjs",
+      "sha256": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc"
+    },
+    {
+      "path": "experiments/dom-canvas/compare-clips.mjs",
+      "sha256": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/blitz-ownership-renderer.patch",
+      "sha256": "0ab8d2a3d427787d6468cd6ae329100e19bf3b614473b6d2c744b120fdfde8cb"
+    },
+    {
+      "path": "experiments/dom-canvas/prepare-positioned.mjs",
+      "sha256": "7ea82491a946226dcf09ba49fc7002046c0a017a69a4940705504f383c14fbc6"
+    },
+    {
+      "path": "experiments/dom-canvas/src/ownership_render/css_rect_effect_tests.rs",
+      "sha256": "6267ba7969a680db48568a98e842dccfc6753d5cba729ef09790f990b6f5a6b1"
+    },
+    {
+      "path": "experiments/dom-canvas/src/ownership_render_tests.rs",
+      "sha256": "580fa4e909f07ad8449041dd15986ef32d1087e7bdc93824b44ec99ab60cf80e"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/README.md",
+      "sha256": "b24fdf4245cb4a9e434da6d889f5bc2f31ebc09aa0a4b586568e14303851701c"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/cases.json",
+      "sha256": "678aaef2daec30f274c3bcac386383a4ff45370be4be2f2646d1eb385b4890d7"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/fixture.js",
+      "sha256": "80c6ad1905e6f1981d3cb157b9d2b179b340ca8f91f7c0189133f6449163c598"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/index.html",
+      "sha256": "3bc311884694bf8de69bd820e595f62b65bef9868430b3ab3fe572f15a7edba4"
+    },
+    {
+      "path": "fixtures/opacity-css-rect/invariants.json",
+      "sha256": "6e5e12c7e2a454353602dd8a6c13c529cc1ac1d661bed1e6c8282692092e6edc"
+    },
+    {
+      "path": "scripts/compatibility/paint-reference.mjs",
+      "sha256": "d29ac85247af1f072186311a18eb9be8da30d774068d9c6aed93f415a48e74f7"
+    }
+  ]
+}

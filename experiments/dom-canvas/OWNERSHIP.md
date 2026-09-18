@@ -6,7 +6,7 @@ and element drawing primitives. The default prepared renderer is unchanged.
 This is a bounded paint experiment, not the shipping HTML backend.
 
 The [initial validation](../../docs/validation/2026-09-18-ownership-renderer.md)
-and [opacity-output checkpoint](../../docs/validation/2026-09-18-opacity-output.md)
+and [CSS rect effect checkpoint](../../docs/validation/2026-09-18-css-rect-effect.md)
 record browser comparisons and remaining gates. The public entry returns
 `Result<PaintStats, OwnershipPaintError>`; failures distinguish plan, clip,
 unsupported-content and layer-budget errors. It never falls back to legacy paint.
@@ -41,8 +41,10 @@ This is a bounded compatibility policy, not a universal cross-browser rule.
 At an existing group with `0 < opacity < 1`, preparation finds the longest common
 prefix of its decoration route and both routes of every entry in its paint-owned
 subtree. The fold includes every paint phase, nested groups, hidden entries and
-zero-opacity entries conservatively. The decoration cap prevents the owner's
-later overflow or replaced-content clip from becoming an output clip. Comparison
+zero-opacity entries conservatively. The output prefix is capped at the route
+after the owner's clip-path and before its CSS rect, overflow or replaced-content
+clip. Those later clips remain local; incoming ancestor clips remain eligible.
+The uncapped summary is retained for enclosing groups. Comparison
 uses frame-local shared-object identity (`Arc::ptr_eq`) and order, not equal paths.
 
 That prefix surrounds the existing viewport-bounded opacity layer. Contributions
@@ -85,7 +87,12 @@ match each other. The earlier 22-case clip-edge set remains 22/22 for geometry a
 interiors, while native exact invariance improves from 0/9 to 3/9. All 142 earlier
 case payloads remain unchanged in each traversal.
 
-Validation includes 76 host tests (42 layout, 5 budget, 29 ownership), 18 private
+The own-CSS-rect follow-up retains all 190 earlier case payloads and PNGs exactly.
+Its 16 captures match uniform interiors but retain four transformed-CSSOM query
+differences per case. All eight within-renderer groups are noninvariant, matching
+Chrome's classification; this does not assert equal edge colors.
+
+Validation includes 79 host tests (42 layout, 5 budget, 32 ownership), 22 private
 painter tests and 36 Node tests. These checks and the GPU captures establish the
 bounded change, not a speedup, memory bound or complete clip-edge parity.
 
@@ -110,10 +117,9 @@ bounded change, not a speedup, memory bound or complete clip-edge parity.
   pixels with maximum channel delta 1, while the new native pair is exact. Neither
   result establishes cross-renderer antialias equality. Current white-background
   captures provide RGB composition evidence, not varying-alpha validation.
-- An element's own CSS `clip:rect(...)` combined with fractional opacity still
-  needs an edge-composition control. Existing command and geometry tests do not
-  establish whether promoting that clip outside its opacity effect preserves
-  the browser's composition boundary.
+- Live DPR changes on a resolved box-only document can retain stale transform
+  and overflow caches. Fresh-document DPR 1/2 clipping tests do not validate a
+  display-scale transition; the checkpoint preserves the failing observation.
 - Hit testing still consumes the older lists and lacks these clip routes. DOM
   geometry, scrolling, native presentation, other GPU backends and performance
   remain separate adoption gates.

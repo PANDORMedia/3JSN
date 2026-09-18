@@ -1,0 +1,13 @@
+┌─────────┬────────────────────────────────┬───────┬───────────┬─────────────────┐
+│ (index) │ group                          │ scale │ identical │ differingPixels │
+├─────────┼────────────────────────────────┼───────┼───────────┼─────────────────┤
+│ 0       │ 'rect-alpha-one-1x'            │ 1     │ false     │ 608             │
+│ 1       │ 'rect-alpha-one-2x'            │ 2     │ false     │ 1216            │
+│ 2       │ 'rect-opacity-half-1x'         │ 1     │ false     │ 608             │
+│ 3       │ 'rect-opacity-half-2x'         │ 2     │ false     │ 1216            │
+│ 4       │ 'polygon-rect-alpha-one-1x'    │ 1     │ false     │ 608             │
+│ 5       │ 'polygon-rect-alpha-one-2x'    │ 2     │ false     │ 1216            │
+│ 6       │ 'polygon-rect-opacity-half-1x' │ 1     │ false     │ 608             │
+│ 7       │ 'polygon-rect-opacity-half-2x' │ 2     │ false     │ 1216            │
+└─────────┴────────────────────────────────┴───────┴───────────┴─────────────────┘
+PARTIAL: 0/8 declared image-invariance groups.

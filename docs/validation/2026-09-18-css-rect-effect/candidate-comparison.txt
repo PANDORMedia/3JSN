@@ -1,0 +1,21 @@
+┌─────────┬──────────────────────────────────────────┬───────┬─────────────────────┬─────────────────────┬───────┐
+│ (index) │ case                                     │ scale │ interiorDifferences │ geometryDifferences │ match │
+├─────────┼──────────────────────────────────────────┼───────┼─────────────────────┼─────────────────────┼───────┤
+│ 0       │ 'rect-alpha-one-single'                  │ 1     │ 0                   │ 4                   │ false │
+│ 1       │ 'rect-alpha-one-covered-blue'            │ 1     │ 0                   │ 4                   │ false │
+│ 2       │ 'rect-alpha-one-single'                  │ 2     │ 0                   │ 4                   │ false │
+│ 3       │ 'rect-alpha-one-covered-blue'            │ 2     │ 0                   │ 4                   │ false │
+│ 4       │ 'rect-opacity-half-single'               │ 1     │ 0                   │ 4                   │ false │
+│ 5       │ 'rect-opacity-half-covered-blue'         │ 1     │ 0                   │ 4                   │ false │
+│ 6       │ 'rect-opacity-half-single'               │ 2     │ 0                   │ 4                   │ false │
+│ 7       │ 'rect-opacity-half-covered-blue'         │ 2     │ 0                   │ 4                   │ false │
+│ 8       │ 'polygon-rect-alpha-one-single'          │ 1     │ 0                   │ 4                   │ false │
+│ 9       │ 'polygon-rect-alpha-one-covered-blue'    │ 1     │ 0                   │ 4                   │ false │
+│ 10      │ 'polygon-rect-alpha-one-single'          │ 2     │ 0                   │ 4                   │ false │
+│ 11      │ 'polygon-rect-alpha-one-covered-blue'    │ 2     │ 0                   │ 4                   │ false │
+│ 12      │ 'polygon-rect-opacity-half-single'       │ 1     │ 0                   │ 4                   │ false │
+│ 13      │ 'polygon-rect-opacity-half-covered-blue' │ 1     │ 0                   │ 4                   │ false │
+│ 14      │ 'polygon-rect-opacity-half-single'       │ 2     │ 0                   │ 4                   │ false │
+│ 15      │ 'polygon-rect-opacity-half-covered-blue' │ 2     │ 0                   │ 4                   │ false │
+└─────────┴──────────────────────────────────────────┴───────┴─────────────────────┴─────────────────────┴───────┘
+PARTIAL: 0/16 cases match browser geometry and uniform interior pixels.

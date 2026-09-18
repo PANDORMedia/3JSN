@@ -1,0 +1,102 @@
+
+> 3jsn@0.0.0 test
+> node --test scripts/compatibility/*.test.mjs
+
+✔ native frames snapshot callbacks, share time, and honor cancellation during dispatch (1.039709ms)
+✖ reference runner cleans up after SIGINT during startup (99.945417ms)
+✖ reference runner cleans up after SIGTERM during command (153.417541ms)
+✔ clip invariants accept complete identical images with visible subjects (89.991167ms)
+✔ clip invariants include outermost pixels and a one-channel difference of one (91.216583ms)
+✔ clip invariants reject aliased references without intermediate colors (75.932209ms)
+✔ clip invariants report inclusive bounds and secondary counts without relaxing equality (58.671875ms)
+✔ clip invariants reject captures omitted from every comparison group (54.726167ms)
+▶ clip invariants reject stale pixels and stale fixture identity
+  ✔ pixels (53.502ms)
+  ✔ source (46.479875ms)
+✔ clip invariants reject stale pixels and stale fixture identity (100.483625ms)
+▶ clip invariants reject blank subjects, changed geometry and native GPU errors
+  ✔ blank (50.3745ms)
+  ✔ geometry (51.723417ms)
+  ✔ gpu (49.901417ms)
+✔ clip invariants reject blank subjects, changed geometry and native GPU errors (152.475875ms)
+▶ clip invariants require distinct captures at the declared scale
+  ✔ duplicate (51.788125ms)
+  ✔ scale (49.595667ms)
+✔ clip invariants require distinct captures at the declared scale (101.734625ms)
+✖ static read failures return 404 and leave the fixture service usable (15.662917ms)
+✔ paint comparison retains the default opaque subject visibility guard (94.328542ms)
+✔ paint comparison accepts declared composited color rounding (96.470667ms)
+✔ identical images with too little visible composited subject cannot pass (76.587541ms)
+✔ paint comparison rejects different subject metadata between hosts (47.218041ms)
+✔ paint comparison rejects malformed subject channels (45.212292ms)
+✔ initial profile makes no unsupported certification and evidence paths exist (8.188833ms)
+✔ probe and browser reference cannot promote a native support claim (2.392125ms)
+✔ malformed and duplicate declarations fail validation (1.764916ms)
+✔ content identity is deterministic across ordering and timestamps, with explicit exclusions (40.783125ms)
+✔ same-size edits, deletion, addition and empty directory removal are reported (22.199209ms)
+✔ exclusions are root-relative, not a blanket exclusion of nested assets (13.2265ms)
+✔ manifest tampering, traversal, duplicates and invalid hashes fail closed (5.899834ms)
+✔ malformed JSON and unsupported manifest versions retain structured read errors (5.82375ms)
+✔ contained links preserve target content and link identity without walking aliases (20.189208ms)
+✔ external, excluded, dangling and cyclic links cannot hide unmeasured content (8.733334ms)
+✔ CLI captures outside the input tree and returns preservation failure after mutation (280.5095ms)
+✔ CLI rejects output aliases into the source tree (35.631583ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 33
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 812.380334
+
+✖ failing tests:
+
+test at scripts/compatibility/browser-reference.test.mjs:59:3
+✖ reference runner cleans up after SIGINT during startup (99.945417ms)
+  AssertionError [ERR_ASSERTION]: {"error":"listen EPERM: operation not permitted 127.0.0.1","browserLogTail":""}
+
+
+  3 !== null
+
+      at TestContext.<anonymous> (file:///Users/sean/dev/3JSN/scripts/compatibility/browser-reference.test.mjs:87:16)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/compatibility/browser-reference.test.mjs:59:3
+✖ reference runner cleans up after SIGTERM during command (153.417541ms)
+  AssertionError [ERR_ASSERTION]: {"error":"listen EPERM: operation not permitted 127.0.0.1","browserLogTail":""}
+
+
+  3 !== null
+
+      at TestContext.<anonymous> (file:///Users/sean/dev/3JSN/scripts/compatibility/browser-reference.test.mjs:87:16)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/compatibility/fixture-server.test.mjs:8:1
+✖ static read failures return 404 and leave the fixture service usable (15.662917ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:1918:21)
+      at listenInCluster (node:net:1997:12)
+      at node:net:2206:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }

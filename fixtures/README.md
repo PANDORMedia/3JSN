@@ -69,7 +69,8 @@ The separate paint runner captures the [overflow](overflow-paint/README.md),
 [paint layer budget](paint-budget/README.md), and
 [ownership renderer phases and bounds](ownership-render/README.md), and
 [complete-image clip-edge controls](clip-edges/README.md), and
-[opacity-output clipping](opacity-output/README.md) matrices:
+[opacity-output clipping](opacity-output/README.md), and
+[own CSS rect effect boundaries](opacity-css-rect/README.md) matrices:
 
 ```sh
 node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-order/browser paint-order

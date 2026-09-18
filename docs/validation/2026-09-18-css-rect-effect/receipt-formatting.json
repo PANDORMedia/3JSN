@@ -1,0 +1,20 @@
+[
+  {
+    "path": "candidate-command-tests.txt",
+    "rawSha256": "2504b15177b0f4e9a293a4fd56d034e99a5e588c6451579f28991d65bccf270d",
+    "archivedSha256": "82453ffaea65b3a74de8f37c69c55f457629e03f46c2a1ad7c762fe002d31ebc",
+    "change": "trailing whitespace and final blank lines only"
+  },
+  {
+    "path": "private-command-tests.txt",
+    "rawSha256": "1f11631d041de8d6698c534459a739502b4c72e64242373097e5ea48dd6dee00",
+    "archivedSha256": "80b7e4272ca6b1b806b58cdf34341219232fab180e27991d66774619757922c6",
+    "change": "trailing whitespace and final blank lines only"
+  },
+  {
+    "path": "checks/node-tests-sandbox.txt",
+    "rawSha256": "cc20eb4a7ec26b6425d25e2dfae0c34b3fb9a79c7a2a9908a0d3625a3764affd",
+    "archivedSha256": "bbd9d0c408dfd348cf7ad9089bc5f1038c9d0928dbd73c257f5459f38b6a748a",
+    "change": "trailing whitespace and final blank lines only"
+  }
+]

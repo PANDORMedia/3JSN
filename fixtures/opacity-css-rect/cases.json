@@ -1,0 +1,154 @@
+[
+  {
+    "name": "rect-alpha-one-single",
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "rect-alpha-one-covered-blue",
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "rect-alpha-one-single",
+    "scale": 2,
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "rect-alpha-one-covered-blue",
+    "scale": 2,
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "rect-opacity-half-single",
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "rect-opacity-half-covered-blue",
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "rect-opacity-half-single",
+    "scale": 2,
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "rect-opacity-half-covered-blue",
+    "scale": 2,
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-alpha-one-single",
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-alpha-one-covered-blue",
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-alpha-one-single",
+    "scale": 2,
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-alpha-one-covered-blue",
+    "scale": 2,
+    "subjectColor": [
+      224,
+      32,
+      48,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-opacity-half-single",
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-opacity-half-covered-blue",
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-opacity-half-single",
+    "scale": 2,
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  },
+  {
+    "name": "polygon-rect-opacity-half-covered-blue",
+    "scale": 2,
+    "subjectColor": [
+      240,
+      144,
+      152,
+      255
+    ]
+  }
+]
