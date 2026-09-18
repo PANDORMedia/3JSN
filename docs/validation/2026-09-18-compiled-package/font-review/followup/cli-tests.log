@@ -1,0 +1,38 @@
+✔ real bundling emits a relocatable manifest, linked map, identities and unchanged source (77.318708ms)
+✔ package input identities use code-unit path order instead of locale collation (19.9665ms)
+✔ experimental opt-in and every unsupported or multi target fail before writing or describing (3.424958ms)
+✔ host targets and portable paths match the initial player contract (0.246583ms)
+✔ strict configuration rejects unknown fields, wrong versions/profiles and unsafe names or entries (95.547333ms)
+✔ existing empty directories, occupied directories and files are never clobbered (4.479334ms)
+✔ a destination appearing during a build survives and staging is removed (17.756416ms)
+✔ output containment rejects direct and symlink aliases into the project (3.368542ms)
+✔ entry symlinks are refused, and imported source cannot escape outside node_modules (16.500542ms)
+✔ syntax error leaves no package or staging and retains before/after preservation evidence (9.457209ms)
+✔ unresolved module leaves no package or staging and retains before/after preservation evidence (8.752917ms)
+✔ bundler warning leaves no package or staging and retains before/after preservation evidence (9.645583ms)
+✔ external URL import leaves no package or staging and retains before/after preservation evidence (11.102417ms)
+✔ source mutations during runtime inspection reject publication and retain the actual differences (16.120167ms)
+✔ cancellation after snapshot waits for cleanup and retains unchanged-source evidence (5.170125ms)
+✔ failed final source verification reports unknown preservation instead of success (5.879125ms)
+✔ runtime protocol mismatch and binary mutation fail with distinct structured errors (35.762042ms)
+✔ a parent node_modules dependency is bundled and its actual bytes are measured (52.562875ms)
+✔ computed dynamic loading remains explicitly unresolved instead of claiming compatibility (12.8065ms)
+✔ chained source maps with unmeasured originals fail explicitly instead of losing source provenance (8.571792ms)
+✔ CLI reports malformed arguments and target refusal with a nonzero JSON error (532.070958ms)
+✔ real describe subprocess uses JSON stdout and rejects malformed output or nonzero exit (498.925875ms)
+✔ compiled package replaces generated HTML payload with bounded IR and preserves original source provenance (49.069958ms)
+✔ explicit restricted mode is retained and preserved mode is never inferred from a different runtime (34.672458ms)
+✔ compiled runtime format/version/mode handshake fails before font requests or state creation (69.319375ms)
+✔ compiled preserved font opt-in localizes URLs before compilation and repeats offline byte-identically (81.492625ms)
+✔ compiled restricted font opt-in localizes URLs before compilation and repeats offline byte-identically (42.848917ms)
+✔ parser mode is explicit, compiled-profile-only, and never added as a config key (52.121ms)
+✔ compiled packaging retains existing unsupported HTML and font admission gates (38.066917ms)
+✔ a compiler limit after bundling removes staging and records source preservation (31.39725ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1558.914042

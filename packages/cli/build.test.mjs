@@ -97,6 +97,25 @@ test('real bundling emits a relocatable manifest, linked map, identities and unc
   assert.equal((await readdir(f.temporary)).some(name => name.startsWith('.3jsn-')), false);
 });
 
+test('package input identities use code-unit path order instead of locale collation', async t => {
+  const f = await fixture(t, 'import "./zeta.ts"; import "./_helper.ts"; import "./Alpha.ts";');
+  for (const name of ['zeta.ts', '_helper.ts', 'Alpha.ts']) {
+    await writeFile(join(f.project, name), `console.log(${JSON.stringify(name)});`);
+  }
+  const result = await f.build();
+  const metadata = await readJson(result.metadata);
+  assert.deepEqual(metadata.esbuild.inputs.map(input => input.path), [
+    'project/Alpha.ts', 'project/_helper.ts', 'project/main.ts', 'project/zeta.ts',
+  ]);
+  const manifest = await readJson(result.manifest);
+  assert.deepEqual(manifest.files.map(file => file.path), ['app/main.mjs', 'app/main.mjs.map']);
+  for (const input of metadata.esbuild.inputs) {
+    const bytes = await readFile(join(f.project, input.path.slice('project/'.length)));
+    assert.equal(input.sha256, hash(bytes));
+    assert.equal(input.bytes, bytes.length);
+  }
+});
+
 test('experimental opt-in and every unsupported or multi target fail before writing or describing', async t => {
   const f = await fixture(t);
   const names = await readdir(f.temporary);

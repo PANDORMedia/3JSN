@@ -3,6 +3,13 @@ use serde_json::{Value, json};
 
 const UI: &[u8] = b"{\"opaqueRuntimeData\":true}\n";
 
+fn assert_manifest_error(error: PackageError, expected: &str) {
+    match error {
+        PackageError::Manifest(message) => assert_eq!(message, expected),
+        other => panic!("expected manifest error {expected:?}, got {other:?}"),
+    }
+}
+
 pub(super) fn manifest(fixture: &Fixture, mode: HtmlParserMode, resources: bool) -> Value {
     let mut value = if resources {
         fixture.font_manifest()
@@ -81,12 +88,18 @@ fn compiled_transport_metadata_is_bounded_but_not_runtime_format_validation() {
         let mut value = valid.clone();
         value["compiledUi"]["format"] = json!(format);
         let manifest: Manifest = serde_json::from_value(value).unwrap();
-        assert!(compiled::validate(&manifest, HtmlParserMode::Preserved).is_err());
+        assert_manifest_error(
+            compiled::validate(&manifest, HtmlParserMode::Preserved).unwrap_err(),
+            "compiled UI requires an ASCII format identifier of 1–128 bytes and a positive version",
+        );
     }
     let mut value = valid;
     value["compiledUi"]["version"] = json!(0);
     let manifest: Manifest = serde_json::from_value(value).unwrap();
-    assert!(compiled::validate(&manifest, HtmlParserMode::Preserved).is_err());
+    assert_manifest_error(
+        compiled::validate(&manifest, HtmlParserMode::Preserved).unwrap_err(),
+        "compiled UI requires an ASCII format identifier of 1–128 bytes and a positive version",
+    );
 }
 
 #[test]
@@ -102,7 +115,9 @@ fn parser_modes_are_exact_requirements_and_resources_reuse_existing_capability()
         };
         assert!(matches!(
             compiled::validate(&descriptor, other),
-            Err(PackageError::Incompatible { .. })
+            Err(PackageError::Incompatible { required, actual })
+                if required == format!("HTML parser mode {}", mode.as_str())
+                    && actual == format!("HTML parser mode {}", other.as_str())
         ));
         validate_resources(&descriptor, Profile::CompiledDomWindow(mode)).unwrap();
         assert_eq!(
@@ -116,7 +131,10 @@ fn parser_modes_are_exact_requirements_and_resources_reuse_existing_capability()
         ] {
             value["requires"] = requirements;
             let descriptor: Manifest = serde_json::from_value(value.clone()).unwrap();
-            assert!(validate_resources(&descriptor, Profile::CompiledDomWindow(mode)).is_err());
+            assert_manifest_error(
+                validate_resources(&descriptor, Profile::CompiledDomWindow(mode)).unwrap_err(),
+                "resources require the dom-package-fonts-v1 DOM capability",
+            );
         }
     }
 }
@@ -153,7 +171,7 @@ fn compiled_ui_and_web_font_bytes_survive_relocation_and_later_disk_changes() {
 
 #[cfg(target_os = "macos")]
 #[test]
-fn compiled_profile_rejects_cross_profile_modes_and_conflicting_roles() {
+fn compiled_profile_rejects_cross_profiles_and_invalid_descriptors_with_specific_errors() {
     let fixture = Fixture::new();
     let mode = HtmlParserMode::Preserved;
     let valid = manifest(&fixture, mode, false);
@@ -175,43 +193,63 @@ fn compiled_profile_rejects_cross_profile_modes_and_conflicting_roles() {
         } else {
             Profile::DomWindow
         };
-        assert!(load_for(&fixture.write(&value), expected).is_err());
+        assert_manifest_error(
+            load_for(&fixture.write(&value), expected).unwrap_err(),
+            if profile == PROFILE {
+                "native-window-v1 does not accept HTML, compiled UI or font fields"
+            } else {
+                "dom-window-v1 requires HTML and font fields and no compiled UI"
+            },
+        );
     }
+    let incomplete = "compiled-dom-window-v1 requires compiled UI and font fields and no HTML";
     let mut cases = Vec::new();
     for field in ["compiledUi", "font"] {
         let mut value = valid.clone();
         value.as_object_mut().unwrap().remove(field);
-        cases.push(value);
+        cases.push((value, incomplete.to_owned()));
     }
     let mut value = valid.clone();
     value["html"] = json!("app/index.html");
-    cases.push(value);
-    for path in [
-        "../ui.json",
-        "app/../ui.json",
-        "app/main.mjs",
-        "app/font.woff2",
-        "app/missing.json",
-        "app/ui.txt",
-        "app/UI.json",
-    ] {
+    cases.push((value, incomplete.to_owned()));
+    for path in ["../ui.json", "app/../ui.json"] {
         let mut value = valid.clone();
         value["compiledUi"]["path"] = json!(path);
-        cases.push(value);
+        cases.push((
+            value,
+            format!("expected a portable path under app/: {path:?}"),
+        ));
+    }
+    // These listed paths fail the suffix rule; no separate role-collision branch exists.
+    for path in ["app/main.mjs", "app/font.woff2"] {
+        let mut value = valid.clone();
+        value["compiledUi"]["path"] = json!(path);
+        cases.push((
+            value,
+            "compiled DOM package requires .json and .woff2 paths".into(),
+        ));
+    }
+    for path in ["app/missing.json", "app/ui.txt", "app/UI.json"] {
+        let mut value = valid.clone();
+        value["compiledUi"]["path"] = json!(path);
+        cases.push((value, "compiled UI and font must be listed in files".into()));
     }
     let mut value = valid.clone();
     let mut duplicate = value["files"].as_array().unwrap().last().unwrap().clone();
     duplicate["path"] = json!("app/UI.json");
     value["files"].as_array_mut().unwrap().push(duplicate);
-    cases.push(value);
+    cases.push((value, "duplicate package path: app/UI.json".into()));
     let mut value = valid;
     value["requires"] = json!([DOM_FONT_CAPABILITY]);
     value["resources"] = json!([{"path":"app/ui.json", "kind":"stylesheet"}]);
-    cases.push(value);
-    for value in cases {
-        assert!(
-            load_for(&fixture.write(&value), Profile::CompiledDomWindow(mode)).is_err(),
-            "accepted {value}"
+    cases.push((
+        value,
+        "resource paths must be distinct from entry, HTML, compiled UI and fallback font".into(),
+    ));
+    for (value, message) in cases {
+        assert_manifest_error(
+            load_for(&fixture.write(&value), Profile::CompiledDomWindow(mode)).unwrap_err(),
+            &message,
         );
     }
 }
@@ -233,12 +271,13 @@ fn compiled_payload_requires_hash_size_and_existence() {
     value["files"].as_array_mut().unwrap().last_mut().unwrap()["bytes"] = json!(UI.len() + 1);
     assert!(matches!(
         load_for(&fixture.write(&value), profile),
-        Err(PackageError::Integrity(_))
+        Err(PackageError::Integrity(path)) if path == "app/ui.json"
     ));
     fs::remove_file(&ui_path).unwrap();
     assert!(matches!(
         load_for(&manifest_path, profile),
-        Err(PackageError::Io { .. })
+        Err(PackageError::Io { path, source })
+            if path == ui_path && source.kind() == io::ErrorKind::NotFound
     ));
 }
 

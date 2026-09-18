@@ -146,3 +146,11 @@ consumption. Strict package and scoped runtime Clippy pass in both modes.
 record the pre-commit source identities. No GPU run was needed or claimed for
 this byte-ownership correction. HTML/module reopening remains governed by the
 existing documented quiescent-package contract.
+
+The smaller review followups also remove an unreachable role-path collision
+check, assert the specific rejection reasons, and replace locale-sensitive path
+sorting with code-unit ordering. A real bundle with mixed-case/underscore paths
+fails the old ordering assertion and passes the correction. Thirty CLI tests,
+eight compiled-package tests and strict package Clippy pass for this followup;
+[raw logs and identities](2026-09-18-compiled-package/font-review/followup/receipt.json)
+are retained separately from the font checks.
