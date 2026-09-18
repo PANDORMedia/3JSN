@@ -1,0 +1,281 @@
+--- a/packages/blitz-paint/src/render.rs
++++ b/packages/blitz-paint/src/render.rs
+@@ -44,6 +44,104 @@
+ use peniko::{self, Fill, ImageData, ImageSampler};
+ use style::values::generics::color::GenericColor;
+ use taffy::Layout;
++
++#[derive(Debug, PartialEq, Eq)]
++pub(crate) enum UnsupportedHoistedClip {
++    MissingNode(NodeId),
++    MissingStyle(NodeId),
++    DisconnectedLayoutPath,
++    AbsoluteContainingBlockEscape(NodeId),
++    FixedContainingBlock(NodeId),
++    StickyPosition(NodeId),
++    Containment(NodeId),
++    UnexpectedStackingAncestor(NodeId),
++    OverflowAxes(NodeId),
++    TransformedScrolling,
++}
++
++pub(crate) struct HoistedClipPlan {
++    parent_transform: Affine,
++    cull_rect: Rect,
++    clips: Vec<(Affine, kurbo::BezPath)>,
++}
++
++/// Generated box ancestors skipped by painting, ordered outermost first.
++pub(crate) fn hoisted_layout_path(
++    dom: &BaseDocument,
++    root: NodeId,
++    child: NodeId,
++) -> Result<Vec<NodeId>, UnsupportedHoistedClip> {
++    let mut path = Vec::new();
++    let mut next = dom
++        .get_node(child)
++        .ok_or(UnsupportedHoistedClip::MissingNode(child))?
++        .layout_parent
++        .get();
++    while let Some(id) = next {
++        if id == root {
++            path.reverse();
++            return Ok(path);
++        }
++        let node = dom
++            .get_node(id)
++            .ok_or(UnsupportedHoistedClip::MissingNode(id))?;
++        path.push(id);
++        next = node.layout_parent.get();
++    }
++    Err(UnsupportedHoistedClip::DisconnectedLayoutPath)
++}
++
++/// Validate ownership below the outermost restored clip. That clip owner's own
++/// placement is outside this test: the repair consumes its existing layout.
++pub(crate) fn validate_hoisted_clip_ownership(
++    dom: &BaseDocument,
++    child: NodeId,
++    outermost_clip: Option<NodeId>,
++) -> Result<(), UnsupportedHoistedClip> {
++    use style::computed_values::position::T as Position;
++    let mut next = Some(child);
++    while let Some(id) = next {
++        if Some(id) == outermost_clip {
++            return Ok(());
++        }
++        let node = dom
++            .get_node(id)
++            .ok_or(UnsupportedHoistedClip::MissingNode(id))?;
++        let styles = node
++            .primary_styles()
++            .ok_or(UnsupportedHoistedClip::MissingStyle(id))?;
++        if styles
++            .get_box()
++            .clone_contain()
++            .intersects(Contain::LAYOUT | Contain::PAINT)
++        {
++            return Err(UnsupportedHoistedClip::Containment(id));
++        }
++        match styles.clone_position() {
++            Position::Fixed => return Err(UnsupportedHoistedClip::FixedContainingBlock(id)),
++            Position::Sticky => return Err(UnsupportedHoistedClip::StickyPosition(id)),
++            Position::Absolute => {
++                let parent = node.layout_parent.get().and_then(|id| dom.get_node(id));
++                let local_owner = parent.is_some_and(|parent| {
++                    node.parent == Some(parent.id)
++                        && parent.primary_styles().is_some_and(|style| {
++                            style.clone_position() != Position::Static
++                                || parent.transform().is_some()
++                        })
++                });
++                if !local_owner {
++                    return Err(UnsupportedHoistedClip::AbsoluteContainingBlockEscape(id));
++                }
++            }
++            Position::Static | Position::Relative => {}
++        }
++        if outermost_clip.is_none() {
++            return Ok(());
++        }
++        next = node.layout_parent.get();
++    }
++    Err(UnsupportedHoistedClip::DisconnectedLayoutPath)
++}
+ 
+ /// A view of the track positions reported by taffy in physical (left-to-right /
+ /// top-to-bottom) order. Taffy reports tracks in logical order, which for RTL grid
+@@ -601,6 +699,80 @@
+         }
+     }
+ 
++    pub(crate) fn hoisted_clip_plan(
++        &self,
++        root: NodeId,
++        child: NodeId,
++        root_contents: Affine,
++        clip_rect: Rect,
++    ) -> Result<HoistedClipPlan, UnsupportedHoistedClip> {
++        let dom = self.dom.as_ref();
++        let path = hoisted_layout_path(dom, root, child)?;
++        let root_node = dom
++            .get_node(root)
++            .ok_or(UnsupportedHoistedClip::MissingNode(root))?;
++        let [a, b, c, d, _, _] = root_contents.as_coeffs();
++        if [a, b, c, d] != [1.0, 0.0, 0.0, 1.0]
++            && (root_node.scroll_offset().x != 0.0 || root_node.scroll_offset().y != 0.0)
++        {
++            return Err(UnsupportedHoistedClip::TransformedScrolling);
++        }
++        let mut parent_transform = root_contents;
++        let mut cull_rect = clip_rect;
++        let mut clips = Vec::new();
++        let mut outermost_clip = None;
++        for id in path {
++            let node = dom
++                .get_node(id)
++                .ok_or(UnsupportedHoistedClip::MissingNode(id))?;
++            let styles = node
++                .primary_styles()
++                .ok_or(UnsupportedHoistedClip::MissingStyle(id))?;
++            if node.stacking_context.is_some()
++                || node.transform().is_some()
++                || styles.clone_opacity() != 1.0
++            {
++                return Err(UnsupportedHoistedClip::UnexpectedStackingAncestor(id));
++            }
++            let layout = node.final_layout();
++            let border_transform = parent_transform
++                * Affine::translate((
++                    f64::from(layout.location.x) * self.scale,
++                    f64::from(layout.location.y) * self.scale,
++                ))
++                * node.transform().as_deref().copied().unwrap_or_default();
++            let overflow = styles.get_box();
++            let clips_both_axes = match (overflow.overflow_x, overflow.overflow_y) {
++                (Overflow::Visible, Overflow::Visible) => false,
++                (
++                    Overflow::Hidden | Overflow::Auto | Overflow::Scroll,
++                    Overflow::Hidden | Overflow::Auto | Overflow::Scroll,
++                ) => true,
++                _ => return Err(UnsupportedHoistedClip::OverflowAxes(id)),
++            };
++            if clips_both_axes && self.root_element_id != Some(id) {
++                outermost_clip.get_or_insert(id);
++                let path = create_css_rect(&styles, layout, self.scale).padding_box_path();
++                let screen_transform =
++                    Affine::translate((-self.initial_x, -self.initial_y)) * border_transform;
++                cull_rect =
++                    cull_rect.intersect(screen_transform.transform_rect_bbox(path.bounding_box()));
++                clips.push((border_transform, path));
++            }
++            parent_transform = border_transform
++                * Affine::translate((
++                    -node.scroll_offset().x * self.scale,
++                    -node.scroll_offset().y * self.scale,
++                ));
++        }
++        validate_hoisted_clip_ownership(dom, child, outermost_clip)?;
++        Ok(HoistedClipPlan {
++            parent_transform,
++            cull_rect,
++            clips,
++        })
++    }
++
+     fn element_cx(
+         &'dom self,
+         node: &'dom Node,
+@@ -981,6 +1153,56 @@
+         }
+     }
+ 
++    fn render_hoisted_child(
++        &self,
++        scene: &mut impl PaintScene,
++        node_id: NodeId,
++        legacy_position: taffy::Point<f32>,
++        parent_style_transform: Affine,
++        clip_rect: Rect,
++    ) {
++        let plan = self.context.hoisted_clip_plan(
++            self.node.id,
++            node_id,
++            parent_style_transform,
++            clip_rect,
++        );
++        let Ok(plan) = plan else {
++            // Preserve legacy painting outside this research prototype's scope.
++            // This fallback is not observable through the public paint API.
++            let pos =
++                Vec2::new(f64::from(legacy_position.x), f64::from(legacy_position.y)) * self.scale;
++            self.render_node(
++                scene,
++                node_id,
++                parent_style_transform.pre_translate(pos),
++                clip_rect,
++            );
++            return;
++        };
++        if plan.cull_rect.width() <= 0.0 || plan.cull_rect.height() <= 0.0 {
++            return;
++        }
++        let mut pushed = 0;
++        for (transform, path) in &plan.clips {
++            if !self
++                .layer_manager
++                .maybe_push_layer(scene, true, 1.0, *transform, path, None, None)
++            {
++                // Exhausting the layer budget must not turn a required clip off.
++                for _ in 0..pushed {
++                    self.layer_manager.maybe_pop_layer(scene, true);
++                }
++                return;
++            }
++            pushed += 1;
++        }
++        self.render_node(scene, node_id, plan.parent_transform, plan.cull_rect);
++        for _ in 0..pushed {
++            self.layer_manager.maybe_pop_layer(scene, true);
++        }
++    }
++
+     fn draw_children(
+         &self,
+         scene: &mut impl PaintScene,
+@@ -991,14 +1213,11 @@
+ 
+         if let Some(hoisted) = &self.node.stacking_context {
+             for hoisted_child in hoisted.neg_z_hoisted_children() {
+-                let pos = kurbo::Vec2 {
+-                    x: hoisted_child.position.x as f64 * self.scale,
+-                    y: hoisted_child.position.y as f64 * self.scale,
+-                };
+-                self.render_node(
++                self.render_hoisted_child(
+                     scene,
+                     hoisted_child.node_id,
+-                    parent_style_transform.pre_translate(pos),
++                    hoisted_child.position,
++                    parent_style_transform,
+                     clip_rect,
+                 );
+             }
+@@ -1014,14 +1233,11 @@
+         // Positive z_index hoisted nodes
+         if let Some(hoisted) = &self.node.stacking_context {
+             for hoisted_child in hoisted.pos_z_hoisted_children() {
+-                let pos = kurbo::Vec2 {
+-                    x: hoisted_child.position.x as f64 * self.scale,
+-                    y: hoisted_child.position.y as f64 * self.scale,
+-                };
+-                self.render_node(
++                self.render_hoisted_child(
+                     scene,
+                     hoisted_child.node_id,
+-                    parent_style_transform.pre_translate(pos),
++                    hoisted_child.position,
++                    parent_style_transform,
+                     clip_rect,
+                 );
+             }

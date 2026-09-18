@@ -1,0 +1,43 @@
+{
+  "phase": "unadopted-prototype",
+  "baseCommit": "838d063ff706ec52ad8782b4559db29b095315bd",
+  "capturedAt": "2026-09-18T00:41:46.870Z",
+  "metalApiValidation": true,
+  "binarySha256": "42dd7efb10e7415f7609939677b7dc07067f2351001910e880000a5fbdcb2a82",
+  "commonSources": [
+    {
+      "path": "experiments/dom-canvas/Cargo.lock",
+      "sha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b"
+    },
+    {
+      "path": "experiments/dom-canvas/src/clip_probe.rs",
+      "sha256": "1581d48f00a7a0c099c6ac0cf5a684e9ad3942dfc263580328d005b563adb1e8"
+    },
+    {
+      "path": "experiments/dom-canvas/src/painter.rs",
+      "sha256": "696a4947d75433701f6488ae60796c475da6e345db1ceed72402687fb999296f"
+    },
+    {
+      "path": "experiments/dom-canvas/src/dom_bridge.rs",
+      "sha256": "30d218ec44a8b23c0748d2c297b02ab7b81ea32c1ede6f48e18e7fd30a732e89"
+    },
+    {
+      "path": "experiments/native-html-interop/src/host.rs",
+      "sha256": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732"
+    },
+    {
+      "path": "experiments/native-html-interop/src/metal.rs",
+      "sha256": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/blitz-stacking-demotion.patch",
+      "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/deno-webgpu-canvas.patch",
+      "sha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b"
+    }
+  ],
+  "patchSha256": "7c25416936e11f0f2ceadcae16b2e482a0277d55d6ce801f3de04671e89a084e",
+  "patchedRenderSha256": "5438ed154461d2f9dabeb2985aa0b0b5edee19965b6ba0583620223e356893d9"
+}

@@ -5,6 +5,10 @@ real DOM canvas paints Three.js among HTML elements. Stacking-context demotion i
 fixed by a pinned one-line patch; ancestor clipping still fails. The executable exits nonzero after saving that result;
 this is not an adopted shipping DOM or compositor.
 
+The [overflow comparison](OVERFLOW.md) now separates stale paint positions,
+missing clips and containing-block layout errors in 22 browser/native cases.
+Its prototype patch is deliberately excluded from normal preparation.
+
 [Current hardware evidence](../../docs/validation/2026-09-18-canvas-handoff.md) includes
 21 captures, 576,000 initialization pixel checks, repeated stacking transitions
 and failure cleanup. The [original failure evidence](../../docs/validation/2026-09-18-dom-canvas.md)

@@ -1,0 +1,90 @@
+{
+  "recordedAt": "2026-09-18T00:46:36.195Z",
+  "defaultPreparedSourcesRestored": true,
+  "defaultCanvas": {
+    "comparedWith": "2026-09-18-canvas-handoff.json",
+    "all21CapturesIdentical": true,
+    "allInitializationChecksIdentical": true,
+    "matchingBrowserCanvasAssertions": 27,
+    "paintGates": {
+      "clipping": false,
+      "stackingDemotion": true
+    },
+    "validationErrors": [],
+    "execution": {
+      "startedAt": "2026-09-18T00:45:24.382Z",
+      "finishedAt": "2026-09-18T00:45:30.873Z",
+      "exitCode": 1,
+      "timeoutSeconds": 120,
+      "metalValidationObserved": true,
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "failureInjection": {
+      "afterSubmittedFrames": 2,
+      "exitCode": 1,
+      "sharedGpuCleanupCompleted": true,
+      "metalValidationObserved": true
+    },
+    "patch": {
+      "deno": {
+        "package": "deno_webgpu",
+        "version": "0.226.0",
+        "directory": ".cache/dom-canvas/deno_webgpu",
+        "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+        "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+        "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+        "verifiedPackagedFiles": 32
+      },
+      "blitz": {
+        "package": "blitz",
+        "revision": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+        "directory": ".cache/dom-canvas/blitz",
+        "changedFile": "packages/blitz-dom/src/layout/damage.rs",
+        "patchedSha256": "64bb8e1a479160c80c0999311830595c9ef921785d906eb7e70e7e17b55f59ab",
+        "patchSha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f",
+        "verifiedTrackedFiles": 414
+      }
+    },
+    "executableSha256": "a22dc98513566ff382cb67b27af211766d767135319f94434668f01fccffe96a"
+  },
+  "browserRegression": [
+    {
+      "fixture": "webgl-dom",
+      "status": "passed",
+      "checks": 16,
+      "browser": "Chrome/153.0.8010.50"
+    },
+    {
+      "fixture": "workers-wasm",
+      "status": "passed",
+      "checks": 8,
+      "browser": "Chrome/153.0.8010.50"
+    },
+    {
+      "fixture": "audio-worklet",
+      "status": "passed",
+      "checks": 8,
+      "browser": "Chrome/153.0.8010.50"
+    },
+    {
+      "fixture": "network",
+      "status": "passed",
+      "checks": 15,
+      "browser": "Chrome/153.0.8010.50"
+    },
+    {
+      "fixture": "webgpu-canvas",
+      "status": "passed",
+      "checks": 30,
+      "browser": "Chrome/153.0.8010.50"
+    }
+  ],
+  "checks": {
+    "nodeTests": 16,
+    "strictClippy": true,
+    "rustfmt": true,
+    "sourceCheck": true,
+    "sourceIdentityMismatchRejected": true
+  }
+}

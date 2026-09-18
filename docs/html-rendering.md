@@ -8,6 +8,10 @@ The [current DOM canvas evidence](validation/2026-09-18-canvas-handoff.md) verif
 matching canvas contracts, initialized GPU handoff and several composition behaviors.
 A pinned stacking-list repair passes repeated transitions; the ancestor clipping
 gate remains open.
+The [22-case overflow comparison](validation/2026-09-18-overflow.md) also exposes
+stale hoisted positions and missing containing-block ownership. A paint-only
+prototype was not adopted because its fallbacks and effect handling remain unsafe
+to treat as supported behavior.
 
 ## The complete pipeline
 

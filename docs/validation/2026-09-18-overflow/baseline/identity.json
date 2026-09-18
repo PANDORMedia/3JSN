@@ -1,0 +1,67 @@
+{
+  "phase": "baseline",
+  "capturedAt": "2026-09-18T00:37:17.596Z",
+  "metalApiValidation": true,
+  "binarySha256": "74d681aec6801126fae6b761f90ee3c59d34e4a7a022fd9165e66bed902367af",
+  "sources": [
+    {
+      "path": "experiments/dom-canvas/src/clip_probe.rs",
+      "sha256": "1581d48f00a7a0c099c6ac0cf5a684e9ad3942dfc263580328d005b563adb1e8"
+    },
+    {
+      "path": "fixtures/overflow-paint/index.html",
+      "sha256": "149583b2c5a485a450c23190793d499dbcb4767d513852ffb5baa34ee1839a32"
+    },
+    {
+      "path": "fixtures/overflow-paint/fixture.js",
+      "sha256": "590d4b24ff26aae0f1150c6255f76b9fca23b00bc9ab2397348a7fbc662a34a5"
+    },
+    {
+      "path": "fixtures/overflow-paint/cases.json",
+      "sha256": "f05d21d2406ca885a0f81529c325065e34a6585bfe0592d6a71030421509b476"
+    },
+    {
+      "path": ".cache/dom-canvas/blitz/packages/blitz-paint/src/render.rs",
+      "sha256": "50b32c7dca8b4fb29676c30ed7873afbd393f4d6b55d45bed2bdcd0fecf1d70a"
+    },
+    {
+      "path": ".cache/dom-canvas/blitz/packages/blitz-dom/src/layout/damage.rs",
+      "sha256": "64bb8e1a479160c80c0999311830595c9ef921785d906eb7e70e7e17b55f59ab"
+    }
+  ],
+  "baseCommit": "838d063ff706ec52ad8782b4559db29b095315bd",
+  "commonSources": [
+    {
+      "path": "experiments/dom-canvas/Cargo.lock",
+      "sha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b"
+    },
+    {
+      "path": "experiments/dom-canvas/src/clip_probe.rs",
+      "sha256": "1581d48f00a7a0c099c6ac0cf5a684e9ad3942dfc263580328d005b563adb1e8"
+    },
+    {
+      "path": "experiments/dom-canvas/src/painter.rs",
+      "sha256": "696a4947d75433701f6488ae60796c475da6e345db1ceed72402687fb999296f"
+    },
+    {
+      "path": "experiments/dom-canvas/src/dom_bridge.rs",
+      "sha256": "30d218ec44a8b23c0748d2c297b02ab7b81ea32c1ede6f48e18e7fd30a732e89"
+    },
+    {
+      "path": "experiments/native-html-interop/src/host.rs",
+      "sha256": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732"
+    },
+    {
+      "path": "experiments/native-html-interop/src/metal.rs",
+      "sha256": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/blitz-stacking-demotion.patch",
+      "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+    },
+    {
+      "path": "experiments/dom-canvas/patches/deno-webgpu-canvas.patch",
+      "sha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b"
+    }
+  ]
+}
