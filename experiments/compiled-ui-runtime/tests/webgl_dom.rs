@@ -10,6 +10,10 @@ type Result<T> = std::result::Result<T, Box<dyn Error>>;
 )]
 #[path = "../src/dom_bridge.rs"]
 mod dom_bridge;
+#[allow(
+    dead_code,
+    reason = "GPU generation methods are exercised by the composition integration target."
+)]
 #[path = "../src/webgl_backend.rs"]
 mod webgl_backend;
 
@@ -73,8 +77,17 @@ async fn webgl_dom_canvas() -> Result<()> {
     });
     runtime.execute_script("fixture:standard-three-dom", script)?;
     runtime.execute_script("test:dom-webgl", include_str!("webgl_dom_checks.js"))?;
+    webgl_backend::release_all(&mut runtime)?;
+    webgl_backend::release_all(&mut runtime)?;
     dom_bridge::release(&mut runtime);
     threejs_native_webgl_runtime::release_all(&mut runtime)?;
     threejs_native_webgl_runtime::release_all(&mut runtime)?;
+    Ok(())
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn absent_webgl_registry_leaves_other_backends_available() -> Result<()> {
+    let mut runtime = JsRuntime::new(RuntimeOptions::default());
+    assert!(webgl_backend::find(&mut runtime, "scene")?.is_none());
     Ok(())
 }

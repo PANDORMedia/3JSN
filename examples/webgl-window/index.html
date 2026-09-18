@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3JSN · Native playground</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body { background: #0b1020; color: #f5f3ee; font-family: sans-serif; }
+    #header { position: absolute; top: 30px; left: 38px; right: 38px; height: 100px; }
+    #eyebrow { margin: 0 0 10px; color: #84e2ca; font-size: 12px; font-weight: 700; letter-spacing: 3px; }
+    h1 { margin: 0; font-size: 38px; line-height: 1.12; font-weight: 700; }
+    #subtitle { margin: 10px 0 0; color: #a7b5cf; font-size: 14px; }
+    #edition { position: absolute; top: 6px; right: 0; padding: 10px 14px; border: 1px solid #3c4a65; border-radius: 20px; color: #c7d3e9; font-size: 12px; }
+    #stage { position: absolute; left: 28px; right: 28px; top: 156px; bottom: 84px; background: #17263b; border-radius: 24px; z-index: 0; }
+    #backplate { position: absolute; left: 24px; top: 24px; right: 24px; bottom: 24px; background: #21394b; border-radius: 18px; }
+    #scene { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; border: 0; padding: 0; z-index: 1; }
+    #hud { position: absolute; top: 22px; left: 24px; z-index: 2; width: 194px; padding: 18px; background: rgba(11, 16, 32, 0.86); border: 1px solid #40516a; border-radius: 15px; }
+    .label { margin: 0 0 7px; color: #9aabc5; font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+    #status { margin: 0 0 18px; font-size: 17px; font-weight: 700; color: #f5f3ee; }
+    #bitmap { margin: 0; font-size: 13px; color: #84e2ca; }
+    #badge { position: absolute; right: 26px; bottom: 24px; z-index: 3; width: 236px; padding: 17px 20px; border: 1px solid #86a6b8; border-radius: 15px; background: rgba(227, 245, 247, 0.79); color: #13293c; }
+    #badge strong { display: block; margin-bottom: 5px; font-size: 17px; }
+    #badge span { font-size: 12px; line-height: 1.5; }
+    #footer { position: absolute; left: 38px; right: 38px; bottom: 27px; height: 24px; color: #a7b5cf; font-size: 12px; }
+    #progress { position: absolute; right: 0; top: 0; color: #84e2ca; }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <p id="eyebrow">3JSN / NATIVE PLAYGROUND</p>
+    <h1>Color in motion.</h1>
+    <p id="subtitle">An ordinary Three.js scene, with a live HTML interface.</p>
+    <div id="edition">WEBGL + HTML</div>
+  </header>
+  <main id="stage">
+    <div id="backplate"></div>
+    <canvas id="scene" width="720" height="360" aria-label="Animated colorful Three.js shapes"></canvas>
+    <aside id="hud">
+      <p class="label">CANVAS LIFECYCLE</p>
+      <p id="status">Starting</p>
+      <p class="label">DRAWING BUFFER</p>
+      <p id="bitmap">Waiting for renderer</p>
+    </aside>
+    <div id="badge"><strong>Both layers, together.</strong><span>This translucent HTML card overlaps the moving WebGL shapes.</span></div>
+  </main>
+  <footer id="footer"><span>Transparent canvas · Real DOM · Upstream Three.js</span><span id="progress">Preparing the first frame</span></footer>
+  <script type="module" src="./main.mjs"></script>
+</body>
+</html>

@@ -8,7 +8,10 @@ use std::{
     sync::{Arc, Mutex, mpsc},
     time::Duration,
 };
-use threejs_native_webgl_runtime::{snapshot, snapshot_consumer::GpuSnapshot};
+use threejs_native_webgl_runtime::{
+    snapshot,
+    snapshot_consumer::{AlphaConversion, GpuSnapshot},
+};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 deno_core::extension!(snapshot_fixture);
@@ -17,9 +20,13 @@ const FIXTURE: &str = r#"
 import { core } from 'ext:core/mod.js';
 const ops=core.ops;
 globalThis.contextId=ops.op_angle_create(8,6);
-globalThis.paint=(width,height,phase)=>{
+globalThis.paint=(width,height,phase,premultiplied=false)=>{
   ops.op_gl_enable(contextId,0x0c11);
-  const colors=[[1,0,0,1],[0,1,0,.5],[0,0,1,.25],[1,.5,0,.75]];
+  // Three valid premultiplied colors and one deliberately dirty transparent
+  // texel distinguish unpremultiplication from preservation and zero division.
+  const colors=premultiplied
+    ? [[128/255,64/255,32/255,128/255],[0,64/255,0,64/255],[0,0,192/255,192/255],[1,.5,.25,0]]
+    : [[1,0,0,1],[0,1,0,.5],[0,0,1,.25],[1,.5,0,.75]];
   for(let quadrant=0;quadrant<4;quadrant++) {
     ops.op_gl_scissor(contextId,(quadrant%2)*width/2,Math.floor(quadrant/2)*height/2,width/2,height/2);
     ops.op_gl_clear_color(contextId,...colors[(quadrant+phase)%4]);
@@ -115,30 +122,44 @@ fn read_captures(device: &wgpu::Device, captures: &[Capture]) -> Result<Vec<Vec<
     Ok(frames)
 }
 
-fn assert_pattern(bytes: &[u8], width: u32, height: u32, phase: usize, premultiply: bool) {
-    let colors = [
-        [255u8, 0, 0, 255],
-        [0, 255, 0, 128],
-        [0, 0, 255, 64],
-        [255, 128, 0, 191],
-    ];
+fn assert_pattern(
+    bytes: &[u8],
+    width: u32,
+    height: u32,
+    phase: usize,
+    alpha_conversion: AlphaConversion,
+) {
+    let colors: [[u8; 4]; 4] = match alpha_conversion {
+        AlphaConversion::Preserve => [
+            [255, 0, 0, 255],
+            [0, 255, 0, 128],
+            [0, 0, 255, 64],
+            [255, 128, 0, 191],
+        ],
+        AlphaConversion::Premultiply => [
+            [255, 0, 0, 255],
+            [0, 128, 0, 128],
+            [0, 0, 64, 64],
+            [191, 96, 0, 191],
+        ],
+        AlphaConversion::Unpremultiply => [
+            [255, 128, 64, 128],
+            [0, 255, 0, 64],
+            [0, 0, 255, 192],
+            [0, 0, 0, 0],
+        ],
+    };
     assert_eq!(bytes.len(), width as usize * height as usize * 4);
     for y in 0..height {
         for x in 0..width {
             // Output is top-left; GL scissor coordinates are bottom-left.
             let quadrant = usize::from(x >= width / 2) + 2 * usize::from(y < height / 2);
-            let mut expected = colors[(quadrant + phase) % 4];
-            if premultiply {
-                for channel in 0..3 {
-                    expected[channel] = (f32::from(expected[channel]) * f32::from(expected[3])
-                        / 255.0)
-                        .round() as u8;
-                }
-            }
+            let expected = colors[(quadrant + phase) % 4];
             let offset = ((y * width + x) * 4) as usize;
+            let tolerance = if expected[3] == 0 { 0 } else { 1 };
             for channel in 0..4 {
                 assert!(
-                    bytes[offset + channel].abs_diff(expected[channel]) <= 1,
+                    bytes[offset + channel].abs_diff(expected[channel]) <= tolerance,
                     "pixel ({x},{y}) channel {channel}: actual={} expected={}",
                     bytes[offset + channel],
                     expected[channel]
@@ -189,8 +210,13 @@ fn native_snapshot_orientation_alpha_state_and_lifetime() -> Result<()> {
         errors.lock().unwrap().push(error.to_string())
     }));
 
-    for (generation, (width, height, premultiply)) in
-        [(8, 6, false), (12, 10, true)].into_iter().enumerate()
+    for (generation, (width, height, alpha_conversion)) in [
+        (8, 6, AlphaConversion::Preserve),
+        (12, 10, AlphaConversion::Premultiply),
+        (16, 14, AlphaConversion::Unpremultiply),
+    ]
+    .into_iter()
+    .enumerate()
     {
         if generation != 0 {
             evaluate(&mut runtime, format!("resize({width},{height}); null"))?;
@@ -202,7 +228,7 @@ fn native_snapshot_orientation_alpha_state_and_lifetime() -> Result<()> {
         evaluate(&mut runtime, "checkError(); null")?;
         assert_eq!(lease.size(), (width, height));
         assert!(!lease.device_raw().is_null() && !lease.texture_raw().is_null());
-        let mut consumer = GpuSnapshot::new(lease, &device, &queue, premultiply)?;
+        let mut consumer = GpuSnapshot::new(lease, &device, &queue, alpha_conversion)?;
         assert!(consumer.texture().is_err());
         // This thread exclusively controls the queue; there are no outstanding encoders.
         let mut token = unsafe { consumer.update()? };
@@ -224,10 +250,11 @@ fn native_snapshot_orientation_alpha_state_and_lifetime() -> Result<()> {
         }
         let mut captures = Vec::new();
         let mut pending_writes = Vec::new();
+        let premultiplied_input = alpha_conversion == AlphaConversion::Unpremultiply;
         for phase in 0..8 {
             evaluate(
                 &mut runtime,
-                format!("paint({width},{height},{phase}); null"),
+                format!("paint({width},{height},{phase},{premultiplied_input}); null"),
             )?;
             let before = evaluate(&mut runtime, "glState()")?;
             evaluate(&mut runtime, "poison(); null")?;
@@ -249,7 +276,7 @@ fn native_snapshot_orientation_alpha_state_and_lifetime() -> Result<()> {
             pending_writes.push(pending);
         }
         for (phase, bytes) in read_captures(&device, &captures)?.iter().enumerate() {
-            assert_pattern(bytes, width, height, phase, premultiply);
+            assert_pattern(bytes, width, height, phase, alpha_conversion);
         }
         consumer.close()?;
         assert!(consumer.texture().is_err());

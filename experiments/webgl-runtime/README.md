@@ -130,8 +130,8 @@ explicit host teardown are checked on Metal. The embedding extension supplies
 its own JavaScript without installing probe globals. Tokio matches the DOM host's
 1.49.0 pin. [Evidence and commands](../../docs/validation/2026-09-18-webgl-dom.md).
 
-This does not yet select WebGL in the native-window player; that compositor still
-requires the separate native snapshot/lease integration described in the record.
+The subsequent composition checkpoint below connects this facade to the optional
+native-window adapter; presentation validation remains pending.
 
 ## Native snapshot checkpoint
 
@@ -142,6 +142,9 @@ and rejects resize/disposal until export leases close. Hardware tests cover
 orientation, alpha transforms, queued frame reuse, application GL state and
 untouched-buffer initialization. [Evidence and reproduction](../../docs/validation/2026-09-18-webgl-snapshot.md).
 
-This host API is not yet connected to WindowScene/Painter. Window integration
-still needs straight-alpha conversion, DOM generation ownership and synchronous
-retirement before bitmap resize. No new packaging/platform support is declared.
+The host API now connects to WindowScene/Painter with straight-alpha conversion,
+DOM generation ownership and synchronous retirement before bitmap resize. Both
+parser modes pass offscreen GPU composition, including reset and node replacement.
+The native-window adapter compiles; successful presentation still requires an
+unlocked desktop. [Evidence and limits](../../docs/validation/2026-09-18-webgl-composition.md).
+No new packaging/platform support is declared.

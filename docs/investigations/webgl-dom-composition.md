@@ -1,9 +1,11 @@
 # WebGL canvas composition boundary
 
 The actual DOM can now create the experimental WebGL2 context and render an
-upstream Three.js fixture. Native-window composition is still implemented only
-for WebGPU canvases. This document describes the next implementation boundary;
-it is not evidence that WebGL frames already reach the window.
+upstream Three.js fixture. The optional native-window WebGL adapter is now
+implemented, and offscreen composition passes in both parser modes. Actual window
+presentation remains unverified while the desktop is locked. See the
+[composition checkpoint](../validation/2026-09-18-webgl-composition.md).
+This document records the ownership boundary and remaining acceptance gates.
 
 ## Preserve application rendering state
 
@@ -23,9 +25,9 @@ GPU conversion pass, with asymmetric-corner and transparent-content tests.
 The current Painter canvas interface consumes straight RGBA, while the WebGL
 facade reports `premultipliedAlpha: true`. The window adapter must explicitly
 unpremultiply that source, defining zero-alpha RGB as zero, before registration.
-The snapshot consumer's preserve/premultiply modes alone do not satisfy this
-boundary. Verify transparent edges against the declared source contract; an
-opaque fixture cannot establish correct composition.
+The snapshot consumer now provides an explicit unpremultiply mode. GPU controls
+cover half-alpha composition and alpha-zero RGB normalization; broader transparent
+edge fidelity remains an acceptance gate. An opaque fixture cannot establish it.
 
 ## Retain resources through queue completion
 
@@ -52,7 +54,7 @@ ANGLE and wgpu queues are valid only with the explicit shared-event protocol.
 Do not create a dummy application WebGPU canvas merely to obtain a compositor
 device.
 
-`WindowScene` should dispatch the real WebGPU or WebGL source adapter; both return
+`WindowScene` dispatches the real WebGPU or WebGL source adapter; both return
 an ordinary host wgpu image for existing Painter registration and composition.
 An ANGLE texture must never masquerade as a Deno GPUTexture. The previous
 `native-webgl-wgpu` experiment proves the underlying native mechanisms on one Mac,

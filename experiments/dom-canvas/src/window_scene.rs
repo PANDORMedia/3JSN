@@ -7,7 +7,7 @@ use crate::{
 };
 
 /// One DOM canvas is the declared boundary of this presentation experiment.
-/// All texture transport stays on the bridge's checked native Metal queue.
+/// WebGPU shares its native queue; WebGL uses checked device identity and events.
 pub struct WindowScene {
     pub painter: Painter,
     surface: wgpu::Surface<'static>,
@@ -18,6 +18,11 @@ pub struct WindowScene {
     registration: Option<ImageData>,
     source: Option<(wgpu::Extent3d, wgpu::TextureFormat)>,
     pub snapshots: u64,
+    registered_node: Option<u64>,
+    #[cfg(feature = "native-webgl")]
+    webgl: Option<crate::webgl_backend::Canvas>,
+    #[cfg(feature = "native-webgl")]
+    webgl_generation: Option<(String, u64)>,
 }
 
 impl WindowScene {
@@ -28,11 +33,33 @@ impl WindowScene {
         width: u32,
         height: u32,
     ) -> Result<Self> {
-        let bridge = dom_bridge::with_canvas(runtime, "scene", |context, _| {
-            let config = context.configuration.borrow();
-            let device = &config.as_ref().ok_or("canvas is not configured")?.device;
-            MetalBridge::with_instance(device.instance.clone(), device.id, device.queue, instance)
-        })?;
+        #[cfg(feature = "native-webgl")]
+        let webgl = crate::webgl_backend::find(runtime, "scene")?;
+        #[cfg(feature = "native-webgl")]
+        let independent = if let Some(canvas) = &webgl {
+            let mut lease = threejs_native_webgl_runtime::snapshot(runtime, canvas.context_id())?;
+            let bridge = MetalBridge::with_native_device(instance, &surface, lease.device_raw())?;
+            lease.close()?;
+            Some(bridge)
+        } else {
+            None
+        };
+        #[cfg(not(feature = "native-webgl"))]
+        let independent: Option<MetalBridge> = None;
+        let bridge = if let Some(bridge) = independent {
+            bridge
+        } else {
+            dom_bridge::with_canvas(runtime, "scene", |context, _| {
+                let config = context.configuration.borrow();
+                let device = &config.as_ref().ok_or("canvas is not configured")?.device;
+                MetalBridge::with_instance(
+                    device.instance.clone(),
+                    device.id,
+                    device.queue,
+                    instance,
+                )
+            })?
+        };
         if !bridge.adapter.is_surface_supported(&surface) {
             return Err("canvas device cannot present to this surface".into());
         }
@@ -73,7 +100,20 @@ impl WindowScene {
             registration: None,
             source: None,
             snapshots: 0,
+            registered_node: None,
+            #[cfg(feature = "native-webgl")]
+            webgl,
+            #[cfg(feature = "native-webgl")]
+            webgl_generation: None,
         })
+    }
+
+    pub fn canvas_api(&self) -> &'static str {
+        #[cfg(feature = "native-webgl")]
+        if self.webgl.is_some() {
+            return "webgl2";
+        }
+        "webgpu"
     }
 
     pub fn resize(&mut self, width: u32, height: u32) -> Result<()> {
@@ -90,6 +130,26 @@ impl WindowScene {
     }
 
     pub fn compose(&mut self, runtime: &mut JsRuntime) -> Result<()> {
+        let node = dom_bridge::with_document(runtime, |doc| {
+            doc.get_element_by_id("scene").map(|node| node.as_u64())
+        })
+        .ok_or("canvas disappeared")?;
+        #[cfg(feature = "native-webgl")]
+        if self.webgl.is_some() {
+            return self.compose_webgl(runtime, node);
+        }
+        if self
+            .registered_node
+            .is_some_and(|registered| registered != node)
+        {
+            self.painter.drain()?;
+            if let Some(registration) = self.registration.take() {
+                self.painter.unregister_canvas(registration)?;
+            }
+            self.image = None;
+            self.source = None;
+            self.registered_node = None;
+        }
         let changed = dom_bridge::with_canvas(runtime, "scene", |context, scope| {
             let configuration = context.configuration.borrow();
             let configuration = configuration.as_ref().ok_or("canvas was unconfigured")?;
@@ -137,12 +197,59 @@ impl WindowScene {
                     )
                 })?);
             }
+            self.registered_node = Some(node);
             self.painter
                 .mark_canvas_dirty(self.registration.as_ref().unwrap())?;
         }
         dom_bridge::expire(runtime);
         dom_bridge::with_document(runtime, |doc| self.painter.paint(doc, &self.output))?;
         Ok(())
+    }
+
+    #[cfg(feature = "native-webgl")]
+    fn compose_webgl(&mut self, runtime: &mut JsRuntime, node: u64) -> Result<()> {
+        let canvas = crate::webgl_backend::find(runtime, "scene")?
+            .ok_or("scene canvas changed away from its WebGL backend")?;
+        if self
+            .webgl
+            .as_ref()
+            .is_some_and(|old| old.node_key() != canvas.node_key())
+        {
+            self.webgl.as_ref().unwrap().retire()?;
+        }
+        self.webgl = Some(canvas.clone());
+        // SAFETY: this worker owns and serializes all compositor queue use. No
+        // unsubmitted encoder survives a frame, and output reads use this queue.
+        let (texture, revision) = unsafe {
+            canvas.update(
+                runtime,
+                &self.painter.bridge.device,
+                &self.painter.bridge.queue,
+            )?
+        };
+        let generation = (canvas.node_key().to_string(), revision);
+        if self.webgl_generation.as_ref() != Some(&generation) {
+            self.painter.drain()?;
+            if let Some(registration) = self.registration.take() {
+                self.painter.unregister_canvas(registration)?;
+            }
+            self.registration = Some(dom_bridge::with_document(runtime, |doc| {
+                let node = doc.get_element_by_id("scene").ok_or("canvas disappeared")?;
+                self.painter.register_canvas(doc, node, texture)
+            })?);
+            self.webgl_generation = Some(generation);
+            self.registered_node = Some(node);
+        }
+        self.snapshots += 1;
+        self.painter
+            .mark_canvas_dirty(self.registration.as_ref().unwrap())?;
+        dom_bridge::expire(runtime);
+        dom_bridge::with_document(runtime, |doc| self.painter.paint(doc, &self.output))?;
+        Ok(())
+    }
+
+    pub fn capture(&self, path: &std::path::Path) -> Result<()> {
+        crate::window_capture::save(&self.painter.bridge, &self.output, path)
     }
 
     pub fn acquire(&mut self) -> Result<Option<wgpu::SurfaceTexture>> {
@@ -186,6 +293,10 @@ impl WindowScene {
             self.painter.unregister_canvas(registration)?;
         }
         self.image = None;
+        #[cfg(feature = "native-webgl")]
+        if let Some(canvas) = &self.webgl {
+            canvas.retire()?;
+        }
         self.painter.check_errors()
     }
 }
@@ -202,7 +313,9 @@ fn output(device: &wgpu::Device, width: u32, height: u32) -> wgpu::Texture {
         sample_count: 1,
         dimension: wgpu::TextureDimension::D2,
         format: wgpu::TextureFormat::Rgba8Unorm,
-        usage: wgpu::TextureUsages::STORAGE_BINDING | wgpu::TextureUsages::TEXTURE_BINDING,
+        usage: wgpu::TextureUsages::STORAGE_BINDING
+            | wgpu::TextureUsages::TEXTURE_BINDING
+            | wgpu::TextureUsages::COPY_SRC,
         view_formats: &[],
     })
 }

@@ -304,6 +304,69 @@ pub fn op_gl_disable(state: &mut OpState, context: u32, capability: u32) -> Resu
 }
 
 #[op2(fast)]
+pub fn op_gl_blend_equation(
+    state: &mut OpState,
+    context: u32,
+    mode: u32,
+) -> Result<(), JsErrorBox> {
+    let gl = &crate::current(state, context)?.gl;
+    unsafe { gl.blend_equation(mode) };
+    Ok(())
+}
+
+#[op2(fast)]
+pub fn op_gl_blend_equation_separate(
+    state: &mut OpState,
+    context: u32,
+    rgb: u32,
+    alpha: u32,
+) -> Result<(), JsErrorBox> {
+    let gl = &crate::current(state, context)?.gl;
+    unsafe { gl.blend_equation_separate(rgb, alpha) };
+    Ok(())
+}
+
+#[op2(fast)]
+pub fn op_gl_blend_func(
+    state: &mut OpState,
+    context: u32,
+    source: u32,
+    destination: u32,
+) -> Result<(), JsErrorBox> {
+    let gl = &crate::current(state, context)?.gl;
+    unsafe { gl.blend_func(source, destination) };
+    Ok(())
+}
+
+#[op2(fast)]
+pub fn op_gl_blend_func_separate(
+    state: &mut OpState,
+    context: u32,
+    source_rgb: u32,
+    destination_rgb: u32,
+    source_alpha: u32,
+    destination_alpha: u32,
+) -> Result<(), JsErrorBox> {
+    let gl = &crate::current(state, context)?.gl;
+    unsafe { gl.blend_func_separate(source_rgb, destination_rgb, source_alpha, destination_alpha) };
+    Ok(())
+}
+
+#[op2(fast)]
+pub fn op_gl_blend_color(
+    state: &mut OpState,
+    context: u32,
+    red: f32,
+    green: f32,
+    blue: f32,
+    alpha: f32,
+) -> Result<(), JsErrorBox> {
+    let gl = &crate::current(state, context)?.gl;
+    unsafe { gl.blend_color(red, green, blue, alpha) };
+    Ok(())
+}
+
+#[op2(fast)]
 pub fn op_gl_depth_func(
     state: &mut OpState,
     context: u32,

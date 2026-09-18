@@ -221,6 +221,8 @@ deno_core::extension!(
         op_gl_delete_shader, op_gl_delete_program,
         op_gl_get_parameter, op_gl_get_shader_precision_format, op_gl_get_error,
         op_gl_stencil_mask, op_gl_clear_color, op_gl_clear_depth, op_gl_clear_stencil, op_gl_clear,
+        op_gl_blend_equation, op_gl_blend_equation_separate, op_gl_blend_func,
+        op_gl_blend_func_separate, op_gl_blend_color,
         op_gl_enable, op_gl_disable, op_gl_depth_func, op_gl_depth_mask,
         op_gl_color_mask, op_gl_front_face, op_gl_cull_face, op_gl_viewport, op_gl_scissor,
         op_gl_create_texture, op_gl_bind_texture, op_gl_delete_texture, op_gl_tex_parameteri,

@@ -31,7 +31,11 @@ path = "src/compiled_probe.rs"
 
 [workspace]
 
+[features]
+native-webgl = ["dep:threejs-native-webgl-runtime"]
+
 [dependencies]
+threejs-native-webgl-runtime = { path = "../webgl-runtime", optional = true, features = ["metal-snapshot"] }
 threejs-native-input-queue = { path = "../../crates/input-queue" }
 threejs-compiled-ui-experiment = { path = "../compiled-ui" }
 threejs-native-js-sources = { path = "../../crates/js-sources" }

@@ -39,7 +39,10 @@ impl HostState {
 
 #[derive(Debug)]
 pub enum HostEvent {
-    Ready,
+    Ready {
+        canvas_api: &'static str,
+        shared_queue: bool,
+    },
     Prepared(u64),
     Presented(u64),
     Stopped(std::result::Result<(u64, u64), String>),
@@ -266,9 +269,22 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
         .document
         .into_dom(config)
         .map_err(|error| error.to_string())?;
+    #[allow(unused_mut)]
+    let mut extensions = vec![extension(initial)];
+    #[cfg(feature = "native-webgl")]
+    let webgl_enabled =
+        if let Some(directory) = std::env::var_os("THREEJS_NATIVE_ANGLE_LIBRARY_DIR") {
+            extensions.push(threejs_native_webgl_runtime::runtime_extension(
+                std::path::Path::new(&directory),
+            )?);
+            extensions.push(crate::webgl_backend::extension());
+            true
+        } else {
+            false
+        };
     let mut runtime = host::create_with_dom_extension(
         dom,
-        vec![extension(initial)],
+        extensions,
         threejs_native_js_sources::embed_extension_sources,
     );
     *worker.interrupt.lock().unwrap() = Some(runtime.v8_isolate().thread_safe_handle());
@@ -320,7 +336,10 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
             initial.height,
         )?);
         let scene = scene.as_mut().unwrap();
-        worker.proxy.send_event(HostEvent::Ready)?;
+        worker.proxy.send_event(HostEvent::Ready {
+            canvas_api: scene.canvas_api(),
+            shared_queue: scene.painter.bridge.shared_deno_queue(),
+        })?;
         let mut viewport = (initial.width, initial.height, initial.scale);
         let mut redraw = 0;
         let mut sequence = 0;
@@ -408,6 +427,12 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
             }
         }
         drop(pending);
+        if worker.frames.is_some_and(|limit| presented >= limit)
+            && let Some(path) = std::env::var_os("THREEJS_NATIVE_CAPTURE_PNG")
+        {
+            // Explicit final-frame evidence only; presentation never consumes this readback.
+            scene.capture(std::path::Path::new(&path))?;
+        }
         Ok((presented, scene.snapshots))
     }
     .await;
@@ -416,7 +441,17 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
     *worker.interrupt.lock().unwrap() = None;
     runtime.v8_isolate().cancel_terminate_execution();
     let snapshots = scene.as_ref().map_or(0, |scene| scene.snapshots);
-    let cleanup = scene.as_mut().map(|scene| scene.release()).transpose();
+    let cleanup: Result<()> = (|| {
+        if let Some(scene) = scene.as_mut() {
+            scene.release()?;
+        }
+        #[cfg(feature = "native-webgl")]
+        if webgl_enabled {
+            crate::webgl_backend::release_all(&mut runtime)?;
+            threejs_native_webgl_runtime::release_all(&mut runtime)?;
+        }
+        Ok(())
+    })();
     if let Err(error) = cleanup {
         // A failed drain cannot establish safe alias teardown. Leak this failed
         // process generation rather than destroying resources still in GPU use.

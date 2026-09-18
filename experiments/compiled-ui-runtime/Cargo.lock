@@ -4136,9 +4136,15 @@ dependencies = [
  "deno_core",
  "deno_error",
  "glow",
+ "objc2 0.6.4",
+ "objc2-metal 0.3.2",
  "serde",
  "serde_json",
  "tokio",
+ "wgpu",
+ "wgpu-core",
+ "wgpu-hal",
+ "wgpu-types",
 ]
 
 [[package]]

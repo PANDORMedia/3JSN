@@ -17,8 +17,15 @@ const constants = {
   BOOL_VEC2: 0x8b57, BOOL_VEC3: 0x8b58, BOOL_VEC4: 0x8b59,
   FLOAT_MAT2: 0x8b5a, FLOAT_MAT3: 0x8b5b, FLOAT_MAT4: 0x8b5c,
   SAMPLER_2D: 0x8b5e, SAMPLER_CUBE: 0x8b60,
-  ONE: 1, ZERO: 0, SRC_ALPHA: 0x302, ONE_MINUS_SRC_ALPHA: 0x303,
-  FUNC_ADD: 0x8006, POLYGON_OFFSET_FILL: 0x8037, SAMPLE_ALPHA_TO_COVERAGE: 0x809e,
+  ONE: 1, ZERO: 0, SRC_COLOR: 0x300, ONE_MINUS_SRC_COLOR: 0x301,
+  SRC_ALPHA: 0x302, ONE_MINUS_SRC_ALPHA: 0x303, DST_ALPHA: 0x304, ONE_MINUS_DST_ALPHA: 0x305,
+  DST_COLOR: 0x306, ONE_MINUS_DST_COLOR: 0x307, SRC_ALPHA_SATURATE: 0x308,
+  CONSTANT_COLOR: 0x8001, ONE_MINUS_CONSTANT_COLOR: 0x8002,
+  CONSTANT_ALPHA: 0x8003, ONE_MINUS_CONSTANT_ALPHA: 0x8004, BLEND_COLOR: 0x8005,
+  FUNC_ADD: 0x8006, MIN: 0x8007, MAX: 0x8008, FUNC_SUBTRACT: 0x800a, FUNC_REVERSE_SUBTRACT: 0x800b,
+  BLEND_EQUATION: 0x8009, BLEND_EQUATION_RGB: 0x8009, BLEND_EQUATION_ALPHA: 0x883d,
+  BLEND_DST_RGB: 0x80c8, BLEND_SRC_RGB: 0x80c9, BLEND_DST_ALPHA: 0x80ca, BLEND_SRC_ALPHA: 0x80cb,
+  POLYGON_OFFSET_FILL: 0x8037, SAMPLE_ALPHA_TO_COVERAGE: 0x809e,
 
   NO_ERROR: 0, INVALID_ENUM: 0x500, INVALID_VALUE: 0x501, INVALID_OPERATION: 0x502,
   COLOR_BUFFER_BIT: 0x4000, DEPTH_BUFFER_BIT: 0x100, STENCIL_BUFFER_BIT: 0x400,
@@ -166,6 +173,11 @@ const scalarMethods = {
   stencilMask: ['op_gl_stencil_mask', ['u']],
   clearColor: ['op_gl_clear_color', ['f','f','f','f']], clearDepth: ['op_gl_clear_depth', ['f']],
   clearStencil: ['op_gl_clear_stencil', ['i']], clear: ['op_gl_clear', ['u']],
+  blendEquation: ['op_gl_blend_equation', ['u']],
+  blendEquationSeparate: ['op_gl_blend_equation_separate', ['u','u']],
+  blendFunc: ['op_gl_blend_func', ['u','u']],
+  blendFuncSeparate: ['op_gl_blend_func_separate', ['u','u','u','u']],
+  blendColor: ['op_gl_blend_color', ['f','f','f','f']],
   enable: ['op_gl_enable', ['u']], disable: ['op_gl_disable', ['u']],
   depthFunc: ['op_gl_depth_func', ['u']], depthMask: ['op_gl_depth_mask', ['b']],
   colorMask: ['op_gl_color_mask', ['b','b','b','b']], frontFace: ['op_gl_front_face', ['u']],
@@ -180,6 +192,10 @@ for (const [name, [op, types]] of Object.entries(scalarMethods)) {
   }});
 }
 // Host-only ownership operations; applications receive just the context facade.
+export function contextIdentity(context) {
+  return state(context).id;
+}
+
 export function closeContext(context) {
   const owner = state(context);
   core.ops.op_angle_dispose(owner.id);

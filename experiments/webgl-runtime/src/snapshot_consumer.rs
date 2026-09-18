@@ -22,21 +22,43 @@ const CONVERT: &str = r#"
 @group(0) @binding(0) var source: texture_2d<f32>;
 @group(0) @binding(1) var destination: texture_storage_2d<rgba8unorm, write>;
 
-fn convert(p: vec3<u32>, premultiply: bool) {
+fn convert(p: vec3<u32>, alpha_conversion: u32) {
     let dimensions = textureDimensions(destination);
     if any(p.xy >= dimensions) { return; }
     let source_pixel = vec2<i32>(i32(p.x), i32(dimensions.y - 1u - p.y));
     var color = textureLoad(source, source_pixel, 0);
-    if premultiply { color = vec4<f32>(color.rgb * color.a, color.a); }
+    if alpha_conversion == 1u {
+        color = vec4<f32>(color.rgb * color.a, color.a);
+    } else if alpha_conversion == 2u {
+        if color.a > 0.0 {
+            color = vec4<f32>(color.rgb / color.a, color.a);
+        } else {
+            color = vec4<f32>(0.0);
+        }
+    }
     textureStore(destination, vec2<i32>(p.xy), color);
 }
 
 @compute @workgroup_size(8, 8, 1)
-fn preserve(@builtin(global_invocation_id) p: vec3<u32>) { convert(p, false); }
+fn preserve(@builtin(global_invocation_id) p: vec3<u32>) { convert(p, 0u); }
 
 @compute @workgroup_size(8, 8, 1)
-fn premultiply(@builtin(global_invocation_id) p: vec3<u32>) { convert(p, true); }
+fn premultiply(@builtin(global_invocation_id) p: vec3<u32>) { convert(p, 1u); }
+
+@compute @workgroup_size(8, 8, 1)
+fn unpremultiply(@builtin(global_invocation_id) p: vec3<u32>) { convert(p, 2u); }
 "#;
+
+/// Conversion applied with the vertical flip into independent RGBA8 storage.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AlphaConversion {
+    /// Preserve all four stored channels, including RGB when alpha is zero.
+    Preserve,
+    /// Convert straight RGB to premultiplied RGB by multiplying by alpha.
+    Premultiply,
+    /// Convert premultiplied RGB to straight RGB. Zero alpha produces zero RGBA.
+    Unpremultiply,
+}
 
 struct Resources {
     snapshot: Snapshot,
@@ -66,15 +88,15 @@ pub struct GpuSnapshot {
 impl GpuSnapshot {
     /// Import Snapshot's initialized, privately owned RGBA8 texture once.
     ///
-    /// `premultiply_alpha` multiplies source RGB by alpha during the vertical
-    /// flip. False preserves all four channels; neither mode unpremultiplies.
+    /// `alpha_conversion` must match the producer's stored alpha convention and
+    /// the output consumer's requirements; this does not change the GL context.
     /// The same texture is reused until close; bitmap resize requires a new
     /// snapshot generation after closing the previous one.
     pub fn new(
         snapshot: Snapshot,
         device: &wgpu::Device,
         queue: &wgpu::Queue,
-        premultiply_alpha: bool,
+        alpha_conversion: AlphaConversion,
     ) -> Result<Self, String> {
         let (width, height) = snapshot.size();
         let limits = device.limits();
@@ -135,10 +157,10 @@ impl GpuSnapshot {
             label: Some("WebGL snapshot conversion"),
             layout: None,
             module: &shader,
-            entry_point: Some(if premultiply_alpha {
-                "premultiply"
-            } else {
-                "preserve"
+            entry_point: Some(match alpha_conversion {
+                AlphaConversion::Preserve => "preserve",
+                AlphaConversion::Premultiply => "premultiply",
+                AlphaConversion::Unpremultiply => "unpremultiply",
             }),
             compilation_options: Default::default(),
             cache: None,

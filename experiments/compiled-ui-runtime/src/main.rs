@@ -26,8 +26,12 @@ mod metal;
 mod package_resources;
 #[path = "../../dom-canvas/src/painter.rs"]
 mod painter;
+#[cfg(feature = "native-webgl")]
+mod webgl_backend;
 #[path = "../../dom-canvas/src/window_app.rs"]
 mod window_app;
+#[path = "../../dom-canvas/src/window_capture.rs"]
+mod window_capture;
 #[path = "../../dom-canvas/src/window_input.rs"]
 mod window_input;
 mod window_options;
