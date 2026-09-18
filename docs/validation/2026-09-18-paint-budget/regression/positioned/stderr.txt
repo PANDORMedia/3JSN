@@ -1,0 +1,1 @@
+2026-09-18 06:26:06.996 threejs-positioned-overflow-paint-probe[47163:4780446] Metal API Validation Enabled

@@ -64,7 +64,9 @@ The separate paint runner captures the [overflow](overflow-paint/README.md),
 [positioned layout](positioned-layout/README.md),
 [initial containing block](initial-containing-block/README.md),
 [paint order](paint-order/README.md), [auto paint](auto-paint/README.md), and
-[paint ownership/effect clipping](paint-ownership/README.md) matrices:
+[paint ownership/effect clipping](paint-ownership/README.md),
+[effect clip routing](effect-clip-routing/README.md), and
+[paint layer budget](paint-budget/README.md) matrices:
 
 ```sh
 node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-order/browser paint-order

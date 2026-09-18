@@ -31,7 +31,7 @@ and uses the existing block and out-of-flow algorithms. It does not rewrite
 HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
 each resolve; descendant layout caches remain in use.
 
-Nine ordered patches define this candidate:
+Ten ordered patches define this candidate:
 
 | Patch | Responsibility |
 | --- | --- |
@@ -44,6 +44,7 @@ Nine ordered patches define this candidate:
 | `blitz-stacking-bounds.patch` | Refresh active stacking-list hit bounds after layout, including contexts without out-of-flow attachments. |
 | `blitz-shared-clip-geometry.patch` | Move the existing rounded-box geometry into DOM for painting and future clip predicates, removing its old paint-side copy. |
 | `blitz-paint-ownership.patch` | Build a read-only post-layout ownership plan with explicit unsupported errors; does not replace legacy rendering or hit lists. |
+| `blitz-layer-budget.patch` | Return explicit whole-paint layer errors before GPU submission, covering direct clips/effects, widgets and subdocuments. Also applied to the default and upstream baseline profiles. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
@@ -69,14 +70,15 @@ gates; no scrolling support is claimed from these no-scroll captures.
 
 The rejected overflow prototype and maintained default's no-box geometry patch
 are excluded. Hidden-node failures in the overflow suite therefore remain visible.
-Neither normal `prepare.mjs` nor its prepared source is changed by this candidate.
+The ownership/layout patches remain isolated from normal `prepare.mjs`. The
+independent layer-budget correction is shared by all three prepared profiles.
 
 ## Reproduce both profiles
 
 Prerequisites: Node.js 24+, Git, tar, the normal experiment's cached dependencies,
 and a local Blitz Git repository containing the exact candidate commit.
 Preparation never fetches, checks out or resolves dependencies. It archives
-immutable Git objects, checks 413 retained tracked files and six added modules,
+immutable Git objects, checks 413 retained tracked files and seven added modules,
 verifies three removed files stay absent, checks patch hashes and resulting
 contents, and rejects extra files or symlinks. Do not prepare while building or capturing the same profile.
 
@@ -94,8 +96,10 @@ node experiments/dom-canvas/prepare-positioned.mjs /path/to/local/blitz --baseli
 
 Default candidate output is `.cache/positioned-candidate/{blitz,probe}`. The
 `--baseline` profile uses `.cache/positioned-candidate-baseline/{blitz,probe}` and
-applies only the existing stacking-demotion patch. It reproduces the upstream
-candidate evaluated previously. The supplied source checkout stays unchanged.
+applies the existing stacking-demotion patch and the shared budget correction.
+It preserves upstream layout/paint ownership, with observable budget failure.
+To reproduce the exact older upstream baseline, use that checkpoint's preparer
+and host source. The supplied source checkout stays unchanged.
 This profile is distinct from the newer paint-order report's baseline, which
 uses all four patches from repository commit `de0658b`. Reproducing that baseline
 requires that commit's preparation/build in a separate checkout, with the current
@@ -107,7 +111,8 @@ auto-paint inputs and the separate overflow transform-reset sequence.
 
 Generated manifests derive from the tracked experiment manifest. Paths become
 absolute, Blitz revisions change, and package/binary names are distinct. The
-tracked lock changes only the Taffy source and probe package name. Only the
+tracked lock changes only the Taffy source and probe package name. All profiles
+include the five public `layer-budget` tests. Only the
 initial-owner profile adds the `positioned-layout` integration test target and
 `threejs-positioned-paint-owner-probe` diagnostic executable.
 Generated paths stay ignored. Save preparation JSON and executable hashes with
@@ -223,3 +228,37 @@ close open paths and use nonzero winding. They provide geometry only: no clip
 eligibility, hit-test traversal or layer-budget change is implied. See the
 [ownership design](../../docs/investigations/paint-ownership.md) and
 [effect fixture](../../fixtures/paint-ownership/README.md).
+
+## Check paint budgets
+
+The tenth patch is shared with the default and upstream baseline profiles. It
+changes the paint entry point to return a typed result. The host discards failed
+scenes before GPU submission; fragment balance and widget resource lifecycle
+requirements are documented in the [default experiment](README.md).
+
+```sh
+cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml --test layer-budget
+cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml -p blitz-paint --lib
+node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-budget/browser paint-budget
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
+  fixtures/paint-budget/index.html fixtures/paint-budget/fixture.js \
+  fixtures/paint-budget/cases.json artifacts/paint-budget/default-limits
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
+  fixtures/paint-budget/index.html fixtures/paint-budget/fixture.js \
+  fixtures/paint-budget/cases.json artifacts/paint-budget/raised-limits \
+  fixtures/paint-budget/raised-limits.json
+node experiments/dom-canvas/compare-clips.mjs artifacts/paint-budget/browser \
+  artifacts/paint-budget/raised-limits artifacts/paint-budget/comparison.json
+```
+
+Use fresh output directories. The default-limit command intentionally exits 1
+at the wide case, after the first small capture; it writes no failed-frame PNG
+or success report. The raised-limit command must capture all three cases and
+match the browser. Repeat with `threejs-overflow-paint-probe` for the default
+profile. The optional fifth argument is strict JSON containing the independent
+`maxTotalLayers` and `maxLayerDepth` unsigned limits.
+
+The [checkpoint](../../docs/validation/2026-09-18-paint-budget.md) also preserves
+14 [clip-routing controls](../../fixtures/effect-clip-routing/README.md). Run the
+same browser/native commands with `effect-clip-routing` and its fixture paths.
+Their partial 8/14 parity is separate from the budget fixture's 3/3 result.

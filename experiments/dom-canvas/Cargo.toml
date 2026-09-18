@@ -17,6 +17,10 @@ path = "src/clip_probe.rs"
 name = "threejs-dom-geometry-probe"
 path = "src/geometry_probe.rs"
 
+[[test]]
+name = "layer-budget"
+path = "tests/layer_budget.rs"
+
 [workspace]
 
 [dependencies]

@@ -182,6 +182,17 @@ impl Painter {
     }
 
     pub fn paint(&mut self, doc: &mut BaseDocument, output: &wgpu::Texture) -> Result<Value> {
+        self.paint_with_limits(doc, output, blitz_paint::PaintLimits::default())
+    }
+
+    /// A failed scene is discarded before submission. Widget resource updates
+    /// still belong to the existing registration and drain lifecycle.
+    pub fn paint_with_limits(
+        &mut self,
+        doc: &mut BaseDocument,
+        output: &wgpu::Texture,
+        limits: blitz_paint::PaintLimits,
+    ) -> Result<Value> {
         check_texture(output, wgpu::TextureUsages::STORAGE_BINDING)?;
         let (width, height) = (output.width(), output.height());
         let mut viewport = doc.viewport().clone();
@@ -249,7 +260,8 @@ impl Painter {
             height,
             0,
             0,
-        );
+            limits,
+        )?;
         let glyphs = scene.encoding().resources.glyphs.len();
         self.renderer.render_to_texture(
             &self.bridge.device,

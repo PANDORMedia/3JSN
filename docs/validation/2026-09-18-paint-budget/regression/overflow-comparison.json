@@ -1,0 +1,763 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 5,
+  "total": 22,
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "nativeDevice": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "criteria": {
+    "maxChannelDifference": 2,
+    "maxGeometryDifferenceCssPixels": 0.1,
+    "rasterEdgeExclusion": "Non-uniform browser 3x3 neighborhoods and outermost image pixels",
+    "nativePaintCallsPerCase": 1
+  },
+  "limits": [
+    "Edges are counted separately; interior parity does not prove identical antialiasing.",
+    "Only the recorded ordered cases, viewport and device scales were compared."
+  ],
+  "inputs": {
+    "browserReportSha256": "aa40d0b94590cbbd8cf93374acb8ed626b0582ddb8a3ee3a1d3a5529c747a7f1",
+    "nativeReportSha256": "e9460b36e8dbf2f90057a0604f2c7700ae15f9cbe78a04a1aa1e822a1eedc648",
+    "comparatorSha256": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "subjectColorHelperSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "cases": [
+    {
+      "name": "visible",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 110244,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 9000,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "visible-1x.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      },
+      "native": {
+        "file": "000-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "one-clip",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "one-clip-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "001-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "negative-z",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 112932,
+      "differingInteriorPixels": 6991,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "negative-z-1x.png",
+        "pixelSha256": "fad40320400e2cca255d407c7e8a3debfa4e920b374bf0eeb03cf9258a225020"
+      },
+      "native": {
+        "file": "002-case.png",
+        "pixelSha256": "3a3093061e2290f5bd24dd52cf9414ac2e92aa721be5a500e24785bc4913f949"
+      }
+    },
+    {
+      "name": "nested-clips",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 12880,
+      "interiorPixels": 111436,
+      "differingInteriorPixels": 12811,
+      "subjectReferencePixels": 1120,
+      "firstInteriorDifference": {
+        "x": 233,
+        "y": 136,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "nested-clips-1x.png",
+        "pixelSha256": "8a7f95865549670810fd63b0c3268209b079269113bb179079d656ab1fa302a4"
+      },
+      "native": {
+        "file": "003-case.png",
+        "pixelSha256": "1054b3f076311b9fbe81e714cd17bcee8d75902b4aacd72f421c63b1fb03578b"
+      }
+    },
+    {
+      "name": "rounded-padding",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 18376,
+      "interiorPixels": 109160,
+      "differingInteriorPixels": 16785,
+      "subjectReferencePixels": 15720,
+      "firstInteriorDifference": {
+        "x": 67,
+        "y": 48,
+        "browser": [
+          51,
+          51,
+          51,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "rounded-padding-1x.png",
+        "pixelSha256": "5c2fc86e8c4d104a0b2b7be0d3840e1e944a8bad03a26372d2e6432c9f251b00"
+      },
+      "native": {
+        "file": "004-case.png",
+        "pixelSha256": "b14eba38e3ae7edfd144aec974a6722fa414e5f2612dcc92e234b05fa37b0ad6"
+      }
+    },
+    {
+      "name": "relative-subject",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "relative-subject-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "005-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "transformed-clip",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 20,
+      "interiorPixels": 109462,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1834,
+      "geometryDifferences": [
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 29.387304306030273,
+          "native": 56
+        },
+        {
+          "node": "middle",
+          "field": "width",
+          "browser": 183.11631774902344,
+          "native": 160
+        },
+        {
+          "node": "middle",
+          "field": "height",
+          "browser": 158.46876525878906,
+          "native": 128
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 138.03271484375,
+          "native": 176
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 143.20120239257812,
+          "native": 120
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 116.52682495117188,
+          "native": 100
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 108.824462890625,
+          "native": 90
+        }
+      ],
+      "browser": {
+        "file": "transformed-clip-1x.png",
+        "pixelSha256": "4223e63bddb7f7d871564217f0d9392063ebb9e4273fcd669bb651bac7e6332a"
+      },
+      "native": {
+        "file": "006-case.png",
+        "pixelSha256": "10a2bca0875d04667cb8f724f0be4a3ecb777e29e3399eb9b8bb394e4aaff5f1"
+      }
+    },
+    {
+      "name": "moved-clip",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7416,
+      "interiorPixels": 110664,
+      "differingInteriorPixels": 7335,
+      "subjectReferencePixels": 1584,
+      "firstInteriorDifference": {
+        "x": 209,
+        "y": 100,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "moved-clip-1x.png",
+        "pixelSha256": "74bd0cc9bb478ada6050c25fdfe2285f4b6c6ca50ec6bde334b4123813446307"
+      },
+      "native": {
+        "file": "007-case.png",
+        "pixelSha256": "9dc35fc4a7046b633357183358c9ae4cfc759644de0ae19a05bfa53d24ff4c81"
+      }
+    },
+    {
+      "name": "resized-clip",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 6504,
+      "interiorPixels": 110388,
+      "differingInteriorPixels": 6277,
+      "subjectReferencePixels": 2496,
+      "firstInteriorDifference": {
+        "x": 241,
+        "y": 136,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "resized-clip-1x.png",
+        "pixelSha256": "94a9bc07bda2fa98bbe93f1abf4b45aa867cd1e70f32755130140ddd1cc0b019"
+      },
+      "native": {
+        "file": "008-case.png",
+        "pixelSha256": "5bcbe597f5f8221c8165cb3c11a84d33d3649f56254388cf83203867322d880b"
+      }
+    },
+    {
+      "name": "hidden",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 0,
+      "interiorPixels": 111620,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 0,
+      "geometryDifferences": [
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 0,
+          "native": 32
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 0,
+          "native": 24
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 0,
+          "native": 180
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 0,
+          "native": 136
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 0,
+          "native": 100
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 0,
+          "native": 90
+        }
+      ],
+      "browser": {
+        "file": "hidden-1x.png",
+        "pixelSha256": "2e6d8a4082ee6bcaf1e613f9c6512946275f7e13fa0b96b2c041a1aaf7357888"
+      },
+      "native": {
+        "file": "009-case.png",
+        "pixelSha256": "2e6d8a4082ee6bcaf1e613f9c6512946275f7e13fa0b96b2c041a1aaf7357888"
+      }
+    },
+    {
+      "name": "visible-again",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "visible-again-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "010-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "reparented",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 111468,
+      "differingInteriorPixels": 6991,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 193,
+        "y": 104,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "reparented-1x.png",
+        "pixelSha256": "f5e0fed7cf45593a549925afb676118b202c8e0eb11b4a6af367672bd7645df9"
+      },
+      "native": {
+        "file": "011-case.png",
+        "pixelSha256": "68c1b39863ac8bad027db25407673855fdace3354b53677c5ed515065f931737"
+      }
+    },
+    {
+      "name": "restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "restored-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "012-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "stacking-control",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "stacking-control-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "013-case.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      }
+    },
+    {
+      "name": "stacking-demoted",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "stacking-demoted-1x.png",
+        "pixelSha256": "7051659ae3364ba983391361168f05b799d017825d96d4e8475804949d6177ab"
+      },
+      "native": {
+        "file": "014-case.png",
+        "pixelSha256": "f550002e4f4d0fc1dc3afa7e5c8b83d5b726ad71c5c8c120ffb3af81abc6b0bd"
+      }
+    },
+    {
+      "name": "one-clip",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 28320,
+      "interiorPixels": 449960,
+      "differingInteriorPixels": 27439,
+      "subjectReferencePixels": 7680,
+      "firstInteriorDifference": {
+        "x": 433,
+        "y": 240,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "one-clip-2x.png",
+        "pixelSha256": "c655fcfae7fa406a57f47e1eef7ec47f8fa5590517b0d690d3d32a49f29e2ed0"
+      },
+      "native": {
+        "file": "015-case.png",
+        "pixelSha256": "8b8e048b4c048fd1f4e750abd1290ef39372c1921164e655ab01dbf351aebe7c"
+      }
+    },
+    {
+      "name": "rounded-padding",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 73192,
+      "interiorPixels": 447676,
+      "differingInteriorPixels": 69987,
+      "subjectReferencePixels": 62992,
+      "firstInteriorDifference": {
+        "x": 131,
+        "y": 96,
+        "browser": [
+          51,
+          51,
+          51,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "rounded-padding-2x.png",
+        "pixelSha256": "0bdd5e4d10f08744dc323bcafc17cbe3f6aa9088c9fec1b7700e2aa858fa0ab4"
+      },
+      "native": {
+        "file": "016-case.png",
+        "pixelSha256": "87f97c94271355ca2bfdfba9e81ee3ee44c858d5741a1caad943c722f35cc334"
+      }
+    },
+    {
+      "name": "moved-clip",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 29664,
+      "interiorPixels": 450696,
+      "differingInteriorPixels": 29503,
+      "subjectReferencePixels": 6336,
+      "firstInteriorDifference": {
+        "x": 417,
+        "y": 200,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "moved-clip-2x.png",
+        "pixelSha256": "d01598febb5ed14db56590fb32cda5e85b1179a785b86995673ca8f028766e75"
+      },
+      "native": {
+        "file": "017-case.png",
+        "pixelSha256": "6155ada0f4fb4286ce57ffd666e61bb651ed7c9d45294290dc800979a3dac791"
+      }
+    },
+    {
+      "name": "absolute-escape",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 110588,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 3840,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "absolute-escape-1x.png",
+        "pixelSha256": "40f5cf94c864f0e18b65f0be3483d57e98467000d96a4c671605fcd446614ad2"
+      },
+      "native": {
+        "file": "018-case.png",
+        "pixelSha256": "40f5cf94c864f0e18b65f0be3483d57e98467000d96a4c671605fcd446614ad2"
+      }
+    },
+    {
+      "name": "absolute-auto",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 110748,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 3840,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "absolute-auto-1x.png",
+        "pixelSha256": "7a8b485c0cca6078920dd23a6472b7796e51b6878e4545bb4fd0e0febec2b026"
+      },
+      "native": {
+        "file": "019-case.png",
+        "pixelSha256": "7a8b485c0cca6078920dd23a6472b7796e51b6878e4545bb4fd0e0febec2b026"
+      }
+    },
+    {
+      "name": "viewport-fixed",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 109996,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 7680,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "viewport-fixed-1x.png",
+        "pixelSha256": "c005f1d6986ea11b86aba419b958883f7f1e7e6bf87009b0cbfad67a07f24af1"
+      },
+      "native": {
+        "file": "020-case.png",
+        "pixelSha256": "c005f1d6986ea11b86aba419b958883f7f1e7e6bf87009b0cbfad67a07f24af1"
+      }
+    },
+    {
+      "name": "transformed-fixed",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 0,
+      "interiorPixels": 110296,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
+      "geometryDifferences": [
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 76,
+          "native": 56
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 52,
+          "native": 40
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 196,
+          "native": 176
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 132,
+          "native": 120
+        }
+      ],
+      "browser": {
+        "file": "transformed-fixed-1x.png",
+        "pixelSha256": "3596683e67ceb6b9175359aa0c44e202ecbd04c79c50feadde2dc220f8ab48c4"
+      },
+      "native": {
+        "file": "021-case.png",
+        "pixelSha256": "3596683e67ceb6b9175359aa0c44e202ecbd04c79c50feadde2dc220f8ab48c4"
+      }
+    }
+  ]
+}

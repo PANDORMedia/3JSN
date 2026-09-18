@@ -43,9 +43,20 @@ changing it. The patch introduces a metadata-only offscreen canvas, explicit
 texture expiry and bounded configuration/error fixes. The upstream CPU-image
 canvas and native surface paths retain their previous behavior.
 The same preparation step archives the pinned Blitz commit into an ignored copy,
-applies the stacking-list and no-box geometry fixes, and verifies all 414 tracked files. The
+applies the stacking-list, no-box geometry and checked layer-budget fixes, and
+verifies all 414 tracked files plus the added checked-scene module. Extra files
+and symlinks are rejected. The
 related workspace crates are patched together so their public types share one
 source identity. No Cargo registry or original Git checkout is edited.
+
+Painting uses `paint_scene(..., PaintLimits) -> Result<PaintStats, PaintError>`.
+The default permits 1,024 total clip/effect layers and 1,024 open layers. All
+producers and subdocuments share that budget. A rejected layer suppresses later
+drawing and balances accepted layers; the host discards its fresh scene before
+GPU submission. Widget resource side effects still use the existing cleanup
+path. Scene fragments must be self-balanced; checks cover the combined stream.
+The [budget fixture](../../fixtures/paint-budget/README.md) compares rejection
+with successful rendering under an explicitly raised limit.
 
 `run.mjs` runs with Metal API Validation, compares all 27 shared assertions to the
 committed Chrome reference, verifies the remaining clip failure and repaired

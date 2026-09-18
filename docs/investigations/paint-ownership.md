@@ -84,8 +84,13 @@ See [CSS overflow clipping](https://www.w3.org/TR/CSS22/visufx.html#overflow-cli
 The [effect fixture](../../fixtures/paint-ownership/README.md) verifies this
 opacity counterexample. Its expanded clip-path variant behaves differently in
 the recorded Chrome reference: fixed C remains clipped at A despite unchanged
-reported geometry. The cause remains unresolved. Do not derive a common clip
-eligibility rule or a containing-block change from this pair alone.
+reported geometry. The [clip-routing controls](../../fixtures/effect-clip-routing/README.md)
+now trace this difference to the tested Chrome revision: the path captures B's
+incoming clip chain and propagates it to fixed descendants. CSS rect can instead
+reuse its shape beneath the descendant's fixed clip chain. Moving the path to C,
+moving it to A before A's own overflow, or removing A's overflow distinguishes
+these routes. All 14 controls preserve C's fixed geometry. This is evidence for
+a bounded Chrome compatibility policy, not a universal cross-browser rule.
 
 Retain clip eligibility per painted content/entry and preserve atomic effects
 separately. CSS rect clips, overflow clips and clip-paths have distinct rules.
@@ -99,8 +104,28 @@ and content path predicates are available for future hit traversal. They use
 nonzero winding and close every open subpath, matching filled-path semantics.
 They do not decide which ancestor clips apply. Clip-path resolution, clip
 eligibility and hit traversal remain separate work. Distinguish unsupported clip
-geometry from an absent clip. The layer manager's cumulative push limit also
-needs an observable failure before any collector starts replaying ancestor clips.
+geometry from an absent clip. The checked paint boundary now makes layer-budget
+failure observable before rasterization; every future traversal helper must use
+that same boundary. It counts actual clip/effect commands, including replayed
+fragments and nested documents, rather than estimated DOM complexity.
+
+## Renderer integration boundary
+
+Replacing `draw_children` alone is insufficient: the current element traversal
+draws its own image, canvas or text before visiting negative-z children. Split
+decoration, negative contexts, ordinary content, and zero/positive phases while
+reusing existing paint primitives. Apply opacity once around a group's content;
+apply each contribution's eligible clips inside that group. Retain separate
+normal, absolute and fixed clip references with explicit shape coordinate spaces.
+Never change DOM or layout parents to obtain paint order.
+
+Geometry-owned overflow culling must not discard an escaping paint contribution.
+An initial bounded implementation can use conservative viewport effect bounds;
+tight bounds and caching need separate evidence. Combine the plan's CSS-pixel
+prefix and local location once, convert to device coordinates, then apply the
+element transform once. Reusing the old root-offset compensation on top of that
+prefix would double the adjustment. Inline fragments, unsupported effects and
+scrolling remain explicit eligibility gates before applying the plan.
 
 ## Validation order
 

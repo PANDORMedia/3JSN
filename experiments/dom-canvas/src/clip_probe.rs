@@ -46,6 +46,13 @@ struct Case {
     subject_color: Option<[u8; 4]>,
 }
 
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct PaintLimitsInput {
+    max_total_layers: u32,
+    max_layer_depth: u32,
+}
+
 fn subject_color<'de, D: serde::Deserializer<'de>>(
     deserializer: D,
 ) -> std::result::Result<Option<[u8; 4]>, D::Error> {
@@ -120,13 +127,22 @@ const BOOTSTRAP: &str = r#"
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let args: Vec<_> = std::env::args_os().skip(1).collect();
-    if args.len() != 4 {
-        return Err("usage: clip-probe <html-file> <script-file> <cases-json> <output-dir>".into());
+    if !(4..=5).contains(&args.len()) {
+        return Err("usage: clip-probe <html-file> <script-file> <cases-json> <output-dir> [paint-limits-file]".into());
     }
     let html = fs::read_to_string(&args[0])?;
     let script = fs::read_to_string(&args[1])?;
     let cases_bytes = fs::read(&args[2])?;
     let cases: Vec<Case> = serde_json::from_slice(&cases_bytes)?;
+    let limits = if let Some(path) = args.get(4) {
+        let input: PaintLimitsInput = serde_json::from_slice(&fs::read(path)?)?;
+        blitz_paint::PaintLimits {
+            max_total_layers: input.max_total_layers,
+            max_layer_depth: input.max_layer_depth,
+        }
+    } else {
+        blitz_paint::PaintLimits::default()
+    };
     check(!cases.is_empty(), "at least one clipping case is required")?;
     let output = Path::new(&args[3]);
     fs::create_dir_all(output)?;
@@ -186,7 +202,7 @@ async fn main() -> Result<()> {
             let image = target.as_ref().unwrap();
             let (paint, layout) = dom_bridge::with_document(&mut runtime, |doc| -> Result<_> {
                 doc.set_viewport(Viewport::new(width, height, case.scale, ColorScheme::Light));
-                let paint = owner.paint(doc, image)?;
+                let paint = owner.paint_with_limits(doc, image, limits)?;
                 let mut layout = serde_json::Map::new();
                 // Read the layout that produced these pixels. The JS geometry
                 // accessor resolves again and would change the evidence boundary.
@@ -225,6 +241,7 @@ async fn main() -> Result<()> {
             "inputs":{"htmlSha256":evidence::sha256(html.as_bytes()),
                 "scriptSha256":evidence::sha256(script.as_bytes()),"casesSha256":evidence::sha256(&cases_bytes)},
             "nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true,
+            "paintLimits":{"maxTotalLayers":limits.max_total_layers,"maxLayerDepth":limits.max_layer_depth},
             "cpuReadbackPurpose":"verification PNGs only",
             "limits":["Metal-only offscreen captures; no visible presentation or performance claim.",
                 "Browser comparison is a separate step; capture completion is not a compatibility pass.",

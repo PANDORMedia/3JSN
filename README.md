@@ -117,6 +117,11 @@ The [ownership checkpoint](docs/validation/2026-09-18-paint-ownership.md) now ad
 a read-only diagnostic plan and shared rounded-box geometry. All 112 native
 paint case records remain unchanged; the new effect fixture still matches only
 10/18 browser cases. Renderer adoption and clip-aware input remain open.
+The [paint-budget correction](docs/validation/2026-09-18-paint-budget.md) now
+rejects excessive layer use explicitly in both prepared renderers. Raised-limit
+Metal captures match Chrome in 3/3 controls; all 112 existing paint case records
+remain unchanged. Fourteen new clip-routing controls explain Chrome's distinct
+opacity and clip-path behavior, while native parity remains partial at 8/14.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

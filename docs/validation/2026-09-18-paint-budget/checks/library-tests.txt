@@ -1,0 +1,83 @@
+   Compiling serde v1.0.229
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling smallvec v1.16.1
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling parking_lot_core v0.9.12
+   Compiling icu_provider v2.3.1
+   Compiling parking_lot v0.12.5
+   Compiling phf_macros v0.13.1
+   Compiling string_cache v0.9.0
+   Compiling string_cache_codegen v0.6.1
+   Compiling phf v0.13.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling arrayvec v0.7.8
+   Compiling bytemuck v1.25.2
+   Compiling cssparser v0.37.0
+   Compiling servo_arc v0.4.3
+   Compiling derive_more v2.1.1
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling to_shmem v0.5.0
+   Compiling selectors v0.40.0
+   Compiling font-types v0.12.5
+   Compiling stylo_atoms v0.21.0
+   Compiling web_atoms v0.2.6
+   Compiling app_units v0.7.8
+   Compiling euclid v0.22.14
+   Compiling read-fonts v0.41.0
+   Compiling stylo_malloc_size_of v0.21.0
+   Compiling icu_locale_fallback v2.3.0
+   Compiling url v2.5.8
+   Compiling icu_segmenter v2.3.0
+   Compiling polycool v0.4.0
+   Compiling stylo_traits v0.21.0
+   Compiling kurbo v0.13.1
+   Compiling stylo_dom v0.21.0
+   Compiling uluru v3.1.0
+   Compiling fontique v0.11.1
+   Compiling stylo v0.21.0
+   Compiling keyboard-types v0.7.0
+   Compiling peniko v0.6.1
+   Compiling harfrust v0.12.0
+   Compiling skrifa v0.44.0
+   Compiling taffy v0.14.0 (https://github.com/DioxusLabs/taffy?rev=dc2fe8bd#dc2fe8bd)
+   Compiling parley_data v0.11.1
+   Compiling anyrender v0.13.0
+   Compiling blitz-traits v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-traits)
+   Compiling markup5ever v0.39.0
+   Compiling parley v0.11.1
+   Compiling image v0.25.10
+   Compiling stylo_taffy v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/stylo_taffy)
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-dom)
+   Compiling blitz-paint v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint)
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 48.81s
+     Running unittests src/lib.rs (target/debug/deps/blitz_paint-b9fc9bfdfd94d1f0)
+
+running 6 tests
+test checked_scene::tests::exact_total_boundary_does_not_drop_a_required_effect ... ok
+test checked_scene::tests::malformed_streams_return_errors_without_popping_the_callers_layers ... ok
+test checked_scene::tests::zero_budget_preserves_unlayered_drawing_but_rejects_the_first_layer ... ok
+test checked_scene::tests::nested_failure_unwinds_accepted_layers_and_suppresses_later_siblings ... ok
+test checked_scene::tests::reset_is_an_error_and_does_not_erase_preexisting_commands ... ok
+test checked_scene::tests::recorded_fragments_replay_through_the_budget_and_restore_document_context ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

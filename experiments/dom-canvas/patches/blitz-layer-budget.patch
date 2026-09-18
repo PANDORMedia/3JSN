@@ -1,0 +1,649 @@
+diff --git a/packages/blitz-paint/src/checked_scene.rs b/packages/blitz-paint/src/checked_scene.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-paint/src/checked_scene.rs
+@@ -0,0 +1,508 @@
++use std::{any::Any, cell::Cell, error::Error, fmt, rc::Rc, sync::Arc};
++
++use anyrender::{
++    Filter, Glyph, NormalizedCoord, PaintRef, PaintScene, RegisterResourceError, RenderContext,
++    ResourceId,
++};
++use blitz_dom::NodeId;
++use kurbo::{Affine, Rect, Shape, Stroke, Vec2};
++use peniko::{BlendMode, Color, Fill, FontData, StyleRef};
++
++/// Independent ceilings for the entire paint call, including nested documents.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub struct PaintLimits {
++    pub max_total_layers: u32,
++    pub max_layer_depth: u32,
++}
++
++impl Default for PaintLimits {
++    fn default() -> Self {
++        Self {
++            max_total_layers: 1024,
++            max_layer_depth: 1024,
++        }
++    }
++}
++
++/// Layers accepted by the command sink, including clips and effect groups.
++#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
++pub struct PaintStats {
++    pub total_layers: u32,
++    pub peak_layer_depth: u32,
++}
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub struct PaintLocation {
++    pub document_id: usize,
++    /// `None` identifies document-level painting outside an element.
++    pub node_id: Option<NodeId>,
++}
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum PaintLayerKind {
++    Clip,
++    Effect,
++}
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum PaintErrorKind {
++    TotalLayerLimit {
++        attempted: u64,
++        layer: PaintLayerKind,
++    },
++    LayerDepthLimit {
++        attempted: u64,
++        layer: PaintLayerKind,
++    },
++    UnexpectedLayerPop,
++    UnclosedLayers {
++        depth: u64,
++    },
++    UnexpectedSceneReset,
++}
++
++/// The first rejected command. The caller must discard the scene on any error.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub struct PaintError {
++    pub kind: PaintErrorKind,
++    pub location: PaintLocation,
++    pub stats: PaintStats,
++    pub limits: PaintLimits,
++}
++
++impl fmt::Display for PaintError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(
++            f,
++            "paint failed in document {} at node {:?}: {:?}; accepted {} layers, peak depth {}; limits total={}, depth={}",
++            self.location.document_id,
++            self.location.node_id,
++            self.kind,
++            self.stats.total_layers,
++            self.stats.peak_layer_depth,
++            self.limits.max_total_layers,
++            self.limits.max_layer_depth,
++        )
++    }
++}
++
++impl Error for PaintError {}
++
++#[derive(Clone)]
++pub(crate) struct PaintContext(Rc<Cell<PaintLocation>>);
++
++impl PaintContext {
++    pub(crate) fn new(document_id: usize) -> Self {
++        Self(Rc::new(Cell::new(PaintLocation {
++            document_id,
++            node_id: None,
++        })))
++    }
++
++    pub(crate) fn enter(&self, document_id: usize, node_id: Option<NodeId>) -> PaintContextGuard {
++        let previous = self.0.replace(PaintLocation {
++            document_id,
++            node_id,
++        });
++        PaintContextGuard {
++            context: self.clone(),
++            previous,
++        }
++    }
++}
++
++pub(crate) struct PaintContextGuard {
++    context: PaintContext,
++    previous: PaintLocation,
++}
++
++impl Drop for PaintContextGuard {
++    fn drop(&mut self) {
++        self.context.0.set(self.previous);
++    }
++}
++
++/// One boundary for every producer, including direct mask/SVG/widget commands.
++/// Once a command fails, only balancing pops reach the underlying scene.
++pub(crate) struct CheckedScene<'a, S> {
++    inner: &'a mut S,
++    context: PaintContext,
++    limits: PaintLimits,
++    stats: PaintStats,
++    logical_depth: u64,
++    accepted_depth: u32,
++    error: Option<PaintError>,
++}
++
++impl<'a, S: PaintScene> CheckedScene<'a, S> {
++    pub(crate) fn new(inner: &'a mut S, limits: PaintLimits, context: PaintContext) -> Self {
++        Self {
++            inner,
++            context,
++            limits,
++            stats: PaintStats::default(),
++            logical_depth: 0,
++            accepted_depth: 0,
++            error: None,
++        }
++    }
++
++    fn fail(&mut self, kind: PaintErrorKind) {
++        if self.error.is_none() {
++            self.error = Some(PaintError {
++                kind,
++                location: self.context.0.get(),
++                stats: self.stats,
++                limits: self.limits,
++            });
++        }
++    }
++
++    fn accept_push(&mut self, layer: PaintLayerKind) -> bool {
++        self.logical_depth = self.logical_depth.saturating_add(1);
++        if self.error.is_some() {
++            return false;
++        }
++        let total = u64::from(self.stats.total_layers) + 1;
++        if total > u64::from(self.limits.max_total_layers) {
++            self.fail(PaintErrorKind::TotalLayerLimit {
++                attempted: total,
++                layer,
++            });
++            return false;
++        }
++        if self.logical_depth > u64::from(self.limits.max_layer_depth) {
++            self.fail(PaintErrorKind::LayerDepthLimit {
++                attempted: self.logical_depth,
++                layer,
++            });
++            return false;
++        }
++        self.stats.total_layers += 1;
++        self.accepted_depth += 1;
++        self.stats.peak_layer_depth = self.stats.peak_layer_depth.max(self.accepted_depth);
++        true
++    }
++
++    pub(crate) fn finish(mut self) -> Result<PaintStats, PaintError> {
++        if self.logical_depth != 0 {
++            self.fail(PaintErrorKind::UnclosedLayers {
++                depth: self.logical_depth,
++            });
++        }
++        // Close only this call's accepted prefix after an unclosed-layer error.
++        // No further draw commands are emitted during this cleanup.
++        while self.accepted_depth != 0 {
++            self.inner.pop_layer();
++            self.accepted_depth -= 1;
++        }
++        match self.error {
++            Some(error) => Err(error),
++            None => Ok(self.stats),
++        }
++    }
++}
++
++impl<S: RenderContext> RenderContext for CheckedScene<'_, S> {
++    fn try_register_custom_resource(
++        &mut self,
++        resource: Box<dyn Any>,
++    ) -> Result<ResourceId, RegisterResourceError> {
++        self.inner.try_register_custom_resource(resource)
++    }
++
++    fn unregister_resource(&mut self, resource: ResourceId) {
++        self.inner.unregister_resource(resource);
++    }
++
++    fn renderer_specific_context(&self) -> Option<Box<dyn Any>> {
++        self.inner.renderer_specific_context()
++    }
++}
++
++impl<S: PaintScene> PaintScene for CheckedScene<'_, S> {
++    fn reset(&mut self) {
++        self.fail(PaintErrorKind::UnexpectedSceneReset);
++    }
++
++    fn push_layer(
++        &mut self,
++        blend: impl Into<BlendMode>,
++        alpha: f32,
++        transform: Affine,
++        clip: &impl Shape,
++        filter: Option<Arc<Filter>>,
++        backdrop_filter: Option<Arc<Filter>>,
++    ) {
++        if self.accept_push(PaintLayerKind::Effect) {
++            self.inner
++                .push_layer(blend, alpha, transform, clip, filter, backdrop_filter);
++        }
++    }
++
++    fn push_clip_layer(&mut self, transform: Affine, clip: &impl Shape) {
++        if self.accept_push(PaintLayerKind::Clip) {
++            self.inner.push_clip_layer(transform, clip);
++        }
++    }
++
++    fn pop_layer(&mut self) {
++        if self.logical_depth == 0 {
++            self.fail(PaintErrorKind::UnexpectedLayerPop);
++            return;
++        }
++        self.logical_depth -= 1;
++        if self.logical_depth < u64::from(self.accepted_depth) {
++            self.inner.pop_layer();
++            self.accepted_depth -= 1;
++        }
++    }
++
++    fn stroke<'a>(
++        &mut self,
++        style: &Stroke,
++        transform: Affine,
++        brush: impl Into<PaintRef<'a>>,
++        brush_transform: Option<Affine>,
++        shape: &impl Shape,
++    ) {
++        if self.error.is_none() {
++            self.inner
++                .stroke(style, transform, brush, brush_transform, shape);
++        }
++    }
++
++    fn fill<'a>(
++        &mut self,
++        style: Fill,
++        transform: Affine,
++        brush: impl Into<PaintRef<'a>>,
++        brush_transform: Option<Affine>,
++        shape: &impl Shape,
++    ) {
++        if self.error.is_none() {
++            self.inner
++                .fill(style, transform, brush, brush_transform, shape);
++        }
++    }
++
++    fn draw_glyphs<'a, 's: 'a>(
++        &'s mut self,
++        font: &'a FontData,
++        font_size: f32,
++        hint: bool,
++        normalized_coords: &'a [NormalizedCoord],
++        embolden: Vec2,
++        style: impl Into<StyleRef<'a>>,
++        brush: impl Into<PaintRef<'a>>,
++        brush_alpha: f32,
++        transform: Affine,
++        glyph_transform: Option<Affine>,
++        glyphs: impl Iterator<Item = Glyph> + Clone,
++    ) {
++        if self.error.is_none() {
++            self.inner.draw_glyphs(
++                font,
++                font_size,
++                hint,
++                normalized_coords,
++                embolden,
++                style,
++                brush,
++                brush_alpha,
++                transform,
++                glyph_transform,
++                glyphs,
++            );
++        }
++    }
++
++    fn draw_box_shadow(
++        &mut self,
++        transform: Affine,
++        rect: Rect,
++        brush: Color,
++        radius: f64,
++        std_dev: f64,
++    ) {
++        if self.error.is_none() {
++            self.inner
++                .draw_box_shadow(transform, rect, brush, radius, std_dev);
++        }
++    }
++
++    // The trait's append_scene replays every command through this wrapper.
++    // Forwarding the whole fragment would bypass all layer accounting.
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use anyrender::{Scene, recording::RenderCommand};
++
++    fn limits(total: u32, depth: u32) -> PaintLimits {
++        PaintLimits {
++            max_total_layers: total,
++            max_layer_depth: depth,
++        }
++    }
++
++    fn assert_balanced(scene: &Scene) {
++        let mut depth = 0;
++        for command in &scene.commands {
++            match command {
++                RenderCommand::PushLayer(_) | RenderCommand::PushClipLayer(_) => depth += 1,
++                RenderCommand::PopLayer => {
++                    assert!(depth > 0);
++                    depth -= 1;
++                }
++                _ => {}
++            }
++        }
++        assert_eq!(depth, 0);
++    }
++
++    #[test]
++    fn exact_total_boundary_does_not_drop_a_required_effect() {
++        let mut scene = Scene::new();
++        let mut checked = CheckedScene::new(&mut scene, limits(2, 1), PaintContext::new(7));
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        for _ in 0..3 {
++            checked.push_layer(
++                peniko::Mix::Normal,
++                0.5,
++                Affine::IDENTITY,
++                &rect,
++                None,
++                None,
++            );
++            checked.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++            checked.pop_layer();
++        }
++        let error = checked.finish().unwrap_err();
++        assert_eq!(
++            error.kind,
++            PaintErrorKind::TotalLayerLimit {
++                attempted: 3,
++                layer: PaintLayerKind::Effect
++            }
++        );
++        assert_eq!(
++            error.stats,
++            PaintStats {
++                total_layers: 2,
++                peak_layer_depth: 1
++            }
++        );
++        assert_eq!(scene.commands.len(), 6);
++        assert_balanced(&scene);
++    }
++
++    #[test]
++    fn nested_failure_unwinds_accepted_layers_and_suppresses_later_siblings() {
++        let mut scene = Scene::new();
++        let mut checked = CheckedScene::new(&mut scene, limits(50, 2), PaintContext::new(7));
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        for _ in 0..4 {
++            checked.push_clip_layer(Affine::IDENTITY, &rect);
++        }
++        for _ in 0..4 {
++            checked.pop_layer();
++        }
++        checked.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++        checked.push_clip_layer(Affine::IDENTITY, &rect);
++        checked.pop_layer();
++        let error = checked.finish().unwrap_err();
++        assert_eq!(
++            error.kind,
++            PaintErrorKind::LayerDepthLimit {
++                attempted: 3,
++                layer: PaintLayerKind::Clip
++            }
++        );
++        assert_eq!(
++            error.stats,
++            PaintStats {
++                total_layers: 2,
++                peak_layer_depth: 2
++            }
++        );
++        assert_eq!(scene.commands.len(), 4);
++        assert_balanced(&scene);
++    }
++
++    #[test]
++    fn zero_budget_preserves_unlayered_drawing_but_rejects_the_first_layer() {
++        let mut scene = Scene::new();
++        let mut checked = CheckedScene::new(&mut scene, limits(0, 0), PaintContext::new(7));
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        checked.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++        checked.push_clip_layer(Affine::IDENTITY, &rect);
++        checked.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++        checked.pop_layer();
++        assert_eq!(checked.finish().unwrap_err().stats, PaintStats::default());
++        assert_eq!(scene.commands.len(), 1);
++        assert_balanced(&scene);
++    }
++
++    #[test]
++    fn recorded_fragments_replay_through_the_budget_and_restore_document_context() {
++        let context = PaintContext::new(7);
++        let mut fragment = Scene::new();
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        for _ in 0..2 {
++            fragment.push_clip_layer(Affine::IDENTITY, &rect);
++            fragment.pop_layer();
++        }
++        let mut scene = Scene::new();
++        let mut checked = CheckedScene::new(&mut scene, limits(3, 2), context.clone());
++        checked.append_scene(fragment.clone(), Affine::IDENTITY);
++        {
++            let _nested = context.enter(11, None);
++            checked.append_scene(fragment, Affine::IDENTITY);
++        }
++        assert_eq!(context.0.get().document_id, 7);
++        let error = checked.finish().unwrap_err();
++        assert_eq!(error.location.document_id, 11);
++        assert_eq!(error.stats.total_layers, 3);
++        assert_balanced(&scene);
++    }
++
++    #[test]
++    fn malformed_streams_return_errors_without_popping_the_callers_layers() {
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        let mut scene = Scene::new();
++        scene.push_clip_layer(Affine::IDENTITY, &rect);
++        let mut checked = CheckedScene::new(&mut scene, limits(5, 5), PaintContext::new(7));
++        checked.pop_layer();
++        assert_eq!(
++            checked.finish().unwrap_err().kind,
++            PaintErrorKind::UnexpectedLayerPop
++        );
++        assert_eq!(scene.commands.len(), 1);
++        let mut checked = CheckedScene::new(&mut scene, limits(5, 5), PaintContext::new(7));
++        checked.push_clip_layer(Affine::IDENTITY, &rect);
++        assert_eq!(
++            checked.finish().unwrap_err().kind,
++            PaintErrorKind::UnclosedLayers { depth: 1 }
++        );
++        assert_eq!(scene.commands.len(), 3);
++        scene.pop_layer();
++        assert_balanced(&scene);
++    }
++
++    #[test]
++    fn reset_is_an_error_and_does_not_erase_preexisting_commands() {
++        let mut scene = Scene::new();
++        let rect = Rect::new(0.0, 0.0, 10.0, 10.0);
++        scene.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++        let mut checked = CheckedScene::new(&mut scene, limits(5, 5), PaintContext::new(7));
++        checked.reset();
++        checked.fill(Fill::NonZero, Affine::IDENTITY, Color::BLACK, None, &rect);
++        assert_eq!(
++            checked.finish().unwrap_err().kind,
++            PaintErrorKind::UnexpectedSceneReset
++        );
++        assert_eq!(scene.commands.len(), 1);
++    }
++}
+diff --git a/packages/blitz-paint/src/layers.rs b/packages/blitz-paint/src/layers.rs
+--- a/packages/blitz-paint/src/layers.rs
++++ b/packages/blitz-paint/src/layers.rs
+@@ -3,15 +3,6 @@
+ use peniko::Mix;
+-use std::{cell::Cell, sync::Arc};
+-
+-const LAYER_LIMIT: u32 = 1024;
++use std::sync::Arc;
+ 
+ #[derive(Default)]
+-pub(crate) struct LayerManager {
+-    layers_used: Cell<u32>,
+-    layer_depth: Cell<u32>,
+-    layers_wanted: Cell<u32>,
+-
+-    #[allow(unused)] // Only used for debugging. Enabled as required.
+-    layer_depth_used: Cell<u32>,
+-}
++pub(crate) struct LayerManager;
+ 
+@@ -57,10 +48,2 @@
+         }
+-        self.layers_wanted.update(|x| x + 1);
+-
+-        // Check if clips are above limit
+-        let layers_available = self.layers_used.get() <= LAYER_LIMIT;
+-        if !layers_available {
+-            return false;
+-        }
+-
+         // Actually push the layer
+@@ -79,7 +62,2 @@
+ 
+-        // Update accounting
+-        self.layers_used.update(|x| x + 1);
+-        self.layer_depth.update(|x| x + 1);
+-        self.layer_depth.update(|x| x.max(self.layer_depth.get()));
+-
+         true
+@@ -90,3 +68,2 @@
+             scene.pop_layer();
+-            self.layer_depth.update(|x| x - 1);
+         }
+diff --git a/packages/blitz-paint/src/lib.rs b/packages/blitz-paint/src/lib.rs
+--- a/packages/blitz-paint/src/lib.rs
++++ b/packages/blitz-paint/src/lib.rs
+@@ -5,2 +5,3 @@
+ 
++mod checked_scene;
+ mod color;
+@@ -18,2 +19,6 @@
+ use blitz_dom::{BaseDocument, NodeId, util::Color};
++use checked_scene::{CheckedScene, PaintContext};
++pub use checked_scene::{
++    PaintError, PaintErrorKind, PaintLayerKind, PaintLimits, PaintLocation, PaintStats,
++};
+ use render::BlitzDomPainter;
+@@ -41,2 +46,12 @@
+ /// transform them to a vector format (e.g. SVG/PDF) or serialize them in raw form for later use.
++///
++/// Limits include every clip/effect layer in the document, subdocuments, SVGs and
++/// custom-widget scene fragments. Fragments must contain self-balanced layer
++/// commands; validation tracks the combined scene stack, not each fragment.
++/// On error, accepted layers are balanced and
++/// subsequent drawing is suppressed, but earlier commands remain in `scene`.
++/// The caller must discard that scene before rendering or submitting it. Use a
++/// fresh deferred scene; this API cannot roll back an immediate-mode renderer or
++/// custom-widget resource registration and renderer-specific side effects.
++#[allow(clippy::too_many_arguments)]
+ pub fn paint_scene(
+@@ -49,3 +64,4 @@
+     y_offset: u32,
+-) {
++    limits: PaintLimits,
++) -> Result<PaintStats, PaintError> {
+     // Run `.paint()` on every custom widget in the document (and all subdocuments) ahead of time.
+@@ -59,2 +75,4 @@
+ 
++    let context = PaintContext::new(doc.id());
++    let mut checked = CheckedScene::new(scene, limits, context.clone());
+     let generator = BlitzDomPainter::new(
+@@ -67,11 +85,7 @@
+         &custom_widget_scenes,
++        context,
+     );
+-    generator.paint_scene(scene);
++    generator.paint_scene(&mut checked);
+ 
+-    // println!(
+-    //     "Rendered using {} clips (depth: {}) (wanted: {})",
+-    //     CLIPS_USED.load(atomic::Ordering::SeqCst),
+-    //     CLIP_DEPTH_USED.load(atomic::Ordering::SeqCst),
+-    //     CLIPS_WANTED.load(atomic::Ordering::SeqCst)
+-    // );
++    checked.finish()
+ }
+diff --git a/packages/blitz-paint/src/render.rs b/packages/blitz-paint/src/render.rs
+--- a/packages/blitz-paint/src/render.rs
++++ b/packages/blitz-paint/src/render.rs
+@@ -12 +12,2 @@
++use crate::checked_scene::PaintContext;
+ use crate::color::{Color, ToColorColor};
+@@ -120,2 +121,3 @@
+     pub(crate) layer_manager: LayerManager,
++    pub(crate) paint_context: PaintContext,
+     /// Reusable scratch allocations shared by all text layouts painted for this document.
+@@ -131,2 +133,3 @@
+     /// Create a new BlitzDomPainter for the given document
++    #[allow(clippy::too_many_arguments)]
+     pub fn new(
+@@ -139,2 +142,3 @@
+         custom_widget_scenes: &'a CustomWidgetSceneMap,
++        paint_context: PaintContext,
+     ) -> Self {
+@@ -146,3 +150,3 @@
+ 
+-        let layer_manager = LayerManager::default();
++        let layer_manager = LayerManager;
+         let root_element_id = dom.try_root_element().map(|el| el.id);
+@@ -162,2 +166,3 @@
+             layer_manager,
++            paint_context,
+             draw_text_context: RefCell::new(DrawTextContext::default()),
+@@ -174,2 +179,3 @@
+     pub fn paint_scene(&self, scene: &mut impl PaintScene) {
++        let _location = self.paint_context.enter(self.dom.id(), None);
+         if self.dom.has_pending_critical_resources() {
+@@ -292,2 +298,3 @@
+     ) {
++        let _location = self.paint_context.enter(self.dom.id(), Some(node_id));
+         let node = &self.dom.as_ref().tree()[node_id];
+@@ -1173,2 +1180,3 @@
+                 self.custom_widget_scenes,
++                self.paint_context.clone(),
+             );

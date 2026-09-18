@@ -1,0 +1,13 @@
+{
+  "binary": "target/debug/threejs-dom-canvas-probe",
+  "binarySha256": "35c29149abd74202d82d413309c3394ddb4e3fcb9afe8f89e18a00cde14df925",
+  "previousReport": "docs/validation/2026-09-18-canvas-handoff.json",
+  "previousReportSha256": "82f5717f7996d31291548f185f5539793e0defb46d0d60edf40b1f6a25b6be7e",
+  "paintReportUnchanged": true,
+  "contractUnchanged": true,
+  "browserContractChecks": 27,
+  "capturedFrames": 21,
+  "gpuValidationErrors": [],
+  "injectedFailureAfterFrames": 2,
+  "cleanupCompleted": true
+}

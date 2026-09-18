@@ -1,0 +1,16 @@
+[
+  { "name": "clip-baseline" },
+  { "name": "opacity-baseline", "subjectColor": [240, 144, 152, 255] },
+  { "name": "no-effect" },
+  { "name": "clip-expanded-2000" },
+  { "name": "clip-on-fixed-subject" },
+  { "name": "clip-on-overflow-ancestor" },
+  { "name": "clip-with-opacity", "subjectColor": [240, 144, 152, 255] },
+  { "name": "clip-with-ancestor-overflow-visible" },
+  { "name": "clip-with-own-overflow-only" },
+  { "name": "css-rect-absolute-middle" },
+  { "name": "clip-absolute-middle" },
+  { "name": "clip-fixed-middle" },
+  { "name": "clip-middle-escapes-static-ancestor" },
+  { "name": "clip-restored" }
+]

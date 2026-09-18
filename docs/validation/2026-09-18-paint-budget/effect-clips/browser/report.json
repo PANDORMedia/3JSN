@@ -1,0 +1,629 @@
+{
+  "schemaVersion": 1,
+  "kind": "effect-clip-routing-browser-reference",
+  "capturedAt": "2026-09-18T04:19:54.184Z",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "inputs": {
+    "htmlSha256": "57288374d480d66a07d93c08803a2ac32719d29e753f98f23f354d788b82a794",
+    "scriptSha256": "d1cc330efe21f39c9695707699bf46753dbaec89eaa1ebf7a6676f2ff626c5e1",
+    "casesSha256": "1501648c5fe773b553d954ce06f6391734bf014df825e742765051bd9630932f"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/effect-clip-routing/index.html",
+      "sha256": "57288374d480d66a07d93c08803a2ac32719d29e753f98f23f354d788b82a794"
+    },
+    {
+      "path": "fixtures/effect-clip-routing/fixture.js",
+      "sha256": "d1cc330efe21f39c9695707699bf46753dbaec89eaa1ebf7a6676f2ff626c5e1"
+    },
+    {
+      "path": "fixtures/effect-clip-routing/cases.json",
+      "sha256": "1501648c5fe773b553d954ce06f6391734bf014df825e742765051bd9630932f"
+    },
+    {
+      "path": "scripts/compatibility/paint-reference.mjs",
+      "sha256": "64990b79085bcbddcbd82390ca951520be04099706fa05b5b1938dd91255b195"
+    },
+    {
+      "path": "scripts/compatibility/browser-session.mjs",
+      "sha256": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/paint-colors.mjs",
+      "sha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+    }
+  ],
+  "cases": [
+    {
+      "name": "clip-baseline",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22",
+      "file": "clip-baseline-1x.png"
+    },
+    {
+      "name": "opacity-baseline",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "9a6003c5f41db9774f1ffce7967eac383dcaf4e2aa881a09ad051f0b38a9670b",
+      "file": "opacity-baseline-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "no-effect",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec",
+      "file": "no-effect-1x.png"
+    },
+    {
+      "name": "clip-expanded-2000",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22",
+      "file": "clip-expanded-2000-1x.png"
+    },
+    {
+      "name": "clip-on-fixed-subject",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec",
+      "file": "clip-on-fixed-subject-1x.png"
+    },
+    {
+      "name": "clip-on-overflow-ancestor",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec",
+      "file": "clip-on-overflow-ancestor-1x.png"
+    },
+    {
+      "name": "clip-with-opacity",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "0896f85b5294eae6f1689ec0d0f84b5cc62c678c50ca9da61c612942fa978443",
+      "file": "clip-with-opacity-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "clip-with-ancestor-overflow-visible",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137",
+      "file": "clip-with-ancestor-overflow-visible-1x.png"
+    },
+    {
+      "name": "clip-with-own-overflow-only",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137",
+      "file": "clip-with-own-overflow-only-1x.png"
+    },
+    {
+      "name": "css-rect-absolute-middle",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec",
+      "file": "css-rect-absolute-middle-1x.png"
+    },
+    {
+      "name": "clip-absolute-middle",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22",
+      "file": "clip-absolute-middle-1x.png"
+    },
+    {
+      "name": "clip-fixed-middle",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137",
+      "file": "clip-fixed-middle-1x.png"
+    },
+    {
+      "name": "clip-middle-escapes-static-ancestor",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 48,
+          "width": 160,
+          "height": 112,
+          "top": 48,
+          "right": 192,
+          "bottom": 160,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "e2b20c5259f0421ef3f19ac7241293f3bce925e3247b2a6b580435a0040ffdc4",
+      "file": "clip-middle-escapes-static-ancestor-1x.png"
+    },
+    {
+      "name": "clip-restored",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32,
+          "y": 24,
+          "width": 128,
+          "height": 80,
+          "top": 24,
+          "right": 160,
+          "bottom": 104,
+          "left": 32
+        },
+        "middle": {
+          "x": 32,
+          "y": 24,
+          "width": 160,
+          "height": 112,
+          "top": 24,
+          "right": 192,
+          "bottom": 136,
+          "left": 32
+        },
+        "subject": {
+          "x": 128,
+          "y": 72,
+          "width": 128,
+          "height": 64,
+          "top": 72,
+          "right": 256,
+          "bottom": 136,
+          "left": 128
+        }
+      },
+      "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22",
+      "file": "clip-restored-1x.png"
+    }
+  ]
+}

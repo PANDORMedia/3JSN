@@ -1,0 +1,2 @@
+2026-09-18 06:27:32.285 threejs-positioned-overflow-paint-probe[47318:4783027] Metal API Validation Enabled
+Error: "paint failed in document 1 at node Some(NodeId(1048v1)): TotalLayerLimit { attempted: 1025, layer: Effect }; accepted 1024 layers, peak depth 1; limits total=1024, depth=1024; shared GPU cleanup completed"

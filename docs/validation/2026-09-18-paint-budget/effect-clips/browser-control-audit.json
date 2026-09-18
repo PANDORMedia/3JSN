@@ -1,0 +1,23 @@
+{
+  "browserReportSha256": "6bd4c81f9df1656d2a347431660deb595e01d9fb17ce7e2e90e4cb28f6415722",
+  "all14SubjectPixelPredictionsMatched": true,
+  "all14SubjectRectsUnchanged": true,
+  "staticAncestorMiddleY": 48,
+  "counts": {
+    "clip-baseline": 1024,
+    "opacity-baseline": 8192,
+    "no-effect": 8192,
+    "clip-expanded-2000": 1024,
+    "clip-on-fixed-subject": 8192,
+    "clip-on-overflow-ancestor": 8192,
+    "clip-with-opacity": 1024,
+    "clip-with-ancestor-overflow-visible": 8192,
+    "clip-with-own-overflow-only": 8192,
+    "css-rect-absolute-middle": 8192,
+    "clip-absolute-middle": 1024,
+    "clip-fixed-middle": 8192,
+    "clip-middle-escapes-static-ancestor": 8192,
+    "clip-restored": 1024
+  },
+  "scope": "This Chrome revision only; not a cross-engine normative assertion."
+}
