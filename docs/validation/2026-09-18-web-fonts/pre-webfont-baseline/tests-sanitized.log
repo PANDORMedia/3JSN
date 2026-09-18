@@ -1,0 +1,130 @@
+   Compiling syn v3.0.6
+   Compiling cssparser-macros v0.7.1
+   Compiling encoding_rs v0.8.35
+   Compiling synstructure v0.14.0
+   Compiling serde_derive v1.0.229
+   Compiling zerofrom-derive v0.1.8
+   Compiling zerofrom v0.1.8
+   Compiling yoke-derive v0.8.3
+   Compiling yoke v0.8.3
+   Compiling zerovec-derive v0.11.6
+   Compiling serde v1.0.229
+   Compiling zerovec v0.11.8
+   Compiling displaydoc v0.2.7
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling string_cache v0.9.0
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling servo_arc v0.4.3
+   Compiling cssparser v0.37.0
+   Compiling bytemuck v1.25.2
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling to_shmem v0.5.0
+   Compiling selectors v0.40.0
+   Compiling font-types v0.12.5
+   Compiling app_units v0.7.8
+   Compiling euclid v0.22.14
+   Compiling read-fonts v0.41.0
+   Compiling stylo_malloc_size_of v0.21.0
+   Compiling url v2.5.8
+   Compiling icu_locale_fallback v2.3.0
+   Compiling icu_segmenter v2.3.0
+   Compiling web_atoms v0.2.6
+   Compiling stylo_atoms v0.21.0
+   Compiling stylo_traits v0.21.0
+   Compiling stylo_dom v0.21.0
+   Compiling stylo v0.21.0
+   Compiling fontique v0.11.1
+   Compiling skrifa v0.44.0
+   Compiling harfrust v0.12.0
+   Compiling keyboard-types v0.7.0
+   Compiling parley_data v0.11.1
+   Compiling blitz-traits v0.3.0-beta.2 (.cache/pre-webfont-baseline/blitz/packages/blitz-traits)
+   Compiling image v0.25.10
+   Compiling markup5ever v0.39.0
+   Compiling parley v0.11.1
+   Compiling stylo_taffy v0.3.0-beta.2 (.cache/pre-webfont-baseline/blitz/packages/stylo_taffy)
+   Compiling blitz-dom v0.3.0-beta.2 (.cache/pre-webfont-baseline/blitz/packages/blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 06s
+     Running unittests src/lib.rs (.cache/pre-webfont-baseline/target/debug/deps/blitz_dom-daa77ff771a47f3a)
+
+running 50 tests
+test document::font_face_override_tests::font_face_overrides_alias_family_name ... ok
+test document::hover_invalidation_tests::hover_updates_existing_pseudo_element_style ... ok
+test layout::list::tests::test_marker_for_decimal ... ok
+test document::hover_invalidation_tests::checkbox_toggle_updates_checked_styles ... ok
+test document::zoom_tests::zoom_requests_redraw ... ok
+test layout::list::tests::test_marker_for_disc ... ok
+test document::hover_state_tests::hovering_anonymous_block_whitespace_reports_default_cursor ... ok
+test layout::list::tests::test_marker_for_lower_alpha ... ok
+test layout::list::tests::test_marker_for_upper_alpha ... ok
+test document::hover_invalidation_tests::hover_styles_apply_and_clear ... FAILED
+test document::hover_invalidation_tests::ancestor_hover_with_link_state_updates_descendant ... ok
+test document::hover_invalidation_tests::hover_updates_background_image_layers ... ok
+test mutator::test::media_type_defaults_to_screen ... ok
+test mutator::test::media_type_honors_config ... ok
+test document::hover_state_tests::hovering_text_in_anonymous_block_reports_text_cursor ... ok
+test mutator::test::get_element_by_id_duplicate_ids_first_in_tree_order_wins ... ok
+test mutator::test::moving_subtree_out_of_document_clears_in_document_flag ... ok
+test mutator::test::mutator_id_attribute_updates_id_map ... ok
+test net::tests::italic_maps_to_italic ... ok
+test mutator::test::mutator_remove_disabled ... ok
+test mutator::test::mutator_set_disabled ... ok
+test mutator::test::mutator_requests_redraw_only_after_mutation ... ok
+test net::tests::oblique_range_uses_min_angle ... ok
+test net::tests::oblique_zero_zero_maps_to_normal ... ok
+test mutator::test::set_media_type_updates_stylist_device ... ok
+test net::tests::oblique_single_angle_maps_to_oblique_with_min ... ok
+test mutator::test::mutator_set_disabled_invalid_node ... ok
+test node::element::tests::single_line_does_not_scroll_when_text_fits ... ok
+test node::element::tests::single_line_scrolls_to_follow_caret ... ok
+test node::element::tests::scroll_by_clamps_and_bubbles ... FAILED
+test node::element::tests::short_text_does_not_scroll ... ok
+test node::element::tests::multiline_scrolls_vertically_not_horizontally ... ok
+test node::scrollbar::tests::opacity_holds_through_the_fade_delay_then_fades_out ... ok
+test stylo::assert_size_of_equals ... ok
+test stylo::parse_inline ... ok
+test stylo_to_parley::tests::caps_small_caps ... ok
+test mutator::test::style_property_mutation_copies_blocks_in_rule_tree ... ok
+test stylo_to_parley::tests::east_asian_features ... ok
+test stylo_to_parley::tests::feature_settings_map_directly ... ok
+test stylo_to_parley::tests::feature_settings_override_variant_features ... ok
+test stylo_to_parley::tests::ligatures_mixed_toggles ... ok
+test stylo_to_parley::tests::ligatures_none_disables_all ... ok
+test stylo_to_parley::tests::ligatures_normal_emits_nothing ... ok
+test node::node::test::create_node_with_ignored_disable ... ok
+test node::node::test::create_node_with_disabled_attr ... ok
+test stylo_to_parley::tests::numeric_features ... ok
+test stylo_to_parley::tests::position_sub_and_super ... ok
+test mutator::test::style_property_updates_nested_layout ... ok
+test node::node::test::create_empty_enabled_node ... ok
+test node::node::test::ignore_disabled_attr_content ... ok
+
+failures:
+
+---- document::hover_invalidation_tests::hover_styles_apply_and_clear stdout ----
+
+thread 'document::hover_invalidation_tests::hover_styles_apply_and_clear' (5312884) panicked at blitz/packages/blitz-dom/src/document.rs:2969:9:
+assertion failed: doc.nodes[div].is_hovered()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- node::element::tests::scroll_by_clamps_and_bubbles stdout ----
+
+thread 'node::element::tests::scroll_by_clamps_and_bubbles' (5312911) panicked at blitz/packages/blitz-dom/src/node/element.rs:1062:9:
+test text should overflow the content box
+
+
+failures:
+    document::hover_invalidation_tests::hover_styles_apply_and_clear
+    node::element::tests::scroll_by_clamps_and_bubbles
+
+test result: FAILED. 48 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `-p blitz-dom --lib`
