@@ -1,0 +1,9 @@
+{
+  "name": "3jsn-analysis-fixture",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": { "build": "node -e \"throw new Error('Analyzer must not execute builds')\"" },
+  "dependencies": { "three": "0.186.0" },
+  "devDependencies": { "vite": "^7.0.0" }
+}

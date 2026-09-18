@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "experimental-desktop-v1",
-  "revision": 1,
+  "revision": 2,
   "maturity": "experimental",
   "description": "Contract and diagnostics vocabulary for the proposed unchanged-project desktop runtime. No integrated runtime or target is certified.",
   "sourcePolicy": {
@@ -38,7 +38,7 @@
     {
       "id": "graphics.webgpu",
       "status": "unsupported",
-      "reason": "Rust-hosted offscreen WebGPU is verified on Metal, but native presentation and the complete application profile are not implemented.",
+      "reason": "Rust-hosted WebGPU scenes and native Metal presentation are verified in bounded experimental profiles. The complete unchanged-project desktop profile and other target hardware remain unverified.",
       "evidence": [
         {
           "kind": "probe",
@@ -47,6 +47,10 @@
         {
           "kind": "probe",
           "path": "../validation/2026-09-17-rust-runtime.md"
+        },
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-18-dom-focus.md"
         }
       ]
     },
@@ -70,20 +74,35 @@
     {
       "id": "ui.dom",
       "status": "unsupported",
-      "reason": "Live DOM, events, object identity and geometry semantics are not implemented.",
-      "evidence": []
+      "reason": "Bounded live DOM, React DOM, focus and event behavior is implemented in experimental profiles. General browser semantics, forms, lifetime and arbitrary project compatibility remain incomplete.",
+      "evidence": [
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-18-dom-focus.md"
+        }
+      ]
     },
     {
       "id": "ui.css",
       "status": "unsupported",
-      "reason": "Native style, layout, text and paint are not integrated.",
-      "evidence": []
+      "reason": "Native style, layout, text and GPU painting are integrated experimentally. Known clipping, layout, animation and broader paint gaps prevent declaring this complete profile supported.",
+      "evidence": [
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-18-ownership-renderer.md"
+        }
+      ]
     },
     {
       "id": "runtime.animation-frame",
       "status": "unsupported",
-      "reason": "Manual probe scheduling does not establish browser-compatible native frame semantics.",
-      "evidence": []
+      "reason": "Native frame scheduling and input delivery have bounded execution evidence; complete browser event-loop, lifecycle and hardware behavior for unchanged projects remains unverified.",
+      "evidence": [
+        {
+          "kind": "probe",
+          "path": "../validation/2026-09-18-input-coalescing.md"
+        }
+      ]
     },
     {
       "id": "runtime.workers",

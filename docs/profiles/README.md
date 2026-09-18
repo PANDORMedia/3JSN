@@ -37,9 +37,12 @@ report. A `verified` target needs a complete target-specific acceptance report;
 compilation, another platform's result or an upstream support list is insufficient.
 The initial profile certifies no feature and no target.
 
-## Proposed CLI behavior
+## CLI contract and current inspection
 
-This specifies future `3jsn check/run/build` for the unchanged-game profile.
+This specifies `3jsn check/run/build` for the unchanged-game profile. The
+[current check command](../check.md) implements read-only syntactic inventory,
+diagnostics and preservation verification; runtime tracing and complete dependency
+resolution remain open. Unchanged-game `run/build` are still future work.
 The separate [experimental packaging command](../build.md) accepts only the
 native-window and restricted DOM-window profiles, including opt-in static
 webfonts, and does not certify this desktop contract.
@@ -71,7 +74,7 @@ If preservation cannot be verified (for example I/O failure), report exit `3` an
 `preservation: "unknown"`, never `true`. Reports can contain sensitive local paths;
 publishing them requires a sanitized derivative.
 
-The future JSON report envelope has `schemaVersion: 1`, `operation`, `profile`
+The JSON report envelope has `schemaVersion: 1`, `operation`, `profile`
 (`id`, `revision`, `sha256`), `targets`, `analysisCoverage`, `diagnostics`,
 `preservation`, `artifacts` and `exitCode`. Each diagnostic has `code`, `severity`,
 `feature`, `status`, `message`, `target`, and optional original-source `location`
@@ -82,7 +85,7 @@ locations. Do not expose credentials or private endpoint query strings in logs.
 
 ## Preserving source and assets
 
-The foundation tool is executable now, independent of the future CLI:
+The foundation tool is also executable independently of the CLI:
 
 ```sh
 node scripts/compatibility/snapshot-cli.mjs capture /path/to/game /tmp/game-before.json --exclude node_modules --exclude dist

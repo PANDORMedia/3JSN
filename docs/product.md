@@ -11,8 +11,10 @@ Intended complete workflow (not implemented yet):
 ```
 
 The first [experimental build path](build.md) now packages an explicit
-`native-window-v1` fixture and a supplied host player. Project analysis, `run`,
-existing frontend build integration and multiple target workers remain open.
+`native-window-v1` fixture and a supplied host player. A read-only
+[project inventory](check.md) now implements the static inspection portion of
+`check`, with explicit unresolved behavior. Full analysis/tracing, `run`, existing
+frontend build integration and multiple target workers remain open.
 
 `check` identifies entry points, the existing build system, renderer, browser APIs,
 assets and services. Static analysis reports uncertainty; it cannot prove dynamic

@@ -1,0 +1,77 @@
+[
+  {
+    "path": "docs/profiles/experimental-desktop-v1.json",
+    "bytes": 5042,
+    "sha256": "65d24be28f556808703eed5a35d3c60bc82fd1c6e413a48767615670c32938b2"
+  },
+  {
+    "path": "fixtures/project-check/index.html",
+    "bytes": 289,
+    "sha256": "7ef72f3804e484dd65b6d90adba5f48eb3c862f845b0e3ebba2f90f81ec5f498"
+  },
+  {
+    "path": "fixtures/project-check/package.json",
+    "bytes": 287,
+    "sha256": "d277249c70fa63d48075af60b33752621c1a25062c7e64a6ffd76dab7f4185e1"
+  },
+  {
+    "path": "fixtures/project-check/src/main.ts",
+    "bytes": 723,
+    "sha256": "4d7df6961ff8f1b3bee11e38f1a4c34ade3353da2a60878e5471ce30808b1ee8"
+  },
+  {
+    "path": "fixtures/project-check/src/worker.ts",
+    "bytes": 75,
+    "sha256": "d21f804e080f5d24905e2d2855ccc315fd02e25088065c81a5de7b613bc492f0"
+  },
+  {
+    "path": "fixtures/project-check/style.css",
+    "bytes": 186,
+    "sha256": "1bce2e8503a8d6b8dd641a044973045b4fa419c2fe4711230bdb4c6e02538553"
+  },
+  {
+    "path": "package-lock.json",
+    "bytes": 22582,
+    "sha256": "45a7566d42d4a5698fef0666f75cfed131f545ee27a18fc7add6a11c687ffa99"
+  },
+  {
+    "path": "package.json",
+    "bytes": 1098,
+    "sha256": "5d9080c50fa784024e3a7b0c3e53b9b1fad2c88980c37c17fe6167fb24d32df3"
+  },
+  {
+    "path": "packages/cli/check-discovery.mjs",
+    "bytes": 8298,
+    "sha256": "0e5f018b2272cda94436e7a576736efacbb4aa8dc8a9e41f99eace7f717e1477"
+  },
+  {
+    "path": "packages/cli/check-discovery.test.mjs",
+    "bytes": 5043,
+    "sha256": "bd3161c40cb67574f677c11ec04afbffdd2533bfb487e0903713e83b18d48039"
+  },
+  {
+    "path": "packages/cli/check-javascript.mjs",
+    "bytes": 17432,
+    "sha256": "16e43abf605157af493866fec75372f71c2a62c9b480e19e19cb97d1a538a711"
+  },
+  {
+    "path": "packages/cli/check-javascript.test.mjs",
+    "bytes": 13368,
+    "sha256": "2cf409637e5084b3b37304f6c7dc3122930e1f5e1785d32d70c5b19b56b52b44"
+  },
+  {
+    "path": "packages/cli/check.mjs",
+    "bytes": 9536,
+    "sha256": "75ffe1fee919ff20e7636b642fcca6bd216f7c9c0a86d8712e1d69b77dcb9ac6"
+  },
+  {
+    "path": "packages/cli/check.test.mjs",
+    "bytes": 8085,
+    "sha256": "9a13f6617d3493f9ab03aac289e8a2432e6ea865c3a69e4cceec2e1dcd417f1e"
+  },
+  {
+    "path": "packages/cli/cli.mjs",
+    "bytes": 2965,
+    "sha256": "8365ecfaab264a6ea408d922e7bb4acf970c4736061fd7e7f8dbfc96b8f25373"
+  }
+]

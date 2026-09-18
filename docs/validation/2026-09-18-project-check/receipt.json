@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "commands": [
+    {
+      "command": [
+        "node",
+        "packages/cli/cli.mjs",
+        "check",
+        "fixtures/project-check",
+        "--targets",
+        "macos-arm64,windows-x64,linux-x64"
+      ],
+      "exitCode": 1
+    },
+    {
+      "command": [
+        "node",
+        "packages/cli/cli.mjs",
+        "check",
+        "fixtures/project-check",
+        "--targets",
+        "macos-arm64,windows-x64,linux-x64"
+      ],
+      "exitCode": 1
+    }
+  ],
+  "repeatIdentical": true,
+  "reportSha256": "0823f47a7ff65aac5594606a5040e76e35cf28bf2d9628ee8e441b54a4d4bf87",
+  "sourcePreserved": true,
+  "scope": "Read-only syntactic analysis of public fixture, not runtime or build compatibility. Private project reports are not archived."
+}

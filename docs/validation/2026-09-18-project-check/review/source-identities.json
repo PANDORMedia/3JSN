@@ -1,0 +1,12 @@
+{
+  "docs/check.md": "8f62be244e1fb6fb6b9e4f867da0b078efaf24edec2c593a5ecb32254fed3443",
+  "docs/validation/2026-09-18-project-check.md": "fda39cb53b6b912196cdc515d327af9f13de58378e6188cd25ce8e976768f8c8",
+  "packages/cli/check-discovery.mjs": "492bd6660e88af916754ec7897c625bd33ccc8ac658f2d3db1487bf0bd2e74db",
+  "packages/cli/check-discovery.test.mjs": "3389685e31fb4e61c47506fcbf2d7bb3f9c21067f74f437ec18632006cbf2308",
+  "packages/cli/check-javascript.mjs": "7e288fc998545545e1864b74b27a0edc5dca33981b7bfeeb39cb3230964af0a8",
+  "packages/cli/check-javascript.test.mjs": "416d311938ce9b939cc4ad5e50e657a63b0383a7f9020430376ba64c48868163",
+  "packages/cli/check.mjs": "4af8fe00b882679b5e7ce37cf9293d8098d54cfed2a9688ed15071fef53ac89e",
+  "packages/cli/check.test.mjs": "83dc1b5c3788a67e9a54e2734fb201d9f43ed557ae923b6a0046f1c53018bc9b",
+  "scripts/compatibility/snapshot.mjs": "96f332ba335a9620649841f8c4d7da99455f85617a576b99396e3a9957b0634d",
+  "scripts/compatibility/snapshot.test.mjs": "adc6444a32f04fd851b3212307b45ac98d6ce40da452a621c82591489b9b5461"
+}

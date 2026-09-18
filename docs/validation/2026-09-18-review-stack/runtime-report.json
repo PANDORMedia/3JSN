@@ -1,0 +1,171 @@
+{
+  "recordedAt": "2026-09-18T16:34:23.190846+00:00",
+  "sourceHead": "9af1c5f3411971f0498024476c8f07a632e2c632",
+  "trackedWorktreeClean": true,
+  "environment": {
+    "CARGO_HOME": "/Users/sean/dev/3JSN/.cache/cargo",
+    "CARGO_TARGET_DIR": "/Users/sean/dev/3JSN/target",
+    "CARGO_INCREMENTAL": "0"
+  },
+  "rustc": "rustc 1.93.0 (254b59607 2026-01-19)",
+  "cargo": "cargo 1.93.0 (083ac5135 2025-12-15)",
+  "lockSha256": "a227b031d7b9b450f0d28b1d9165a8c2392756bb1fbd34facd3d787b7b2e1b0d",
+  "runs": [
+    {
+      "mode": "preserved",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--test",
+        "dom_receivers",
+        "--test",
+        "dom_mutations",
+        "--test",
+        "package_options"
+      ],
+      "exitCode": 0,
+      "log": "preserved-test.log",
+      "sha256": "09f935c9f715f2b2c259c0b0441c07af28e4b2480e5843698693fc417c214358",
+      "tests": {
+        "dom_mutations": {
+          "passed": 23,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        },
+        "dom_receivers": {
+          "passed": 24,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        },
+        "package_options": {
+          "passed": 13,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        }
+      }
+    },
+    {
+      "mode": "preserved",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--bin",
+        "threejs-compiled-ui-runtime",
+        "--test",
+        "dom_receivers",
+        "--test",
+        "dom_mutations",
+        "--test",
+        "package_options",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exitCode": 0,
+      "log": "preserved-clippy.log",
+      "sha256": "c1acad62ec98157dd4aef11c04227c22f9345e7375c6e28069ed1264966114a8",
+      "tests": null
+    },
+    {
+      "mode": "restricted",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--no-default-features",
+        "--test",
+        "dom_receivers",
+        "--test",
+        "dom_mutations",
+        "--test",
+        "package_options"
+      ],
+      "exitCode": 0,
+      "log": "restricted-test.log",
+      "sha256": "870ac563dfb7125378d7e489674d04fea5f1ba03cb0b26c4cbe1f457d80dc117",
+      "tests": {
+        "dom_mutations": {
+          "passed": 23,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        },
+        "dom_receivers": {
+          "passed": 24,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        },
+        "package_options": {
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered": 0
+        }
+      }
+    },
+    {
+      "mode": "restricted",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--no-default-features",
+        "--bin",
+        "threejs-compiled-ui-runtime",
+        "--test",
+        "dom_receivers",
+        "--test",
+        "dom_mutations",
+        "--test",
+        "package_options",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exitCode": 0,
+      "log": "restricted-clippy.log",
+      "sha256": "f0f02742366fc08990a7ff48b910285deb7f1b83531c28bdec86d7ee306404b3",
+      "tests": null
+    }
+  ],
+  "testExecutions": 118,
+  "countsAreUniqueControls": false,
+  "notes": [
+    "Shared DOM controls run in both dom_mutations and dom_receivers and in both parser modes.",
+    "Strict warnings apply to selected local targets; existing Parley deprecated-API and Blitz unused-variant dependency warnings remain in logs.",
+    "CPU-only tests and Clippy; no native window or GPU integration run.",
+    "Reused shared target; no source, dependency, or lock edits."
+  ]
+}
