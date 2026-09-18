@@ -1,3 +1,5 @@
 * text=auto eol=lf
 *.png binary
 *.glb binary
+# Unified diff blank context lines require a space; prepare.mjs checks patch additions.
+experiments/dom-canvas/patches/*.patch whitespace=-blank-at-eol
