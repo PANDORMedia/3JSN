@@ -78,9 +78,10 @@ node scripts/probe-react-dom.mjs \
 
 The output directory must be new. The harness uses development React for browser,
 CPU and window checks, bundles with the real CLI, verifies unchanged source,
-relocates packages, removes disposable input and denies native network/development
-reads. `--cpu-only` omits native-window validation. Exact recorded outcomes belong
-in the [checkpoint](../../docs/validation/2026-09-18-react-dom.md).
+relocates packages, removes disposable input and configures a sandbox policy to
+deny network and development-file reads. Negative file-read controls are included;
+no independent network-denial control is run. `--cpu-only` omits native-window
+validation. Exact recorded outcomes belong in the [checkpoint](../../docs/validation/2026-09-18-react-dom.md).
 
 A pass covers only this client-rendered tree and its tested APIs, not React certification, SSR/hydration,
 Suspense, transitions, forms/selection, portals, synthetic pointer events,

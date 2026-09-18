@@ -65,6 +65,17 @@ Even a passing run would cover this client-rendered fixture only. SSR/hydration,
 Suspense, transitions, portals, forms/selection, accessibility, arbitrary web
 libraries, broader CSS/layout, physical input and other platforms remain separate
 compatibility work. The experimental bindings retain node wrappers until realm
-teardown; effect cleanup is not a memory-reclamation result. This note neither implements a custom renderer nor redirects
-the roadmap. A custom-host experiment would need an explicit scope, shared-tree
-invariants and an observable benefit before becoming an architectural choice.
+teardown; effect cleanup is not a memory-reclamation result. Repeated creation and
+unmounting can therefore grow retained memory with the cumulative number of nodes,
+even when application references have been dropped. Long-running React sessions
+remain unverified.
+
+Live child collections also rebuild the native child/sibling description on each
+length or indexed read. Iterating a collection of `n` children performs repeated
+`O(n)` work, so a full traversal can be `O(n²)`. This is source-level complexity,
+not a measured benchmark. Caching must preserve synchronous liveness and mutation
+visibility; the small fixture does not establish large-list performance.
+
+This note neither implements a custom renderer nor redirects the roadmap. A
+custom-host experiment would need an explicit scope, shared-tree invariants and
+an observable benefit before becoming an architectural choice.

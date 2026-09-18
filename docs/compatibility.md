@@ -36,7 +36,9 @@ Upstream React DOM operates on the existing authoritative native document. The
 [checkpoint](validation/2026-09-18-react-dom.md) verifies asynchronous renders and
 effects, delegated synthetic clicks, keyed mutation and identity, style/text
 updates, cleanup and remount. Both relocated parser-mode packages complete React
-verification and present 120 Metal frames with network/development reads denied.
+verification and present 120 Metal frames under a policy configured to deny
+network and development-file reads. File-denial controls pass; network denial
+was not independently tested.
 The tested React observations match Chrome in CPU and window runs.
 
 The independent generic DOM checks retain one ID/name-collision discrepancy:
