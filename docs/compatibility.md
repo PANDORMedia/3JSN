@@ -12,7 +12,7 @@ required work, not optional migrations for the application.
 | WebGPU renderer | Pinned Three.js 0.186.0, external device/context | First shipping renderer candidate |
 | Rust native GPU device | Independent wgpu diagnostic | Integrate with JS-owned device/surface |
 | Rust-hosted JavaScript/WebGPU | V8 module/event/error tests and Metal triangle pixels pass | Native surface/presentation and broader WebGPU fixtures remain |
-| Window, swapchain, resize, DPI | Native-window adapter implemented; presentation/hardware lifecycle gates open | M1; see [window contract](native-window.md) |
+| Window, swapchain, resize, DPI | [Opaque Three.js window presents on macOS/Metal](validation/2026-09-18-visible-window.md); resize/DPI and broader lifecycle gates open | M1; see [window contract](native-window.md) |
 | TSL custom materials, compute, instancing | Not yet tested here | Add dedicated fixtures |
 | WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | Not implemented | Required WebGL/GLSL binding and native translation track; preserve source |
 | glTF, animation, textures | Not yet tested here | Native asset I/O and decoding; regression scenes |

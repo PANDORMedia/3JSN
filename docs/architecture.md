@@ -1,7 +1,7 @@
 # Proposed runtime architecture
 
-Status: the offscreen JS/WebGPU runtime is implemented; the native-window adapter
-is under validation and the wider engine remains proposed. [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
+Status: the JS/WebGPU runtime renders offscreen and in a visible native Metal
+window. Broader window lifecycle validation and the wider engine remain open. [ADR 0002](adr/0002-unchanged-project-compatibility.md) requires unchanged
 WebGL projects and dynamic HTML/CSS support too.
 
 ## Responsibility boundaries

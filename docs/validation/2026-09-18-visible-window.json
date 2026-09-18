@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-09-18",
+  "kind": "native-window-visible-demo",
+  "platform": "macOS",
+  "backend": "metal",
+  "threeRevision": "186",
+  "frameBudgetRun": {
+    "exitCode": 0,
+    "presentedFrames": 120,
+    "metalApiValidation": true,
+    "sameJavaScriptDevice": true
+  },
+  "visibleObservation": {
+    "application": "3JSN Demo",
+    "window": "3JSN Native \u2014 WebGPU integration",
+    "observedWith": "native app screenshot through computer-use tool",
+    "scene": "Turquoise torus knot above a blue-gray platform"
+  },
+  "inputs": [
+    {
+      "path": "examples/runtime/three-window.mjs",
+      "sha256": "5531baabb66f0a0fe713d363f2b273e85a08f247ac6ffe193edaf4c06785215f"
+    },
+    {
+      "path": "examples/spinning-scene/scene.mjs",
+      "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+    },
+    {
+      "path": "artifacts/rust-window/three-window.mjs",
+      "sha256": "7951a62d58f6c2aa081733a7d05a39cf82c18efad4120747bbf506bef8b86a22"
+    },
+    {
+      "path": "target/release/threejs-native-player",
+      "sha256": "175bea308f60508d5a502cf2767b49f3441f645eddd8cfb2720217b25e47e914"
+    }
+  ],
+  "limitations": [
+    "The fixture selects alpha:false; premultiplied surface presentation is not supported by the current Metal path.",
+    "No frame pacing or performance claim.",
+    "No unchanged application, HTML integration, platform packaging, resize/DPI or device-loss certification.",
+    "The local app bundle is an unsigned demo convenience, not output from 3jsn build."
+  ]
+}

@@ -1,8 +1,8 @@
 # Native window adapter
 
-Status: implemented integration code under hardware validation. A locked macOS
-session currently prevents window presentation evidence. Offscreen GPU evidence
-does not close the native-window acceptance gate. Track
+Status: the opaque Three.js fixture visibly rendered on macOS/Metal on
+2026-09-18, and a bounded run presented 120 frames with Metal API validation.
+The full hardware lifecycle acceptance gate remains open. Track
 [surface #15](https://github.com/PANDORMedia/3JSN/issues/15),
 [Three.js #16](https://github.com/PANDORMedia/3JSN/issues/16),
 [scheduling #17](https://github.com/PANDORMedia/3JSN/issues/17) and
@@ -85,6 +85,10 @@ npm run probe:window-lifecycle
 
 Omit `--frames` for an interactive window. With a frame budget, a 30-second deadline
 or closing before that budget fails validation; no blank/occluded run is a pass.
+The Three.js fixture explicitly selects `alpha: false`: this Mac's surface accepts
+opaque and postmultiplied alpha, while Three.js defaults to premultiplied alpha.
+Transparent presentation still requires a compatibility implementation; the
+runtime does not silently substitute a different alpha convention.
 The shared Three.js scene source is unchanged; bundling resolves its imports into
 generated output. This is not the proposed `3jsn build` product yet.
 

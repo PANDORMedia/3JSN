@@ -6,7 +6,7 @@ if (!adapter || adapter.info.isFallbackAdapter) throw new Error('Hardware surfac
 const device = await adapter.requestDevice();
 const canvas = nativeWindow.canvas;
 const context = canvas.getContext('webgpu');
-const renderer = new THREE.WebGPURenderer({ canvas, context, device, antialias: false });
+const renderer = new THREE.WebGPURenderer({ canvas, context, device, antialias: false, alpha: false });
 renderer.onError = error => { throw new Error(error.message); };
 renderer.onDeviceLost = error => { throw new Error(error.message); };
 device.addEventListener('uncapturederror', event => { throw new Error(event.error.message); });

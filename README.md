@@ -5,8 +5,8 @@
 An open-source native runtime and build tool for existing Three.js web games.
 The goal is **unchanged game source → `3jsn build` → native desktop applications**.
 
-**Status: Rust-hosted Three.js/WebGPU offscreen rendering, a native-window adapter
-under validation, and compatibility experiments. The build CLI is not implemented.
+**Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
+and compatibility experiments. The build CLI is not implemented.
 No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
@@ -68,8 +68,11 @@ Rust-hosted V8, verifies changing pixels, and saves captures plus input/binary
 identities to `artifacts/rust-three/`. Readback is for verification only. The
 [recorded hardware evidence](docs/validation/2026-09-18-native-host.md) covers the
 scene, texture expiry, GPU frame retention and error cleanup. The
-[native-window adapter](docs/native-window.md) has separate presentation and
-lifecycle gates; offscreen rendering does not certify a visible window.
+[native-window adapter](docs/native-window.md) now has a [visible macOS/Metal
+checkpoint](docs/validation/2026-09-18-visible-window.md): the opaque scene rendered
+in a native window and a bounded run presented 120 frames. Transparent
+presentation and broader hardware lifecycle gates remain open. Run the window
+fixture using the commands in the adapter documentation.
 
 The original Rust diagnostic independently opens a `wgpu` adapter and device.
 It does not execute JS. The Node/Dawn scene remains a separate reference.
