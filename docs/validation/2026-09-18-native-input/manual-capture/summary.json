@@ -1,0 +1,43 @@
+{
+  "observation": "Manual native-window input and CUA visual inspection on macOS; not deterministic browser conformance or a performance test",
+  "eventsByType": {
+    "blur": 6,
+    "focus": 6,
+    "keydown": 32,
+    "keyup": 14,
+    "mousedown": 2,
+    "mouseup": 2,
+    "mouseleave": 2
+  },
+  "controlsByReason": {
+    "ArrowRight": 4,
+    "ArrowLeft": 7,
+    "ArrowUp": 18,
+    "ArrowDown": 17,
+    "drag": 338,
+    "Space": 5,
+    "KeyR": 1,
+    "wheel": 44
+  },
+  "allRecordedEventsTrusted": true,
+  "eventTraceLimit": 64,
+  "recordedEvents": 64,
+  "frameCompletion": {
+    "nativeWindow": true,
+    "backend": "metal",
+    "presentedFrames": 7424
+  },
+  "screenshotsArchived": false,
+  "visualObservations": [
+    "Turquoise torus knot and platform rendered",
+    "Camera changed after keyboard and mouse orbit input",
+    "R reset and wheel zoom-out observed",
+    "Zoomed window resized and continued rendering",
+    "Close completed after worker cleanup; final success record emitted"
+  ],
+  "limitations": [
+    "Wheel arrived after the 64-event diagnostic cap; its camera/control result is recorded, not its raw wheel payload",
+    "CUA returned connectionInvalid when querying state after successful closure",
+    "No physical monitor/DPR transition or cross-platform input validation"
+  ]
+}

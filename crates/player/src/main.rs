@@ -1,6 +1,7 @@
 use std::{path::PathBuf, process::ExitCode};
 use threejs_native_runtime::Runtime;
 
+mod input;
 mod window;
 
 fn main() -> ExitCode {

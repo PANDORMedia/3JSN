@@ -1,0 +1,18 @@
+[
+  {
+    "path": "target/release/threejs-native-player",
+    "sha256": "d89693bca9ab0473712ec7a81cadbe921b4b64c9f3e79da04cbf0ba1f358c228"
+  },
+  {
+    "path": "artifacts/native-input/3JSN Input Demo.app/Contents/MacOS/threejs-native-player",
+    "sha256": "d89693bca9ab0473712ec7a81cadbe921b4b64c9f3e79da04cbf0ba1f358c228"
+  },
+  {
+    "path": "artifacts/native-input/input-contract.mjs",
+    "sha256": "3ecd148ba0e75869dd36772e1f69ff4ec9048f25e0fa6c8d802f59e4ad5b6ef7"
+  },
+  {
+    "path": "artifacts/native-input/three-window.mjs",
+    "sha256": "9d81a29d89dd9209631d9b9c7c7a6da87b467bfedc22f69cad15e9fede61286b"
+  }
+]

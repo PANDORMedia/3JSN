@@ -102,6 +102,10 @@ mod tests {
                         "ext:threejs_native_bootstrap/animation.js",
                         UNAVAILABLE,
                     ),
+                    ExtensionFileSource::loaded_during_snapshot(
+                        "ext:threejs_native_bootstrap/input.js",
+                        UNAVAILABLE,
+                    ),
                 ]),
                 ..Default::default()
             },

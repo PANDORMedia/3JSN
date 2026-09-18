@@ -12,6 +12,10 @@ async fn modules_web_globals_and_errors() {
         .execute_module(&fixture.join("animation.mjs"))
         .await
         .unwrap();
+    Runtime::new()
+        .execute_module(&fixture.join("input.mjs"))
+        .await
+        .unwrap();
     let thrown = Runtime::new()
         .execute_module(&fixture.join("throws.mjs"))
         .await

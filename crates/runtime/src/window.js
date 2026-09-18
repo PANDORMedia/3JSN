@@ -1,5 +1,6 @@
 import { core } from "ext:core/mod.js";
 import { createAnimationFrames } from "./animation.js";
+import { createInputDispatcher } from "./input.js";
 
 export function initializeWindow() {
   const ops = core.ops;
@@ -35,6 +36,16 @@ export function initializeWindow() {
     }
   }
   const canvas = new NativeCanvas();
+  const events = core.loadExtScript("ext:deno_web/02_event.js");
+  const webidl = core.loadExtScript("ext:deno_webidl/00_webidl.js");
+  ops.op_native_bind_input(createInputDispatcher({
+    keyboardTarget: globalThis,
+    pointerTarget: canvas,
+    dispatch: events.dispatch,
+    markTrusted: events.setIsTrusted,
+    validateTarget: target => webidl.assertBranded(target, events.EventTargetPrototype),
+    checkpoint: () => core.runMicrotasks(),
+  }));
   const getCurrentTexture = GPUCanvasContext.prototype.getCurrentTexture;
   Object.defineProperty(GPUCanvasContext.prototype, "getCurrentTexture", {
     configurable: true, writable: true,

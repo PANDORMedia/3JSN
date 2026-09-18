@@ -1,0 +1,180 @@
+{
+  "baselineCommit": "72a74a257ff0240227c7a69f8785ecf7220f869f",
+  "nativeCaptureBinarySha256": "d89693bca9ab0473712ec7a81cadbe921b4b64c9f3e79da04cbf0ba1f358c228",
+  "finalReleaseBinaryMatchesCaptured": true,
+  "commands": [
+    {
+      "command": "cargo test --workspace --locked --offline -j2",
+      "exitCode": 0,
+      "log": "workspace-tests.txt"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked --offline -j2 -- -D warnings",
+      "exitCode": 0,
+      "log": "clippy.txt"
+    },
+    {
+      "command": "cargo fmt --all --check",
+      "exitCode": 0,
+      "log": "format.txt"
+    },
+    {
+      "command": "npm test (authorized loopback access)",
+      "exitCode": 0,
+      "log": "node-tests.txt"
+    },
+    {
+      "command": "cargo build --release --locked --offline -j2 -p threejs-native-player",
+      "exitCode": 0,
+      "log": "final-build.txt"
+    }
+  ],
+  "sources": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "00f447264f10ae8f04a25bc76d50492be4308d02bfedbd3a073d2db9542750ff"
+    },
+    {
+      "path": "crates/player/src/input.rs",
+      "sha256": "3132f01587bf703193558837d7a831d2dd196083eed547bec8bcdc4e5e9a1f20"
+    },
+    {
+      "path": "crates/player/src/main.rs",
+      "sha256": "8b496a1001cc85c3318cd9e54e47fdf15f05190a77f415d46da657e4fc166b1c"
+    },
+    {
+      "path": "crates/player/src/window.rs",
+      "sha256": "2df752e9bac332ada6eb60687dc0ae9f392d56e211d5f395700b4c2255a248c3"
+    },
+    {
+      "path": "crates/runtime/build.rs",
+      "sha256": "fef5b7e30977a805ea72a41e5550a5cd3e67f4057c9f95e3a8622ed4cc1eebad"
+    },
+    {
+      "path": "crates/runtime/src/animation.js",
+      "sha256": "128de03009c871a44813415c506d62e7b6376562d2147b065d996c215a113471"
+    },
+    {
+      "path": "crates/runtime/src/bootstrap.js",
+      "sha256": "b7c176d56ddaaa94a5f449df02488aba2f211becbc97e85e4a012d5149b1aebe"
+    },
+    {
+      "path": "crates/runtime/src/embedded.rs",
+      "sha256": "6954bf0651a52571c000e6f5bb5e6b6b82a939475f0207f2b45e9fddf6dcaca3"
+    },
+    {
+      "path": "crates/runtime/src/input.js",
+      "sha256": "623df6d2f825ccc1863ce1ce8138fef678b7577fcf7916dbf1431e96381ff3d0"
+    },
+    {
+      "path": "crates/runtime/src/input.rs",
+      "sha256": "4b1d9ff37c0826c70d8010ea2bf9a85015ec68715072adaaaf979150a2068860"
+    },
+    {
+      "path": "crates/runtime/src/interactive.rs",
+      "sha256": "d6bdb7c15c2d6f043992fea6eb2f9e88e7f57c2a3ef96e46a123bb867d81c95e"
+    },
+    {
+      "path": "crates/runtime/src/interrupt.rs",
+      "sha256": "ae9c41e699eb0442c01a5d9d905e96079f2c997fbc124f79dd402cb1f78fd40b"
+    },
+    {
+      "path": "crates/runtime/src/lib.rs",
+      "sha256": "e5624b1f58aed02a8346f480e47773791c935a11ca1d7e7ad5987c548dc73816"
+    },
+    {
+      "path": "crates/runtime/src/surface.rs",
+      "sha256": "85045c6b001b2cf32bc992f409a2c3d9c227b55e022eb5ce7ce05db99391745e"
+    },
+    {
+      "path": "crates/runtime/src/web-globals.js",
+      "sha256": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa"
+    },
+    {
+      "path": "crates/runtime/src/window.js",
+      "sha256": "7e72913da995fee63998b979b2bf08d01464ce028a183efb39dd6c62d5df1204"
+    },
+    {
+      "path": "crates/runtime/tests/execution.rs",
+      "sha256": "e2e36cd48279727b0290f0f7a29109c24f82b8a1da56b11e6855d7575b013143"
+    },
+    {
+      "path": "crates/runtime/tests/fixtures/input-binding.mjs",
+      "sha256": "f5bf6bfa855ccf325b3537863b39a62ad6b451f28fffb8d27afda88bd2b47365"
+    },
+    {
+      "path": "crates/runtime/tests/fixtures/input.mjs",
+      "sha256": "89f343d1fd9dc69f321d26ea0808de3ce9825f86c3ac60b2c607a3f43b879ecf"
+    },
+    {
+      "path": "examples/runtime/input-contract.mjs",
+      "sha256": "9a268a77c63dbaf9d3ddb3ed0a41f67bf141fdc828d1bd1a7842ef3274eea055"
+    },
+    {
+      "path": "examples/runtime/three-window.mjs",
+      "sha256": "b1d058c0840acd2814e09dc8ff164e20a19a04daa998f2255d1d18bc4646ab33"
+    },
+    {
+      "path": "examples/spinning-scene/controls.mjs",
+      "sha256": "257c8c40e318d71f4414b59207b1b6242d8a91b13833400c1fd0d06b43ab4f3f"
+    },
+    {
+      "path": "examples/spinning-scene/scene.mjs",
+      "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/native-controls.test.mjs",
+      "sha256": "d3ea7a7e4a73d3cdf501f1782c2a279ff683495703f8b1f174ec8c57de61e2b1"
+    }
+  ],
+  "logFormatting": [
+    {
+      "path": "format.txt",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "change": "trailing whitespace/final blank lines only"
+    }
+  ],
+  "archiveFiles": [
+    {
+      "path": "clippy.txt",
+      "sha256": "1455f06c277816ad47ecc1edc746ffa46054d7d37cd62c0530ece5f288215bcc"
+    },
+    {
+      "path": "final-build.txt",
+      "sha256": "2c00e901880c322733c846437f2ff33764822e205f5a38707642006272ccc570"
+    },
+    {
+      "path": "format.txt",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "manual-capture/binary-identity.json",
+      "sha256": "b0ce96e200d68ce7eee39c8c46a2b61df57787c60a0f045c5dee5d077d27e0f7"
+    },
+    {
+      "path": "manual-capture/stderr.txt",
+      "sha256": "9def57b2b3d8ad1844f5184d53ea7103fc175552cf5c9bd8356f13880ab36b48"
+    },
+    {
+      "path": "manual-capture/stdout.txt",
+      "sha256": "54d232be88f319463f7922188b7b48a5136a04e375e60c7a283e8626c88cf62a"
+    },
+    {
+      "path": "manual-capture/summary.json",
+      "sha256": "d70f1d20061ce1bcb8694d7438f26c2ac76b75803c00b2322d8bfd979f809c7c"
+    },
+    {
+      "path": "node-tests.txt",
+      "sha256": "0e777bc13b083595ff829daa0bc26e559283edf19153f437e09722be50eed663"
+    },
+    {
+      "path": "workspace-tests.txt",
+      "sha256": "972c169c129ef4a54c9b2262ab7fcdd01f419ffd64a25af7a8ec587f4ab1c362"
+    }
+  ]
+}

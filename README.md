@@ -74,6 +74,13 @@ in a native window and a bounded run presented 120 frames. Transparent
 presentation and broader hardware lifecycle gates remain open. Run the window
 fixture using the commands in the adapter documentation.
 
+The demo is now [interactive](docs/native-input.md): drag or use arrows to orbit,
+scroll to zoom, Space to pause and R to reset. The
+[native input checkpoint](docs/validation/2026-09-18-native-input.md) records OS
+input reaching V8, visible camera changes, window resizing and clean shutdown.
+These events currently target the standalone canvas/global fixture; DOM input,
+IME, pointer capture and controllers remain open.
+
 The original Rust diagnostic independently opens a `wgpu` adapter and device.
 It does not execute JS. The Node/Dawn scene remains a separate reference.
 

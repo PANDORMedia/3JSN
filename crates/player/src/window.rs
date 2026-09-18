@@ -9,9 +9,9 @@ use std::{
 };
 
 use threejs_native_runtime::{
-    FrameOutcome, InteractiveRuntime, RuntimeError, RuntimeInterrupt, WindowSurface,
+    FrameOutcome, InteractiveRuntime, NativeInput, RuntimeError, RuntimeInterrupt, WindowSurface,
 };
-use tokio::sync::watch;
+use tokio::sync::{mpsc, watch};
 use winit::{
     application::ApplicationHandler,
     dpi::LogicalSize,
@@ -19,6 +19,8 @@ use winit::{
     event_loop::{ActiveEventLoop, ControlFlow, EventLoop, EventLoopProxy},
     window::{Window, WindowId},
 };
+
+use crate::input::{INPUT_CAPACITY, InputTranslator};
 
 enum HostEvent {
     Ready(RuntimeInterrupt),
@@ -72,6 +74,8 @@ pub fn run(module: PathBuf, frame_limit: Option<u64>) -> Result<(), String> {
         window: None,
         worker: None,
         state: None,
+        input: None,
+        input_translator: InputTranslator::default(),
         interrupt: None,
         proxy: event_loop.create_proxy(),
         module,
@@ -124,6 +128,8 @@ struct PlayerWindow {
     window: Option<Arc<Window>>,
     worker: Option<JoinHandle<()>>,
     state: Option<watch::Sender<HostState>>,
+    input: Option<mpsc::Sender<NativeInput>>,
+    input_translator: InputTranslator,
     interrupt: Option<RuntimeInterrupt>,
     proxy: EventLoopProxy<HostEvent>,
     module: PathBuf,
@@ -138,6 +144,17 @@ struct PlayerWindow {
 }
 
 impl PlayerWindow {
+    fn send_input(&mut self, event_loop: &ActiveEventLoop, input: NativeInput) {
+        if self.closing {
+            return;
+        }
+        if let Some(sender) = &self.input
+            && let Err(error) = enqueue_input(sender, input)
+        {
+            self.close(event_loop, Some(error));
+        }
+    }
+
     fn drawable(&self) -> bool {
         self.state
             .as_ref()
@@ -187,6 +204,13 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
         self.suspended = false;
         if self.window.is_some() {
             self.update_viewport();
+            if let Some(input) = self.input_translator.focus(
+                self.window
+                    .as_ref()
+                    .is_some_and(|window| window.has_focus()),
+            ) {
+                self.send_input(event_loop, input);
+            }
             return;
         }
         if self.closing {
@@ -225,6 +249,12 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
             close: false,
         };
         let (state, receiver) = watch::channel(initial);
+        let (input, input_receiver) = mpsc::channel(INPUT_CAPACITY);
+        if let Some(focus) = self.input_translator.focus(window.has_focus()) {
+            input
+                .try_send(focus)
+                .expect("the new input queue has capacity");
+        }
         let proxy = self.proxy.clone();
         let module = self.module.clone();
         let frame_limit = self.frame_limit;
@@ -247,6 +277,7 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
                         module,
                         frame_limit,
                         receiver,
+                        input_receiver,
                         &proxy,
                     ))
                 }))
@@ -266,6 +297,7 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
             Ok(worker) => {
                 self.window = Some(window);
                 self.state = Some(state);
+                self.input = Some(input);
                 self.worker = Some(worker);
             }
             Err(error) => self.close(
@@ -275,9 +307,12 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
         }
     }
 
-    fn suspended(&mut self, _: &ActiveEventLoop) {
+    fn suspended(&mut self, event_loop: &ActiveEventLoop) {
         self.suspended = true;
         self.update_viewport();
+        if let Some(input) = self.input_translator.focus(false) {
+            self.send_input(event_loop, input);
+        }
     }
 
     fn user_event(&mut self, event_loop: &ActiveEventLoop, event: HostEvent) {
@@ -325,6 +360,18 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
         if self.window.as_ref().is_none_or(|window| window.id() != id) {
             return;
+        }
+        if !self.closing {
+            let scale = self
+                .window
+                .as_ref()
+                .expect("window id was checked")
+                .scale_factor();
+            match self.input_translator.translate(&event, scale) {
+                Ok(Some(input)) => self.send_input(event_loop, input),
+                Ok(None) => {}
+                Err(error) => self.close(event_loop, Some(error.to_string())),
+            }
         }
         match event {
             WindowEvent::CloseRequested => self.close(event_loop, None),
@@ -382,6 +429,7 @@ async fn run_worker(
     module: PathBuf,
     frame_limit: Option<u64>,
     mut receiver: watch::Receiver<HostState>,
+    mut input: mpsc::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
 ) -> Result<u64, WorkerError> {
     let runtime = surface.into_runtime().map_err(WorkerError::from)?;
@@ -416,7 +464,15 @@ async fn run_worker(
             )
             .map_err(WorkerError::from)?;
     }
-    let result = drive_runtime(&mut runtime, frame_limit, &mut receiver, proxy, current).await;
+    let result = drive_runtime(
+        &mut runtime,
+        frame_limit,
+        &mut receiver,
+        &mut input,
+        proxy,
+        current,
+    )
+    .await;
     let cleanup = runtime.discard_frame().map_err(WorkerError::from);
     match (result, cleanup) {
         (_, Err(error)) | (Err(error), Ok(())) => Err(error),
@@ -428,6 +484,7 @@ async fn drive_runtime(
     runtime: &mut InteractiveRuntime,
     frame_limit: Option<u64>,
     receiver: &mut watch::Receiver<HostState>,
+    input: &mut mpsc::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
     mut current: HostState,
 ) -> Result<(), WorkerError> {
@@ -437,6 +494,7 @@ async fn drive_runtime(
     let mut prepared = None;
     let mut redraw_requested = false;
     let mut retry_delay = None;
+    let mut pending_input = None;
     loop {
         if current.close {
             return Ok(());
@@ -462,6 +520,14 @@ async fn drive_runtime(
                 runtime.discard_frame().map_err(WorkerError::from)?;
                 prepared = None;
             }
+        }
+        // Bound each turn so a busy mouse cannot starve presentation or timers.
+        // Focus/key transitions remain FIFO even while animation is suspended.
+        for _ in 0..64 {
+            let Some(event) = pending_input.take().or_else(|| input.try_recv().ok()) else {
+                break;
+            };
+            runtime.dispatch_input(&event).map_err(WorkerError::from)?;
         }
         if prepared.is_some_and(|sequence| current.present == sequence) && current.drawable() {
             let outcome = runtime.present().map_err(WorkerError::from)?;
@@ -507,7 +573,7 @@ async fn drive_runtime(
         // Both the watch receiver and Deno register this task's Tokio waker.
         // The current-thread reactor parks until input, timers or IO are ready;
         // no idle polling timer or cross-thread V8 access is needed.
-        let connected = {
+        let (connected, next_input) = {
             let changed = receiver.changed();
             tokio::pin!(changed);
             poll_fn(|cx| {
@@ -533,7 +599,12 @@ async fn drive_runtime(
                     }
                     redraw_requested = true;
                 }
-                changed.as_mut().poll(cx).map(|result| Ok(result.is_ok()))
+                if let Poll::Ready(result) = changed.as_mut().poll(cx) {
+                    return Poll::Ready(Ok((result.is_ok(), None)));
+                }
+                input
+                    .poll_recv(cx)
+                    .map(|event| Ok((event.is_some(), event)))
             })
             .await?
         };
@@ -541,5 +612,49 @@ async fn drive_runtime(
             return Ok(());
         }
         current = *receiver.borrow_and_update();
+        pending_input = next_input;
+    }
+}
+
+fn enqueue_input(sender: &mpsc::Sender<NativeInput>, input: NativeInput) -> Result<(), String> {
+    match sender.try_send(input) {
+        Ok(()) | Err(mpsc::error::TrySendError::Closed(_)) => Ok(()),
+        Err(mpsc::error::TrySendError::Full(_)) => Err(format!(
+            "native input queue exceeded {INPUT_CAPACITY} events; stopping instead of losing input transitions"
+        )),
+    }
+}
+
+#[cfg(test)]
+mod input_tests {
+    use super::*;
+
+    #[test]
+    fn stalled_worker_preserves_focus_order_and_overflow_is_an_explicit_failure() {
+        let (sender, mut receiver) = mpsc::channel(INPUT_CAPACITY);
+        for index in 0..INPUT_CAPACITY {
+            enqueue_input(
+                &sender,
+                NativeInput::Focus {
+                    focused: index % 2 == 0,
+                },
+            )
+            .unwrap();
+        }
+        assert!(
+            enqueue_input(&sender, NativeInput::Focus { focused: true })
+                .unwrap_err()
+                .contains("stopping instead of losing input")
+        );
+        for index in 0..INPUT_CAPACITY {
+            assert_eq!(
+                receiver.try_recv().unwrap(),
+                NativeInput::Focus {
+                    focused: index % 2 == 0
+                }
+            );
+        }
+        drop(receiver);
+        assert!(enqueue_input(&sender, NativeInput::Focus { focused: false }).is_ok());
     }
 }

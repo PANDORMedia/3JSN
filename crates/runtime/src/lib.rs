@@ -6,9 +6,12 @@ use deno_core::{FsModuleLoader, JsRuntime, RuntimeOptions};
 use deno_webgpu::{wgpu_core, wgpu_types};
 
 mod embedded;
+mod input;
 mod interactive;
 mod interrupt;
 mod surface;
+use input::{InputCallback, op_native_bind_input};
+pub use input::{InputModifiers, InputPosition, MouseInputKind, NativeInput};
 pub use interactive::InteractiveRuntime;
 pub use interrupt::RuntimeInterrupt;
 use surface::*;
@@ -19,13 +22,14 @@ deno_core::extension!(
     deps = [deno_webidl, deno_web, deno_webgpu],
     ops = [op_native_has_surface, op_native_bind_callbacks, op_native_frame_pending,
         op_native_keep_alive, op_native_request_adapter, op_native_canvas_context,
-        op_native_resize, op_native_discard, op_native_current_texture],
+        op_native_resize, op_native_discard, op_native_current_texture, op_native_bind_input],
     esm_entry_point = "ext:threejs_native_bootstrap/bootstrap.js",
-    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js"],
-    options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface> },
+    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js", "input.js"],
+    options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface>, input: InputCallback },
     state = |state, options| {
         state.put(options.instance);
         state.put(options.surface);
+        state.put(options.input);
     },
 );
 
@@ -55,6 +59,7 @@ pub struct Runtime {
     // Drop order matters: isolate resources, then surface, then native handles.
     js: JsRuntime,
     surface: Option<SharedSurface>,
+    input: InputCallback,
     _window_owner: Option<Box<dyn Any>>,
     interrupt: RuntimeInterrupt,
 }
@@ -85,6 +90,7 @@ impl Runtime {
         surface: Option<SharedSurface>,
         window_owner: Option<Box<dyn Any>>,
     ) -> Self {
+        let input = InputCallback::default();
         let mut extensions = vec![
             deno_webidl::deno_webidl::init(),
             deno_web::deno_web::init(
@@ -94,7 +100,7 @@ impl Runtime {
                 deno_web::InMemoryBroadcastChannel::default(),
             ),
             deno_webgpu::deno_webgpu::init(),
-            threejs_native_bootstrap::init(instance, surface.clone()),
+            threejs_native_bootstrap::init(instance, surface.clone(), input.clone()),
         ];
         extensions
             .iter_mut()
@@ -108,6 +114,7 @@ impl Runtime {
         Self {
             js,
             surface,
+            input,
             _window_owner: window_owner,
             interrupt,
         }
@@ -171,6 +178,7 @@ impl Runtime {
 
 impl Drop for Runtime {
     fn drop(&mut self) {
+        self.input.borrow_mut().take();
         if let Some(surface) = &self.surface {
             // Persistent V8 handles must be released while their isolate lives.
             surface.borrow_mut().clear_handles();

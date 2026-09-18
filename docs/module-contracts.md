@@ -41,8 +41,9 @@ service locator to bypass these directions.
 The offscreen player drains referenced async work. The interactive adapter now
 uses one current-thread reactor on a dedicated worker, a coalescing OS-state
 channel, and thread-safe V8 cancellation. Its surface and window ownership is
-described in [the native-window contract](native-window.md). Visible presentation
-and lifecycle hardware gates remain open. General service queues are still a
+described in [the native-window contract](native-window.md). Opaque presentation
+and a [bounded native input queue](native-input.md) have one-Mac evidence; wider
+lifecycle and DOM-input gates remain open. General service queues are still a
 subsequent implementation gate.
 
 ## Errors and capabilities

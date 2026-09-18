@@ -103,7 +103,9 @@ This is separate from a successful visible presentation run.
 
 Visible native captures, frame-texture assertions, resize/minimize/restore,
 display/DPI changes, present failures and repeated open/close must pass on real
-hardware. Device-loss recovery and native input are not implemented. Transient
+hardware. The [native input fixture](native-input.md) now handles keyboard, mouse,
+wheel and focus, with one-Mac evidence. DOM input and device-loss recovery remain
+open. Transient
 failure after an ordinary acquired image is handed to presentation can still
 lose a one-shot frame; retaining every normal frame would add a separate copy
 cost and needs an explicit design decision.

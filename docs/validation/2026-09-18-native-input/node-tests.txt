@@ -1,0 +1,64 @@
+
+> 3jsn@0.0.0 test
+> node --test scripts/compatibility/*.test.mjs
+
+✔ native frames snapshot callbacks, share time, and honor cancellation during dispatch (3.449792ms)
+✔ reference runner cleans up after SIGINT during startup (2618.339833ms)
+✔ reference runner cleans up after SIGTERM during command (428.979167ms)
+✔ clip invariants accept complete identical images with visible subjects (115.331042ms)
+✔ clip invariants include outermost pixels and a one-channel difference of one (66.214458ms)
+✔ clip invariants reject aliased references without intermediate colors (59.63875ms)
+✔ clip invariants report inclusive bounds and secondary counts without relaxing equality (61.442417ms)
+✔ clip invariants reject captures omitted from every comparison group (63.098042ms)
+▶ clip invariants reject stale pixels and stale fixture identity
+  ✔ pixels (59.388958ms)
+  ✔ source (50.693166ms)
+✔ clip invariants reject stale pixels and stale fixture identity (110.876667ms)
+▶ clip invariants reject blank subjects, changed geometry and native GPU errors
+  ✔ blank (53.166625ms)
+  ✔ geometry (56.459666ms)
+  ✔ gpu (50.112ms)
+✔ clip invariants reject blank subjects, changed geometry and native GPU errors (160.27625ms)
+▶ clip invariants require distinct captures at the declared scale
+  ✔ duplicate (55.510875ms)
+  ✔ scale (51.990708ms)
+✔ clip invariants require distinct captures at the declared scale (107.916375ms)
+✔ static read failures return 404 and leave the fixture service usable (67.376875ms)
+✔ Space pauses animation, ignores held-key repeats, and resumes without paused-time catch-up (2.72825ms)
+✔ pause and resume without any paused frames cannot add the hidden interval (0.248791ms)
+✔ R restores the initial camera and animation time while preserving a paused state (3.503291ms)
+✔ arrow keys orbit in opposite directions, retain radius, and allow held-key movement (0.338833ms)
+✔ pitch stays away from the orbit poles and reverses after reaching either limit (2.228125ms)
+✔ only the primary button starts dragging and chords retain its original anchor (0.667083ms)
+✔ primary release ends dragging until a fresh primary press (0.178625ms)
+✔ lost primary button ends dragging until a fresh primary press (0.237ms)
+✔ mouse leave ends dragging until a fresh primary press (0.182916ms)
+✔ window blur ends dragging until a fresh primary press (0.18425ms)
+✔ wheel pixels, lines and pages normalize to equivalent zoom gestures (2.789542ms)
+✔ large wheel input clamps camera distance and an opposite gesture leaves the clamp (0.519667ms)
+✔ dispose removes event effects, ends active drag, and is safe to repeat (0.259333ms)
+✔ paint comparison retains the default opaque subject visibility guard (113.527333ms)
+✔ paint comparison accepts declared composited color rounding (69.843625ms)
+✔ identical images with too little visible composited subject cannot pass (63.018333ms)
+✔ paint comparison rejects different subject metadata between hosts (50.282834ms)
+✔ paint comparison rejects malformed subject channels (53.053ms)
+✔ initial profile makes no unsupported certification and evidence paths exist (12.575625ms)
+✔ probe and browser reference cannot promote a native support claim (2.192833ms)
+✔ malformed and duplicate declarations fail validation (4.410375ms)
+✔ content identity is deterministic across ordering and timestamps, with explicit exclusions (35.791291ms)
+✔ same-size edits, deletion, addition and empty directory removal are reported (19.551208ms)
+✔ exclusions are root-relative, not a blanket exclusion of nested assets (15.126875ms)
+✔ manifest tampering, traversal, duplicates and invalid hashes fail closed (5.823041ms)
+✔ malformed JSON and unsupported manifest versions retain structured read errors (3.9495ms)
+✔ contained links preserve target content and link identity without walking aliases (10.7355ms)
+✔ external, excluded, dangling and cyclic links cannot hide unmeasured content (6.607292ms)
+✔ CLI captures outside the input tree and returns preservation failure after mutation (245.019792ms)
+✔ CLI rejects output aliases into the source tree (41.876792ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3129.377583

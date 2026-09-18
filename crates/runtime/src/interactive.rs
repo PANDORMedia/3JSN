@@ -16,7 +16,7 @@ type ModuleEvaluation = Pin<Box<dyn Future<Output = Result<(), CoreError>>>>;
 pub struct InteractiveRuntime {
     // Evaluation may retain isolate handles; drop it before the runtime.
     evaluation: Option<ModuleEvaluation>,
-    runtime: Runtime,
+    pub(crate) runtime: Runtime,
 }
 
 impl Runtime {
@@ -69,7 +69,16 @@ impl Runtime {
                 })
                 .collect()
         };
-        let call = self.js.call_with_args(callback, &args);
+        self.call_values_sync(callback, &args, phase)
+    }
+
+    pub(crate) fn call_values_sync(
+        &mut self,
+        callback: &v8::Global<v8::Function>,
+        args: &[v8::Global<v8::Value>],
+        phase: &'static str,
+    ) -> Result<(), RuntimeError> {
+        let call = self.js.call_with_args(callback, args);
         let mut call = std::pin::pin!(call);
         match call.as_mut().poll(&mut Context::from_waker(Waker::noop())) {
             Poll::Ready(Ok(_)) => Ok(()),
