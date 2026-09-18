@@ -1,0 +1,28 @@
+   Compiling threejs-native-input-queue v0.0.0 (/Users/sean/dev/3JSN/crates/input-queue)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.44s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_input_queue-1a07ac2207d0fcff)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/queue.rs (target/debug/deps/queue-930cde70f799f589)
+
+running 8 tests
+test newest_pending_task_owns_wakeup_and_disconnect_does_not_discard_inputs ... ok
+test barriers_repeated_transitions_and_incompatible_motion_keep_fifo_order ... ok
+test pending_receiver_wakes_on_enqueue_and_sender_drop ... ok
+test receiver_drop_closes_sender_and_returns_the_owned_rejected_value ... ok
+test full_queue_rejects_owned_input_without_crossing_a_barrier ... ok
+test producer_consumer_interleaving_keeps_received_samples_and_queued_barriers ... ok
+test zero_capacity_is_rejected - should panic ... ok
+test large_motion_burst_retains_only_the_latest_sample ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests threejs_native_input_queue
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
