@@ -1,0 +1,3 @@
+@font-face { font-family: Fixture; src: url('./assets/fixture.woff2'); }
+body { margin: 0; background: #102030; font-family: Fixture, sans-serif; }
+canvas { width: 100%; height: 100%; }

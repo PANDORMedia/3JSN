@@ -8,7 +8,8 @@ The goal is **unchanged game source → `3jsn build` → native desktop applicat
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
 and compatibility experiments. An experimental host-only build CLI packages the
 native-window fixture and bounded interpreted/compiled HTML-entry demos; general
-existing web-project builds are not integrated.
+existing web-project builds are not integrated. A read-only `3jsn check` now
+inventories existing projects and reports unresolved compatibility.
 No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
@@ -21,6 +22,7 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 ## Direction
 
 - [Product contract](docs/product.md): CLI behavior and the meaning of no code changes.
+- [Project inspection](docs/check.md): source-located requirements, build candidates and preservation checks without executing project code.
 - [Architecture](docs/architecture.md) and [updated decision](docs/adr/0002-unchanged-project-compatibility.md): native host and compatibility boundaries.
 - [HTML/CSS research](docs/html-rendering.md): DOM, layout, interaction and GPU composition.
 - [Compiled UI direction](docs/adr/0003-compiled-ui-and-generic-compatibility.md): build-time HTML/CSS processing, live native UI state and proven parser omission.

@@ -27,6 +27,7 @@
     "webgpu": "0.6.1"
   },
   "devDependencies": {
+    "@babel/parser": "7.29.9",
     "css-tree": "3.2.1",
     "esbuild": "0.28.2",
     "parse5": "8.0.1",

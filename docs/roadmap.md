@@ -70,6 +70,16 @@ discrete transitions retain order and overflow still fails explicitly. CPU burst
 and Metal regression checks pass. Full DOM input and overload behavior on real
 hardware remain open in #25/#18.
 
+The [DOM focus checkpoint](validation/2026-09-18-dom-focus.md) adds bounded
+active-element input routing and browser-compared focus transitions. Forms, IME,
+accessibility, physical input and complete event interfaces remain open.
+
+The [project inspection command](check.md) now reads existing project source
+without running scripts. It reports entry/build candidates, source-located API
+findings, unresolved dependencies and verified content preservation. This advances
+#36 toward existing-project build orchestration; static inventory does not certify
+compatibility or replace runtime tracing, frontend builds or WebGL integration.
+
 ## Milestones
 
 | Phase | Deliverable | Completion gate |
