@@ -1,0 +1,2 @@
+2026-09-18 12:58:59.890 player[16281:5387319] Metal API Validation Enabled
+3JSN DOM player: resource is not in the verified package allowlist: threejsn://package/app/missing.css

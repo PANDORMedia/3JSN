@@ -1,0 +1,106 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/compiled-ui-style-order/base/packages/blitz-dom)
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-html v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/compiled-ui-style-order/base/packages/blitz-html)
+   Compiling threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/experiments/compiled-ui)
+   Compiling threejs-stylesheet-order-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/compiled-ui-style-order/test-crate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.77s
+     Running tests/order.rs (.cache/compiled-ui/target/debug/deps/order-360fefef5bb64ac2)
+
+running 9 tests
+test a_link_removed_before_response_cannot_install_a_disconnected_sheet ... FAILED
+test a_style_dropped_before_mutator_flush_is_not_dereferenced ... FAILED
+test checked_font_order_tracks_cascade_order_and_rejects_later_face_reordering ... FAILED
+test a_style_detached_before_mutator_flush_is_not_installed ... FAILED
+test reversed_link_arrival_and_imports_preserve_stylesheet_then_rule_order ... FAILED
+test moving_style_ancestors_reorders_existing_objects_and_cssom_rules ... FAILED
+test removal_reinsertion_and_text_replacement_keep_tree_order ... FAILED
+test template_styles_are_inert_until_connected_and_become_inert_again ... FAILED
+test foster_parenting_uses_final_dom_order_for_interpreted_and_compiled_documents ... FAILED
+
+failures:
+
+---- a_link_removed_before_response_cannot_install_a_disconnected_sheet stdout ----
+
+thread 'a_link_removed_before_response_cannot_install_a_disconnected_sheet' (5380210) panicked at /Users/sean/dev/3JSN/.cache/compiled-ui-style-order/base/packages/blitz-dom/src/document.rs:1211:38:
+invalid SlotMap key used
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- a_style_dropped_before_mutator_flush_is_not_dereferenced stdout ----
+
+thread 'a_style_dropped_before_mutator_flush_is_not_dereferenced' (5380212) panicked at /Users/sean/dev/3JSN/.cache/compiled-ui-style-order/base/packages/blitz-dom/src/document.rs:1125:29:
+invalid SlotMap key used
+
+---- checked_font_order_tracks_cascade_order_and_rejects_later_face_reordering stdout ----
+
+thread 'checked_font_order_tracks_cascade_order_and_rejects_later_face_reordering' (5380213) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 77.5
+ right: 40.0
+
+---- a_style_detached_before_mutator_flush_is_not_installed stdout ----
+
+thread 'a_style_detached_before_mutator_flush_is_not_installed' (5380211) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 123.0
+ right: 77.5
+
+---- reversed_link_arrival_and_imports_preserve_stylesheet_then_rule_order stdout ----
+
+thread 'reversed_link_arrival_and_imports_preserve_stylesheet_then_rule_order' (5380217) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 77.5
+ right: 40.0
+
+---- moving_style_ancestors_reorders_existing_objects_and_cssom_rules stdout ----
+
+thread 'moving_style_ancestors_reorders_existing_objects_and_cssom_rules' (5380215) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 77.5
+ right: 63.0
+
+---- removal_reinsertion_and_text_replacement_keep_tree_order stdout ----
+
+thread 'removal_reinsertion_and_text_replacement_keep_tree_order' (5380216) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 77.5
+ right: 40.0
+
+---- template_styles_are_inert_until_connected_and_become_inert_again stdout ----
+
+thread 'template_styles_are_inert_until_connected_and_become_inert_again' (5380230) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 91.0
+ right: 40.0
+
+---- foster_parenting_uses_final_dom_order_for_interpreted_and_compiled_documents stdout ----
+
+thread 'foster_parenting_uses_final_dom_order_for_interpreted_and_compiled_documents' (5380214) panicked at tests/order.rs:30:5:
+assertion `left == right` failed
+  left: 79.5
+ right: 42.0
+
+
+failures:
+    a_link_removed_before_response_cannot_install_a_disconnected_sheet
+    a_style_detached_before_mutator_flush_is_not_installed
+    a_style_dropped_before_mutator_flush_is_not_dereferenced
+    checked_font_order_tracks_cascade_order_and_rejects_later_face_reordering
+    foster_parenting_uses_final_dom_order_for_interpreted_and_compiled_documents
+    moving_style_ancestors_reorders_existing_objects_and_cssom_rules
+    removal_reinsertion_and_text_replacement_keep_tree_order
+    reversed_link_arrival_and_imports_preserve_stylesheet_then_rule_order
+    template_styles_are_inert_until_connected_and_become_inert_again
+
+test result: FAILED. 0 passed; 9 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+error: test failed, to rerun pass `--test order`

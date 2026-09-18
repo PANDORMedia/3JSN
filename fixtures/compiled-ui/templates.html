@@ -1,0 +1,7 @@
+<!doctype html><html><head><title>Inert template content</title><style>
+body{margin:12px;font:16px "3JSN Fixture",sans-serif}#mutate-target{width:240px}
+</style></head><body>
+<template id="outer"><style>#visible{display:none}</style><div id="inert">Must remain inert</div><template id="nested"><span>Nested content</span></template></template>
+<p id="visible" data-probe="visible">Visible outside the template</p>
+<div id="mutate-target" data-probe="target">Template fixture</div>
+</body></html>

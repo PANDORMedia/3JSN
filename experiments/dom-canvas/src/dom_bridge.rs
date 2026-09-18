@@ -88,8 +88,12 @@ deno_core::extension!(
 );
 
 pub fn extension(html: &str, config: DocumentConfig) -> deno_core::Extension {
+    extension_with_document(HtmlDocument::from_html(html, config).into_inner())
+}
+
+pub fn extension_with_document(document: BaseDocument) -> deno_core::Extension {
     let mut extension = dom_canvas::init(DomState {
-        document: HtmlDocument::from_html(html, config).into_inner(),
+        document,
         started: Instant::now(),
         messages: vec![],
     });

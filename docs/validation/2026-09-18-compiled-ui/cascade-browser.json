@@ -1,0 +1,8 @@
+{
+  "width": 42,
+  "cssWidth": "40px",
+  "styles": [
+    "#x{width:77.5px}",
+    "#x{width:40px;height:10px}"
+  ]
+}

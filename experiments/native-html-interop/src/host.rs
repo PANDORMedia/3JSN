@@ -35,6 +35,14 @@ pub fn create_with_prepared_extensions(
     extensions: Vec<deno_core::Extension>,
     prepare: impl Fn(&mut deno_core::Extension),
 ) -> JsRuntime {
+    create_with_dom_extension(dom_bridge::extension(html, config), extensions, prepare)
+}
+
+pub fn create_with_dom_extension(
+    dom: deno_core::Extension,
+    extensions: Vec<deno_core::Extension>,
+    prepare: impl Fn(&mut deno_core::Extension),
+) -> JsRuntime {
     let instance = Arc::new(deno_webgpu::wgpu_core::global::Global::new(
         "3JSN shared Metal queue probe",
         wgpu_types::InstanceDescriptor {
@@ -61,7 +69,7 @@ pub fn create_with_prepared_extensions(
         ),
         deno_webgpu::deno_webgpu::init(),
         globals,
-        dom_bridge::extension(html, config),
+        dom,
     ];
     installed.extend(extensions);
     installed.iter_mut().for_each(prepare);

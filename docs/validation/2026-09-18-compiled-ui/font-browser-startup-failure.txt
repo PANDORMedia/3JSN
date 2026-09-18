@@ -1,0 +1,20 @@
+file:///Users/sean/dev/3JSN/scripts/compatibility/browser-session.mjs:157
+    throw Object.assign(new Error(failure?.message ?? cancellation.signal.reason?.message ?? 'Browser session cleanup failed.'), {
+                        ^
+
+Error: The operation was aborted due to timeout
+    at withBrowserSession (file:///Users/sean/dev/3JSN/scripts/compatibility/browser-session.mjs:157:25)
+    at async file:///Users/sean/dev/3JSN/scripts/probe-web-font-package.mjs:161:19 {
+  sessionFailure: true,
+  browserLogTail: '\n' +
+    'DevTools listening on ws://127.0.0.1:56411/devtools/browser/3366044e-ccb4-4107-a9b4-155e52c514e5\n' +
+    'Trying to load the allocator multiple times. This is *not* supported.\n' +
+    '[16698:5390994:0918/130031.399186:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.google.Chrome.MachPortRendezvousServer.1: Permission denied (1100)\n' +
+    '[16698:5390994:0918/130031.401683:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)\n' +
+    '[16697:5390993:0918/130031.460617:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.google.Chrome.MachPortRendezvousServer.1: Permission denied (1100)\n' +
+    '[16697:5390993:0918/130031.461919:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)\n',
+  terminationSignal: undefined,
+  cleanupError: undefined
+}
+
+Node.js v24.13.0

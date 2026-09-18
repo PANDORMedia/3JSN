@@ -214,7 +214,7 @@ impl App {
         let proxy = self.proxy.clone();
         let worker = Worker {
             resources: options.resources,
-            html: options.html,
+            document: options.document,
             module: options.module,
             font: options.font,
             instance,

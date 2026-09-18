@@ -36,8 +36,12 @@ distribution gates remain tracked in [#56](https://github.com/PANDORMedia/3JSN/i
 
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
 adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.
-The runtime retains live UI state and required dynamic parsing. This work is
-planned; current HTML experiments still carry their parsers.
+The runtime retains live UI state and required dynamic parsing. An
+[initial-tree prototype](validation/2026-09-18-compiled-ui.md) now builds the same
+authoritative native DOM without reparsing the original document, with five
+native comparison fixtures and a bounded Metal-window run. Browser parity,
+framework workloads, CSS compilation, parser omission and build-CLI integration
+remain open; the prototype still carries its parsers.
 
 ## Milestones
 
