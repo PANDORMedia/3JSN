@@ -225,3 +225,55 @@ pub fn probe_extension(libraries: &Path) -> Result<Extension, String> {
         objects: resources::Registry::new(),
     }))
 }
+
+/// Register native operations and importable modules without installing probe globals.
+pub fn runtime_extension(libraries: &Path) -> Result<Extension, String> {
+    let mut extension = probe_extension(libraries)?;
+    extension.esm_entry_point = None;
+    extension.esm_files = vec![
+        deno_core::ExtensionFileSource::new(
+            "ext:angle_probe/webgl.js",
+            deno_core::ascii_str_include!("webgl.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
+            "ext:angle_probe/webgl-geometry.js",
+            deno_core::ascii_str_include!("webgl-geometry.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
+            "ext:angle_probe/webgl-programs.js",
+            deno_core::ascii_str_include!("webgl-programs.js"),
+        ),
+    ]
+    .into();
+    Ok(extension)
+}
+
+/// Close contexts after the host has completed every external GPU consumer.
+/// Failed native teardown keeps its identity available for retry.
+pub fn release_all(runtime: &mut deno_core::JsRuntime) -> Result<(), String> {
+    let state = runtime.op_state();
+    let mut state = state.borrow_mut();
+    let State {
+        contexts,
+        objects,
+        programs,
+        ..
+    } = state.borrow_mut::<State>();
+    let ids: Vec<_> = contexts.keys().copied().collect();
+    let mut failures = Vec::new();
+    for id in ids {
+        match contexts.get_mut(&id).unwrap().close() {
+            Ok(()) => {
+                contexts.remove(&id);
+                objects.remove_context(id);
+                programs.remove_context(id);
+            }
+            Err(error) => failures.push(format!("Context {id}: {error}")),
+        }
+    }
+    if failures.is_empty() {
+        Ok(())
+    } else {
+        Err(failures.join("; "))
+    }
+}

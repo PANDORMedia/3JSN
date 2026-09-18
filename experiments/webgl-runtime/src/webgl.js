@@ -191,3 +191,13 @@ export function observeFrame(context, output) {
   const owner = state(context);
   core.ops.op_angle_read_rgba(owner.id, owner.width, owner.height, output);
 }
+
+export function resizeContext(context, width, height) {
+  const owner = state(context);
+  if (![width, height].every(value => Number.isSafeInteger(value) && value >= 1 && value <= 16384)) {
+    throw new RangeError('Experimental drawing buffer dimensions must be integers from 1 to 16384');
+  }
+  core.ops.op_angle_resize(owner.id, width, height);
+  owner.width = width;
+  owner.height = height;
+}

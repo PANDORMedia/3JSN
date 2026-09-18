@@ -14,7 +14,7 @@ glow = "=0.17.0"
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.151"
 
-tokio = { version = "=1.53.1", features = ["rt", "time"] }
+tokio = { version = "=1.49.0", features = ["rt", "time"] }
 
 [build-dependencies]
 serde_json = "=1.0.151"

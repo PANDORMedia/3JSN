@@ -4094,6 +4094,7 @@ dependencies = [
  "threejs-native-input-queue",
  "threejs-native-js-sources",
  "threejs-native-package",
+ "threejs-native-webgl-runtime",
  "tokio",
  "vello",
  "wgpu",
@@ -4125,6 +4126,19 @@ dependencies = [
  "serde_json",
  "sha2",
  "thiserror 2.0.18",
+]
+
+[[package]]
+name = "threejs-native-webgl-runtime"
+version = "0.0.0"
+dependencies = [
+ "cc",
+ "deno_core",
+ "deno_error",
+ "glow",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

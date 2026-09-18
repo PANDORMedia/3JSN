@@ -178,3 +178,13 @@ python3 scripts/probe-parser-linkage.py \
 Keep every attempt's build log if a build is resumed; repeat its build-log flag
 in chronological order. The proof checks the mapped executable's identity and
 requires unstripped symbol records; it never builds or executes a runtime.
+
+## Optional native WebGL DOM test
+
+Feature `native-webgl` enables the actual DOM-canvas integration test with the
+shared Rust/V8 ANGLE backend. It is not a player renderer-selection flag: native
+window composition is still WebGPU-only. The ordinary Three fixture creates its
+own canvas, requests WebGL2 and renders in both parser modes. The native test is
+ignored by default and requires explicit Metal execution.
+
+[Evidence, limits and reproduction](../../docs/validation/2026-09-18-webgl-dom.md).

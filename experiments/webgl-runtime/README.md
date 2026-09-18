@@ -5,7 +5,8 @@ runtime. Upstream Three.js r186 now constructs its `WebGLRenderer`, initializes
 fallback textures and renders indexed/nonindexed meshes and GLSL materials through
 a partial WebGL facade.
 The harness injects a canvas fixture through Three's public constructor; it does
-not expose DOM `canvas.getContext('webgl2')` or connect to the UI compositor.
+not connect to the UI compositor. A separate optional real-DOM adapter now exposes
+`canvas.getContext('webgl2')`; see the DOM checkpoint below.
 No compatibility profile is advanced by this probe.
 
 Rust owns context identities and lifetimes. V8 receives opaque, monotonically
@@ -118,3 +119,16 @@ output includes raw RGBA arrays for offline test captures only. Full WebGL
 conformance, arbitrary materials/textures, DOM/window composition, resize/context
 loss and other platforms remain open. Uniform registry entries are currently
 retained until context disposal; deleted-shader wrapper queries are incomplete.
+
+## Real DOM canvas checkpoint
+
+The optional `native-webgl` integration in `experiments/compiled-ui-runtime`
+registers the same facade on the existing HTMLCanvasElement implementation. An
+ordinary Three.js module creates its own canvas and renders through the actual
+DOM in both parser modes. Context modes, resize/reset, failed creation/resize and
+explicit host teardown are checked on Metal. The embedding extension supplies
+its own JavaScript without installing probe globals. Tokio matches the DOM host's
+1.49.0 pin. [Evidence and commands](../../docs/validation/2026-09-18-webgl-dom.md).
+
+This does not yet select WebGL in the native-window player; that compositor still
+requires the separate native snapshot/lease integration described in the record.
