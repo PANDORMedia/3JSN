@@ -218,3 +218,12 @@ mutation/creation tests pass with default features and `--no-default-features`.
 record the CPU-only checks. Both Python evidence collectors' three-test suites
 pass locally and are now explicit jobs within the existing source CI matrix.
 This wiring adds no CI claim about native GPU or window execution.
+
+The new CI wiring exposed a platform mismatch: the measurement collector's
+process lifecycle and RSS-byte contract is explicitly Darwin-only. `run_child`
+now rejects other platforms before opening output files or launching a process.
+The two Darwin process controls remain active on macOS; other platforms test the
+early rejection. Record validation still runs everywhere. The local measurement
+suite passes three tests with one non-Darwin control skipped; modeled Windows and
+Linux rejection controls verify that no process launches or files are opened.
+Actual Windows execution is left to the new CI run, not inferred from those models.
