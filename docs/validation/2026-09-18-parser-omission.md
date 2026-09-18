@@ -7,12 +7,20 @@ executable symbols agree. The parser-enabled build supplies positive controls.
 This is an experimental artifact proof, not a shipping build profile or generic
 application certification.
 
-CPU behavior, browser comparison and measurements passed. **Native-window
-validation for this change remains pending:** the Mac was locked and the rebuilt
-shared-host regression reached its 90-second deadline without a presentation
-result. Computer-use inspection confirmed the locked desktop. The previous
-[compiled-tree checkpoint](2026-09-18-compiled-ui.md) contains earlier Metal
-evidence; it does not validate this new executable or shared-host extraction.
+CPU behavior, browser comparison, measurements and **native presentation now
+pass for the exact parser-omission release artifacts**. After the Mac was
+unlocked, both preserved executables presented 120 Metal frames. The preserved
+interpreted shared-host player also presented 120 frames under its original
+sandbox policy. The [unlocked follow-up](#unlocked-native-follow-up) records their
+identities and limits; it does not validate the separate, uncommitted package work.
+
+The earlier blocked attempt remains part of the record: the Mac was locked and
+the shared-host regression reached its 90-second deadline without a presentation
+result. Computer-use inspection confirmed the locked desktop. Its
+[original check record](2026-09-18-parser-omission/checks.json) and
+[stderr](2026-09-18-parser-omission/locked-shared-host-interpreted-stderr.txt)
+are preserved. The previous [compiled-tree checkpoint](2026-09-18-compiled-ui.md)
+is separate evidence for the earlier implementation.
 
 ## Implementation boundary
 
@@ -93,6 +101,58 @@ inline-layout and table-sizing gaps, test frameworks, certify arbitrary DOM
 behavior or establish GPU pixel equivalence. The CPU run explicitly reports
 `nativeWindowValidated: false`.
 
+## Unlocked native follow-up
+
+The [native report](2026-09-18-parser-omission/unlocked-native.json) records the
+2026-09-18 rerun of the existing PR58 release executables. They were not rebuilt.
+Their SHA-256 identities match the executables in the earlier linkage proof:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Parser enabled, 92,432,032 bytes | `51d4f3f6c95836b0daa27124c15cc5629d6843e8f33a8adc4980b240c0cd6beb` |
+| Parser disabled, 91,298,144 bytes | `66667b849beee784bb1ec2de5487d8dda94724e5aee4b192df46d6ae9a654e9f` |
+| Preserved interpreted shared-host player, 188,851,368 bytes | `112668bfce04f54c53b16c6d5f3ef475403f616d9c4b6d516ac81cb245c1612d` |
+
+The release executables came from
+`.cache/parser-omission/{enabled,disabled}-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime`.
+The harness copied them and the fixture inputs to
+`artifacts/parser-omission-release-native-01/Native parser é #/`, then ran each
+window for 120 successful presentations with Metal API validation enabled.
+Both reported 120 canvas snapshots, verified native device and queue identity,
+and `cpuImageTransport: false`. The
+[enabled](2026-09-18-parser-omission/unlocked-native-enabled-window-stdout.txt) and
+[disabled](2026-09-18-parser-omission/unlocked-native-disabled-window-stdout.txt)
+window observations match before and after the fixture's click and live-tree
+mutations. Their stderr logs contain only the Metal validation-enabled message.
+
+The same run repeated the positive CPU behavior, all 17 restricted-operation
+rejections, tree-preservation checks and both iframe rejection controls. Chrome
+153.0.8010.50 again produced zero sampled DOM/layout differences above the
+0.25 CSS-pixel rectangle tolerance. The
+[runtime sandbox policy](2026-09-18-parser-omission/unlocked-native-restricted-inputs.sb)
+denied original HTML and development-tree reads plus networking. Input and source
+hashes remained unchanged. The report indexes the preserved stdout/stderr logs,
+policy and their hashes; the browser comparison remains a CPU DOM/layout check.
+
+The [shared-host follow-up](2026-09-18-parser-omission/unlocked-native-shared-host-interpreted.json)
+ran the exact existing
+`artifacts/compiled-ui-shared-host-regression/Native UI é #/player` with its
+adjacent HTML, module and font under the
+[original interpreted policy](2026-09-18-parser-omission/unlocked-native-shared-host-interpreted.sb).
+It presented 120 Metal frames with 120 canvas snapshots and the same device,
+queue and transport checks. Its
+[observations](2026-09-18-parser-omission/unlocked-native-shared-host-interpreted-stdout.txt)
+include a click, creation through DOM operations, retained target identity and
+successful dynamic `innerHTML`. The player, inputs and policy hashes were
+unchanged. This follow-up reran the interpreted invocation; it did not rerun the
+separate compiled invocation of that preserved shared-host player.
+
+These are presentation and sampled behavior results for the original PR58
+artifacts. They establish neither GPU pixel equivalence nor a speedup, framework
+support or another platform. New compiled-package binaries and resource/build
+integration have a [separate checkpoint](2026-09-18-compiled-package.md) and artifact identities.
+The earlier CPU timings and linkage/build-provenance records are unchanged.
+
 ## Measurements
 
 The [complete 46-run record](2026-09-18-parser-omission/measurements.json) contains
@@ -126,15 +186,22 @@ default-feature tests and seven restricted-feature tests. The other affected
 HTML/V8, HTML paint and native interop hosts compile. Independent source review
 found no unguarded pinned parser entry or extraction regression.
 
+The [PR58 source CI run](https://github.com/PANDORMedia/3JSN/actions/runs/35342025736)
+completed successfully on Windows, macOS and Ubuntu. The
+[preserved CI summary](2026-09-18-parser-omission/unlocked-native-source-ci.json)
+records all three successful jobs and the identity of the observed CI response.
+This is source-check evidence, not native graphics validation on those platforms.
+
 Reproduction commands and exact diagnostic behavior are in the
 [runtime README](../../experiments/compiled-ui-runtime/README.md) and
-[fixture README](../../fixtures/parser-omission/README.md). The paired native
-window harness is ready but requires an unlocked desktop. Its existing
-interpreted/compiled regression must also pass after the extraction.
+[fixture README](../../fixtures/parser-omission/README.md). The paired
+parser-enabled/parser-disabled window harness and preserved interpreted
+shared-host invocation now pass with an unlocked desktop. A complete rerun of
+the preserved shared-host interpreted/compiled pair remains a separate check.
 
-Next gates are native presentation for these exact artifacts, compiled resource
-and webfont packaging, build-CLI capability selection, conservative analysis of
-dynamic dependencies, constant-fragment semantics, independent framework and
-string-markup workloads, and broader platform/graphics evidence. The existing
-HTML-entry package profile remains interpreted. No production package format
+Next gates for this checkpoint are compiled resource and webfont packaging,
+build-CLI capability selection, conservative analysis of dynamic dependencies,
+constant-fragment semantics, independent framework and string-markup workloads,
+and broader platform/graphics evidence. The existing HTML-entry package profile
+in the tested PR58 artifacts remains interpreted. No production package format
 or unsupported existing application is silently switched to the restricted path.

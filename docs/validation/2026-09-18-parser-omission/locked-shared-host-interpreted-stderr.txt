@@ -1,0 +1,1 @@
+2026-09-18 13:42:47.022 player[26622:5459183] Metal API Validation Enabled

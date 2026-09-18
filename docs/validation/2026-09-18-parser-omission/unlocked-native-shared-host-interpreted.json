@@ -1,0 +1,133 @@
+{
+  "status": "passed",
+  "scope": "Exact preserved interpreted shared-host player; no build or input modification",
+  "originalReport": {
+    "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression-unlocked-01/report.json",
+    "bytes": 8094,
+    "sha256": "1590cf085a7526c0e6a3d985f064ed9cf933663c7116cc8b25f2549c0db659f0"
+  },
+  "inputs": {
+    "player": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/player",
+      "bytes": 188851368,
+      "sha256": "112668bfce04f54c53b16c6d5f3ef475403f616d9c4b6d516ac81cb245c1612d"
+    },
+    "original.html": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/original.html",
+      "bytes": 1366,
+      "sha256": "362d9942f50909dae6a6a6e5b9b44311fe4ba72aeb14736c92a9f6e52fe00788"
+    },
+    "ui.json": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/ui.json",
+      "bytes": 18077,
+      "sha256": "4a8afb83cffb2c78b0138bf59cdabe8a8af64aa57f43a3682df060644d950b41"
+    },
+    "app.mjs": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/app.mjs",
+      "bytes": 2172450,
+      "sha256": "f87d56cfba2c6b8cb975b56b0bc6279691f0bcb292a010bdc22d0b5f58a10e83"
+    },
+    "font.woff2": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "policy": {
+      "path": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/interpreted.sb",
+      "bytes": 324,
+      "sha256": "e38cbbcf31449c396c2cc9e2e11adb59e3d101bdb7bfdab39f1f4daf5e434a72"
+    }
+  },
+  "command": {
+    "executable": "/usr/bin/sandbox-exec",
+    "args": [
+      "-f",
+      "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/interpreted.sb",
+      "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/player",
+      "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/font.woff2",
+      "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/original.html",
+      "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #/app.mjs",
+      "120"
+    ],
+    "cwd": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/Native UI é #",
+    "environmentOverrides": {
+      "PATH": "/usr/bin:/bin",
+      "MTL_DEBUG_LAYER": "1"
+    },
+    "timeoutMs": 90000
+  },
+  "startedAt": "2026-09-18T12:17:33.613Z",
+  "endedAt": "2026-09-18T12:17:36.088Z",
+  "exitCode": 0,
+  "signal": null,
+  "completion": {
+    "nativeDomWindow": true,
+    "backend": "Metal",
+    "presentedFrames": 120,
+    "canvasSnapshots": 120,
+    "cpuImageTransport": false,
+    "nativeDeviceIdentityChecked": true,
+    "nativeQueueIdentityChecked": true
+  },
+  "behavior": {
+    "phases": [
+      "initial",
+      "mutated"
+    ],
+    "initialClicks": 0,
+    "mutatedClicks": 1,
+    "sameTarget": true,
+    "createdText": "Created with DOM operations",
+    "parsedText": "Runtime markup remains supported."
+  },
+  "inputsPreserved": true,
+  "nativeWindowValidated": true,
+  "policy": {
+    "file": "unlocked-native-shared-host-interpreted.sb",
+    "bytes": 324,
+    "sha256": "e38cbbcf31449c396c2cc9e2e11adb59e3d101bdb7bfdab39f1f4daf5e434a72",
+    "sourcePath": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/interpreted.sb"
+  },
+  "logs": {
+    "stdout": {
+      "file": "unlocked-native-shared-host-interpreted-stdout.txt",
+      "bytes": 2265,
+      "sha256": "3601d9ff1d7fb99eb700b33c867ea44f26d9443b530573135c3be07b7ad4a897",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression-unlocked-01/interpreted-stdout.txt"
+    },
+    "stderr": {
+      "file": "unlocked-native-shared-host-interpreted-stderr.txt",
+      "bytes": 75,
+      "sha256": "23f1cdb9e9c6f68d2102bbc7621fad2124c7ad366fd94b889581dfcdd577c719",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression-unlocked-01/interpreted-stderr.txt"
+    }
+  },
+  "historicalLockedAttempt": {
+    "status": "blocked",
+    "reason": "The prior run reached its 90-second deadline with the desktop locked. Original checks.json is preserved.",
+    "checks": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/checks.json",
+      "bytes": 2713,
+      "sha256": "1753377425b102a705799874e18398ea9d0562bd6f506e919464502c75397f88"
+    },
+    "logs": {
+      "stdout": {
+        "file": "locked-shared-host-interpreted-stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourcePath": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/interpreted-stdout.txt"
+      },
+      "stderr": {
+        "file": "locked-shared-host-interpreted-stderr.txt",
+        "bytes": 75,
+        "sha256": "3a95c045425b7ffac5c339654d95bde3b13953f8fbece7989c21470388005762",
+        "sourcePath": "/Users/sean/dev/3JSN/artifacts/compiled-ui-shared-host-regression/interpreted-stderr.txt"
+      }
+    }
+  },
+  "limits": [
+    "Only the interpreted invocation of this exact shared-host player was rerun; its separate compiled invocation was not rerun in this follow-up.",
+    "No new runtime builds and no validation of the separate uncommitted package work.",
+    "Presentation and sampled behavior do not certify GPU pixel equivalence, performance or another platform."
+  ]
+}

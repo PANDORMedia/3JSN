@@ -102,9 +102,10 @@ try {
     const description = one(await run(`${variant}-describe`, player, ['--describe']), 'experiment');
     assert.equal(description.experiment, 'compiled-ui-runtime');
     assert.equal(description.target, 'macos-arm64');
-    assert.equal(description.backend, 'Metal');
+    assert.equal(description.backend.toLowerCase(), 'metal');
     assert.equal(description.dynamicHtml, variant === 'enabled');
-    assert.deepEqual(description.packageProfiles, []);
+    assert.deepEqual(description.profiles ?? description.packageProfiles,
+      description.schemaVersion === 1 ? ['compiled-dom-window-v1'] : []);
     const layoutRecords = await run(`${variant}-layout-verify`, player, ['--measure-layout', ui, font, behavior, '--verify']);
     const layout = one(layoutRecords, 'layoutMeasurement');
     assert.equal(layout.layoutMeasurement, true);

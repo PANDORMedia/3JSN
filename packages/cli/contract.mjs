@@ -10,6 +10,8 @@ export class BuildError extends Error {
 
 export const PROFILE = 'native-window-v1';
 export const DOM_PROFILE = 'dom-window-v1';
+export const COMPILED_DOM_PROFILE = 'compiled-dom-window-v1';
+export const isDomProfile = profile => [DOM_PROFILE, COMPILED_DOM_PROFILE].includes(profile);
 const COMMON_LIMITATIONS = [
   'Experimental artifact creation is not a compatibility, performance or platform certification.',
   'Only an explicitly supplied current-host player is packaged; no runtime is built or downloaded.',
@@ -26,11 +28,17 @@ export const LIMITATIONS = [...COMMON_LIMITATIONS,
   'The native-window-v1 profile provides no HTML/CSS integration, frontend command, custom plugin, inherited tsconfig, or runtime asset-copy workflow.',
 ];
 
-export function limitationsFor(profile, { webFonts = false } = {}) {
-  if (profile !== DOM_PROFILE) return LIMITATIONS;
+export function limitationsFor(profile, { webFonts = false, htmlParser = 'preserved' } = {}) {
+  if (!isDomProfile(profile)) return LIMITATIONS;
+  const compiled = profile === COMPILED_DOM_PROFILE;
   return [...COMMON_LIMITATIONS,
-    'Interim interpreted-HTML profile: the native runtime still parses packaged HTML/CSS and maintains a dynamic DOM; this is not build-time UI compilation.',
-    'Only an explicitly supplied current-host macOS Metal dom-window-v1 player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.',
+    compiled
+      ? 'Experimental compiled initial UI: generated HTML becomes versioned UI data. CSS parsing, live DOM state and CPU layout remain; this is not a stable shipping data format.'
+      : 'Interim interpreted-HTML profile: the native runtime still parses packaged HTML/CSS and maintains a dynamic DOM; this is not build-time UI compilation.',
+    `Only an explicitly supplied current-host macOS Metal ${profile} player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.`,
+    ...(compiled ? [htmlParser === 'restricted'
+      ? 'Explicit restricted HTML-parser mode: reachable dynamic markup is not proven absent. Unsupported markup/navigation operations reject at runtime; application compatibility is not certified.'
+      : 'The supplied runtime preserves its implemented dynamic HTML parsing. This does not certify arbitrary browser markup APIs.'] : []),
     webFonts
       ? 'Opt-in static CSS/font localization preserves rule order and descriptors; native font admission is separate. Other static resources and dynamic asset discovery remain unsupported.'
       : 'Static HTML and CSS resource references, foreign content, templates, classic/inline scripts and browser navigation are rejected; accepted syntax does not establish rendering or DOM API support.',
@@ -46,8 +54,8 @@ export function limitationsFor(profile, { webFonts = false } = {}) {
 }
 
 export function validateProfileTarget(profile, target) {
-  if (profile === DOM_PROFILE && !['macos-arm64', 'macos-x64'].includes(target)) {
-    throw new BuildError('UNSUPPORTED_TARGET', 'dom-window-v1 currently accepts only a current-host macOS Metal player.');
+  if (isDomProfile(profile) && !['macos-arm64', 'macos-x64'].includes(target)) {
+    throw new BuildError('UNSUPPORTED_TARGET', `${profile} currently accepts only a current-host macOS Metal player.`);
   }
 }
 
@@ -75,12 +83,12 @@ export async function readConfig(path) {
   const keys = ['schemaVersion', 'profile', 'name', 'entry'];
   if (!config || Array.isArray(config) || typeof config !== 'object'
     || Object.keys(config).length !== keys.length || keys.some(key => !Object.hasOwn(config, key))
-    || config.schemaVersion !== 1 || ![PROFILE, DOM_PROFILE].includes(config.profile)
+    || config.schemaVersion !== 1 || ![PROFILE, DOM_PROFILE, COMPILED_DOM_PROFILE].includes(config.profile)
     || typeof config.name !== 'string' || !/^[a-z0-9][a-z0-9-]{0,63}$/.test(config.name)
     || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/.test(config.name)
     || ['app', 'metadata'].includes(config.name)
-    || !portablePath(config.entry) || !(config.profile === DOM_PROFILE ? /\.html$/ : /\.(?:js|mjs|ts)$/).test(config.entry)) {
-    throw new BuildError('INVALID_CONFIG', '3jsn.json must contain only schemaVersion:1, profile native-window-v1 (.js/.mjs/.ts) or dom-window-v1 (.html), a portable safe name, and a contained relative entry.');
+    || !portablePath(config.entry) || !(isDomProfile(config.profile) ? /\.html$/ : /\.(?:js|mjs|ts)$/).test(config.entry)) {
+    throw new BuildError('INVALID_CONFIG', '3jsn.json must contain only schemaVersion:1, profile native-window-v1 (.js/.mjs/.ts), dom-window-v1 or compiled-dom-window-v1 (.html), a portable safe name, and a contained relative entry.');
   }
   return config;
 }

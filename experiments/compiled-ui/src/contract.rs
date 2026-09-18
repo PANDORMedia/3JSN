@@ -6,6 +6,7 @@ use serde_json::Value;
 use crate::LoadError;
 
 pub const FORMAT: &str = "3jsn-static-ui-experiment";
+pub const VERSION: u32 = 1;
 pub const MAX_IR_BYTES: usize = 16 * 1024 * 1024;
 pub const MAX_SOURCE_BYTES: usize = 1024 * 1024;
 pub const MAX_NODES: usize = 10_000;
@@ -125,7 +126,7 @@ impl CompiledUi {
     }
 
     pub fn validate(&self) -> Result<(), LoadError> {
-        if self.format != FORMAT || self.version != 1 {
+        if self.format != FORMAT || self.version != VERSION {
             return Err(LoadError::Unsupported("format or version"));
         }
         if self.document.mode != "no-quirks" {

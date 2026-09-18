@@ -1,0 +1,47 @@
+{
+  "note": "JSON evidence is compacted without dropping fields; log archives map original step stdout/stderr filenames to exact text. No executable, bundled application, font or acceptance-game asset is included.",
+  "records": [
+    {
+      "source": "artifacts/compiled-package-native-01/report.json",
+      "path": "package-report.json",
+      "sourceBytes": 41690,
+      "sourceSha256": "17ddbb98c7a86b4bac3fc212c2de66e827ef321208864821ed9e203a8be6fc39",
+      "archivedSha256": "f96383fc6a2dfe4afc04ae8a5e4e6583ffaf5e57dc26de8dc1b50da0068d7b4e"
+    },
+    {
+      "source": "artifacts/compiled-package-parser-regression-01/report.json",
+      "path": "parser-report.json",
+      "sourceBytes": 17211,
+      "sourceSha256": "275cb4bb71e67dc920f7a71eef7e085955ffb7a48dfb645e241d55729a0e1d75",
+      "archivedSha256": "9c31759992af4715773f2c83e68aa490cfa3a0abeebd66d195b3c0227cfff348"
+    },
+    {
+      "source": "artifacts/compiled-package-native-01/Native compiled preserved \u00e9 #/app.json",
+      "path": "preserved-manifest.json",
+      "sourceBytes": 10396,
+      "sourceSha256": "710ab9cc5a6f8423c65167f4ec2e476861362f66355624092b8ed4c8afb5e1dd",
+      "archivedSha256": "0a4e451d7102f836bfb02b8a8905d98cca49ef583b8e95280eb916d3d05299c2"
+    },
+    {
+      "source": "artifacts/compiled-package-native-01/Native compiled preserved \u00e9 #/metadata/build.json",
+      "path": "preserved-build.json",
+      "sourceBytes": 96887,
+      "sourceSha256": "2406073b0955ca608888ec86598c67f2d277d6951774028a0b8a1b5bf806ea22",
+      "archivedSha256": "b963e25469c4bfc7b6be7b23c9a796da6a560df1d8829608e8565c94a792e338"
+    },
+    {
+      "source": "artifacts/compiled-package-native-01/Native compiled restricted \u00e9 #/app.json",
+      "path": "restricted-manifest.json",
+      "sourceBytes": 10397,
+      "sourceSha256": "108816571e2b919ed13e4db79eb63b931ff00204a5ffd391e83e124c68d8819d",
+      "archivedSha256": "d18176573f42a428935bfa9346572867f9d115b16389afdb929912d8bc6ccfc1"
+    },
+    {
+      "source": "artifacts/compiled-package-native-01/Native compiled restricted \u00e9 #/metadata/build.json",
+      "path": "restricted-build.json",
+      "sourceBytes": 96957,
+      "sourceSha256": "cdc471303b356e999896fef1690940da499a8032e91fa67a609689a011eda738",
+      "archivedSha256": "a91bfbafbf88acf3dc00928136f4507fc747c94e4a03b2dcbeba5d7eeae2b091"
+    }
+  ]
+}

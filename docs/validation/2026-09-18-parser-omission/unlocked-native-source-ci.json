@@ -1,0 +1,42 @@
+{
+  "status": "completed",
+  "conclusion": "success",
+  "runId": 35342025736,
+  "pullRequest": 58,
+  "url": "https://github.com/PANDORMedia/3JSN/actions/runs/35342025736",
+  "sourceRecord": {
+    "path": "/Users/sean/dev/3JSN/.cache/parser-omission/ci-next.json",
+    "bytes": 8452,
+    "sha256": "9545a1c32ffd89ac6856dae27b51013a873ec6572dcf2bd651d6c0c4056073e2"
+  },
+  "jobs": [
+    {
+      "name": "source (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/PANDORMedia/3JSN/actions/runs/35342025736/job/105589867833",
+      "startedAt": "2026-09-18T11:55:37Z",
+      "completedAt": "2026-09-18T12:05:20Z"
+    },
+    {
+      "name": "source (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/PANDORMedia/3JSN/actions/runs/35342025736/job/105589868068",
+      "startedAt": "2026-09-18T11:55:43Z",
+      "completedAt": "2026-09-18T12:01:13Z"
+    },
+    {
+      "name": "source (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/PANDORMedia/3JSN/actions/runs/35342025736/job/105589868157",
+      "startedAt": "2026-09-18T11:55:38Z",
+      "completedAt": "2026-09-18T12:00:29Z"
+    }
+  ],
+  "limits": [
+    "Source CI result for PR58; it does not establish native GPU presentation or platform compatibility.",
+    "Preserved CI observation, separate from the uncommitted package implementation."
+  ]
+}

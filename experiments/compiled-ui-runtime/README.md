@@ -4,8 +4,9 @@ This macOS/Metal experiment loads compiled UI data into the same live Blitz
 DOM used by the native HTML window. Its default `dynamic-html` Cargo feature
 retains Blitz's HTML parser; `--no-default-features` omits that optional
 provider and installs explicit runtime capability failures. This is a restricted
-research artifact, not a shipping package profile or an unchanged-project
-compatibility claim. See [ADR 0003](../../docs/adr/0003-compiled-ui-and-generic-compatibility.md).
+research artifact with an experimental `compiled-dom-window-v1` package path,
+not a stable shipping profile or an unchanged-project compatibility claim.
+See [ADR 0003](../../docs/adr/0003-compiled-ui-and-generic-compatibility.md).
 
 The runtime shares the existing DOM bindings (`html-v8/src/dom_ops.rs`), canvas
 bridge, native realm, Metal texture transport, painter and window modules.
@@ -70,7 +71,10 @@ cached release archive for both variants and record its hash.
 
 | Command | Behavior |
 | --- | --- |
-| `--describe` | Prints the compiled feature flag, target and Metal backend; it is not dependency/link proof. |
+| `--describe` | Prints package/profile support, UI format/version, exact parser mode, target and Metal backend; it is not dependency/link proof. |
+| `--app app.json [--frames COUNT]` | Validates a compiled DOM package and opens its native window. With no arguments (or only `--frames COUNT`), finds `app.json` beside the executable. |
+| `--verify-app app.json` | Checks manifest/payload integrity, descriptor/parser mode and bounded UI data without decoding fonts, executing JS or creating a window. |
+| `--measure-app app.json BEHAVIOR.js [--verify]` | Loads the package's compiled tree and font resources into a live DOM/realm, then runs the supplied classic `uiProbe` script rather than the packaged application module; no window is opened. |
 | `--compiled-ui UI.json FONT BUNDLED_APP [--frames COUNT]` | Opens the shared native window. A positive frame limit closes after that many successful presentations; omission runs until close. |
 | `--measure-layout UI.json FONT BEHAVIOR.js [--verify]` | Creates the native realm and live DOM, evaluates a classic script providing `uiProbe`, and reports its initial snapshot. |
 
@@ -87,10 +91,24 @@ For each binary, run the fixture's positive behavior and feature-specific checks
 
 The window command requires a usable window server and GPU. The shared window
 currently expects the fixture's `#scene` canvas and uses Three.js WebGPU;
-these are host-fixture constraints, not compiler grammar rules. Its empty
-package-resource allowlist rejects undeclared linked stylesheets/fonts. General
-resource packaging, WebGL, framework coverage and existing HTML/paint gaps remain
-separate work.
+these are host-fixture constraints, not compiler grammar rules. Direct
+`--compiled-ui` and `--measure-layout` inputs have an empty resource allowlist and
+reject undeclared linked stylesheets/fonts. Package commands receive verified,
+listed CSS/font resources. Other assets, WebGL, framework coverage and existing
+HTML/paint gaps remain separate work.
+
+The [build CLI](../../docs/build.md#build-compiled-initial-ui) admits the existing
+bounded package HTML grammar, rewrites the module reference, optionally localizes
+webfonts, then compiles that generated HTML to `app/ui.json`; no HTML payload is
+packaged. `--bundle-web-fonts` is required to opt into static CSS/font localization.
+The default `--html-parser preserved` requires a default-feature binary;
+`--html-parser restricted` requires a `--no-default-features` binary. The CLI and
+loader enforce exact mode agreement, not a capability superset. Both retain the
+same live DOM and runtime CSS/layout work. The
+[compiled-package checkpoint](../../docs/validation/2026-09-18-compiled-package.md)
+records 120 relocated Metal frames per mode with packaged fonts, plus a separate
+CPU/Chrome regression on those exact debug binaries. Earlier release linkage and
+performance evidence belongs to different executable hashes.
 
 The combined native harness copies both executables and inputs out of the
 development tree, denies source-HTML reads and networking, and checks 120-frame
@@ -114,7 +132,9 @@ desktop session is unavailable and cannot satisfy the presentation gate.
 `--measure-layout` measures elapsed time from Rust `main` entry through argument
 handling, input reads, IR validation/construction, font and realm initialization,
 behavior-script execution and completion of the first `uiProbe.snapshot()`.
-This includes the style/layout work triggered by its rectangle reads. It excludes
+This includes the style/layout work triggered by its rectangle reads.
+`--measure-app` additionally includes manifest validation, package reads and
+packaged font loading/registration in the same interval. It excludes
 process launch before `main`, verification, final reporting and teardown. The
 supplied CPU behavior fixture makes no GPU-device request; this is not a GPU
 startup, window, cold-start or per-frame layout benchmark. `--verify` runs after

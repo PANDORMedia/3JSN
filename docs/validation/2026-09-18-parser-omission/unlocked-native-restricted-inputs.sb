@@ -1,0 +1,11 @@
+(version 1)
+(allow default)
+(deny network*)
+(deny file-read*
+ (subpath "/Users/sean/dev/3JSN/.cache")
+ (subpath "/Users/sean/dev/3JSN/node_modules")
+ (subpath "/Users/sean/dev/3JSN/crates")
+ (subpath "/Users/sean/dev/3JSN/experiments")
+ (subpath "/Users/sean/dev/3JSN/examples")
+ (subpath "/Users/sean/dev/3JSN/fixtures")
+ (literal "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/original.html"))

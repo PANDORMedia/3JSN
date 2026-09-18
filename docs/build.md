@@ -1,8 +1,9 @@
 # Experimental native application packaging
 
-`3jsn build` has initial local packaging paths for the `native-window-v1` and
-`dom-window-v1` fixtures. It bundles JavaScript/TypeScript and an explicitly supplied native player
-into a portable application directory. The shipped executable runs without Node,
+`3jsn build` has initial local packaging paths for `native-window-v1`,
+`dom-window-v1` and `compiled-dom-window-v1` fixtures. It bundles
+JavaScript/TypeScript and an explicitly supplied native player into a portable
+application directory. The shipped executable runs without Node,
 esbuild or a development server. This is not the unchanged-web-project pipeline:
 general HTML/CSS, WebGL, frontend build commands, assets and full browser services
 still need integration. Do not port a game to these fixtures as a compatibility workaround.
@@ -11,12 +12,16 @@ still need integration. Do not port a game to these fixtures as a compatibility 
 | --- | --- | --- |
 | `native-window-v1` | JS/TS entry and source map | Current-host native-window player |
 | `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font | Experimental macOS Metal DOM-window player |
+| `compiled-dom-window-v1` | Same bounded HTML input, compiled to `app/ui.json`, plus module/map and WOFF2 font | Experimental macOS Metal compiled-UI player with matching parser mode |
 
-The DOM profile still parses HTML/CSS at runtime. The
-[compiled UI architecture](adr/0003-compiled-ui-and-generic-compatibility.md) is a
-separate experimental path with a [restricted artifact proof](validation/2026-09-18-parser-omission.md).
-Compiled UI and parser capability selection are not integrated into these package
-profiles; generic project compatibility is not implied by this packaging checkpoint.
+The interpreted DOM profile parses HTML/CSS at runtime. The compiled profile
+constructs the initial live DOM from versioned data; CSS parsing, selectors,
+text shaping and CPU layout remain at runtime. See the
+[compiled UI architecture](adr/0003-compiled-ui-and-generic-compatibility.md).
+The earlier [restricted artifact proof](validation/2026-09-18-parser-omission.md)
+is separate evidence. The [compiled-package checkpoint](validation/2026-09-18-compiled-package.md)
+records 120 Metal frames per mode, offline font packaging and negative controls
+on the new debug binaries; it does not establish a performance improvement.
 
 ## Build the example
 
@@ -111,6 +116,49 @@ are included under `app/`; neither the development cache nor the font's original
 path is required by the packaged loader. This debug example is a correctness
 artifact, not a performance result.
 
+## Build compiled initial UI
+
+Set the project's `3jsn.json` profile to `compiled-dom-window-v1`, with a contained
+`.html` entry and the same four configuration fields. Build the
+[compiled-UI runtime](../experiments/compiled-ui-runtime/README.md), then supply
+that executable to the CLI:
+
+```sh
+node packages/cli/cli.mjs build path/to/project \
+  --runtime path/to/threejs-compiled-ui-runtime \
+  --font path/to/font.woff2 --out artifacts/compiled-app \
+  --html-parser preserved --experimental
+```
+
+The existing bounded package HTML/CSS grammar above is unchanged. The standalone
+compiler's broader input grammar does not widen package admission. After module
+reference rewriting and any opted-in webfont localization, the builder compiles
+the generated HTML into `app/ui.json`. No HTML payload is shipped. Source and
+intermediate HTML identities remain in metadata; application files stay unchanged.
+The UI data format is experimental, not a stable shipping ABI.
+
+`--html-parser preserved|restricted` is accepted only for this profile and defaults
+to `preserved`. The CLI checks the supplied executable's `--describe` result for
+package version 1, this profile, the current macOS target and Metal backend, plus
+`compiledUi.format: "3jsn-static-ui-experiment"`, `compiledUi.versions` containing
+`1`, and `compiledUi.htmlParser` exactly matching the selected mode. A restricted
+binary cannot satisfy the default preserved request, and a preserved binary
+cannot satisfy a restricted request. A mismatch fails with `INCOMPATIBLE_RUNTIME`;
+the CLI does not build or change the supplied binary.
+
+The default Cargo feature `dynamic-html` supplies preserved mode;
+`--no-default-features` builds restricted mode. Restricted mode is an explicit
+capability restriction: it does not prove dynamic markup unreachable. Unsupported
+markup/navigation operations fail at runtime. Preserved mode retains the
+implemented fragment parser, without promising every browser markup API.
+Both modes retain live DOM identity, ordinary mutations, events and dynamic style
+and layout work.
+
+`--bundle-web-fonts` remains a separate opt-in in either mode. It localizes static
+CSS/fonts before UI compilation and requires `dom-package-fonts-v1` in the
+runtime description. `--font` remains required. No remote CSS/font requests occur
+without the bundling flag; `--offline` and `--web-fonts-state` require it.
+
 ## Run and relocate
 
 Run `artifacts/packaged-demo/3jsn-demo` (or `3jsn-demo.exe` on Windows). The entire
@@ -132,6 +180,17 @@ a window or JS realm. `--app <app.json>` explicitly selects a package; paths in
 that manifest remain relative to its own directory. `--frames` is a bounded native
 validation run, not an FPS benchmark.
 
+The compiled player accepts both `--app <app.json>` and adjacent-manifest startup.
+Its `--verify-app <app.json>` also checks the compiled descriptor, exact parser
+mode and bounded UI data before construction. It does not decode fonts, execute
+JavaScript or create a window; success does not establish usable font faces or
+rendering behavior. `--measure-app <app.json> <behavior.js> [--verify]` constructs
+the live DOM and a JS realm, loads packaged fonts/resources, and executes the
+supplied classic `uiProbe` behavior script instead of the application module.
+Its timing covers Rust main entry through the first snapshot, including package
+loading. This is a CPU diagnostic with no window or GPU request by the harness;
+it is not a GPU startup or frame-performance measurement.
+
 ## Package contract
 
 The output contains the named native executable, `app.json`, `app/main.mjs`, its
@@ -143,10 +202,14 @@ files, wrong hashes and incompatible targets/profiles fail before GPU startup.
 The manifest is limited to 1 MiB and 4,096 file records. An explicit manifest's
 parent path is canonicalized; aliases in that outer path may resolve normally.
 
-DOM manifests also require distinct, listed `html` and `font` paths ending in
+Interpreted DOM manifests require distinct, listed `html` and `font` paths ending in
 `.html` and `.woff2`; the builder emits `app/index.html` and `app/font.woff2`.
-Native-window manifests reject those fields. Both players use the shared
-`threejs-native-package` validator and reject each other's profile. DOM
+Compiled DOM manifests replace `html` with `compiledUi`, containing `path`,
+`format`, `version` and `htmlParser`; the builder emits `app/ui.json` and retains
+`app/font.woff2`. The UI payload is listed with its size/hash and kept as verified
+bytes for loading. Compiled manifests reject `html`, and interpreted manifests
+reject `compiledUi`. Native-window manifests reject DOM fields. All players use
+the shared `threejs-native-package` validator and reject incompatible profiles. DOM
 `--describe`, `--verify-app`, `--app` and adjacent-manifest startup follow the same
 protocol. `--verify-app` checks manifest and payload integrity, not HTML behavior
 or font decoding. The old positional DOM-probe invocation remains available.
@@ -205,7 +268,7 @@ identities, errors, native capability limits and notices. Conditional or dynamic
 font faces, source fallback and full browser font APIs remain unsupported. The
 flag does not discover arbitrary runtime-generated URLs or infer font
 redistribution rights. The separate `--font` input remains the generic fallback
-for this interim DOM profile.
+for both experimental DOM profiles.
 
 ### Release artifacts
 

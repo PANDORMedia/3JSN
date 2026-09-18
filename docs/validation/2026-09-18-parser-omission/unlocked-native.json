@@ -1,0 +1,660 @@
+{
+  "status": "passed",
+  "date": "2026-09-18",
+  "scope": "CPU DOM/layout and native window",
+  "originalReport": {
+    "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/report.json",
+    "bytes": 21237,
+    "sha256": "e8394578e4601c856b1cb496d803ec009b62fc398cca86d84ed1d43765f4907e"
+  },
+  "artifactScope": "Existing PR58 parser-omission release executables, byte-identical to the prior linkage proof; no runtime rebuild. Does not validate the separate, uncommitted package implementation.",
+  "command": {
+    "executable": "node",
+    "args": [
+      "scripts/probe-parser-omission.mjs",
+      "--enabled",
+      "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+      "--disabled",
+      "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+      "--font",
+      "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+      "--out",
+      "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01",
+      "--browser",
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    ],
+    "cwd": "/Users/sean/dev/3JSN"
+  },
+  "nativeWindowValidated": true,
+  "inputs": {
+    "enabled": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/runtime-enabled",
+      "bytes": 92432032,
+      "sha256": "51d4f3f6c95836b0daa27124c15cc5629d6843e8f33a8adc4980b240c0cd6beb"
+    },
+    "disabled": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/runtime-disabled",
+      "bytes": 91298144,
+      "sha256": "66667b849beee784bb1ec2de5487d8dda94724e5aee4b192df46d6ae9a654e9f"
+    },
+    "font": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "html": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/original.html",
+      "bytes": 911,
+      "sha256": "fa3518157b4e4cc92673fd9ab718ff76a8f802a453a1572f1089ff3b15661364"
+    },
+    "ui": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/ui.json",
+      "bytes": 12860,
+      "sha256": "d3e435246fcb4aa31076dd5f94e70585d5df03c3b01dacab9cb38e717c56b6a5"
+    },
+    "behavior": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/behavior.js",
+      "bytes": 3960,
+      "sha256": "6f80f472ac7fefceb565ebf23ca87e0eb75b2c36447fd0641992c04e8686d31c"
+    },
+    "module": {
+      "path": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/Native parser é #/app.mjs",
+      "bytes": 2175159,
+      "sha256": "53d9d4dbd658e47fd18047b1becfdd67e405d27a6e9bbb00d8430af0f3837e29"
+    }
+  },
+  "sourceHashes": {
+    "index.html": "fa3518157b4e4cc92673fd9ab718ff76a8f802a453a1572f1089ff3b15661364",
+    "behavior.js": "6f80f472ac7fefceb565ebf23ca87e0eb75b2c36447fd0641992c04e8686d31c",
+    "app.mjs": "f3e8df44a7ffc4ec9cfc807d15bf082628673e6f57bc9e5bb18afc0519837ef8"
+  },
+  "variants": {
+    "enabled": {
+      "originalExecutable": {
+        "path": "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "bytes": 92432032,
+        "sha256": "51d4f3f6c95836b0daa27124c15cc5629d6843e8f33a8adc4980b240c0cd6beb"
+      },
+      "description": {
+        "experiment": "compiled-ui-runtime",
+        "target": "macos-arm64",
+        "dynamicHtml": true,
+        "packageProfiles": [],
+        "backend": "Metal"
+      },
+      "loading": {
+        "irNodes": 32,
+        "nativeNodes": 31,
+        "omittedDoctypeNodes": [
+          1
+        ],
+        "initialDocumentHtmlParserUsed": false,
+        "dynamicHtmlParserProvider": "blitz-html"
+      },
+      "completion": {
+        "nativeDomWindow": true,
+        "backend": "Metal",
+        "presentedFrames": 120,
+        "canvasSnapshots": 120,
+        "cpuImageTransport": false,
+        "nativeDeviceIdentityChecked": true,
+        "nativeQueueIdentityChecked": true
+      },
+      "observations": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                37
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.4375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                119.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                178.875,
+                920,
+                19
+              ]
+            }
+          ]
+        },
+        "mutated": {
+          "clicks": 1,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                37
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.4375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original childCreated live",
+              "rect": [
+                20,
+                119.875,
+                291,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Advanced 1",
+              "rect": [
+                20,
+                178.875,
+                920,
+                19
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "disabled": {
+      "originalExecutable": {
+        "path": "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "bytes": 91298144,
+        "sha256": "66667b849beee784bb1ec2de5487d8dda94724e5aee4b192df46d6ae9a654e9f"
+      },
+      "description": {
+        "experiment": "compiled-ui-runtime",
+        "target": "macos-arm64",
+        "dynamicHtml": false,
+        "packageProfiles": [],
+        "backend": "Metal"
+      },
+      "loading": {
+        "irNodes": 32,
+        "nativeNodes": 31,
+        "omittedDoctypeNodes": [
+          1
+        ],
+        "initialDocumentHtmlParserUsed": false,
+        "dynamicHtmlParserProvider": "absent"
+      },
+      "completion": {
+        "nativeDomWindow": true,
+        "backend": "Metal",
+        "presentedFrames": 120,
+        "canvasSnapshots": 120,
+        "cpuImageTransport": false,
+        "nativeDeviceIdentityChecked": true,
+        "nativeQueueIdentityChecked": true
+      },
+      "observations": {
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                37
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.4375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                119.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                178.875,
+                920,
+                19
+              ]
+            }
+          ]
+        },
+        "mutated": {
+          "clicks": 1,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                37
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.4375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original childCreated live",
+              "rect": [
+                20,
+                119.875,
+                291,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Advanced 1",
+              "rect": [
+                20,
+                178.875,
+                920,
+                19
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "behavior": {
+    "initialLayoutEquivalent": true,
+    "positiveMutationEquivalent": true,
+    "windowObservationsEquivalent": true,
+    "enabledDynamicMarkup": true,
+    "restrictedRejections": [
+      {
+        "operation": "innerHTML",
+        "name": "Error",
+        "message": "dynamic HTML parsing is unavailable in this restricted artifact"
+      },
+      {
+        "operation": "emptyInnerHTML",
+        "name": "Error",
+        "message": "dynamic HTML parsing is unavailable in this restricted artifact"
+      },
+      {
+        "operation": "bodyInnerHTML",
+        "name": "Error",
+        "message": "dynamic HTML parsing is unavailable in this restricted artifact"
+      },
+      {
+        "operation": "iframe",
+        "name": "Error",
+        "message": "dynamic HTML parsing is unavailable in this restricted artifact: HTML iframe requires a configured dynamic HTML parser"
+      },
+      {
+        "operation": "outerHTML",
+        "name": "NotSupportedError",
+        "message": "outerHTML is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "insertAdjacentHTML",
+        "name": "NotSupportedError",
+        "message": "insertAdjacentHTML is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "setHTML",
+        "name": "NotSupportedError",
+        "message": "setHTML is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "setHTMLUnsafe",
+        "name": "NotSupportedError",
+        "message": "setHTMLUnsafe is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "DOMParser",
+        "name": "NotSupportedError",
+        "message": "DOMParser.parseFromString is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "contextualFragment",
+        "name": "NotSupportedError",
+        "message": "Range.createContextualFragment is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentWrite",
+        "name": "NotSupportedError",
+        "message": "document.write is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentWriteln",
+        "name": "NotSupportedError",
+        "message": "document.writeln is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentOpen",
+        "name": "NotSupportedError",
+        "message": "document.open is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentParse",
+        "name": "NotSupportedError",
+        "message": "Document.parseHTML is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentParseUnsafe",
+        "name": "NotSupportedError",
+        "message": "Document.parseHTMLUnsafe is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "navigation",
+        "name": "NotSupportedError",
+        "message": "document navigation is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      },
+      {
+        "operation": "documentNavigation",
+        "name": "NotSupportedError",
+        "message": "document navigation is unavailable in this restricted artifact: dynamic HTML parsing is disabled."
+      }
+    ],
+    "restrictedTreePreserved": true
+  },
+  "browser": {
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.50",
+      "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    },
+    "differences": [],
+    "rectangleToleranceCssPixels": 0.25,
+    "scope": "CPU DOM/layout observations; no GPU pixel-equivalence check"
+  },
+  "originalHtmlReadDenied": true,
+  "unsupportedIframeRejected": true,
+  "unsupportedForeignIframeRejected": true,
+  "sourcePreserved": true,
+  "networkDenied": true,
+  "steps": [
+    {
+      "label": "denied-original-html",
+      "expectedFailure": true,
+      "exitCode": 1,
+      "signal": null,
+      "stdout": "unlocked-native-denied-original-html-stdout.txt",
+      "stderr": "unlocked-native-denied-original-html-stderr.txt"
+    },
+    {
+      "label": "enabled-describe",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-enabled-describe-stdout.txt",
+      "stderr": "unlocked-native-enabled-describe-stderr.txt"
+    },
+    {
+      "label": "enabled-layout-verify",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-enabled-layout-verify-stdout.txt",
+      "stderr": "unlocked-native-enabled-layout-verify-stderr.txt"
+    },
+    {
+      "label": "enabled-window",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-enabled-window-stdout.txt",
+      "stderr": "unlocked-native-enabled-window-stderr.txt"
+    },
+    {
+      "label": "disabled-describe",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-disabled-describe-stdout.txt",
+      "stderr": "unlocked-native-disabled-describe-stderr.txt"
+    },
+    {
+      "label": "disabled-layout-verify",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-disabled-layout-verify-stdout.txt",
+      "stderr": "unlocked-native-disabled-layout-verify-stderr.txt"
+    },
+    {
+      "label": "disabled-window",
+      "expectedFailure": false,
+      "exitCode": 0,
+      "signal": null,
+      "stdout": "unlocked-native-disabled-window-stdout.txt",
+      "stderr": "unlocked-native-disabled-window-stderr.txt"
+    },
+    {
+      "label": "disabled-iframe",
+      "expectedFailure": true,
+      "exitCode": 1,
+      "signal": null,
+      "stdout": "unlocked-native-disabled-iframe-stdout.txt",
+      "stderr": "unlocked-native-disabled-iframe-stderr.txt"
+    },
+    {
+      "label": "disabled-foreign-iframe",
+      "expectedFailure": true,
+      "exitCode": 1,
+      "signal": null,
+      "stdout": "unlocked-native-disabled-foreign-iframe-stdout.txt",
+      "stderr": "unlocked-native-disabled-foreign-iframe-stderr.txt"
+    }
+  ],
+  "policy": {
+    "file": "unlocked-native-restricted-inputs.sb",
+    "bytes": 434,
+    "sha256": "05469e051db5a1ed64342db98581d4293f8a0bf67e9b5ad76164bed5c652465c",
+    "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/restricted-inputs.sb"
+  },
+  "logs": {
+    "denied-original-html-stdout": {
+      "file": "unlocked-native-denied-original-html-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/denied-original-html-stdout.txt"
+    },
+    "denied-original-html-stderr": {
+      "file": "unlocked-native-denied-original-html-stderr.txt",
+      "bytes": 128,
+      "sha256": "69de5fefc85e6371099ca4de447c9008218684a6d83b61ceab3d9814b1f5d445",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/denied-original-html-stderr.txt"
+    },
+    "enabled-describe-stdout": {
+      "file": "unlocked-native-enabled-describe-stdout.txt",
+      "bytes": 118,
+      "sha256": "1a8b68339c98b401546ec645745d1b8f343de18513ddaf546264a64536d7f984",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-describe-stdout.txt"
+    },
+    "enabled-describe-stderr": {
+      "file": "unlocked-native-enabled-describe-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-describe-stderr.txt"
+    },
+    "enabled-layout-verify-stdout": {
+      "file": "unlocked-native-enabled-layout-verify-stdout.txt",
+      "bytes": 1025,
+      "sha256": "e8e8224ff64305416f70888fb8020adae002d78aa65d06aa80701875455fa0fb",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-layout-verify-stdout.txt"
+    },
+    "enabled-layout-verify-stderr": {
+      "file": "unlocked-native-enabled-layout-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-layout-verify-stderr.txt"
+    },
+    "enabled-window-stdout": {
+      "file": "unlocked-native-enabled-window-stdout.txt",
+      "bytes": 1240,
+      "sha256": "9c11ff3101d8adf413a32b1ca02cba98f425f531fd4bd203562b0560fbb8840b",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-window-stdout.txt"
+    },
+    "enabled-window-stderr": {
+      "file": "unlocked-native-enabled-window-stderr.txt",
+      "bytes": 84,
+      "sha256": "e192c8fdf2e802528f8b8e24279535db8a634fb7b5a7ef6e568b3904f4745ab1",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/enabled-window-stderr.txt"
+    },
+    "disabled-describe-stdout": {
+      "file": "unlocked-native-disabled-describe-stdout.txt",
+      "bytes": 119,
+      "sha256": "b9cf9e056fd4e067a6f647c73a1d109845ae3e69221f75947c00822ba31b9273",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-describe-stdout.txt"
+    },
+    "disabled-describe-stderr": {
+      "file": "unlocked-native-disabled-describe-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-describe-stderr.txt"
+    },
+    "disabled-layout-verify-stdout": {
+      "file": "unlocked-native-disabled-layout-verify-stdout.txt",
+      "bytes": 3718,
+      "sha256": "67d109776d4e1f521aeb1fed4806da91ff37275ce86f3f21692f2c5e5e01703b",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-layout-verify-stdout.txt"
+    },
+    "disabled-layout-verify-stderr": {
+      "file": "unlocked-native-disabled-layout-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-layout-verify-stderr.txt"
+    },
+    "disabled-window-stdout": {
+      "file": "unlocked-native-disabled-window-stdout.txt",
+      "bytes": 1236,
+      "sha256": "a6bedfb372764041cef769b9545bad6c1c5b285ff71c81645f044d2620a26123",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-window-stdout.txt"
+    },
+    "disabled-window-stderr": {
+      "file": "unlocked-native-disabled-window-stderr.txt",
+      "bytes": 85,
+      "sha256": "f941bc0d6bd8857b3e8366811c2b1a9549d84a6f31f424f133955a0e3df7696b",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-window-stderr.txt"
+    },
+    "disabled-iframe-stdout": {
+      "file": "unlocked-native-disabled-iframe-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-iframe-stdout.txt"
+    },
+    "disabled-iframe-stderr": {
+      "file": "unlocked-native-disabled-iframe-stderr.txt",
+      "bytes": 119,
+      "sha256": "fab74b2c5e1b4122646435519b76c93dd2525ed2fe1ed2cf99eb6ae15b610657",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-iframe-stderr.txt"
+    },
+    "disabled-foreign-iframe-stdout": {
+      "file": "unlocked-native-disabled-foreign-iframe-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-foreign-iframe-stdout.txt"
+    },
+    "disabled-foreign-iframe-stderr": {
+      "file": "unlocked-native-disabled-foreign-iframe-stderr.txt",
+      "bytes": 151,
+      "sha256": "62ae273a7bcb41210a28441f027aac2a2f5877a6b4da791fb90d4779d0f66d9f",
+      "sourcePath": "/Users/sean/dev/3JSN/artifacts/parser-omission-release-native-01/disabled-foreign-iframe-stderr.txt"
+    }
+  },
+  "historicalEvidencePreserved": {
+    "build-provenance.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/build-provenance.json",
+      "bytes": 33475,
+      "sha256": "a973eb530f06fb6dbafce98444488d39c31a49f93f732e9de618c02226880d19"
+    },
+    "linkage.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/linkage.json",
+      "bytes": 80076,
+      "sha256": "294245d3d535afa1f37e027bfc0df83d4ff1d11fe9986b8565505c199344b5bb"
+    },
+    "cpu-browser.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/cpu-browser.json",
+      "bytes": 16134,
+      "sha256": "3720e28e9f54a76fcbe447d3d8177f9643e9df205664b23900109e98c1496a54"
+    },
+    "measurements.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/measurements.json",
+      "bytes": 103470,
+      "sha256": "277aa13a2bd346a94e4b67d5299d88ce8ad7c236dd61fab7c6007a7f9c022649"
+    },
+    "checks.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/checks.json",
+      "bytes": 2713,
+      "sha256": "1753377425b102a705799874e18398ea9d0562bd6f506e919464502c75397f88"
+    },
+    "loader-policy.json": {
+      "path": "/Users/sean/dev/3JSN/docs/validation/2026-09-18-parser-omission/loader-policy.json",
+      "bytes": 2212,
+      "sha256": "12e33593e351fab0ee200090bc2fe85bcdff1977557d2af56027c2846bc80744"
+    }
+  },
+  "limits": [
+    "Experimental direct runtime invocation; no production package profile or application compatibility certification.",
+    "The optional browser comparison covers sampled DOM/layout behavior only; GPU pixel equivalence remains unverified.",
+    "Parser omission requires separate Cargo/build/link evidence; runtime feature declarations alone do not prove it.",
+    "CSS and selector parsing remain. This probe does not measure performance."
+  ]
+}

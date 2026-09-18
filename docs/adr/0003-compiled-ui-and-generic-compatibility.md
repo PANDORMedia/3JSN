@@ -1,7 +1,7 @@
 # ADR 0003: Compile UI inputs while preserving generic application behavior
 
 - Date: 2026-09-18
-- Status: direction accepted; initial-tree construction and restricted parser linkage verified; new restricted-window validation pending
+- Status: direction accepted; initial-tree construction, restricted parser linkage and macOS Metal presentation verified for the recorded artifacts
 - Extends: [ADR 0002](0002-unchanged-project-compatibility.md)
 
 ## Decision
@@ -117,7 +117,19 @@ compiler, link-map and symbol records. Default dynamic markup remains available;
 restricted markup operations reject before mutation. One plain-DOM fixture
 matches the sampled Chrome behavior. The restricted binary is 1.08 MiB smaller;
 paired CPU measurements show no meaningful startup improvement in that workload.
-Native-window validation for the new artifact and shared-host extraction is
-pending an unlocked desktop. CSS compilation, script discovery, resource/build
-integration, dynamic dependency analysis, framework coverage and a shipping data
+An [unlocked-desktop follow-up](../validation/2026-09-18-parser-omission.md#unlocked-native-follow-up)
+now presents 120 Metal frames with each exact parser-omission release executable
+and with the preserved interpreted shared-host player. The release hashes match
+the linkage proof; native device/queue identity and live DOM mutations pass with
+source reads and networking restricted. The historical locked-desktop timeout
+and CPU measurements remain preserved. This follow-up did not rerun the separate
+compiled invocation of the preserved shared-host player.
+
+The subsequent [compiled-package checkpoint](../validation/2026-09-18-compiled-package.md)
+integrates the bounded HTML-entry build path and opt-in webfont localization with
+both parser modes. Relocated packages contain UI data instead of HTML, register
+28 font faces offline and present 120 Metal frames each. These debug binaries
+have their own identities; the earlier release linkage and measurements do not
+apply to them. GPU pixel equivalence, CSS compilation, broader script/resource
+discovery, dynamic dependency analysis, framework coverage and a shipping data
 format remain open.
