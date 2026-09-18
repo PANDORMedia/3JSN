@@ -1,0 +1,9 @@
+   Compiling threejs-native-webgl-runtime v0.0.0 (/Users/sean/dev/3JSN/experiments/webgl-runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.83s
+     Running unittests src/lib.rs (target/debug/deps/threejs_native_webgl_runtime-c971e9e895e68e1d)
+
+running 1 test
+2026-09-18 20:02:32.188 threejs_native_webgl_runtime-c971e9e895e68e1d[96557:6041045] Metal API Validation Enabled
+test native::snapshot_tests::snapshot_preserves_application_bindings_and_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.95s

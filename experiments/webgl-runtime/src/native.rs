@@ -17,7 +17,7 @@ unsafe extern "C" {
     fn angle_error() -> *const c_char;
 }
 
-fn error() -> String {
+pub(super) fn error() -> String {
     // Native errors are thread-local, NUL-terminated and copied before another call.
     unsafe { CStr::from_ptr(angle_error()) }
         .to_string_lossy()
@@ -53,14 +53,15 @@ impl Drop for Display {
     }
 }
 
-struct ContextOwner {
+pub(super) struct ContextOwner {
     raw: Option<NonNull<c_void>>,
     _display: Rc<Display>,
 }
 
 pub struct Context {
     pub gl: glow::Context,
-    native: ContextOwner,
+    native: Rc<ContextOwner>,
+    size: (u32, u32),
 }
 
 impl Context {
@@ -83,13 +84,15 @@ impl Context {
                 angle_get_proc(native._display.raw.as_ptr(), name.as_ptr())
             })
         };
-        Ok(Self { gl, native })
+        Ok(Self {
+            gl,
+            native: Rc::new(native),
+            size: (width, height),
+        })
     }
 
     pub fn make_current(&self) -> Result<(), String> {
-        if unsafe { angle_context_make_current(self.native.raw.expect("live context").as_ptr()) }
-            == 1
-        {
+        if unsafe { angle_context_make_current(self.native.raw()?) } == 1 {
             Ok(())
         } else {
             Err(error())
@@ -97,18 +100,18 @@ impl Context {
     }
 
     pub fn close(&mut self) -> Result<(), String> {
-        self.native.close()
+        Rc::get_mut(&mut self.native)
+            .ok_or("Cannot close a context with live snapshots")?
+            .close()
+    }
+
+    pub fn snapshot(&self) -> Result<crate::Snapshot, String> {
+        crate::Snapshot::new(self.native.clone(), self.size)
     }
 
     pub fn resize(&mut self, width: u32, height: u32) -> Result<(), String> {
-        if unsafe {
-            angle_context_resize(
-                self.native.raw.expect("live context").as_ptr(),
-                width,
-                height,
-            )
-        } == 1
-        {
+        if unsafe { angle_context_resize(self.native.raw()?, width, height) } == 1 {
+            self.size = (width, height);
             Ok(())
         } else {
             Err(error())
@@ -117,6 +120,12 @@ impl Context {
 }
 
 impl ContextOwner {
+    pub(super) fn raw(&self) -> Result<*mut c_void, String> {
+        self.raw
+            .map(NonNull::as_ptr)
+            .ok_or_else(|| "Context is closed".into())
+    }
+
     fn close(&mut self) -> Result<(), String> {
         if let Some(raw) = self.raw {
             // Rejected native destruction retains the handle for an explicit retry.
@@ -136,5 +145,86 @@ impl Drop for ContextOwner {
         if let Err(message) = self.close() {
             eprintln!("ANGLE context teardown failed; native owner retained: {message}");
         }
+    }
+}
+
+#[cfg(test)]
+mod snapshot_tests {
+    use super::*;
+    use glow::HasContext;
+
+    #[test]
+    #[ignore = "Requires ANGLE_LIBRARY_DIR and native Metal hardware"]
+    fn snapshot_preserves_application_bindings_and_errors() -> Result<(), String> {
+        let directory = std::env::var("ANGLE_LIBRARY_DIR").map_err(|e| e.to_string())?;
+        let display = Display::new(Path::new(&directory))?;
+        let mut context = Context::new(display, 8, 6)?;
+        let gl = &context.gl;
+        // These objects belong only to this live owner-thread context. Incomplete
+        // application FBOs are intentional: export must read the default instead.
+        unsafe {
+            let read = gl.create_framebuffer()?;
+            let draw = gl.create_framebuffer()?;
+            let texture = gl.create_texture()?;
+            gl.bind_framebuffer(glow::READ_FRAMEBUFFER, None);
+            gl.read_buffer(glow::NONE);
+            gl.draw_buffers(&[glow::NONE]);
+            gl.bind_framebuffer(glow::READ_FRAMEBUFFER, Some(read));
+            gl.bind_framebuffer(glow::DRAW_FRAMEBUFFER, Some(draw));
+            gl.active_texture(glow::TEXTURE3);
+            gl.bind_texture(glow::TEXTURE_2D, Some(texture));
+            gl.enable(glow::SCISSOR_TEST);
+            gl.scissor(1, 2, 3, 4);
+            gl.color_mask(false, true, false, true);
+            gl.clear_color(0.25, 0.5, 0.75, 1.0);
+            assert_eq!(gl.get_error(), glow::NO_ERROR);
+            gl.enable(u32::MAX);
+            context.resize(10, 8)?;
+            let gl = &context.gl;
+            let mut lease = context.snapshot()?;
+            let first = lease.publish()?;
+            assert!(lease.publish().unwrap_err().contains("leased"));
+            lease.drain(5_000_000_000)?;
+            assert!(lease.publish()? > first);
+            lease.drain(5_000_000_000)?;
+            lease.close()?;
+            assert_eq!(gl.get_error(), glow::INVALID_ENUM);
+            assert_eq!(gl.get_error(), glow::NO_ERROR);
+            assert_eq!(
+                gl.get_parameter_i32(glow::READ_FRAMEBUFFER_BINDING) as u32,
+                read.0.get()
+            );
+            assert_eq!(
+                gl.get_parameter_i32(glow::DRAW_FRAMEBUFFER_BINDING) as u32,
+                draw.0.get()
+            );
+            assert_eq!(
+                gl.get_parameter_i32(glow::ACTIVE_TEXTURE) as u32,
+                glow::TEXTURE3
+            );
+            assert_eq!(
+                gl.get_parameter_i32(glow::TEXTURE_BINDING_2D) as u32,
+                texture.0.get()
+            );
+            let mut color_mask = [0; 4];
+            gl.get_parameter_i32_slice(glow::COLOR_WRITEMASK, &mut color_mask);
+            assert_eq!(color_mask, [0, 1, 0, 1]);
+            let mut clear_color = [0.0; 4];
+            gl.get_parameter_f32_slice(glow::COLOR_CLEAR_VALUE, &mut clear_color);
+            assert_eq!(clear_color, [0.25, 0.5, 0.75, 1.0]);
+            assert!(gl.is_enabled(glow::SCISSOR_TEST));
+            let mut scissor = [0; 4];
+            gl.get_parameter_i32_slice(glow::SCISSOR_BOX, &mut scissor);
+            assert_eq!(scissor, [1, 2, 3, 4]);
+            gl.bind_framebuffer(glow::READ_FRAMEBUFFER, None);
+            assert_eq!(gl.get_parameter_i32(glow::READ_BUFFER) as u32, glow::NONE);
+            gl.bind_framebuffer(glow::DRAW_FRAMEBUFFER, None);
+            assert_eq!(gl.get_parameter_i32(glow::DRAW_BUFFER0) as u32, glow::NONE);
+            gl.delete_framebuffer(read);
+            gl.delete_framebuffer(draw);
+            gl.delete_texture(texture);
+            assert_eq!(gl.get_error(), glow::NO_ERROR);
+        }
+        context.close()
     }
 }

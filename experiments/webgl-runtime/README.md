@@ -132,3 +132,16 @@ its own JavaScript without installing probe globals. Tokio matches the DOM host'
 
 This does not yet select WebGL in the native-window player; that compositor still
 requires the separate native snapshot/lease integration described in the record.
+
+## Native snapshot checkpoint
+
+The optional `metal-snapshot` feature exports the real default framebuffer to an
+owned wgpu texture through native Metal storage and bidirectional event ordering.
+It keeps the pbuffer as the application framebuffer, retains context lifetimes,
+and rejects resize/disposal until export leases close. Hardware tests cover
+orientation, alpha transforms, queued frame reuse, application GL state and
+untouched-buffer initialization. [Evidence and reproduction](../../docs/validation/2026-09-18-webgl-snapshot.md).
+
+This host API is not yet connected to WindowScene/Painter. Window integration
+still needs straight-alpha conversion, DOM generation ownership and synchronous
+retirement before bitmap resize. No new packaging/platform support is declared.

@@ -6,8 +6,12 @@ use glow::HasContext;
 use serde_json::json;
 
 mod native;
+mod snapshot;
+pub use snapshot::Snapshot;
 pub mod resources;
 mod shaders;
+#[cfg(feature = "metal-snapshot")]
+pub mod snapshot_consumer;
 mod webgl_geometry;
 mod webgl_programs;
 use webgl_geometry::*;
@@ -24,6 +28,19 @@ struct State {
     next_id: u32,
     programs: webgl_programs::ProgramState,
     objects: resources::Registry<shaders::Object>,
+}
+
+/// Create a host-only export lease for a live context identity.
+/// Close the lease before resizing or disposing that canvas.
+pub fn snapshot(runtime: &mut deno_core::JsRuntime, context_id: u32) -> Result<Snapshot, String> {
+    let state = runtime.op_state();
+    let state = state.borrow();
+    state
+        .borrow::<State>()
+        .contexts
+        .get(&context_id)
+        .ok_or_else(|| "Unknown or disposed ANGLE context".to_string())?
+        .snapshot()
 }
 
 fn failure(message: impl Into<String>) -> JsErrorBox {

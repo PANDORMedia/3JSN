@@ -2,6 +2,8 @@
 #ifndef THREEJS_WEBGL_RUNTIME_ANGLE_H
 #define THREEJS_WEBGL_RUNTIME_ANGLE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 #define ANGLE_NOEXCEPT noexcept
 extern "C" {
@@ -11,6 +13,7 @@ extern "C" {
 
 typedef struct AngleDisplay AngleDisplay;
 typedef struct AngleContext AngleContext;
+typedef struct AngleSnapshot AngleSnapshot;
 
 // One owner thread per active library/display lease. Duplicate display handles
 // share that lease; contexts retain it after external display handles are freed.
@@ -30,11 +33,42 @@ AngleContext *angle_context_create(AngleDisplay *display, unsigned width,
 void angle_context_destroy(AngleContext *context) ANGLE_NOEXCEPT;
 int angle_context_make_current(AngleContext *context) ANGLE_NOEXCEPT;
 
+// Destruction and resize reject contexts with live snapshot handles.
 // Keeps the GL context/state; does not reset viewport, scissor or JS state.
 // The replacement pbuffer becomes current before the previous one is destroyed.
 int angle_context_resize(AngleContext *context, unsigned width,
                          unsigned height) ANGLE_NOEXCEPT;
 void *angle_get_proc(AngleDisplay *display, const char *name) ANGLE_NOEXCEPT;
+
+// Host-only, owner-thread Metal snapshot. The parent context must remain live;
+// retire snapshots before resizing it. Creation completes one bounded zero-clear
+// before exposing initialized private RGBA8 storage (one mip/layer/sample).
+// These functions preserve GL bindings, scissor state and pending GL errors.
+AngleSnapshot *angle_snapshot_create(AngleContext *context) ANGLE_NOEXCEPT;
+// Returns 1 only after bounded drain and destruction. Failure retains the handle.
+int angle_snapshot_destroy(AngleSnapshot *snapshot) ANGLE_NOEXCEPT;
+// Borrowed native objects, valid while the snapshot is live. Importers must take
+// independent retains and validate exact device/descriptor identity.
+void *angle_snapshot_device(AngleSnapshot *snapshot) ANGLE_NOEXCEPT;
+void *angle_snapshot_texture(AngleSnapshot *snapshot) ANGLE_NOEXCEPT;
+
+// GPU-blit the real default framebuffer without swapping/discarding it. Returns
+// an odd producer token, or zero on failure. The next publish requires the last
+// consumer signal to have been committed; GPU reuse waits remain asynchronous.
+// No orientation/alpha conversion is performed by the native snapshot.
+uint64_t angle_snapshot_publish(AngleSnapshot *snapshot) ANGLE_NOEXCEPT;
+// queue must be a live actual id<MTLCommandQueue> from the consuming wgpu queue.
+// One submitting thread owns both handoffs. Flush pending consumer writes before
+// wait, create encoders after wait, submit all readers before signal, and never
+// access this texture outside that interval. signal requires the same queue/token.
+int angle_snapshot_queue_wait(AngleSnapshot *snapshot, void *queue,
+                              uint64_t producer_token) ANGLE_NOEXCEPT;
+int angle_snapshot_queue_signal(AngleSnapshot *snapshot, void *queue,
+                                uint64_t producer_token) ANGLE_NOEXCEPT;
+// timeout_ns is in 0..15s. A published but never consumed frame may be cancelled
+// here; once queue_wait commits, queue_signal is required before drain. Timeouts
+// poison further publication; a later successful drain can still permit cleanup.
+int angle_snapshot_drain(AngleSnapshot *snapshot, uint64_t timeout_ns) ANGLE_NOEXCEPT;
 
 // All functions except this accessor replace the calling thread's last error.
 // Nonempty errors indicate failure; pointer results use NULL and int results 0.

@@ -20,6 +20,13 @@ boundary. Check extents, format, completeness and native allocation failures
 independently. Normalize origin and premultiplication exactly once in the host's
 GPU conversion pass, with asymmetric-corner and transparent-content tests.
 
+The current Painter canvas interface consumes straight RGBA, while the WebGL
+facade reports `premultipliedAlpha: true`. The window adapter must explicitly
+unpremultiply that source, defining zero-alpha RGB as zero, before registration.
+The snapshot consumer's preserve/premultiply modes alone do not satisfy this
+boundary. Verify transparent edges against the declared source contract; an
+opaque fixture cannot establish correct composition.
+
 ## Retain resources through queue completion
 
 One export texture generation can hold one outstanding host lease. Retain its
