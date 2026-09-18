@@ -1,0 +1,16 @@
+{
+  "crates/package/src/lib.rs": "5c1220553ec9d3e03c166ac61c20022db932681494c400675f39cb80099a6505",
+  "crates/package/src/native_webgl.rs": "f6591ff6792f15589ab0f69a4a8c8cad9a8b7f1208ec6e574de62b267cbbc7a0",
+  "crates/package/src/native_webgl_tests.rs": "1b033fc4467068a14d956b5c8794831f7052ad37b4dd4f7e40a19cbe60915094",
+  "experiments/compiled-ui-runtime/src/window_options.rs": "d3cb2b39c6fd82bfec6e7371d0855662ff887db9043c2a44c987393793008d89",
+  "experiments/compiled-ui-runtime/tests/support/package_options.rs": "63feaa3bbb4c0ddd11845613961bd4e27f5be75cafe3e698b65eeb4919149dd3",
+  "experiments/compiled-ui-runtime/tests/support/webgl_demo_offscreen.rs": "355392a544a027abe6bafd8ae52b61c041cca8c41417c3158bca43f195737f64",
+  "experiments/dom-canvas/src/window_app.rs": "3ed31100bb97e9077d00e7d03e9f864d1a84557e0e3f5f851ca40c13a97c74ca",
+  "experiments/dom-canvas/src/window_options.rs": "264023dd08b7928be6984455484c1beb34aa4569a2ad92437cae05b05ac15c7b",
+  "experiments/dom-canvas/src/window_runtime.rs": "01d80530b3f05e5eb85d60a519c7a34742e8f568fb6ba3430cc818451ba611c0",
+  "packages/cli/angle-package.mjs": "f0dc01d09dd1c26ce9996dbb93dc8108a19dd5a1fbc56ad8576b2900216d44b2",
+  "packages/cli/angle-package.test.mjs": "4b5cfc907a4995a8a7a4c7cec5b020d6919ee3d737f15ecb7bb562fc61f052c5",
+  "packages/cli/build.mjs": "c85598f43e5dafc90f700c8c691dd254f4ebf16db57545a0aaa853fbe163b521",
+  "packages/cli/cli.mjs": "951908f81fa41f1a704605e23e3689f7fd75ddaa6ca4bab5b2f7cd4fdb102e2a",
+  "scripts/probe-webgl-package-offscreen.mjs": "9c8baebed4acbda8bb296460d59eea70b254d1296fc9beffed1ddbb1256a06db"
+}

@@ -23,10 +23,45 @@ fn scheduler() -> deno_core::Extension {
 #[tokio::test(flavor = "current_thread")]
 #[ignore = "Requires Metal, pinned ANGLE, compiled public demo and font; no window is created"]
 async fn animated_three_demo_offscreen() -> Result<()> {
-    let font = std::fs::read(std::env::var("THREEJS_NATIVE_COMPOSITION_FONT")?)?;
-    let ui = std::fs::read(std::env::var("THREEJS_NATIVE_DEMO_UI")?)?;
-    let script = std::fs::read_to_string(std::env::var("THREEJS_NATIVE_DEMO_SCRIPT")?)?;
-    let package = std::path::PathBuf::from(std::env::var("THREEJS_NATIVE_ANGLE_PACKAGE")?);
+    let manifest = std::env::var_os("THREEJS_NATIVE_DEMO_PACKAGE");
+    let (font, ui, libraries, module, script) = if let Some(manifest) = &manifest {
+        use threejs_native_package::{
+            HtmlParserMode, NATIVE_WEBGL_CAPABILITY, Profile, load_for_with_capabilities,
+        };
+        let mode = if cfg!(feature = "dynamic-html") {
+            HtmlParserMode::Preserved
+        } else {
+            HtmlParserMode::Restricted
+        };
+        let app = load_for_with_capabilities(
+            Path::new(manifest),
+            Profile::CompiledDomWindow(mode),
+            &[NATIVE_WEBGL_CAPABILITY],
+        )?;
+        ensure(
+            app.resources.is_none(),
+            "this packaged fixture does not exercise webfonts",
+        )?;
+        (
+            app.font.ok_or("package font missing")?,
+            app.compiled_ui.ok_or("package UI missing")?.bytes,
+            app.native_webgl.ok_or("package ANGLE missing")?,
+            Some(app.entry),
+            None,
+        )
+    } else {
+        let font = std::fs::read(std::env::var("THREEJS_NATIVE_COMPOSITION_FONT")?)?;
+        let ui = std::fs::read(std::env::var("THREEJS_NATIVE_DEMO_UI")?)?;
+        let script = std::fs::read_to_string(std::env::var("THREEJS_NATIVE_DEMO_SCRIPT")?)?;
+        let package = std::path::PathBuf::from(std::env::var("THREEJS_NATIVE_ANGLE_PACKAGE")?);
+        (
+            font,
+            ui,
+            package.join("deps/darwin/dylib"),
+            None,
+            Some(script),
+        )
+    };
     let config = DocumentConfig {
         font_ctx: Some(blitz_dom::build_single_font_ctx(&font)),
         viewport: Some(Viewport::new(960, 640, 1.0, ColorScheme::Light)),
@@ -39,7 +74,7 @@ async fn animated_three_demo_offscreen() -> Result<()> {
     let mut runtime = host::create_with_dom_extension(
         dom_bridge::extension_with_document(loaded.document),
         vec![
-            threejs_native_webgl_runtime::runtime_extension(&package.join("deps/darwin/dylib"))?,
+            threejs_native_webgl_runtime::runtime_extension(&libraries)?,
             webgl_backend::extension(),
             scheduler(),
         ],
@@ -50,7 +85,11 @@ async fn animated_three_demo_offscreen() -> Result<()> {
     let mut registration = None;
     let mut generation = None;
     let outcome = async {
-        runtime.execute_script("demo:unchanged-bundle", script)?;
+        if let Some(module) = &module {
+            host::load(&mut runtime, module).await?;
+        } else {
+            runtime.execute_script("demo:unchanged-bundle", script.ok_or("demo script missing")?)?;
+        }
         let mut canvas = webgl_backend::find(&mut runtime, "scene")?.ok_or("demo canvas missing")?;
         let initial_node = canvas.node_key().to_owned();
         let initial_context = canvas.context_id();
@@ -138,7 +177,7 @@ async fn animated_three_demo_offscreen() -> Result<()> {
     println!(
         "{}",
         serde_json::json!({"webglDemoOffscreen": {
-            "frames":60,"checkpoints":5,"snapshotGenerations":4,"canvasContexts":2,
+            "packagedInputs":manifest.is_some(),"frames":60,"checkpoints":5,"snapshotGenerations":4,"canvasContexts":2,
             "cleanup":"passed","surfacePresentation":false,"cpuFrameTransport":false,
         "htmlParser": if cfg!(feature = "dynamic-html") { "preserved" } else { "omitted" }
         }})

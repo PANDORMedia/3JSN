@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "manifest": "/Users/sean/dev/3JSN/.cache/native-webgl/restricted package moved Ω #/app.json",
+  "executable": "/Users/sean/dev/3JSN/target/debug/deps/webgl_composition-a7fdddeda3f74fdd",
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "THREEJS_NATIVE_DEMO_PACKAGE": "/Users/sean/dev/3JSN/.cache/native-webgl/restricted package moved Ω #/app.json",
+    "THREEJS_NATIVE_DEMO_CAPTURE": "/Users/sean/dev/3JSN/.cache/native-webgl/package-gpu-restricted/demo.png",
+    "THREEJS_NATIVE_ANGLE_PACKAGE": "/invalid",
+    "THREEJS_NATIVE_ANGLE_LIBRARY_DIR": "/invalid",
+    "THREEJS_NATIVE_COMPOSITION_FONT": "/invalid",
+    "THREEJS_NATIVE_DEMO_UI": "/invalid",
+    "THREEJS_NATIVE_DEMO_SCRIPT": "/invalid",
+    "MTL_DEBUG_LAYER": "1"
+  },
+  "policy": "(version 1)(allow default)(deny network*)(deny file-read* (subpath \"/Users/sean/dev/3JSN/.cache/native-webgl/node_modules/gl\"))(deny file-read* (subpath \"/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2\"))(deny file-read* (subpath \"/Users/sean/dev/3JSN/examples/webgl-window\"))",
+  "controls": [
+    {
+      "path": "/Users/sean/dev/3JSN/.cache/native-webgl/node_modules/gl/deps/darwin/dylib/libEGL.dylib",
+      "denied": true
+    },
+    {
+      "path": "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+      "denied": true
+    },
+    {
+      "path": "/Users/sean/dev/3JSN/examples/webgl-window/main.mjs",
+      "denied": true
+    }
+  ],
+  "limits": [
+    "Offscreen integration test consumes packaged inputs; this is not window presentation.",
+    "Network denial is configured, not measured.",
+    "Not a clean-machine, signing or other-platform test."
+  ],
+  "executableSha256": "e45ca30992c635c0cd1e565980aa03c63a6e795473a6eaa0952a5fb6c133e518",
+  "manifestSha256": "3d5f5257ee5e106961aa4d9f2afbe0644618cbc473c247699e3c3197e25b7c91",
+  "buildMetadataSha256": "4e1e452acda5b9093f5456c20d0841b5a38cd969ab4af7138348320786927c1c",
+  "nodeAbsent": true,
+  "demo": {
+    "packagedInputs": true,
+    "frames": 60,
+    "checkpoints": 5,
+    "snapshotGenerations": 4,
+    "canvasContexts": 2,
+    "cleanup": "passed",
+    "surfacePresentation": false,
+    "cpuFrameTransport": false,
+    "htmlParser": "omitted"
+  },
+  "capture": {
+    "width": 960,
+    "height": 640,
+    "sha256": "18a45c0715feba788761025143be29d1234ad7e6034a0169a5980e3734c8d041"
+  }
+}

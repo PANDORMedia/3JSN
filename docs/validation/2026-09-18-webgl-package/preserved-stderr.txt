@@ -1,0 +1,1 @@
+2026-09-18 20:49:54.755 webgl_composition-72af6618e5d7d7fd[8231:6115581] Metal API Validation Enabled

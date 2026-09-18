@@ -159,6 +159,38 @@ CSS/fonts before UI compilation and requires `dom-package-fonts-v1` in the
 runtime description. `--font` remains required. No remote CSS/font requests occur
 without the bundling flag; `--offline` and `--web-fonts-state` require it.
 
+## Optional experimental ANGLE payload
+
+For `compiled-dom-window-v1` on the current macOS arm64/x64 host, add
+`--angle-package path/to/gl` to copy an explicitly supplied `gl@9.0.0-rc.10`
+installation. The supplied player must advertise `native-webgl-angle-metal-v1`;
+build it with the experimental `native-webgl` feature. This option does not
+install dependencies, run package scripts, convert renderers or prove WebGL
+compatibility. The default build path does not include ANGLE.
+
+The builder admits only regular package-relative files with no symbolic-link
+components: `package.json`, `deps/darwin/dylib/libEGL.dylib`,
+`deps/darwin/dylib/libGLESv2.dylib`, and `LICENSES`. Outer directory aliases may
+resolve normally; the supplied package root itself must be a real directory.
+Metadata is limited to 1 MiB, each nonempty library to 64 MiB and the nonempty
+notice to 4 MiB. Library and notice bytes are copied unchanged under
+`app/native/angle/`. Their SHA-256 identities are listed in the manifest, and
+metadata/source/copy identities and final preservation checks are recorded in
+`metadata/build.json`. Caught failures retain inspection evidence in the failure
+receipt when inspection completed.
+
+The manifest adds
+`nativeWebgl: {"backend":"angle-metal","abiVersion":1,"directory":"app/native/angle"}`
+and the `native-webgl-angle-metal-v1` requirement. When webfont bundling is also
+selected, both requirements are retained in sorted order. ANGLE files are native
+payloads, not font/stylesheet resources.
+
+The package name/version check identifies the trusted supplied input; it is not
+authenticated provenance or Mach-O architecture validation. Copying `LICENSES`
+is not a complete binary dependency or third-party notice inventory. Actual
+loading, relocation, GPU behavior, minimum OS, signing and redistribution remain
+separate validation gates.
+
 ## Run and relocate
 
 Run `artifacts/packaged-demo/3jsn-demo` (or `3jsn-demo.exe` on Windows). The entire

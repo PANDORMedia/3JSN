@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "profile": "compiled-dom-window-v1",
+  "target": "macos-arm64",
+  "compatibility": {
+    "certified": false,
+    "unresolvedDynamicBehavior": true,
+    "limitations": [
+      "Experimental artifact creation is not a compatibility, performance or platform certification.",
+      "Only an explicitly supplied current-host player is packaged; no runtime is built or downloaded.",
+      "Computed imports, URLs, fetches, workers and other dynamic browser behavior remain unresolved; bundling cannot establish API support.",
+      "The source snapshot excludes root .git and node_modules. Loaded dependency bytes are checked separately, not the entire dependency installation or all resolver configuration.",
+      "Inputs and output parents must remain quiescent. Publication reserves a new directory and installs app.json last; process termination can leave an incomplete directory.",
+      "Graceful cancellation waits for the current bundling/filesystem operation, then cleans staging and records source preservation; forced termination cannot guarantee cleanup.",
+      "Source maps embed bundled source text. Review generated artifacts before distributing private projects.",
+      "Input source-map chains that refer to originals outside measured bundler inputs are explicitly unsupported.",
+      "Source maps are retained but the player does not yet remap generated stack locations.",
+      "These unsigned local artifacts are not a release distribution; third-party notices, SBOM, signing and release verification remain open.",
+      "Experimental compiled initial UI: generated HTML becomes versioned UI data. CSS parsing, live DOM state and CPU layout remain; this is not a stable shipping data format.",
+      "Only an explicitly supplied current-host macOS Metal compiled-dom-window-v1 player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.",
+      "Explicit restricted HTML-parser mode: reachable dynamic markup is not proven absent. Unsupported markup/navigation operations reject at runtime; application compatibility is not certified.",
+      "Static HTML and CSS resource references, foreign content, templates, classic/inline scripts and browser navigation are rejected; accepted syntax does not establish rendering or DOM API support.",
+      "CSS animation and transition timelines are not advanced by the current DOM painter, even when declarations parse successfully.",
+      "No frontend command, custom plugin, inherited tsconfig or general asset-copy workflow is provided. Dynamic HTML, CSS and asset requests from JavaScript remain unresolved.",
+      "Font packaging validates the WOFF2 header and content identity, not decoding, licensing or glyph coverage."
+    ]
+  },
+  "config": {
+    "schemaVersion": 1,
+    "profile": "compiled-dom-window-v1",
+    "name": "native-webgl-demo",
+    "entry": "index.html"
+  },
+  "runtime": {
+    "executable": "native-webgl-demo",
+    "bytes": 191023568,
+    "sha256": "d78ddd592dd257485e86c8a7f7373b36fddd2785883ab4cd4cf1727b2457598a",
+    "description": {
+      "schemaVersion": 1,
+      "playerVersion": "0.0.0",
+      "packageVersions": [
+        1
+      ],
+      "profiles": [
+        "compiled-dom-window-v1"
+      ],
+      "capabilities": [
+        "dom-package-fonts-v1",
+        "native-webgl-angle-metal-v1"
+      ],
+      "target": "macos-arm64",
+      "backend": "metal",
+      "v8": "15.0.245.2-rusty",
+      "compiledUi": {
+        "format": "3jsn-static-ui-experiment",
+        "versions": [
+          1
+        ],
+        "htmlParser": "restricted"
+      },
+      "experiment": "compiled-ui-runtime",
+      "dynamicHtml": false,
+      "packageProfiles": [
+        "compiled-dom-window-v1"
+      ]
+    }
+  },
+  "source": {
+    "before": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 102,
+          "sha256": "53463613c53e781ee8aff00e3e0819ec22dc80b27a97a24aa656ea6294d30035"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 3200,
+          "sha256": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4"
+        },
+        {
+          "path": "main.mjs",
+          "kind": "file",
+          "bytes": 5060,
+          "sha256": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59"
+        }
+      ],
+      "digest": "6f94d731f002dd61b8d86adb691f083354d5aa03376c3594396b244d29bca158"
+    },
+    "after": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 102,
+          "sha256": "53463613c53e781ee8aff00e3e0819ec22dc80b27a97a24aa656ea6294d30035"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 3200,
+          "sha256": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4"
+        },
+        {
+          "path": "main.mjs",
+          "kind": "file",
+          "bytes": 5060,
+          "sha256": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59"
+        }
+      ],
+      "digest": "6f94d731f002dd61b8d86adb691f083354d5aa03376c3594396b244d29bca158"
+    },
+    "preservation": {
+      "preserved": true,
+      "before": "6f94d731f002dd61b8d86adb691f083354d5aa03376c3594396b244d29bca158",
+      "after": "6f94d731f002dd61b8d86adb691f083354d5aa03376c3594396b244d29bca158",
+      "changes": []
+    }
+  },
+  "esbuild": {
+    "version": "0.28.2",
+    "options": {
+      "platform": "browser",
+      "format": "esm",
+      "target": "esnext",
+      "sourcemap": "linked",
+      "tsconfigRaw": {}
+    },
+    "inputs": [
+      {
+        "path": "dependencies/9052042d676cb0fd/three/build/three.module.js",
+        "bytes": 662772,
+        "sha256": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea"
+      },
+      {
+        "path": "dependencies/9edde002b066a9a0/three/build/three.core.js",
+        "bytes": 1458113,
+        "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6"
+      },
+      {
+        "path": "project/main.mjs",
+        "bytes": 5060,
+        "sha256": "f90c98dc1473dee3ea6ea187fc05af15427b21272d86908c56df8a590a164e59"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "app/main.mjs.map",
+        "bytes": 2859539,
+        "sha256": "5315674084e447aa03e8b0cc77102524669cbda1884123e359c62ee30cc4d50f",
+        "esbuildSha256": "2037c6a67c2d9303f49cb681b34c59bf3dcdaf53d0ba0c774f0062ff3506e13c"
+      },
+      {
+        "path": "app/main.mjs",
+        "bytes": 1123191,
+        "sha256": "c1cd636f806dd26728e4aa6528cd529902f5156f22005ba68f749ecf053aafb4",
+        "esbuildSha256": "c1cd636f806dd26728e4aa6528cd529902f5156f22005ba68f749ecf053aafb4"
+      }
+    ],
+    "metafile": {
+      "inputs": {
+        "../../../node_modules/three/build/three.core.js": {
+          "bytes": 1458113,
+          "imports": [],
+          "format": "esm"
+        },
+        "../../../node_modules/three/build/three.module.js": {
+          "bytes": 662772,
+          "imports": [
+            {
+              "path": "../../../node_modules/three/build/three.core.js",
+              "kind": "import-statement",
+              "original": "./three.core.js"
+            },
+            {
+              "path": "../../../node_modules/three/build/three.core.js",
+              "kind": "import-statement",
+              "original": "./three.core.js"
+            }
+          ],
+          "format": "esm"
+        },
+        "main.mjs": {
+          "bytes": 5060,
+          "imports": [
+            {
+              "path": "../../../node_modules/three/build/three.module.js",
+              "kind": "import-statement",
+              "original": "three"
+            }
+          ],
+          "format": "esm"
+        }
+      },
+      "outputs": {
+        "../.3jsn-build-SNhf8M/app/main.mjs.map": {
+          "imports": [],
+          "exports": [],
+          "inputs": {},
+          "bytes": 2859725
+        },
+        "../.3jsn-build-SNhf8M/app/main.mjs": {
+          "imports": [],
+          "exports": [],
+          "entryPoint": "main.mjs",
+          "inputs": {
+            "../../../node_modules/three/build/three.core.js": {
+              "bytesInOutput": 519034
+            },
+            "../../../node_modules/three/build/three.module.js": {
+              "bytesInOutput": 598896
+            },
+            "main.mjs": {
+              "bytesInOutput": 4914
+            }
+          },
+          "bytes": 1123191
+        }
+      }
+    },
+    "metafileScope": "Original esbuild provenance includes build-location paths and pre-source-label-rewrite output sizes; it is not a complete or hermetic resolution inventory."
+  },
+  "html": {
+    "interpretation": "compiled-initial-tree-runtime-css",
+    "parsers": {
+      "html": "parse5@8.0.1",
+      "css": "css-tree@3.2.1"
+    },
+    "originalModuleSrc": "./main.mjs",
+    "moduleEntry": "main.mjs",
+    "rewrite": "Only the module src attribute is replaced in generated HTML.",
+    "grammar": "HTML5 no-quirks UTF-8 without BOM; ordinary text/structural elements, one unique #scene canvas and one local external module; plain inline CSS with no at-rules, URLs, escapes, parse recovery or unlisted functions. No templates, noscript, foreign content, navigation, inline handlers or static resources.",
+    "source": {
+      "path": "index.html",
+      "bytes": 3200,
+      "sha256": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4"
+    },
+    "generated": {
+      "bytes": 3200,
+      "sha256": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4"
+    }
+  },
+  "assets": {
+    "font": {
+      "sourceName": "DejaVuSans.woff2",
+      "packagedPath": "app/font.woff2",
+      "before": {
+        "bytes": 258624,
+        "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+      },
+      "copied": {
+        "bytes": 258624,
+        "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+      },
+      "after": {
+        "bytes": 258624,
+        "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+      },
+      "preserved": true
+    }
+  },
+  "compiledUi": {
+    "format": "3jsn-static-ui-experiment",
+    "version": 1,
+    "htmlParser": "restricted",
+    "source": {
+      "name": "generated/app/index.html",
+      "sha256": "926a0e2dbb592676b92986e796f1c049629dea56bc1abb700c5738ca5aef98c4",
+      "byteLength": 3200
+    },
+    "generated": {
+      "path": "app/ui.json",
+      "bytes": 26076,
+      "sha256": "8a60e62aa69f58b239d2a191da9dfbf1be7d4a7a11d48fb92e57f28543f6dcf5"
+    }
+  },
+  "nativeWebgl": {
+    "package": {
+      "name": "gl",
+      "version": "9.0.0-rc.10"
+    },
+    "capability": "native-webgl-angle-metal-v1",
+    "scope": "Explicit trusted local package; metadata is not authenticated provenance or a complete native dependency/license inventory. Mach-O architecture, loading, signing and hardware require separate validation.",
+    "inputs": [
+      {
+        "source": "package.json",
+        "before": {
+          "bytes": 1223,
+          "sha256": "031a993c101f2ca6c299087897792e2811667ce42f17b4990c30c5e0f779b48f"
+        },
+        "copied": null,
+        "after": {
+          "bytes": 1223,
+          "sha256": "031a993c101f2ca6c299087897792e2811667ce42f17b4990c30c5e0f779b48f"
+        },
+        "preserved": true
+      },
+      {
+        "source": "deps/darwin/dylib/libEGL.dylib",
+        "packagedPath": "app/native/angle/libEGL.dylib",
+        "before": {
+          "bytes": 490880,
+          "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+        },
+        "copied": {
+          "bytes": 490880,
+          "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+        },
+        "after": {
+          "bytes": 490880,
+          "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+        },
+        "preserved": true
+      },
+      {
+        "source": "deps/darwin/dylib/libGLESv2.dylib",
+        "packagedPath": "app/native/angle/libGLESv2.dylib",
+        "before": {
+          "bytes": 15068592,
+          "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+        },
+        "copied": {
+          "bytes": 15068592,
+          "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+        },
+        "after": {
+          "bytes": 15068592,
+          "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+        },
+        "preserved": true
+      },
+      {
+        "source": "LICENSES",
+        "packagedPath": "app/native/angle/LICENSES",
+        "before": {
+          "bytes": 3368,
+          "sha256": "5fdf30afb123c9efd877e452746494b7d84c1481dc798ebad9918107e4df01d7"
+        },
+        "copied": {
+          "bytes": 3368,
+          "sha256": "5fdf30afb123c9efd877e452746494b7d84c1481dc798ebad9918107e4df01d7"
+        },
+        "after": {
+          "bytes": 3368,
+          "sha256": "5fdf30afb123c9efd877e452746494b7d84c1481dc798ebad9918107e4df01d7"
+        },
+        "preserved": true
+      }
+    ]
+  },
+  "manifest": {
+    "bytes": 1601,
+    "sha256": "3d5f5257ee5e106961aa4d9f2afbe0644618cbc473c247699e3c3197e25b7c91"
+  }
+}

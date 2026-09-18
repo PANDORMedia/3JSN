@@ -3,7 +3,7 @@ import { buildProject } from './build.mjs';
 import { BuildError } from './contract.mjs';
 import { checkProject } from './check.mjs';
 
-const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--font <font.woff2> (DOM profiles)] [--html-parser <preserved|restricted> (compiled-dom-window-v1 only)] [--bundle-web-fonts [--web-fonts-state <directory>] [--offline]]';
+const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--font <font.woff2> (DOM profiles)] [--html-parser <preserved|restricted> (compiled-dom-window-v1 only)] [--angle-package <gl-package-directory> (compiled-dom-window-v1 only)] [--bundle-web-fonts [--web-fonts-state <directory>] [--offline]]';
 const checkUsage = '3jsn check <project> [--targets <comma-separated-targets>]';
 const controller = new AbortController();
 let interruptedBy;
@@ -19,7 +19,7 @@ try {
   for (let index = 0; index < args.length; index++) {
     const flag = args[index];
     const key = (command === 'check' ? { '--targets': 'targets' } : { '--runtime': 'runtime', '--out': 'out', '--targets': 'targets', '--experimental': 'experimental', '--font': 'font',
-      '--bundle-web-fonts': 'bundleWebFonts', '--web-fonts-state': 'webFontsState', '--offline': 'offline', '--html-parser': 'htmlParser' })[flag];
+      '--bundle-web-fonts': 'bundleWebFonts', '--web-fonts-state': 'webFontsState', '--offline': 'offline', '--html-parser': 'htmlParser', '--angle-package': 'anglePackage' })[flag];
     if (!key || Object.hasOwn(options, key)) throw new BuildError('USAGE', command === 'check' ? checkUsage : usage);
     if (['experimental', 'bundleWebFonts', 'offline'].includes(key)) options[key] = true;
     else {

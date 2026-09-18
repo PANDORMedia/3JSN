@@ -11,6 +11,7 @@ import { analyzeHtml, prepareHtml } from './html.mjs';
 import { localizeWebFonts } from './web-fonts.mjs';
 import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILITY } from './web-font-policy.mjs';
 import { compilePackageUi, htmlParserMode, validateCompiledUiRuntime } from './compiled-ui.mjs';
+import { ANGLE_CAPABILITY, ANGLE_DESCRIPTOR, angleMetadata, copyAnglePackage, inspectAnglePackage, validateAngleOptions, validateAngleRuntime, verifyAnglePackage } from './angle-package.mjs';
 
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -195,7 +196,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
   if (await exists(out)) throw new BuildError('OUTPUT_EXISTS', 'The output path already exists; no files were replaced.');
   if (!(await lstat(parent)).isDirectory()) throw new BuildError('INVALID_OUTPUT', 'The output parent must already be a directory.');
   const runtime = resolve(options.runtime);
-  let before, after, preservation, staging, config, font, webFonts, reserved = false;
+  let before, after, preservation, staging, config, font, webFonts, angle, reserved = false;
   const published = [];
   let primary;
   try {
@@ -206,6 +207,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
     const isDom = isDomProfile(config.profile);
     const isCompiled = config.profile === COMPILED_DOM_PROFILE;
     if (!isCompiled && Object.hasOwn(options, 'htmlParser')) throw new BuildError('UNEXPECTED_HTML_PARSER', '--html-parser is accepted only by compiled-dom-window-v1.');
+    if (Object.hasOwn(options, 'anglePackage')) validateAngleOptions(options.anglePackage, config.profile, target);
     const parserMode = isCompiled ? htmlParserMode(options.htmlParser) : undefined;
     if (Object.hasOwn(options, 'bundleWebFonts') && options.bundleWebFonts !== true) throw new BuildError('USAGE', '--bundle-web-fonts must be an explicit opt-in.');
     if (options.bundleWebFonts && !isDom) throw new BuildError('UNEXPECTED_WEB_FONTS', '--bundle-web-fonts is accepted only by DOM package profiles.');
@@ -223,6 +225,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
     const description = validateDescription(await describe(runtime, { signal }), target, config.profile);
     if (isCompiled) validateCompiledUiRuntime(description, parserMode);
     if (options.bundleWebFonts) validateWebFontRuntime(description);
+    if (Object.hasOwn(options, 'anglePackage')) {
+      validateAngleRuntime(description);
+      angle = await inspectAnglePackage(options.anglePackage, signal);
+    }
     checkCancellation(signal);
     const runtimeAfter = await fileIdentity(runtime);
     if (JSON.stringify(runtimeBefore) !== JSON.stringify(runtimeAfter)) throw new BuildError('RUNTIME_CHANGED', 'The supplied player changed during inspection.');
@@ -254,15 +260,20 @@ export async function buildProject(options, { describeRuntime: describe = descri
       built.files.sort(comparePaths);
       checkCancellation(signal);
     }
+    if (angle) built.files.push(...await copyAnglePackage(angle, staging, signal));
+    built.files.sort(comparePaths);
     const executable = `${config.name}${process.platform === 'win32' ? '.exe' : ''}`;
     await copyFile(runtime, join(staging, executable), constants.COPYFILE_EXCL);
     if (process.platform !== 'win32') await chmod(join(staging, executable), 0o755);
     const copiedRuntime = await fileIdentity(join(staging, executable));
     checkCancellation(signal);
     if (JSON.stringify(copiedRuntime) !== JSON.stringify(runtimeBefore)) throw new BuildError('RUNTIME_CHANGED', 'The copied player differs from the inspected binary.');
+    const requires = [...(webFonts ? [WEB_FONT_CAPABILITY] : []), ...(angle ? [ANGLE_CAPABILITY] : [])].sort();
     const manifest = { schemaVersion: 1, profile: config.profile, name: config.name, target, entry: 'app/main.mjs',
       ...(html ? { ...(compiledUi ? { compiledUi: compiledUi.descriptor } : { html: 'app/index.html' }), font: 'app/font.woff2' } : {}),
-      ...(webFonts ? { requires: [WEB_FONT_CAPABILITY], resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) } : {}), files: built.files };
+      ...(requires.length ? { requires } : {}),
+      ...(angle ? { nativeWebgl: ANGLE_DESCRIPTOR } : {}),
+      ...(webFonts ? { resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) } : {}), files: built.files };
     const manifestBytes = jsonBytes(manifest);
     if (Buffer.byteLength(manifestBytes) > 1024 * 1024 || manifest.files.length > 4096) throw new BuildError('MANIFEST_LIMIT', 'Package manifest exceeds version 1 limits.');
     after = await snapshotTree(root, { exclude: ['node_modules'] });
@@ -280,6 +291,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
       checkCancellation(signal);
     }
     if (font) await verifyFont(font);
+    if (angle) await verifyAnglePackage(angle);
     checkCancellation(signal);
     const metadata = { schemaVersion: 1, status: 'experimental', profile: config.profile, target,
       compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile, { webFonts: Boolean(webFonts), htmlParser: parserMode }) },
@@ -289,6 +301,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
         ...(compiledUi ? { interpretation: 'compiled-initial-tree-runtime-css' } : {}),
         generated: { ...(compiledUi ? {} : { path: 'app/index.html' }), bytes: html.bytes.length, sha256: digest(html.bytes) } }, assets: { font: fontMetadata(font) } } : {}),
       ...(compiledUi ? { compiledUi: compiledUi.metadata } : {}),
+      ...(angle ? { nativeWebgl: angleMetadata(angle) } : {}),
       ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY, stateDir: webFonts.stateDir, offline: options.offline ?? false,
         sourceInputs: webFonts.sourceInputs, provenance: webFonts.provenance, requirements: webFonts.requirements, lock: webFonts.lock } } : {}),
       manifest: { bytes: Buffer.byteLength(manifestBytes), sha256: digest(manifestBytes) } };
@@ -336,10 +349,15 @@ export async function buildProject(options, { describeRuntime: describe = descri
   if (font) {
     try { await verifyFont(font); } catch (error) { fontError = failure(error); }
   }
+  let angleError;
+  if (angle) {
+    try { await verifyAnglePackage(angle); } catch (error) { angleError = failure(error); }
+  }
   if (before) {
     const receipt = { schemaVersion: 1, status: 'failed', target, profile: config?.profile ?? null, error: failure(error),
       source: { before, after: after ?? null, preservation: preservation ?? null, snapshotError: snapshotError ?? null },
-      ...(font ? { assets: { font: { ...fontMetadata(font), verificationError: fontError ?? null } } } : {}), cleanupErrors };
+      ...(font ? { assets: { font: { ...fontMetadata(font), verificationError: fontError ?? null } } } : {}),
+      ...(angle ? { nativeWebgl: { ...angleMetadata(angle), verificationError: angleError ?? null } } : {}), cleanupErrors };
     try {
       const directory = await mkdtemp(join(parent, '.3jsn-failure-'));
       error.receipt = join(directory, 'build.json');

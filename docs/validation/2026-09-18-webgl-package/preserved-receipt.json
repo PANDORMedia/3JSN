@@ -1,0 +1,24 @@
+{
+  "controls": [
+    {
+      "path": "/Users/sean/dev/3JSN/.cache/native-webgl/node_modules/gl/deps/darwin/dylib/libEGL.dylib",
+      "denied": true
+    },
+    {
+      "path": "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+      "denied": true
+    },
+    {
+      "path": "/Users/sean/dev/3JSN/examples/webgl-window/main.mjs",
+      "denied": true
+    }
+  ],
+  "policy": "(version 1)(allow default)(deny network*)(deny file-read* (subpath \"/Users/sean/dev/3JSN/.cache/native-webgl/node_modules/gl\"))(deny file-read* (subpath \"/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2\"))(deny file-read* (subpath \"/Users/sean/dev/3JSN/examples/webgl-window\"))",
+  "executable": "/Users/sean/dev/3JSN/target/debug/deps/webgl_composition-72af6618e5d7d7fd",
+  "manifest": "/Users/sean/dev/3JSN/.cache/native-webgl/relocated WebGL Ω #/app.json",
+  "sourceInputDeleted": true,
+  "cwd": "/tmp",
+  "path": "/usr/bin:/bin",
+  "network": "configured-denied-not-measured",
+  "surfacePresentation": false
+}
