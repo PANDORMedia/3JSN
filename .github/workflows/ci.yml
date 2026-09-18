@@ -21,6 +21,10 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - name: Parser linkage evidence collector tests
+        run: python scripts/probe-parser-linkage.test.py
+      - name: Parser measurement evidence collector tests
+        run: python scripts/measure-parser-runtime.test.py
       - name: Select Rust toolchain
         run: rustup toolchain install 1.93.0 --profile minimal --component rustfmt --component clippy
       - run: cargo +1.93.0 fmt --all --check

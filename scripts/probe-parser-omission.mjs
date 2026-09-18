@@ -204,7 +204,8 @@ try {
   for (const [name, path] of Object.entries(identityPaths)) assert.equal(hash(await readFile(path)), report.inputs[name].sha256, `Runtime changed ${name}`);
   for (const [name, path] of Object.entries(sourcePaths)) assert.equal(hash(await readFile(path)), report.sourceHashes[name], `Source changed: ${name}`);
   report.sourcePreserved = true;
-  report.networkDenied = true;
+  report.networkDenyConfigured = true;
+  report.networkDenialMeasured = false;
   report.testedDomObservationsEquivalent = true;
   report.status = report.browser?.differences.length ? 'partial' : 'passed';
   await save();
