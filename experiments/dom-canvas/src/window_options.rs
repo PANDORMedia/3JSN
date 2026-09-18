@@ -12,6 +12,19 @@ pub enum DocumentInput {
     Compiled(Vec<u8>),
 }
 
+impl DocumentInput {
+    pub fn into_dom(self, config: blitz_dom::DocumentConfig) -> Result<deno_core::Extension> {
+        match self {
+            Self::Html(html) => Ok(crate::dom_bridge::extension(&html, config)),
+            Self::Compiled(bytes) => {
+                let loaded = threejs_compiled_ui_experiment::load_json(&bytes, config)?;
+                println!("{}", serde_json::json!({"compiledUi": loaded.report}));
+                Ok(crate::dom_bridge::extension_with_document(loaded.document))
+            }
+        }
+    }
+}
+
 pub struct Options {
     pub font: Vec<u8>,
     pub document: DocumentInput,

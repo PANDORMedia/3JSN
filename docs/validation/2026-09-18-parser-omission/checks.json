@@ -1,0 +1,63 @@
+{
+  "scope": "Local source/CPU checks, separate from presentation evidence",
+  "checks": {
+    "node-tests-network.log": {
+      "result": "135 passed; one skipped",
+      "sha256": "8c5f09a5f61035c03a99e49656d8a32b4cd892c1b1ed3b3d8fb26ea893894e65"
+    },
+    "check-final.log": {
+      "result": "source/config/document syntax and local links passed",
+      "sha256": "1d02b49ffa2d6f3f0cab03d7956a9b0bc568028e5cf362a57a0fa7fffcac08e4"
+    },
+    "interpreted-dom-tests.log": {
+      "result": "19 passed",
+      "sha256": "6707ff2470a350d3014311d8c7cec8005deae137b44465fde454a85ea4a5ffb9"
+    },
+    "runtime-clippy-enabled.log": {
+      "result": "passed with dependency warnings only",
+      "sha256": "8cc5aeb0fe71705ca5ace2a7d39993e9e2514c511799150e9619f979c615a351"
+    },
+    "runtime-clippy-disabled-final.log": {
+      "result": "passed with dependency warnings only",
+      "sha256": "cc22d0490931d7b3f92246411da115093f846fd2907e5ed10ed0a5c0c6e9ec48"
+    },
+    "html-v8-check.log": {
+      "result": "passed",
+      "sha256": "fd8baaaa027c31afbd1cb47420301c3d3b9111e8b9ec8d8e9b3ed1168706d673"
+    },
+    "html-paint-check.log": {
+      "result": "passed",
+      "sha256": "7638cc4439d8aa75f31a324cc35d4d3bbfc4858a9b80d80fb128efc5ffd2c0cf"
+    },
+    "native-html-interop-check.log": {
+      "result": "passed",
+      "sha256": "9b03cb29291e1801f73b8e5357f218171d0e24dd16b7a57f56eb21c2797b443a"
+    },
+    "interpreted-window-build.log": {
+      "result": "passed",
+      "sha256": "efcbab9f0de7cbe1627e82b1ed834a5de5e3fdaae9e294a5dad8311f3050530f"
+    },
+    "format.log": {
+      "result": "19 changed/new Rust files passed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "measurement-tests.log": {
+      "result": "3 passed",
+      "sha256": "d64e03535ba80832344f9b17f6063681e22f140a15f49910119af2a9b2fd5943"
+    },
+    "linkage-tests.log": {
+      "result": "3 passed",
+      "sha256": "921b60a7fd52e978fbb551cacd29df2d6708879400278e1fcc70fceeb0c6f8e0"
+    },
+    "check-docs.log": {
+      "result": "PASS: 628 source/config/document files checked. No GPU tests were run.",
+      "sha256": "726b03d0dfd8977041eca4bca9a737f1f46d28ef767a137b02d707bad1950c11"
+    }
+  },
+  "nativeWindow": {
+    "status": "blocked",
+    "reason": "Mac desktop locked, confirmed by computer-use state; shared-host regression hit its 90-second deadline without presentation completion. No new native GPU pass is claimed.",
+    "logSha256": "a5f90b2e6b4e1a0fe26cc47316391eaa75feb885deb745ce6c799ff45a0592d5"
+  },
+  "review": "Independent read-only source review found no unguarded pinned parser entry or extraction regression; not a hardware or complete security review."
+}

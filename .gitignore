@@ -5,6 +5,7 @@ build/
 dist/
 out/
 target/
+__pycache__/
 .DS_Store
 *.log
 .env

@@ -40,8 +40,12 @@ The runtime retains live UI state and required dynamic parsing. An
 [initial-tree prototype](validation/2026-09-18-compiled-ui.md) now builds the same
 authoritative native DOM without reparsing the original document, with five
 native comparison fixtures and a bounded Metal-window run. Browser parity,
-framework workloads, CSS compilation, parser omission and build-CLI integration
-remain open; the prototype still carries its parsers.
+framework workloads, CSS compilation and build-CLI integration remain open.
+A separate [restricted release artifact](validation/2026-09-18-parser-omission.md)
+now proves HTML-parser omission through dependency/compiler/link evidence and
+records size/startup/peak-memory measurements. Its CPU fixture matches sampled
+Chrome behavior; new native-window validation is pending. This does not enable
+automatic parser removal from existing projects.
 
 ## Milestones
 

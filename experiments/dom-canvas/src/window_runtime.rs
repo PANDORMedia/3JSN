@@ -256,15 +256,10 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
         )),
         ..Default::default()
     };
-    let dom = match worker.document {
-        DocumentInput::Html(html) => dom_bridge::extension(&html, config),
-        DocumentInput::Compiled(bytes) => {
-            let loaded = threejs_compiled_ui_experiment::load_json(&bytes, config)
-                .map_err(|error| error.to_string())?;
-            println!("{}", serde_json::json!({"compiledUi": loaded.report}));
-            dom_bridge::extension_with_document(loaded.document)
-        }
-    };
+    let dom = worker
+        .document
+        .into_dom(config)
+        .map_err(|error| error.to_string())?;
     let mut runtime = host::create_with_dom_extension(
         dom,
         vec![extension(initial)],
