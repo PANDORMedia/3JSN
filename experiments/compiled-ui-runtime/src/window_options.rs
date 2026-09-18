@@ -8,7 +8,9 @@ use threejs_compiled_ui_experiment::{
     contract::{CompiledUi, FORMAT, MAX_IR_BYTES, VERSION},
     preflight_json,
 };
-use threejs_native_package::{Application, HtmlParserMode, Profile, Resource, load_for, read_font};
+use threejs_native_package::{
+    Application, HtmlParserMode, Profile, Resource, load_for_with_capabilities, read_font,
+};
 
 use crate::Result;
 
@@ -30,6 +32,7 @@ impl DocumentInput {
 }
 
 pub struct Options {
+    pub native_webgl: Option<PathBuf>,
     pub font: Vec<u8>,
     pub document: DocumentInput,
     pub module: PathBuf,
@@ -62,13 +65,29 @@ fn parser_mode() -> HtmlParserMode {
     }
 }
 
+fn capabilities() -> Vec<&'static str> {
+    let mut result = vec![threejs_native_package::DOM_FONT_CAPABILITY];
+    if cfg!(feature = "native-webgl") {
+        result.push(threejs_native_package::NATIVE_WEBGL_CAPABILITY);
+    }
+    result
+}
+
+fn loose_native_webgl() -> Result<Option<PathBuf>> {
+    let path = std::env::var_os("THREEJS_NATIVE_ANGLE_LIBRARY_DIR").map(PathBuf::from);
+    if path.is_some() && !cfg!(feature = "native-webgl") {
+        return Err("ANGLE selection requires a native-webgl player".into());
+    }
+    Ok(path)
+}
+
 pub fn description() -> serde_json::Value {
     serde_json::json!({
         "schemaVersion": 1,
         "playerVersion": env!("CARGO_PKG_VERSION"),
         "packageVersions": [1],
         "profiles": [threejs_native_package::COMPILED_DOM_PROFILE],
-        "capabilities": [threejs_native_package::DOM_FONT_CAPABILITY],
+        "capabilities": capabilities(),
         "target": threejs_native_package::target(),
         "backend": "metal",
         "v8": deno_core::v8::V8::get_version(),
@@ -110,7 +129,11 @@ fn verification_option(args: &[OsString]) -> Result<bool> {
 
 fn package(manifest: &Path, frames: Option<u64>) -> Result<Options> {
     from_application(
-        load_for(manifest, Profile::CompiledDomWindow(parser_mode()))?,
+        load_for_with_capabilities(
+            manifest,
+            Profile::CompiledDomWindow(parser_mode()),
+            &capabilities(),
+        )?,
         frames,
     )
 }
@@ -129,6 +152,7 @@ fn from_application(app: Application, frames: Option<u64>) -> Result<Options> {
     let document = DocumentInput::from_bytes(&ui.bytes)?;
     let font = app.font.ok_or("compiled DOM package has no font")?;
     Ok(Options {
+        native_webgl: app.native_webgl,
         font,
         document,
         module: app.entry,
@@ -152,6 +176,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
             let frames = frame_option(rest)?;
             let document = input(Path::new(ui))?;
             Ok(Command::Run(Options {
+                native_webgl: loose_native_webgl()?,
                 font: read_font(Path::new(font))?,
                 document,
                 module: PathBuf::from(module).canonicalize()?,
@@ -173,6 +198,9 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
         [flag, manifest, behavior, rest @ ..] if flag == "--measure-app" => {
             let verify = verification_option(rest)?;
             let app = package(Path::new(manifest), None)?;
+            if app.native_webgl.is_some() {
+                return Err("layout measurement does not support packaged WebGL".into());
+            }
             Ok(Command::Measure(MeasurementOptions {
                 font: app.font,
                 document: app.document,

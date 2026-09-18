@@ -206,6 +206,7 @@ fn dispatch_input(
 }
 
 pub struct Worker {
+    pub native_webgl: Option<std::path::PathBuf>,
     pub frames: Option<u64>,
     pub resources: Option<Vec<threejs_native_package::Resource>>,
     pub document: DocumentInput,
@@ -269,19 +270,19 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
         .document
         .into_dom(config)
         .map_err(|error| error.to_string())?;
+    if worker.native_webgl.is_some() && !cfg!(feature = "native-webgl") {
+        return Err("ANGLE selection requires a native-webgl player".into());
+    }
     #[allow(unused_mut)]
     let mut extensions = vec![extension(initial)];
     #[cfg(feature = "native-webgl")]
-    let webgl_enabled =
-        if let Some(directory) = std::env::var_os("THREEJS_NATIVE_ANGLE_LIBRARY_DIR") {
-            extensions.push(threejs_native_webgl_runtime::runtime_extension(
-                std::path::Path::new(&directory),
-            )?);
-            extensions.push(crate::webgl_backend::extension());
-            true
-        } else {
-            false
-        };
+    let webgl_enabled = if let Some(directory) = &worker.native_webgl {
+        extensions.push(threejs_native_webgl_runtime::runtime_extension(directory)?);
+        extensions.push(crate::webgl_backend::extension());
+        true
+    } else {
+        false
+    };
     let mut runtime = host::create_with_dom_extension(
         dom,
         extensions,

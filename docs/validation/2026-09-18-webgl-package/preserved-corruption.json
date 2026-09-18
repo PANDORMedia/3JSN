@@ -1,0 +1,5 @@
+{
+  "exitCode": 1,
+  "stderr": "3JSN compiled UI experiment: package file failed integrity verification: app/native/angle/libEGL.dylib\n",
+  "stage": "preflight-before-window"
+}

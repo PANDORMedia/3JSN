@@ -11,7 +11,11 @@ use std::{
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
+mod native_webgl;
+pub use native_webgl::NATIVE_WEBGL_CAPABILITY;
 mod compiled;
+#[cfg(test)]
+mod native_webgl_tests;
 pub use compiled::{CompiledUi, HtmlParserMode, MAX_COMPILED_UI_BYTES};
 mod font;
 pub use font::read_font;
@@ -105,6 +109,8 @@ struct Manifest {
     requires: Option<Vec<String>>,
     #[serde(default, deserialize_with = "present_vec")]
     resources: Option<Vec<ResourceDescriptor>>,
+    #[serde(default, deserialize_with = "native_webgl::present_descriptor")]
+    native_webgl: Option<native_webgl::Descriptor>,
     files: Vec<PackageFile>,
 }
 
@@ -144,6 +150,8 @@ pub struct Application {
     /// Decoding and usable-family validation remain the runtime's responsibility.
     pub font: Option<Vec<u8>>,
     pub resources: Option<Vec<Resource>>,
+    /// Verified package directory; files must remain quiescent until native loading.
+    pub native_webgl: Option<PathBuf>,
 }
 
 pub fn target() -> &'static str {
@@ -194,13 +202,19 @@ fn validate_path(path: &str) -> Result<(), PackageError> {
 }
 
 fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), PackageError> {
-    let resources = match (&manifest.requires, &manifest.resources) {
+    let requirements = manifest.requires.as_ref().map(|items| {
+        items
+            .iter()
+            .filter(|item| {
+                !(manifest.native_webgl.is_some() && item.as_str() == NATIVE_WEBGL_CAPABILITY)
+            })
+            .map(String::as_str)
+            .collect::<Vec<_>>()
+    });
+    let resources = match (requirements.as_deref(), &manifest.resources) {
         (None, None) => return Ok(()),
-        (Some(requires), Some(resources))
-            if profile.is_dom() && requires == &[DOM_FONT_CAPABILITY] =>
-        {
-            resources
-        }
+        (Some([]), None) if manifest.native_webgl.is_some() => return Ok(()),
+        (Some([DOM_FONT_CAPABILITY]), Some(resources)) if profile.is_dom() => resources,
         _ => {
             return Err(invalid(
                 "resources require the dom-package-fonts-v1 DOM capability",
@@ -374,6 +388,7 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
         }
     }
     font::validate(manifest)?;
+    native_webgl::validate(manifest, profile)?;
     validate_resources(manifest, profile)
 }
 
@@ -406,6 +421,16 @@ pub fn load(manifest_path: &Path) -> Result<Application, PackageError> {
 /// Verify only the profile this executable implements; every listed payload is
 /// checked before callers create a window, realm or GPU device.
 pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, PackageError> {
+    load_for_with_capabilities(manifest_path, profile, &[DOM_FONT_CAPABILITY])
+}
+
+/// Admit only explicitly implemented capabilities before checking package payloads.
+/// Native libraries are verified files, not a sandbox or an atomic loading snapshot.
+pub fn load_for_with_capabilities(
+    manifest_path: &Path,
+    profile: Profile,
+    capabilities: &[&str],
+) -> Result<Application, PackageError> {
     let parent = manifest_path
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
@@ -426,6 +451,14 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
     }
     let manifest: Manifest = serde_json::from_slice(&bytes).map_err(|e| invalid(e.to_string()))?;
     validate_manifest(&manifest, profile)?;
+    for required in manifest.requires.iter().flatten() {
+        if !capabilities.contains(&required.as_str()) {
+            return Err(PackageError::Incompatible {
+                required: required.clone(),
+                actual: format!("player capabilities [{}]", capabilities.join(", ")),
+            });
+        }
+    }
     let mut resources = manifest.resources.as_ref().map(|_| Vec::new());
     let mut compiled_ui = None;
     let mut font = None;
@@ -480,6 +513,13 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
                     bytes,
                 });
             size
+        } else if let Some(limit) = native_webgl::file_limit(&manifest, &item.path) {
+            let size =
+                io::copy(&mut file.take(limit + 1), &mut hasher).map_err(|e| io_error(&path, e))?;
+            if size == 0 || size > limit {
+                return Err(invalid("native WebGL file exceeds its nonzero byte limit"));
+            }
+            size
         } else {
             io::copy(&mut file, &mut hasher).map_err(|e| io_error(&path, e))?
         };
@@ -488,6 +528,9 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
         }
     }
     Ok(Application {
+        native_webgl: manifest
+            .native_webgl
+            .map(|descriptor| root.join(descriptor.directory)),
         entry: root.join(manifest.entry),
         html: manifest.html.map(|path| root.join(path)),
         compiled_ui,

@@ -194,6 +194,7 @@ impl App {
         let (input, events) = window_input::channel();
         let proxy = self.proxy.clone();
         let worker = Worker {
+            native_webgl: options.native_webgl,
             frames: options.frames,
             resources: options.resources,
             document: options.document,

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "profile": "compiled-dom-window-v1",
+  "name": "native-webgl-demo",
+  "target": "macos-arm64",
+  "entry": "app/main.mjs",
+  "compiledUi": {
+    "path": "app/ui.json",
+    "format": "3jsn-static-ui-experiment",
+    "version": 1,
+    "htmlParser": "restricted"
+  },
+  "font": "app/font.woff2",
+  "requires": [
+    "native-webgl-angle-metal-v1"
+  ],
+  "nativeWebgl": {
+    "backend": "angle-metal",
+    "abiVersion": 1,
+    "directory": "app/native/angle"
+  },
+  "files": [
+    {
+      "path": "app/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    {
+      "path": "app/main.mjs",
+      "bytes": 1123191,
+      "sha256": "c1cd636f806dd26728e4aa6528cd529902f5156f22005ba68f749ecf053aafb4"
+    },
+    {
+      "path": "app/main.mjs.map",
+      "bytes": 2859539,
+      "sha256": "5315674084e447aa03e8b0cc77102524669cbda1884123e359c62ee30cc4d50f"
+    },
+    {
+      "path": "app/native/angle/LICENSES",
+      "bytes": 3368,
+      "sha256": "5fdf30afb123c9efd877e452746494b7d84c1481dc798ebad9918107e4df01d7"
+    },
+    {
+      "path": "app/native/angle/libEGL.dylib",
+      "bytes": 490880,
+      "sha256": "e4091a6fea3378ade82700b3c98ee83c44852aa62115762aa50829de99882b5e"
+    },
+    {
+      "path": "app/native/angle/libGLESv2.dylib",
+      "bytes": 15068592,
+      "sha256": "3de821957074b816860d3e4527a84e855dde17481e1dfa7f2e33a2c91434ff6e"
+    },
+    {
+      "path": "app/ui.json",
+      "bytes": 26076,
+      "sha256": "8a60e62aa69f58b239d2a191da9dfbf1be7d4a7a11d48fb92e57f28543f6dcf5"
+    }
+  ]
+}

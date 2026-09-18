@@ -1,4 +1,5 @@
 use super::*;
+use threejs_native_package::load_for;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
@@ -98,7 +99,12 @@ fn description_advertises_exact_profile_and_compiled_parser_contract() {
     assert_eq!(value["packageVersions"], json!([1]));
     assert_eq!(value["profiles"], json!([COMPILED_DOM_PROFILE]));
     assert_eq!(value["packageProfiles"], value["profiles"]);
-    assert_eq!(value["capabilities"], json!([DOM_FONT_CAPABILITY]));
+    let expected = if cfg!(feature = "native-webgl") {
+        json!([DOM_FONT_CAPABILITY, threejs_native_package::NATIVE_WEBGL_CAPABILITY])
+    } else {
+        json!([DOM_FONT_CAPABILITY])
+    };
+    assert_eq!(value["capabilities"], expected);
     assert_eq!(value["backend"], "metal");
     assert_eq!(
         value["compiledUi"],
@@ -384,4 +390,33 @@ fn direct_window_and_measurement_commands_preserve_explicit_inputs() {
     assert!(options.verify);
     assert!(options.resources.is_empty());
     assert_eq!(options.behavior, fixture.0.join("behavior.js"));
+}
+
+#[cfg(target_os = "macos")]
+#[test]
+fn native_webgl_package_preflight_selects_verified_directory_or_rejects_player() {
+    let fixture = Fixture::new();
+    let path = fixture.write(&ui(), parser_mode(), false);
+    let mut manifest: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    fs::create_dir_all(fixture.0.join("app/native/angle")).unwrap();
+    for name in ["libEGL.dylib", "libGLESv2.dylib", "LICENSES"] {
+        let relative = format!("app/native/angle/{name}");
+        let bytes = b"integrity control only; verification must not dlopen";
+        fs::write(fixture.0.join(&relative), bytes).unwrap();
+        manifest["files"].as_array_mut().unwrap().push(json!({
+            "path":relative,"bytes":bytes.len(),"sha256":format!("{:x}",Sha256::digest(bytes))
+        }));
+    }
+    manifest["nativeWebgl"] = json!({"backend":"angle-metal","abiVersion":1,"directory":"app/native/angle"});
+    manifest["requires"] = json!([threejs_native_package::NATIVE_WEBGL_CAPABILITY]);
+    fixture.write_manifest(&manifest);
+    let result = parse(&fixture.command("--app"), &fixture.executable());
+    if cfg!(feature = "native-webgl") {
+        let Command::Run(options) = result.unwrap() else { panic!("not a run command") };
+        assert_eq!(options.native_webgl, Some(fixture.0.canonicalize().unwrap().join("app/native/angle")));
+        assert!(matches!(parse(&fixture.command("--verify-app"), &fixture.executable()).unwrap(), Command::Verified));
+    } else {
+        let error = result.err().expect("non-WebGL player accepted native libraries").to_string();
+        assert!(error.contains(threejs_native_package::NATIVE_WEBGL_CAPABILITY), "{error}");
+    }
 }

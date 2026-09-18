@@ -26,6 +26,7 @@ impl DocumentInput {
 }
 
 pub struct Options {
+    pub native_webgl: Option<PathBuf>,
     pub font: Vec<u8>,
     pub document: DocumentInput,
     pub module: PathBuf,
@@ -52,6 +53,14 @@ pub fn description() -> serde_json::Value {
         "backend": "metal",
         "v8": deno_core::v8::V8::get_version(),
     })
+}
+
+fn loose_native_webgl() -> Result<Option<PathBuf>> {
+    let path = std::env::var_os("THREEJS_NATIVE_ANGLE_LIBRARY_DIR").map(PathBuf::from);
+    if path.is_some() && !cfg!(feature = "native-webgl") {
+        return Err("ANGLE selection requires a native-webgl player".into());
+    }
+    Ok(path)
 }
 
 fn frame_count(value: &OsString) -> Result<u64> {
@@ -83,6 +92,7 @@ fn from_application(app: Application, frames: Option<u64>) -> Result<Command> {
         module: app.entry,
         frames,
         resources: app.resources,
+        native_webgl: None,
     }))
 }
 
@@ -110,6 +120,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
                 module: PathBuf::from(module).canonicalize()?,
                 frames,
                 resources: Some(Vec::new()),
+                native_webgl: loose_native_webgl()?,
             }))
         }
         [] => package(&executable.with_file_name("app.json"), None),
@@ -125,6 +136,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
             module: PathBuf::from(module).canonicalize()?,
             frames: rest.first().map(frame_count).transpose()?,
             resources: None,
+            native_webgl: loose_native_webgl()?,
         })),
         _ => Err(USAGE.into()),
     }
