@@ -1,0 +1,23 @@
+{
+  "baseCommit": "341a015890ce6b144c54a00fe37e248aa4d1f532",
+  "files": {
+    "crates/package/src/compiled.rs": "58829f0d5c371743f2554f7ae0fae1faa2adc3f6a718ef114e7a96068a657ef1",
+    "crates/package/src/compiled_tests.rs": "41e9e6a678856676da9d142e9d3dec1d33f856d136188d18088d72d8f978fa9d",
+    "packages/cli/build.mjs": "3d2d20209c1206dac47a342364ec410b39694b65438297d90aad54bfa8c1b876",
+    "packages/cli/build.test.mjs": "30df7864c789d9c169886ccff6fd016629e86d9771e9f78bf1c074e8058208c6"
+  },
+  "logs": {
+    "ordering-red.log": "8b35c838454d86ce7a3b70584ae7ec0fb790039c85fdf0de99e41a0eb46aa272",
+    "cli-tests.log": "b85e74d1d2a1817b2e61d95dc891181f964746018665ed0ec701669b9ba8fe19",
+    "package-tests.log": "cde86ef8b816291d52ce9fcc82958f276647c231659e0ba3941df189ddcd8ae7",
+    "package-clippy.log": "ff2476a41d6e6ff0407b399f66ca2ed8d078ee326f24e819f0b199c57688e32f"
+  },
+  "results": {
+    "orderingBaseline": "1 expected failure: locale collation places _helper.ts before Alpha.ts",
+    "focusedCli": "30 passed",
+    "compiledPackageTests": "8 passed, 18 filtered out",
+    "packageClippy": "passed all targets with -D warnings"
+  },
+  "gpu": false,
+  "committed": false
+}

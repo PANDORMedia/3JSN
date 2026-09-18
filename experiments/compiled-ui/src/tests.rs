@@ -368,3 +368,125 @@ fn validates_diagnostic_truncation_and_total_attribute_bound() {
         Err(LoadError::Limit("total attributes"))
     ));
 }
+
+fn contract_fixture() -> Value {
+    json!({
+        "format": crate::contract::FORMAT, "version": 1,
+        "source": {"name":"contract.html", "sha256":"0".repeat(64), "byteLength":0},
+        "document":{"mode":"no-quirks","scriptingEnabled":false},
+        "nodes":[
+            {"kind":"document","children":[1],"source":null},
+            {"kind":"element","name":"html","namespace":"http://www.w3.org/1999/xhtml",
+             "prefix":null,"attributes":[],"children":[],"templateContents":null,"source":null}
+        ],
+        "diagnostics":[],"diagnosticsTotal":0,"diagnosticsTruncated":false
+    })
+}
+
+fn validate_contract(value: Value) -> Result<(), LoadError> {
+    serde_json::from_value::<CompiledUi>(value)
+        .unwrap()
+        .validate()
+}
+
+#[test]
+fn contract_node_limit_accepts_boundary_and_rejects_one_more() {
+    use crate::contract::MAX_NODES;
+    for count in [MAX_NODES, MAX_NODES + 1] {
+        let mut input = contract_fixture();
+        input["nodes"][1]["children"] = json!((2..count).collect::<Vec<_>>());
+        let nodes = input["nodes"].as_array_mut().unwrap();
+        nodes.extend((2..count).map(|_| json!({"kind":"comment","value":"","source":null})));
+        let result = validate_contract(input);
+        if count == MAX_NODES {
+            assert!(result.is_ok());
+        } else {
+            assert!(matches!(result, Err(LoadError::Limit("node count"))));
+        }
+    }
+}
+
+#[test]
+fn contract_tree_depth_accepts_boundary_and_rejects_one_more() {
+    use crate::contract::MAX_DEPTH;
+    for depth in [MAX_DEPTH, MAX_DEPTH + 1] {
+        let mut input = contract_fixture();
+        let element = input["nodes"][1].clone();
+        let nodes = input["nodes"].as_array_mut().unwrap();
+        nodes.extend((2..=depth).map(|_| element.clone()));
+        for (index, node) in nodes.iter_mut().enumerate().take(depth).skip(1) {
+            node["children"] = json!([index + 1]);
+        }
+        let result = validate_contract(input);
+        if depth == MAX_DEPTH {
+            assert!(result.is_ok());
+        } else {
+            assert!(matches!(result, Err(LoadError::Limit("tree depth"))));
+        }
+    }
+}
+
+#[test]
+fn contract_string_limit_counts_utf8_bytes_for_text_and_metadata_keys() {
+    use crate::contract::MAX_STRING_BYTES;
+    for oversized in [false, true] {
+        let text = format!(
+            "{}{}",
+            "é".repeat(MAX_STRING_BYTES / 2),
+            if oversized { "a" } else { "" }
+        );
+        for metadata in [false, true] {
+            let mut input = contract_fixture();
+            if metadata {
+                input["nodes"][1]["source"] = json!({text.clone(): null});
+            } else {
+                input["nodes"][1]["children"] = json!([2]);
+                input["nodes"]
+                    .as_array_mut()
+                    .unwrap()
+                    .push(json!({"kind":"text","value":text,"source":null}));
+            }
+            let result = validate_contract(input);
+            if oversized {
+                assert!(matches!(
+                    result,
+                    Err(LoadError::Limit("individual UTF-8 string"))
+                ));
+            } else {
+                assert!(result.is_ok());
+            }
+        }
+    }
+}
+
+#[test]
+fn contract_metadata_depth_and_diagnostic_count_are_bounded() {
+    use crate::contract::MAX_DEPTH;
+    // Direct typed validation exercises our bound independently of serde's
+    // separate serialized-JSON recursion guard.
+    for depth in [MAX_DEPTH, MAX_DEPTH + 1] {
+        let mut metadata = Value::Null;
+        for _ in 0..depth {
+            metadata = json!([metadata]);
+        }
+        let mut input = contract_fixture();
+        input["nodes"][1]["source"] = metadata;
+        let result = validate_contract(input);
+        if depth == MAX_DEPTH {
+            assert!(result.is_ok());
+        } else {
+            assert!(matches!(result, Err(LoadError::Limit("metadata depth"))));
+        }
+    }
+    for count in [1000, 1001] {
+        let mut input = contract_fixture();
+        input["diagnostics"] = json!(vec![Value::Null; count]);
+        input["diagnosticsTotal"] = json!(count);
+        let result = validate_contract(input);
+        if count == 1000 {
+            assert!(result.is_ok());
+        } else {
+            assert!(matches!(result, Err(LoadError::Limit("diagnostic count"))));
+        }
+    }
+}

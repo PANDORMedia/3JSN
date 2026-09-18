@@ -208,6 +208,14 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
         }
         Read::Query { id, selector, all } => {
             let id = node_id(doc, &id)?;
+            if !matches!(
+                doc.get_node(id).unwrap().data,
+                NodeData::Element(_) | NodeData::Document(_)
+            ) {
+                return Err(JsErrorBox::type_error(
+                    "Selectors require an Element or Document",
+                ));
+            }
             if all {
                 let ids = doc
                     .query_selector_all_in(id, &selector)
@@ -246,6 +254,7 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
         }
         Read::Rect { id } => {
             let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
             doc.resolve(state.started.elapsed().as_secs_f64());
             let rect = doc
                 .get_client_bounding_rect(id)
@@ -399,6 +408,7 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
             let parse =
                 parser.ok_or_else(|| JsErrorBox::generic(capabilities::HTML_PARSER_UNAVAILABLE))?;
             let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
             let mut mutator = doc.mutate();
             // set_inner_html drops old children, which would invalidate retained wrappers.
             for child in mutator.child_ids(id) {
@@ -469,6 +479,7 @@ fn op_observe(state: &mut OpState, #[string] message: String) -> Result<(), JsEr
 #[cfg(test)]
 mod tests {
     use super::*;
+    use deno_error::JsErrorClass;
 
     fn state(parser: Option<HtmlFragmentParser>) -> (DomState, NodeId, NodeId) {
         let mut document = BaseDocument::new(Default::default());
@@ -499,6 +510,44 @@ mod tests {
     fn fragment_callback(dom: &mut DocumentMutator<'_>, parent: NodeId, value: &str) {
         let text = dom.create_text_node(&format!("callback:{value}"));
         dom.append_children(parent, &[text]);
+    }
+
+    #[test]
+    fn non_element_html_rejects_before_parser_or_tree_mutation() {
+        fn unexpected_parser(_: &mut DocumentMutator<'_>, _: NodeId, _: &str) {
+            panic!("non-element receiver reached the fragment parser");
+        }
+        for receiver_is_document in [false, true] {
+            let (mut state, parent, retained) = state(Some(unexpected_parser));
+            let root = state.document.root_node().id;
+            let receiver = if receiver_is_document { root } else { retained };
+            let error = mutate_dom(
+                &mut state,
+                Mutation::Html {
+                    id: receiver.as_u64().to_string(),
+                    value: "<b>replacement</b>".into(),
+                },
+            )
+            .unwrap_err();
+            assert_eq!(error.get_class(), "TypeError");
+            assert_eq!(
+                state.document.get_node(root).unwrap().children.as_slice(),
+                &[parent]
+            );
+            assert_eq!(state.document.get_node(parent).unwrap().parent, Some(root));
+            assert_eq!(
+                state.document.get_node(parent).unwrap().children.as_slice(),
+                &[retained]
+            );
+            assert_eq!(
+                state.document.get_node(retained).unwrap().parent,
+                Some(parent)
+            );
+            assert_eq!(
+                state.document.get_node(retained).unwrap().text_content(),
+                "retained"
+            );
+        }
     }
 
     #[test]

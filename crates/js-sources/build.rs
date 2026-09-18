@@ -1,3 +1,6 @@
+// Embedded Deno source retains its upstream headers; see THIRD_PARTY_NOTICES.md
+// and LICENSES/Deno-MIT.txt at the repository root.
+
 use std::{collections::BTreeMap, env, fmt::Write, fs, path::PathBuf, sync::Arc};
 
 use deno_core::{Extension, ExtensionFileSourceCode};

@@ -151,9 +151,7 @@ pub(super) fn set_text_content(
 
 pub(super) fn require_element(document: &BaseDocument, id: NodeId) -> Result<(), JsErrorBox> {
     if !matches!(document.get_node(id).unwrap().data, NodeData::Element(_)) {
-        return Err(JsErrorBox::type_error(
-            "Attribute operations require an Element",
-        ));
+        return Err(JsErrorBox::type_error("Operation requires an Element"));
     }
     Ok(())
 }

@@ -1,0 +1,43 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/web-fonts/fontique)
+   Compiling blitz-traits v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/dom-canvas/blitz/packages/blitz-traits)
+   Compiling stylo_taffy v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/dom-canvas/blitz/packages/stylo_taffy)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/review-pr58/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/dom-canvas/blitz/packages/blitz-dom)
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-html v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/review-pr58/.cache/dom-canvas/blitz/packages/blitz-html)
+   Compiling threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr58/experiments/compiled-ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.13s
+     Running unittests src/lib.rs (/Users/sean/dev/3JSN/target/debug/deps/threejs_compiled_ui_experiment-c73427eec189fb19)
+
+running 20 tests
+test parser_policy_tests::shared_requirement_tracks_html_and_actual_foreign_iframe_hook ... ok
+test parser_policy_tests::explicit_restricted_loading_rejects_caller_parser_without_invoking_it ... ok
+test parser_policy_tests::restricted_startup_includes_iframes_in_inert_templates ... ok
+test tests::contract_string_limit_counts_utf8_bytes_for_text_and_metadata_keys ... ok
+test parser_policy_tests::restricted_preflight_rejects_iframes_before_earlier_resource_attachment ... ok
+test tests::contract_tree_depth_accepts_boundary_and_rejects_one_more ... ok
+test tests::contract_metadata_depth_and_diagnostic_count_are_bounded ... ok
+test parser_policy_tests::restricted_static_construction_keeps_ordinary_nodes_and_reports_absent_parser ... ok
+test parser_policy_tests::ordinary_api_preserves_explicit_provider_in_both_feature_configurations ... ok
+test parser_policy_tests::default_feature_keeps_the_maintained_html_provider_and_subdocuments ... ok
+test tests::contract_node_limit_accepts_boundary_and_rejects_one_more ... ok
+test tests::namespaced_attributes_text_and_comments_match_interpreted_tree ... ok
+test tests::initial_tree_never_invokes_retained_dynamic_parser ... ok
+test tests::invalid_graph_and_unsupported_modes_fail_before_native_construction ... ok
+test tests::nested_template_contents_remain_inert_and_can_be_moved_into_live_document ... ok
+test tests::linked_stylesheet_and_import_use_the_same_provider_and_base_url ... ok
+test tests::styles_mutations_queries_and_responsive_layout_match_at_multiple_scales ... ok
+test tests::malformed_foster_parenting_and_style_source_order_match_interpreted ... ok
+test tests::validates_diagnostic_truncation_and_total_attribute_bound ... ok
+test tests::shared_compiled_ui_fixtures_have_identical_native_trees_and_probe_rects ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+

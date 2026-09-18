@@ -1,5 +1,8 @@
 //! CPU delivery through the real DOM/window bindings. The target is obtained by
 //! native DOM query, so these tests do not establish hit testing or OS input.
+//! Microtasks checkpoint after each native record here, not between individual
+//! listeners as browser-originated event dispatch can require. This pins the
+//! current host behavior; it does not establish browser scheduling equivalence.
 
 use std::{
     error::Error,
