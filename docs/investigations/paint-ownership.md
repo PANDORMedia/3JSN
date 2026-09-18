@@ -1,7 +1,8 @@
 # Paint ownership in the HTML candidate
 
-Status: source audit and proposed next boundary. This is not an adopted renderer
-or a claim of HTML compatibility. The [positioned candidate](../../experiments/dom-canvas/POSITIONED.md)
+Status: an isolated, read-only ownership plan and shared clip geometry. The plan
+does not replace rendering or hit traversal and is not a claim of HTML compatibility.
+The [positioned candidate](../../experiments/dom-canvas/POSITIONED.md)
 already has correct geometry for the public auto-paint fixture, but its recursive
 paint lists cannot express the required order across containing blocks.
 
@@ -25,13 +26,22 @@ Explicit zero, fixed/sticky auto, and static transform/effect contexts have
 different atomicity. See [CSS Position](https://www.w3.org/TR/css-position-3/#painting-order)
 and [CSS painting order](https://www.w3.org/TR/CSS22/zindex.html).
 
-## Proposed collection boundary
+## Collection boundary
 
 Use one post-layout ownership pass in Blitz, replacing the competing list writers.
 Reuse the existing formatting ranks and stacking-entry representation. Each
 entry must identify its node, geometry owner, real context, paint phase and rank.
 Validate exactly-once participation and live, rooted owners before rendering.
 Do not maintain a second tree by mutating DOM or layout parent relationships.
+
+The candidate now exposes `PaintOwnershipPlan::build(&BaseDocument)` as a
+read-only precursor to that replacement. Entries record geometry and paint
+owners, enclosing real context, phase, formatting rank and coordinate prefix.
+The plan borrows its resolved document; callers must also avoid writes through
+public interior layout cells while retaining it. Rebuild after the next resolve.
+The diagnostic executable consumes this API on the same JavaScript mutations
+used for browser/native captures and records the existing lists alongside it.
+It does not install its proposed attachments in those lists.
 
 Read current computed styles when classifying contexts. An identity transform
 still creates a context, and a cached matrix can describe the previous resolve.
@@ -55,6 +65,12 @@ without an out-of-flow attachment can otherwise keep zero or previous-frame
 bounds, suppressing valid input before traversal reaches the child.
 Unsupported 3D, singular transforms, scrolling or fragments need diagnostics;
 they must not silently become identity transforms or ordinary boxes.
+The current plan rejects these cases, floats and unsupported computed context
+triggers with a node and issue code. It cannot diagnose declarations discarded
+by the pinned parser: `transform-box`, for example, is Gecko-only in this Stylo
+build, so the candidate still uses the existing border-box transform resolver.
+Alternate transform reference boxes remain unsupported. This bounded contract
+is deliberate; a successful plan is not a painting pass or a CSS support report.
 
 ## Clips cannot be inherited as one blanket layer
 
@@ -65,18 +81,26 @@ B's own pixels may be clipped by A while C escapes A, yet both must share B's
 single opacity operation. Replaying A's clip around the whole B group is wrong.
 See [CSS overflow clipping](https://www.w3.org/TR/CSS22/visufx.html#overflow-clipping).
 
+The [effect fixture](../../fixtures/paint-ownership/README.md) verifies this
+opacity counterexample. Its expanded clip-path variant behaves differently in
+the recorded Chrome reference: fixed C remains clipped at A despite unchanged
+reported geometry. The cause remains unresolved. Do not derive a common clip
+eligibility rule or a containing-block change from this pair alone.
+
 Retain clip eligibility per painted content/entry and preserve atomic effects
 separately. CSS rect clips, overflow clips and clip-paths have distinct rules.
 Opacity and alpha masks do not define input exclusion; clip-path does. See
 [CSS Masking](https://www.w3.org/TR/css-masking-1/).
 
-Blitz's current hit path does not evaluate overflow or shape clips. Paint's
-`CssBox` paths and clip resolvers are private, so copying their radius math into
-hit testing would create two implementations. Extract the existing pure geometry
-into a shared DOM-side module consumed by paint and hit testing; this preserves
-the current dependency direction. Distinguish unsupported clip geometry from
-an absent clip. The layer manager's cumulative push limit also needs an observable
-failure before any collector starts replaying ancestor clips.
+Blitz's current hit path does not evaluate overflow or shape clips. The candidate
+moves the existing `CssBox` and corner-radius implementation from paint into
+`blitz_dom::geometry`; painting imports that one implementation. Shared padding
+and content path predicates are available for future hit traversal. They use
+nonzero winding and close every open subpath, matching filled-path semantics.
+They do not decide which ancestor clips apply. Clip-path resolution, clip
+eligibility and hit traversal remain separate work. Distinguish unsupported clip
+geometry from an absent clip. The layer manager's cumulative push limit also
+needs an observable failure before any collector starts replaying ancestor clips.
 
 ## Validation order
 
@@ -84,11 +108,11 @@ failure before any collector starts replaying ancestor clips.
 2. Produce a diagnostic ownership plan before changing rendering. Check exactly
    one attachment, auto versus zero, real fixed/sticky contexts, static effects,
    CSS order, generated boxes, hidden wrappers and restoration.
-3. Replace collection, then verify pixels and reverse hit order against shared
+3. Share clip geometry and validate containing-block escape through effect
+   groups, rounded corners, CSS clips, input, root offsets and scrolling.
+4. Replace collection, then verify pixels and reverse hit order against shared
    browser fixtures. Retain every previously passing case and explain changes
    in already-failing cases.
-4. Extract shared clip geometry and validate containing-block escape through
-   effect groups, rounded corners, CSS clips, input, root offsets and scrolling.
 5. Measure traversal and layer costs before introducing invalidation caches.
 
 The [auto-paint fixture](../../fixtures/auto-paint/README.md) records initial

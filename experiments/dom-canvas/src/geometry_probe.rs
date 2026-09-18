@@ -11,26 +11,8 @@ mod geometry_tests;
     dead_code,
     reason = "Reuse the authoritative DOM ops without the prior executable scenarios."
 )]
-mod dom {
-    include!("../../html-v8/src/main.rs");
-
-    pub fn create(html: &str) -> JsRuntime {
-        let mut extension = html_v8_probe::init(DomState {
-            document: HtmlDocument::from_html(html, DocumentConfig::default()).into_inner(),
-            started: Instant::now(),
-            messages: vec![],
-        });
-        extension.esm_files = vec![deno_core::ExtensionFileSource::new(
-            "ext:html_v8_probe/bindings.js",
-            deno_core::ascii_str_include!("../../html-v8/src/bindings.js"),
-        )]
-        .into();
-        JsRuntime::new(RuntimeOptions {
-            extensions: vec![extension],
-            ..Default::default()
-        })
-    }
-}
+#[path = "dom_diagnostic_host.rs"]
+mod dom;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<_> = std::env::args_os().skip(1).collect();
@@ -39,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let html = fs::read_to_string(&args[0])?;
     let script = fs::read_to_string(&args[1])?;
-    let mut runtime = dom::create(&html);
+    let mut runtime = dom::create(&html, blitz_dom::DocumentConfig::default());
     runtime.execute_script("probe:geometry-fixture", script.clone())?;
     let result = runtime.execute_script("probe:geometry-result", "domGeometry.run()")?;
     let report: Value = {

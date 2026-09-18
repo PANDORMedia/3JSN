@@ -5,11 +5,12 @@ import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { PNG } from 'pngjs';
 import { withBrowserSession } from './browser-session.mjs';
+import { subjectColor } from './paint-colors.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const [executable, outputArgument, fixture = 'overflow-paint'] = process.argv.slice(2);
-if (!executable || !outputArgument || process.argv.length > 5 || !['overflow-paint', 'positioned-layout', 'initial-containing-block', 'paint-order', 'auto-paint'].includes(fixture)) {
-  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir> [overflow-paint|positioned-layout|initial-containing-block|paint-order|auto-paint]');
+if (!executable || !outputArgument || process.argv.length > 5 || !['overflow-paint', 'positioned-layout', 'initial-containing-block', 'paint-order', 'auto-paint', 'paint-ownership'].includes(fixture)) {
+  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir> [overflow-paint|positioned-layout|initial-containing-block|paint-order|auto-paint|paint-ownership]');
   process.exit(2);
 }
 const output = resolve(outputArgument);
@@ -20,6 +21,7 @@ const sources = [
   `fixtures/${fixture}/cases.json`, 'scripts/compatibility/paint-reference.mjs',
   'scripts/compatibility/browser-session.mjs', 'scripts/compatibility/fixture-server.mjs',
   'package-lock.json',
+  'scripts/compatibility/paint-colors.mjs',
 ];
 
 try {
@@ -30,7 +32,8 @@ try {
     const requested = JSON.parse(contents[2].toString('utf8'));
     assert(Array.isArray(requested) && requested.length > 0, 'Paint cases must be a nonempty array.');
     const filenames = new Set();
-    for (const { name, scale = 1 } of requested) {
+    for (const { name, scale = 1, subjectColor: color } of requested) {
+      subjectColor(color);
       assert(typeof name === 'string' && /^[a-z0-9][a-z0-9_-]*$/.test(name), 'Invalid paint case name.');
       assert(typeof scale === 'number' && Number.isFinite(scale) && scale > 0
         && Number.isSafeInteger(cssViewport.width * scale) && Number.isSafeInteger(cssViewport.height * scale),
@@ -59,7 +62,7 @@ try {
     }
 
     const cases = [];
-    for (const { name, scale = 1 } of requested) {
+    for (const { name, scale = 1, subjectColor: color } of requested) {
       await command('Emulation.setDeviceMetricsOverride', { ...cssViewport, deviceScaleFactor: scale, mobile: false });
       const layout = await evaluate(`(async () => {
         await clipFixture.prepare(${JSON.stringify(name)});
@@ -84,7 +87,8 @@ try {
       assert.equal(png.height, height, `Wrong physical screenshot height for ${name}.`);
       const file = `${name}-${scale}x.png`;
       await writeFile(resolve(output, file), bytes, { signal });
-      cases.push({ name, scale, width, height, layout, pixelSha256: hash(png.data), file });
+      cases.push({ name, scale, width, height, layout, pixelSha256: hash(png.data), file,
+        ...(color === undefined ? {} : { subjectColor: color }) });
     }
     for (const input of fixtureInputs) {
       assert.equal(hash(await readFile(resolve(root, input.path), { signal })), input.sha256,

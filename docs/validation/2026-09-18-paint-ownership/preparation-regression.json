@@ -1,0 +1,12 @@
+{
+  "freshPreparationsIdentical": true,
+  "readOnlyCheckIdentical": true,
+  "addedFileTamperRejected": true,
+  "removedFileResurrectionRejected": true,
+  "symlinkRejected": true,
+  "restoredSourceVerified": true,
+  "normalDefaultPreparationUnchanged": true,
+  "verifiedTrackedFiles": 413,
+  "verifiedAddedFiles": 6,
+  "verifiedRemovedFiles": 3
+}

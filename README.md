@@ -113,6 +113,10 @@ matrix improves to 5/17, while correct transform removal exposes a prior one-fra
 clip pass as unstable. The candidate remains unadopted; the
 [paint-ownership investigation](docs/investigations/paint-ownership.md) records the
 shared paint/input/clip boundary needed next.
+The [ownership checkpoint](docs/validation/2026-09-18-paint-ownership.md) now adds
+a read-only diagnostic plan and shared rounded-box geometry. All 112 native
+paint case records remain unchanged; the new effect fixture still matches only
+10/18 browser cases. Renderer adoption and clip-aware input remain open.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

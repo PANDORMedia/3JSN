@@ -42,6 +42,22 @@ struct Case {
     name: String,
     #[serde(default = "default_scale")]
     scale: f32,
+    #[serde(default, rename = "subjectColor", deserialize_with = "subject_color")]
+    subject_color: Option<[u8; 4]>,
+}
+
+fn subject_color<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<Option<[u8; 4]>, D::Error> {
+    let channels = <[f64; 4]>::deserialize(deserializer)?;
+    if !channels.iter().all(|channel| {
+        channel.is_finite() && (0.0..=255.0).contains(channel) && channel.fract() == 0.0
+    }) {
+        return Err(serde::de::Error::custom(
+            "subjectColor must contain four integer RGBA channels in 0..255",
+        ));
+    }
+    Ok(Some(channels.map(|channel| channel as u8)))
 }
 
 fn default_scale() -> f32 {
@@ -191,11 +207,15 @@ async fn main() -> Result<()> {
             check(gpu_errors == json!([]), &format!("Deno GPU errors: {gpu_errors}"))?;
             let file = format!("{index:03}-case.png");
             save_png(&output.join(&file), &pixels, width, height)?;
-            captures.push(json!({
+            let mut capture = json!({
                 "name":case.name,"scale":case.scale,"width":width,"height":height,
                 "layout":layout,"paint":paint,"paintCalls":1,"gpuErrors":gpu_errors,
                 "pixelSha256":evidence::sha256(&pixels),"file":file
-            }));
+            });
+            if let Some(color) = case.subject_color {
+                capture["subjectColor"] = json!(color);
+            }
+            captures.push(capture);
             target.take().unwrap().destroy();
         }
         Ok(json!({

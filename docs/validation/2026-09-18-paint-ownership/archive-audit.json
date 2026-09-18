@@ -1,0 +1,8 @@
+{
+  "archivedPngRgbaHashesVerified": 54,
+  "recordedSourceHashesVerified": 64,
+  "recordedExecutableHashesVerified": 4,
+  "planAuditBoundToReport": true,
+  "fixtureInputsUnchanged": true,
+  "baselineAndCandidateCasesIdentical": true
+}

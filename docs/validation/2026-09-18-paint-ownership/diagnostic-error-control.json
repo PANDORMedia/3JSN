@@ -1,0 +1,10 @@
+{
+  "exitCode": 1,
+  "reportSaved": true,
+  "issue": "UnsupportedFloat",
+  "elementId": "middle",
+  "script": "globalThis.clipFixture = { prepare() { document.getElementById('middle').setAttribute('style', 'float:left;width:80px;height:40px'); } };\n",
+  "cases": "[{\"name\":\"float-error\"}]\n",
+  "reportSha256": "d8dded2cc605f2449bb0034efd0699ca2cc8ef10efeec37c579aba06d766d726",
+  "executableSha256": "0f2fccfda9c6494be35f9bff95e084427b995c6367fe063ed2be306e545ab2d2"
+}

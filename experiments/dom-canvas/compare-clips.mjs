@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { PNG } from 'pngjs';
+import { createSubjectColorMatcher } from '../../scripts/compatibility/paint-colors.mjs';
 
 const [browserDirectory, nativeDirectory, outputFile] = process.argv.slice(2);
 if (!browserDirectory || !nativeDirectory || !outputFile || process.argv.length !== 5) {
@@ -31,6 +32,8 @@ async function image(directory, capture) {
 const comparisons = [];
 for (const [index, expected] of browser.cases.entries()) {
   const actual = native.cases[index];
+  assert.deepEqual(actual.subjectColor, expected.subjectColor, 'Subject reference colors differ');
+  const matchesSubjectColor = createSubjectColorMatcher(expected.subjectColor);
   for (const field of ['name', 'scale', 'width', 'height']) assert.equal(actual[field], expected[field]);
   assert.equal(actual.width, native.cssViewport.width * actual.scale);
   assert.equal(actual.height, native.cssViewport.height * actual.scale);
@@ -47,7 +50,7 @@ for (const [index, expected] of browser.cases.entries()) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const offset = (y * width + x) * 4;
-      if ([224, 32, 48, 255].every((channel, i) => reference.data[offset + i] === channel)) subjectReferencePixels++;
+      if (matchesSubjectColor(reference.data, offset)) subjectReferencePixels++;
       const differs = [0, 1, 2, 3].some(channel => Math.abs(reference.data[offset + channel] - capture.data[offset + channel]) > 2);
       if (differs) differingPixels++;
       if (x === 0 || y === 0 || x === width - 1 || y === height - 1) continue;
@@ -81,6 +84,7 @@ for (const [index, expected] of browser.cases.entries()) {
     }
   }
   comparisons.push({ name: expected.name, scale: expected.scale,
+    ...(expected.subjectColor === undefined ? {} : { subjectColor: expected.subjectColor }),
     interiorAndGeometryMatch: differingInteriorPixels === 0 && geometryDifferences.length === 0,
     differingPixels, interiorPixels, differingInteriorPixels, subjectReferencePixels, firstInteriorDifference, geometryDifferences,
     browser: { file: expected.file, pixelSha256: expected.pixelSha256 },
@@ -93,7 +97,8 @@ const report = { schemaVersion: 1, status: passed === comparisons.length ? 'pass
   limits: ['Edges are counted separately; interior parity does not prove identical antialiasing.', 'Only the recorded ordered cases, viewport and device scales were compared.'],
   inputs: { browserReportSha256: sha256(await readFile(resolve(browserDirectory, 'report.json'))),
     nativeReportSha256: sha256(await readFile(resolve(nativeDirectory, 'report.json'))),
-    comparatorSha256: sha256(await readFile(import.meta.filename)) },
+    comparatorSha256: sha256(await readFile(import.meta.filename)),
+    subjectColorHelperSha256: sha256(await readFile(new URL('../../scripts/compatibility/paint-colors.mjs', import.meta.url))) },
   cases: comparisons };
 await writeFile(outputFile, `${JSON.stringify(report, null, 2)}\n`);
 console.table(comparisons.map(item => ({ case: item.name, scale: item.scale, interiorDifferences: item.differingInteriorPixels, geometryDifferences: item.geometryDifferences.length, match: item.interiorAndGeometryMatch })));

@@ -1,0 +1,15 @@
+{
+  "input": "[{\"name\":\"opacity-relative-clipped\",\"subjectColor\":[240.0,144e0,1.52e2,255.0]}]\n",
+  "exitCode": 0,
+  "canonicalColor": [
+    240,
+    144,
+    152,
+    255
+  ],
+  "pixelSha256": "0896f85b5294eae6f1689ec0d0f84b5cc62c678c50ca9da61c612942fa978443",
+  "canonicalCasePixelsAndGeometryUnchanged": true,
+  "gpuErrors": [],
+  "metalValidationObserved": true,
+  "binarySha256": "3514dac43df41e8b0d2e294805ac0a237c03a88caa33a23266855a9353e4632d"
+}

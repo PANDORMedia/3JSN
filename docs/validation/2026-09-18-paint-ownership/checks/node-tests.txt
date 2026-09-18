@@ -1,0 +1,33 @@
+
+> 3jsn@0.0.0 test
+> node --test scripts/compatibility/*.test.mjs
+
+✔ native frames snapshot callbacks, share time, and honor cancellation during dispatch (0.954167ms)
+✔ reference runner cleans up after SIGINT during startup (2532.067459ms)
+✔ reference runner cleans up after SIGTERM during command (421.379042ms)
+✔ static read failures return 404 and leave the fixture service usable (44.598084ms)
+✔ paint comparison retains the default opaque subject visibility guard (71.454791ms)
+✔ paint comparison accepts declared composited color rounding (55.874875ms)
+✔ identical images with too little visible composited subject cannot pass (52.815167ms)
+✔ paint comparison rejects different subject metadata between hosts (43.226333ms)
+✔ paint comparison rejects malformed subject channels (40.009667ms)
+✔ initial profile makes no unsupported certification and evidence paths exist (5.640167ms)
+✔ probe and browser reference cannot promote a native support claim (1.236875ms)
+✔ malformed and duplicate declarations fail validation (1.086792ms)
+✔ content identity is deterministic across ordering and timestamps, with explicit exclusions (12.248417ms)
+✔ same-size edits, deletion, addition and empty directory removal are reported (6.272083ms)
+✔ exclusions are root-relative, not a blanket exclusion of nested assets (5.282375ms)
+✔ manifest tampering, traversal, duplicates and invalid hashes fail closed (2.1375ms)
+✔ malformed JSON and unsupported manifest versions retain structured read errors (3.775583ms)
+✔ contained links preserve target content and link identity without walking aliases (11.835375ms)
+✔ external, excluded, dangling and cyclic links cannot hide unmeasured content (6.675708ms)
+✔ CLI captures outside the input tree and returns preservation failure after mutation (215.123917ms)
+✔ CLI rejects output aliases into the source tree (33.7135ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3008.7125

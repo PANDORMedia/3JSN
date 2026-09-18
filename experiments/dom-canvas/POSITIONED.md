@@ -12,6 +12,9 @@ The candidate matches 19/20 [paint-order captures](../../fixtures/paint-order/RE
 [auto-paint captures](../../fixtures/auto-paint/README.md), and 5/22
 [overflow captures](../../fixtures/overflow-paint/README.md). Both equal-z
 owner-merge regressions from the initial-owner checkpoint are repaired.
+The new [ownership/effect fixture](../../fixtures/paint-ownership/README.md)
+matches 10/18. Shared geometry and a read-only ownership plan preserve all 112
+native paint case records; see the [current checkpoint](../../docs/validation/2026-09-18-paint-ownership.md).
 Effect/z:auto ordering, transformed DOM geometry, ancestor clipping and input/
 scrolling gaps prevent adoption. See the
 [recorded evidence](../../docs/validation/2026-09-18-transform-context.md).
@@ -28,7 +31,7 @@ and uses the existing block and out-of-flow algorithms. It does not rewrite
 HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
 each resolve; descendant layout caches remain in use.
 
-Seven ordered patches define this candidate:
+Nine ordered patches define this candidate:
 
 | Patch | Responsibility |
 | --- | --- |
@@ -39,6 +42,8 @@ Seven ordered patches define this candidate:
 | `blitz-positioned-paint-order.patch` | Merge equal nonzero z-index entries in current formatting-tree order, preserving CSS order, generated boxes, source ties and retained nonparticipant slots. |
 | `blitz-transform-context.patch` | Classify transform contexts from current computed style, including identity transforms, with CSS-box applicability controls. |
 | `blitz-stacking-bounds.patch` | Refresh active stacking-list hit bounds after layout, including contexts without out-of-flow attachments. |
+| `blitz-shared-clip-geometry.patch` | Move the existing rounded-box geometry into DOM for painting and future clip predicates, removing its old paint-side copy. |
+| `blitz-paint-ownership.patch` | Build a read-only post-layout ownership plan with explicit unsupported errors; does not replace legacy rendering or hit lists. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
@@ -71,9 +76,9 @@ Neither normal `prepare.mjs` nor its prepared source is changed by this candidat
 Prerequisites: Node.js 24+, Git, tar, the normal experiment's cached dependencies,
 and a local Blitz Git repository containing the exact candidate commit.
 Preparation never fetches, checks out or resolves dependencies. It archives
-immutable Git objects, checks every tracked source file and the two explicit added
-modules, verifies patch hashes and resulting contents, and rejects extra files or
-symlinks. Do not prepare while building or capturing the same profile.
+immutable Git objects, checks 413 retained tracked files and six added modules,
+verifies three removed files stay absent, checks patch hashes and resulting
+contents, and rejects extra files or symlinks. Do not prepare while building or capturing the same profile.
 
 From the repository root:
 
@@ -97,13 +102,14 @@ requires that commit's preparation/build in a separate checkout, with the curren
 paint-order fixture inputs; retain its executable and preparation identity before
 building the fifth-patch candidate.
 The transform-context report instead uses the five-patch `de902ac` baseline;
-its preserved binary is compared to this seven-patch candidate with identical
+its preserved binary was compared to the seven-patch candidate with identical
 auto-paint inputs and the separate overflow transform-reset sequence.
 
 Generated manifests derive from the tracked experiment manifest. Paths become
 absolute, Blitz revisions change, and package/binary names are distinct. The
 tracked lock changes only the Taffy source and probe package name. Only the
-initial-owner profile adds the `positioned-layout` integration test target.
+initial-owner profile adds the `positioned-layout` integration test target and
+`threejs-positioned-paint-owner-probe` diagnostic executable.
 Generated paths stay ignored. Save preparation JSON and executable hashes with
 captures; do not attribute an old executable to newly prepared source.
 
@@ -183,3 +189,37 @@ MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
 Repeat the last command with the preserved `de902ac` binary and a separate output
 directory to observe the baseline's one-frame clip pass followed by failure.
 The normal matrix comparison intentionally exits 1 while parity is partial.
+
+## Inspect ownership without changing rendering
+
+The ninth patch exposes a post-layout `PaintOwnershipPlan` that keeps formatting
+ancestry, geometry owners and real stacking contexts separate. It only describes
+box contributions. The old paint and hit lists remain authoritative until clips,
+effect groups, bounds and reverse traversal can be preserved together.
+
+```sh
+target/debug/threejs-positioned-paint-owner-probe \
+  fixtures/paint-ownership/index.html fixtures/paint-ownership/fixture.js \
+  fixtures/paint-ownership/cases.json artifacts/paint-ownership/plan.json
+```
+
+Create the output directory first. The executable uses the existing V8 DOM
+bindings, executes each real fixture mutation and resolves once per case. It
+writes node/owner identities, phases, formatting ranks, current coordinate prefixes
+and legacy attachments. It requests no GPU. Exit 0 means the plan was collected,
+not that its proposed order rendered correctly; unsupported cases save a node
+and issue code and exit nonzero. It does not fall back to a different plan.
+
+Unsupported computed context triggers, floats, scrolling, 3D/singular transforms
+and positioned/effected non-atomic inline fragments are explicit gates. CSS
+declarations discarded by Stylo cannot be diagnosed from computed styles;
+`transform-box` remains such a gap. The plan's shared document borrow prevents
+ordinary mutable API calls, but callers must also avoid direct interior-cell
+writes until they discard it.
+
+The eighth patch moves the existing `CssBox` paths and radius implementation into
+DOM; paint imports that shared implementation. Padding/content point predicates
+close open paths and use nonzero winding. They provide geometry only: no clip
+eligibility, hit-test traversal or layer-budget change is implied. See the
+[ownership design](../../docs/investigations/paint-ownership.md) and
+[effect fixture](../../fixtures/paint-ownership/README.md).

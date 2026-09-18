@@ -1,0 +1,512 @@
+--- a/packages/blitz-dom/src/layout/paint_order.rs
++++ b/packages/blitz-dom/src/layout/paint_order.rs
+@@ -130,6 +130,24 @@
+         self.ranks.contains_key(&id)
+     }
+ 
++    pub(crate) fn rank(&self, id: NodeId) -> Option<usize> {
++        self.ranks.get(&id).copied()
++    }
++
++    pub(crate) fn participates(&self, id: NodeId) -> bool {
++        self.contains_node(id) && !self.nonparticipants.contains(&id)
++    }
++
++    pub(crate) fn is_nonparticipant(&self, id: NodeId) -> bool {
++        self.nonparticipants.contains(&id)
++    }
++
++    pub(crate) fn ordered_nodes(&self) -> Vec<NodeId> {
++        let mut nodes: Vec<_> = self.ranks.keys().copied().collect();
++        nodes.sort_unstable_by_key(|id| self.ranks[id]);
++        nodes
++    }
++
+     /// Call after z-index sorting. Zero-z attachment is a separate paint phase
+     /// and deliberately retains its existing order.
+     pub(crate) fn sort_nonzero_ties(&self, context: &mut HoistedPaintChildren) {
+--- a/packages/blitz-dom/src/lib.rs
++++ b/packages/blitz-dom/src/lib.rs
+@@ -52,6 +52,8 @@
+ /// Integration of taffy and the DOM.
+ mod layout;
+ mod mutator;
++/// A post-layout paint ownership plan, independent of geometry ownership.
++pub mod paint_ownership;
+ mod query_selector;
+ mod resolve;
+ /// Computation of resolved CSS property values (`getComputedStyle()`)
+--- /dev/null
++++ b/packages/blitz-dom/src/paint_ownership.rs
+@@ -0,0 +1,471 @@
++//! A post-layout ownership plan for box contributions. This does not modify the
++//! legacy paint lists or resolve clip applicability. Build after `resolve`; the
++//! document borrow ties the plan to its resolved input. Do not mutate interior
++//! layout cells while retaining it. Unsupported declarations discarded by the
++//! style parser (including Servo `transform-box`) cannot be diagnosed here.
++
++use std::collections::{HashMap, HashSet};
++use std::fmt;
++
++use style::computed_values::{isolation::T as Isolation, mix_blend_mode::T as MixBlendMode};
++use style::computed_values::{position::T as Position, transform_style::T as TransformStyle};
++use style::values::computed::{CSSPixelLength, Perspective, Rotate};
++use style::values::generics::motion::GenericOffsetPath;
++use style::values::generics::transform::{Scale, Translate};
++use style::values::specified::box_::{Contain, DisplayInside, WillChangeBits};
++use taffy::Point;
++
++use crate::layout::paint_order::PaintOrder;
++use crate::{BaseDocument, Node, NodeId, resolve_2d_transform};
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum PaintContextKind {
++    Ordinary,
++    PositionedAuto,
++    StackingContext,
++}
++
++/// Phases within one real stacking context. In-flow descendants retain their
++/// normal parent groups; positioned descendants escape pseudo contexts.
++#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
++pub enum PaintPhase {
++    Root,
++    Negative(i32),
++    InFlow,
++    Float,
++    Zero,
++    Positive(i32),
++}
++
++#[derive(Clone, Debug, PartialEq)]
++pub struct PaintOwnershipEntry {
++    pub node: NodeId,
++    pub geometry_owner: NodeId,
++    /// Enclosing real context, or the root itself for the root contribution.
++    pub real_sc_owner: NodeId,
++    /// Normal content group or real context that receives this contribution.
++    pub paint_owner: Option<NodeId>,
++    pub phase: PaintPhase,
++    pub formatting_rank: usize,
++    /// Geometry-owner origin in paint-owner coordinates, in CSS pixels. Add the
++    /// node's current layout location, then apply its own transform once.
++    pub prefix: Point<f32>,
++    pub context_kind: PaintContextKind,
++}
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum PaintOwnershipIssue {
++    UnresolvedDocument,
++    InvalidLayoutTree,
++    UnrootedBox,
++    MissingGeometryOwner,
++    UnsupportedGeometryOwner,
++    GeometryCycle,
++    UnsupportedInlineFragment,
++    UnsupportedScroll,
++    UnsupportedFloat,
++    UnsupportedTransform,
++    UnsupportedContextStyle,
++    CrossTransformSpace,
++    NonFiniteGeometry,
++}
++
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct PaintOwnershipError {
++    pub node: NodeId,
++    pub issue: PaintOwnershipIssue,
++}
++
++impl fmt::Display for PaintOwnershipError {
++    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(
++            formatter,
++            "paint ownership {:?} at {:?}",
++            self.issue, self.node
++        )
++    }
++}
++
++impl std::error::Error for PaintOwnershipError {}
++
++type Result<T> = std::result::Result<T, PaintOwnershipError>;
++
++pub struct PaintOwnershipPlan<'document> {
++    entries: Vec<PaintOwnershipEntry>,
++    index: HashMap<NodeId, usize>,
++    children: HashMap<NodeId, Vec<usize>>,
++    document: &'document BaseDocument,
++}
++
++impl fmt::Debug for PaintOwnershipPlan<'_> {
++    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
++        formatter
++            .debug_struct("PaintOwnershipPlan")
++            .field("entries", &self.entries)
++            .finish()
++    }
++}
++
++impl<'document> PaintOwnershipPlan<'document> {
++    pub fn build(document: &'document BaseDocument) -> Result<Self> {
++        let document_id = document.root_node().id;
++        let root = document
++            .try_root_element()
++            .ok_or_else(|| error(document_id, PaintOwnershipIssue::UnresolvedDocument))?
++            .id;
++        let scroll = document.viewport_scroll();
++        if scroll.x != 0.0 || scroll.y != 0.0 {
++            return Err(error(document_id, PaintOwnershipIssue::UnsupportedScroll));
++        }
++        let order = PaintOrder::new(document);
++        let boxes = collect_boxes(document, &order)?;
++        if !boxes.contains(&root) {
++            return Err(error(root, PaintOwnershipIssue::UnresolvedDocument));
++        }
++        let mut plan = Self {
++            entries: Vec::with_capacity(boxes.len()),
++            index: HashMap::with_capacity(boxes.len()),
++            children: HashMap::new(),
++            document,
++        };
++        let mut inherited = HashMap::from([(
++            document_id,
++            Context {
++                real: root,
++                normal: None,
++            },
++        )]);
++        let mut transformed = HashSet::new();
++        for id in order.ordered_nodes() {
++            if id == document_id {
++                continue;
++            }
++            let node = &document.nodes[id];
++            let parent = node
++                .layout_parent
++                .get()
++                .ok_or_else(|| error(id, PaintOwnershipIssue::InvalidLayoutTree))?;
++            let context = *inherited
++                .get(&parent)
++                .ok_or_else(|| error(id, PaintOwnershipIssue::InvalidLayoutTree))?;
++            if !boxes.contains(&id) {
++                // Parley owns non-atomic inline fragments. A positioned/effected
++                // span cannot become a single zero-sized box in this plan.
++                if order.participates(id) && node.element_data().is_some() {
++                    let style = node
++                        .primary_styles()
++                        .ok_or_else(|| error(id, PaintOwnershipIssue::UnresolvedDocument))?;
++                    validate_context_style(id, &style)?;
++                    if style.clone_position() != Position::Static
++                        || node.is_stacking_context_root(false)
++                    {
++                        return Err(error(id, PaintOwnershipIssue::UnsupportedInlineFragment));
++                    }
++                }
++                inherited.insert(id, context);
++                continue;
++            }
++            let style = node
++                .primary_styles()
++                .ok_or_else(|| error(id, PaintOwnershipIssue::UnresolvedDocument))?;
++            validate_context_style(id, &style)?;
++            let scroll = node.scroll_offset();
++            if scroll.x != 0.0 || scroll.y != 0.0 {
++                return Err(error(id, PaintOwnershipIssue::UnsupportedScroll));
++            }
++            if validate_transform(node, &style)? {
++                transformed.insert(id);
++            }
++            let geometry_owner = node
++                .containing_block()
++                .ok_or_else(|| error(id, PaintOwnershipIssue::MissingGeometryOwner))?;
++            if geometry_owner != document_id && !boxes.contains(&geometry_owner) {
++                return Err(error(id, PaintOwnershipIssue::UnsupportedGeometryOwner));
++            }
++            let flex_or_grid_item = document.nodes[parent]
++                .display_style()
++                .is_some_and(|display| {
++                    matches!(display.inside(), DisplayInside::Flex | DisplayInside::Grid)
++                });
++            let position = style.clone_position();
++            let real = id == root || node.is_stacking_context_root(flex_or_grid_item);
++            let pseudo = matches!(position, Position::Relative | Position::Absolute) && !real;
++            if style.clone_float().is_floating() {
++                return Err(error(id, PaintOwnershipIssue::UnsupportedFloat));
++            }
++            let z = if position != Position::Static || flex_or_grid_item {
++                node.z_index()
++            } else {
++                0
++            };
++            let (paint_owner, phase) = if id == root {
++                (None, PaintPhase::Root)
++            } else if real || pseudo {
++                (
++                    Some(context.real),
++                    match z.cmp(&0) {
++                        std::cmp::Ordering::Less => PaintPhase::Negative(z),
++                        std::cmp::Ordering::Equal => PaintPhase::Zero,
++                        std::cmp::Ordering::Greater => PaintPhase::Positive(z),
++                    },
++                )
++            } else {
++                (context.normal, PaintPhase::InFlow)
++            };
++            if id != root && paint_owner.is_none() {
++                return Err(error(id, PaintOwnershipIssue::InvalidLayoutTree));
++            }
++            let entry = PaintOwnershipEntry {
++                node: id,
++                geometry_owner,
++                real_sc_owner: if id == root { root } else { context.real },
++                paint_owner,
++                phase,
++                formatting_rank: order.rank(id).expect("ordered node has a rank"),
++                prefix: Point::ZERO,
++                context_kind: if real {
++                    PaintContextKind::StackingContext
++                } else if pseudo {
++                    PaintContextKind::PositionedAuto
++                } else {
++                    PaintContextKind::Ordinary
++                },
++            };
++            let index = plan.entries.len();
++            plan.index.insert(id, index);
++            plan.entries.push(entry);
++            if let Some(owner) = paint_owner {
++                plan.children.entry(owner).or_default().push(index);
++            }
++            inherited.insert(
++                id,
++                Context {
++                    real: if real { id } else { context.real },
++                    normal: Some(id),
++                },
++            );
++        }
++        if plan.entries.len() != boxes.len() {
++            return Err(error(root, PaintOwnershipIssue::UnrootedBox));
++        }
++        let spaces = geometry_spaces(document, &plan.entries, &plan.index, &transformed)?;
++        for entry in &mut plan.entries {
++            if let Some(owner) = entry.paint_owner {
++                let geometry = spaces[&entry.geometry_owner];
++                let paint = spaces[&owner];
++                if geometry.root != paint.root {
++                    return Err(error(entry.node, PaintOwnershipIssue::CrossTransformSpace));
++                }
++                entry.prefix = Point {
++                    x: geometry.origin.x - paint.origin.x,
++                    y: geometry.origin.y - paint.origin.y,
++                };
++                if !entry.prefix.x.is_finite() || !entry.prefix.y.is_finite() {
++                    return Err(error(entry.node, PaintOwnershipIssue::NonFiniteGeometry));
++                }
++            }
++        }
++        for children in plan.children.values_mut() {
++            children.sort_by_key(|&index| {
++                let entry = &plan.entries[index];
++                (entry.phase, entry.formatting_rank)
++            });
++        }
++        Ok(plan)
++    }
++
++    pub fn entries(&self) -> &[PaintOwnershipEntry] {
++        &self.entries
++    }
++
++    pub fn entry(&self, node: NodeId) -> Option<&PaintOwnershipEntry> {
++        self.index.get(&node).map(|&index| &self.entries[index])
++    }
++
++    pub fn children(&self, owner: NodeId) -> impl Iterator<Item = &PaintOwnershipEntry> {
++        self.children
++            .get(&owner)
++            .into_iter()
++            .flatten()
++            .map(|&index| &self.entries[index])
++    }
++
++    /// The same resolved document from which this immutable plan was collected.
++    pub fn document(&self) -> &BaseDocument {
++        self.document
++    }
++}
++
++#[derive(Clone, Copy)]
++struct Context {
++    real: NodeId,
++    normal: Option<NodeId>,
++}
++
++fn error(node: NodeId, issue: PaintOwnershipIssue) -> PaintOwnershipError {
++    PaintOwnershipError { node, issue }
++}
++
++fn collect_boxes(document: &BaseDocument, order: &PaintOrder) -> Result<HashSet<NodeId>> {
++    let root = document.root_node().id;
++    let mut pending = vec![root];
++    let mut visited = HashSet::new();
++    let mut boxes = HashSet::new();
++    while let Some(id) = pending.pop() {
++        let node = document
++            .nodes
++            .get(id)
++            .ok_or_else(|| error(id, PaintOwnershipIssue::InvalidLayoutTree))?;
++        if !visited.insert(id) {
++            return Err(error(id, PaintOwnershipIssue::InvalidLayoutTree));
++        }
++        if id != root {
++            // Retained hidden links are not active formatting children. Never
++            // follow their potentially freed anonymous layout parents.
++            if order.is_nonparticipant(id) || !node.has_boxes() {
++                continue;
++            }
++            if node.element_data().is_none() {
++                continue;
++            }
++            if !order.contains_node(id) {
++                return Err(error(id, PaintOwnershipIssue::UnrootedBox));
++            }
++            boxes.insert(id);
++        }
++        if let Some(children) = node.layout_children.borrow().as_ref() {
++            pending.extend(children.iter().rev().copied());
++        }
++    }
++    Ok(boxes)
++}
++
++fn validate_context_style(id: NodeId, style: &style::properties::ComputedValues) -> Result<()> {
++    let box_style = style.get_box();
++    if style.clone_isolation() != Isolation::Auto
++        || style.clone_mix_blend_mode() != MixBlendMode::Normal
++        || !style.get_effects().backdrop_filter.0.is_empty()
++        || box_style
++            .contain
++            .intersects(Contain::LAYOUT | Contain::PAINT)
++        || !box_style.container_type.is_normal()
++        || box_style.will_change.bits.intersects(
++            WillChangeBits::STACKING_CONTEXT_UNCONDITIONAL
++                | WillChangeBits::OPACITY
++                | WillChangeBits::VIEW_TRANSITION_NAME
++                | WillChangeBits::FIXPOS_CB_NON_SVG
++                | WillChangeBits::TRANSFORM
++                | WillChangeBits::PERSPECTIVE
++                | WillChangeBits::Z_INDEX
++                | WillChangeBits::CONTAIN,
++        )
++    {
++        return Err(error(id, PaintOwnershipIssue::UnsupportedContextStyle));
++    }
++    Ok(())
++}
++
++fn validate_transform(node: &Node, style: &style::properties::ComputedValues) -> Result<bool> {
++    let id = node.id;
++    let box_style = style.get_box();
++    if matches!(
++        box_style.display.inside(),
++        DisplayInside::TableColumn | DisplayInside::TableColumnGroup
++    ) {
++        return Ok(false);
++    }
++    let layout = node.final_layout();
++    let reference = euclid::default::Rect::new(
++        euclid::point2(CSSPixelLength::new(0.0), CSSPixelLength::new(0.0)),
++        euclid::size2(
++            CSSPixelLength::new(layout.size.width),
++            CSSPixelLength::new(layout.size.height),
++        ),
++    );
++    let unsupported = !matches!(box_style.perspective, Perspective::None)
++        || box_style.transform_style == TransformStyle::Preserve3d
++        || !matches!(style.clone_offset_path(), GenericOffsetPath::None)
++        || matches!(box_style.translate, Translate::Translate(_, _, z) if z.px() != 0.0)
++        || matches!(box_style.scale, Scale::Scale(_, _, z) if z != 1.0)
++        || matches!(box_style.rotate, Rotate::Rotate3D(x, y, z, _) if x != 0.0 || y != 0.0 || z == 0.0)
++        || (!box_style.transform.0.is_empty()
++            && !box_style
++                .transform
++                .to_transform_3d_matrix(Some(&reference))
++                .is_ok_and(|(matrix, _)| matrix.is_2d()));
++    if unsupported {
++        return Err(error(id, PaintOwnershipIssue::UnsupportedTransform));
++    }
++    if let Some(matrix) = resolve_2d_transform(box_style, reference)
++        && (!matrix.as_coeffs().iter().all(|value| value.is_finite())
++            || matrix.determinant() == 0.0)
++    {
++        return Err(error(id, PaintOwnershipIssue::UnsupportedTransform));
++    }
++    Ok(box_style.has_transform_or_perspective() && node.is_stacking_context_root(false))
++}
++
++#[derive(Clone, Copy)]
++struct GeometrySpace {
++    root: NodeId,
++    origin: Point<f32>,
++}
++
++fn geometry_spaces(
++    document: &BaseDocument,
++    entries: &[PaintOwnershipEntry],
++    index: &HashMap<NodeId, usize>,
++    transformed: &HashSet<NodeId>,
++) -> Result<HashMap<NodeId, GeometrySpace>> {
++    let document_id = document.root_node().id;
++    let mut spaces = HashMap::from([(
++        document_id,
++        GeometrySpace {
++            root: document_id,
++            origin: Point::ZERO,
++        },
++    )]);
++    for entry in entries {
++        let mut pending = Vec::new();
++        let mut visiting = HashSet::new();
++        let mut id = entry.node;
++        while !spaces.contains_key(&id) {
++            if !visiting.insert(id) {
++                return Err(error(id, PaintOwnershipIssue::GeometryCycle));
++            }
++            let entry = index
++                .get(&id)
++                .map(|&index| &entries[index])
++                .ok_or_else(|| error(id, PaintOwnershipIssue::UnsupportedGeometryOwner))?;
++            pending.push(id);
++            id = entry.geometry_owner;
++        }
++        for id in pending.into_iter().rev() {
++            let location = document.nodes[id].final_layout().location;
++            if !location.x.is_finite() || !location.y.is_finite() {
++                return Err(error(id, PaintOwnershipIssue::NonFiniteGeometry));
++            }
++            let entry = &entries[index[&id]];
++            let owner = spaces[&entry.geometry_owner];
++            let space = if transformed.contains(&id) {
++                GeometrySpace {
++                    root: id,
++                    origin: Point::ZERO,
++                }
++            } else {
++                GeometrySpace {
++                    root: owner.root,
++                    origin: Point {
++                        x: owner.origin.x + location.x,
++                        y: owner.origin.y + location.y,
++                    },
++                }
++            };
++            if !space.origin.x.is_finite() || !space.origin.y.is_finite() {
++                return Err(error(id, PaintOwnershipIssue::NonFiniteGeometry));
++            }
++            spaces.insert(id, space);
++        }
++    }
++    Ok(spaces)
++}

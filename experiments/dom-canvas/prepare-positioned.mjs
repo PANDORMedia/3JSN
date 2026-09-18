@@ -26,14 +26,30 @@ const changedFiles = baseline ? {
   'packages/blitz-dom/src/node/node.rs': '9dbd04f8d48ba3b9933af0ea92b6625d1cf745ad518ce326c2fc63745e64a93d',
   'packages/blitz-dom/src/resolve.rs': '6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
-  'packages/blitz-paint/src/render.rs': 'f0c5ae546a9c79c7045f30ee8c34fd6afd6cd3000d8692b9842caf2054e66c26',
+  'packages/blitz-paint/src/render.rs': 'f3440d512efdb55703cf9d963fbd3d19413be8e3bac9d0c900a5646deb281938',
   'packages/blitz-dom/src/layout/mod.rs': '2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1',
   'packages/blitz-dom/src/layout/initial_containing_block.rs': '3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099',
-  'packages/blitz-dom/src/layout/paint_order.rs': 'cadd83c4b39c4be911b74c1f4a859fae4323106712e53f07d48fe3de5db642c1'
+  'packages/blitz-dom/src/layout/paint_order.rs': '0ebba71e5608324b9ba622a4f936d35c3fbf8c0bd6c3132e4910b81d750ef0a7',
+  'packages/blitz-dom/src/paint_ownership.rs': 'cedd4ff218a19b1c10d4f4e2e5fe544fe6f884bd4834a4aeae61775f2a34a179',
+  'packages/blitz-dom/src/geometry/css_box.rs': '2ea64bc8a742bbdb61306a6d2109dd579f4ae8bb332abcfed227d3594cbad82b',
+  'packages/blitz-dom/src/geometry/mod.rs': '7f8c3e3912f7c0ae5be4706b9312c82d1238af7f6edf07b1d9db1a5d3bddf9cb',
+  'packages/blitz-dom/src/geometry/non_uniform_radii.rs': '26c389367e1bb2717e796760098d241e54c00f842537ecd75260f3fea60ea73a',
+  'packages/blitz-dom/src/lib.rs': 'f8d1acc43dc86d94090e0e091b6f1d934d20ca8168ff1033b7f8dd3234626f8a',
+  'packages/blitz-paint/src/lib.rs': '4a6ab44547172aaf5709e4c345c3da7a65c186e1dacd868d91bb07e09ac9de41',
+  'packages/blitz-paint/src/render/border.rs': '420e6bd5c30186a76aca4a0a33e83b344480371c4ca409a6376f6e43b96cf07d',
 };
 const addedFiles = baseline ? [] : [
+  'packages/blitz-dom/src/paint_ownership.rs',
   'packages/blitz-dom/src/layout/initial_containing_block.rs',
   'packages/blitz-dom/src/layout/paint_order.rs',
+  'packages/blitz-dom/src/geometry/css_box.rs',
+  'packages/blitz-dom/src/geometry/mod.rs',
+  'packages/blitz-dom/src/geometry/non_uniform_radii.rs',
+];
+const removedFiles = baseline ? [] : [
+  'packages/blitz-paint/src/kurbo_css/css_box.rs',
+  'packages/blitz-paint/src/kurbo_css/mod.rs',
+  'packages/blitz-paint/src/kurbo_css/non_uniform_radii.rs',
 ];
 const patchInputs = [
   {
@@ -63,6 +79,14 @@ const patchInputs = [
   {
     'name': 'blitz-stacking-bounds.patch',
     'sha256': '570a97b110f5bf90c66464dbff7afcb24364bf3718395e98b4f33962010360d7'
+  },
+  {
+    'name': 'blitz-shared-clip-geometry.patch',
+    'sha256': '88c4920ce332a2535028cb1a7288d4ceab53a4294077f88d185eed54946f67ce'
+  },
+  {
+    'name': 'blitz-paint-ownership.patch',
+    'sha256': 'a4b2a64704ba3d7f96054d9c3c76809bff28da69bbf890805141abdef8729749'
   }
 ];
 const selectedPatches = baseline ? patchInputs.slice(0, 1) : patchInputs;
@@ -119,6 +143,7 @@ manifest = manifest.replace(/path = "\.\.\/\.\.\/\.cache\/dom-canvas\/([^\"]+)"/
 });
 assert(!manifest.includes('path = "src/') && !manifest.includes('path = "../../'), 'Unexpected relative path remains in candidate manifest.');
 if (!baseline) manifest += `\n[[test]]\nname = "positioned-layout"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/positioned_tests.rs'))}\n`;
+if (!baseline) manifest += `\n[[bin]]\nname = "threejs-positioned-paint-owner-probe"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/paint_owner_probe.rs'))}\n`;
 let lock = replaceExactly(lockInput,
   `git+https://github.com/DioxusLabs/taffy?rev=${baseTaffyRevision}#${baseTaffyRevision}`, taffySource, 1);
 lock = replaceExactly(lock, 'name = "threejs-dom-canvas-probe"', `name = "${namePrefix}dom-canvas-probe"`, 1);
@@ -157,9 +182,11 @@ async function fileNames(path, prefix = '') {
   }
   return names;
 }
-assert.deepEqual((await fileNames(resolve(target, 'blitz'))).sort(), [...files.map(file => file.path), ...addedFiles].sort(),
+assert.deepEqual((await fileNames(resolve(target, 'blitz'))).sort(), [...files.map(file => file.path).filter(path => !removedFiles.includes(path)), ...addedFiles].sort(),
   'Candidate must contain exactly the pinned tracked and added files.');
+for (const path of removedFiles) assert(files.some(file => file.path === path), `Removed path is not pinned upstream: ${path}`);
 for (const file of files) {
+  if (removedFiles.includes(file.path)) continue;
   const bytes = await readFile(resolve(target, 'blitz', file.path));
   if (Object.hasOwn(changedFiles, file.path)) assert.equal(hash(bytes), changedFiles[file.path], `Unexpected patched file: ${file.path}`);
   else assert.equal(createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex'),
@@ -172,8 +199,8 @@ assert.equal(await readFile(resolve(target, 'probe/Cargo.toml'), 'utf8'), manife
 assert.equal(await readFile(resolve(target, 'probe/Cargo.lock'), 'utf8'), lock);
 console.log(JSON.stringify({
   status: 'prepared-research-candidate', adopted: false, directory, revision, taffyRevision,
-  profile: baseline ? 'upstream-baseline' : 'initial-owner', changedFiles, addedFiles,
-  patches: selectedPatches, verifiedTrackedFiles: files.length, verifiedAddedFiles: addedFiles.length,
+  profile: baseline ? 'upstream-baseline' : 'initial-owner', changedFiles, addedFiles, removedFiles,
+  patches: selectedPatches, verifiedTrackedFiles: files.length - removedFiles.length, verifiedAddedFiles: addedFiles.length, verifiedRemovedFiles: removedFiles.length,
   manifestInputSha256: hash(manifestInput), lockInputSha256: hash(lockInput),
   generatedManifestSha256: hash(manifest), generatedLockSha256: hash(lock), deno: normal.deno,
 }, null, 2));

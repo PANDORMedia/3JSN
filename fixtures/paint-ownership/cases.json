@@ -1,0 +1,20 @@
+[
+  { "name": "relative-auto-positive" },
+  { "name": "absolute-auto-positive" },
+  { "name": "zero-parent-positive" },
+  { "name": "fixed-auto-positive" },
+  { "name": "sticky-auto-positive" },
+  { "name": "zero-peer-first" },
+  { "name": "zero-order-restored" },
+  { "name": "opacity-fixed-escape", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-relative-clipped", "subjectColor": [240, 144, 152, 255] },
+  { "name": "clip-group-fixed-escape" },
+  { "name": "clip-group-relative-clipped" },
+  { "name": "effect-own-overflow-absolute" },
+  { "name": "relative-in-escaping-carrier" },
+  { "name": "css-rect-on-auto-carrier" },
+  { "name": "rounded-overflow" },
+  { "name": "rounded-overflow", "scale": 2 },
+  { "name": "clip-group-fixed-restored" },
+  { "name": "auto-parent-restored" }
+]

@@ -1,7 +1,9 @@
+mod clip_geometry_tests;
 mod initial_containing_block_tests;
 mod paint_order_hidden_tests;
 mod paint_order_hit_tests;
 mod paint_order_tests;
+mod paint_ownership_tests;
 mod positioned_grid_tests;
 mod stacking_bounds_tests;
 mod transform_context_tests;

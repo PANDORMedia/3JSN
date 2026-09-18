@@ -1,0 +1,5556 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-paint-ownership-diagnostic",
+  "status": "collected",
+  "gpuRequested": false,
+  "planAppliedToLegacyPaintLists": false,
+  "v8": "15.0.245.2-rusty",
+  "cases": [
+    {
+      "name": "relative-auto-positive",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 32.0,
+                    "y": 24.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "absolute-auto-positive",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 32.0,
+                    "y": 24.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "zero-parent-positive",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "fixed-auto-positive",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                },
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "sticky-auto-positive",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "zero-peer-first",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 5,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 6,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "zero-order-restored",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "opacity-fixed-escape",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": -0.0,
+                    "y": -0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": -32.0,
+              "y": -24.0
+            },
+            "layout": {
+              "x": 128.0,
+              "y": 72.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "opacity-relative-clipped",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 96.0,
+              "y": 48.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "clip-group-fixed-escape",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": -0.0,
+                    "y": -0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": -32.0,
+              "y": -24.0
+            },
+            "layout": {
+              "x": 128.0,
+              "y": 72.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "clip-group-relative-clipped",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 96.0,
+              "y": 48.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "effect-own-overflow-absolute",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 32.0,
+                    "y": 24.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 96.0,
+              "y": 48.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "relative-in-escaping-carrier",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967314,
+                    "elementId": "carrier"
+                  },
+                  "zIndex": 0,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                },
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Zero",
+            "formattingRank": 5,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 96.0,
+              "y": 48.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 96.0,
+              "y": 48.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "css-rect-on-auto-carrier",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967314,
+                    "elementId": "carrier"
+                  },
+                  "zIndex": 0,
+                  "prefix": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
+                },
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 96.0,
+                    "y": 48.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Zero",
+            "formattingRank": 5,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 96.0,
+              "y": 48.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 96.0,
+              "y": 48.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 128.0,
+                    "y": 72.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "phase": "InFlow",
+            "formattingRank": 4,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 48.0,
+              "y": 40.0
+            },
+            "layout": {
+              "x": -8.0,
+              "y": -8.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 2.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 48.0,
+                    "y": 40.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "phase": "InFlow",
+            "formattingRank": 4,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 48.0,
+              "y": 40.0
+            },
+            "layout": {
+              "x": -8.0,
+              "y": -8.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "clip-group-fixed-restored",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": -0.0,
+                    "y": -0.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 128.0,
+              "height": 80.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": -32.0,
+              "y": -24.0
+            },
+            "layout": {
+              "x": 128.0,
+              "y": 72.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "auto-parent-restored",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "collected",
+        "entries": [
+          {
+            "node": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "geometryOwner": {
+              "node": 4294967297,
+              "elementId": null
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": null,
+            "phase": "Root",
+            "formattingRank": 1,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [
+              {
+                "node": 4294967310,
+                "elementId": "body"
+              },
+              {
+                "node": 4294967312,
+                "elementId": "outer"
+              },
+              {
+                "node": 4294967313,
+                "elementId": "middle"
+              },
+              {
+                "node": 4294967317,
+                "elementId": "peer"
+              },
+              {
+                "node": 4294967315,
+                "elementId": "subject"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967299,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967310,
+                  "elementId": "body"
+                }
+              ],
+              "hoisted": [
+                {
+                  "child": {
+                    "node": 4294967315,
+                    "elementId": "subject"
+                  },
+                  "zIndex": 2,
+                  "prefix": {
+                    "x": 32.0,
+                    "y": 24.0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "geometryOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 2,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 448.0,
+              "height": 256.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967319,
+                  "elementId": null
+                },
+                {
+                  "node": 4294967312,
+                  "elementId": "outer"
+                },
+                {
+                  "node": 4294967317,
+                  "elementId": "peer"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 3,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 32.0,
+              "y": 24.0,
+              "width": 320.0,
+              "height": 176.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967313,
+                  "elementId": "middle"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "geometryOwner": {
+              "node": 4294967312,
+              "elementId": "outer"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 4,
+            "contextKind": "PositionedAuto",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [
+              {
+                "node": 4294967314,
+                "elementId": "carrier"
+              }
+            ],
+            "legacy": {
+              "normal": [
+                {
+                  "node": 4294967314,
+                  "elementId": "carrier"
+                }
+              ],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967314,
+              "elementId": "carrier"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "phase": "InFlow",
+            "formattingRank": 5,
+            "contextKind": "Ordinary",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 160.0,
+              "height": 112.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967315,
+              "elementId": "subject"
+            },
+            "geometryOwner": {
+              "node": 4294967313,
+              "elementId": "middle"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Positive(2)",
+            "formattingRank": 6,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 32.0,
+              "y": 24.0
+            },
+            "layout": {
+              "x": 16.0,
+              "y": 16.0,
+              "width": 128.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          },
+          {
+            "node": {
+              "node": 4294967317,
+              "elementId": "peer"
+            },
+            "geometryOwner": {
+              "node": 4294967310,
+              "elementId": "body"
+            },
+            "realContextOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "paintOwner": {
+              "node": 4294967298,
+              "elementId": "root"
+            },
+            "phase": "Zero",
+            "formattingRank": 7,
+            "contextKind": "StackingContext",
+            "prefix": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "layout": {
+              "x": 72.0,
+              "y": 60.0,
+              "width": 80.0,
+              "height": 64.0
+            },
+            "children": [],
+            "legacy": {
+              "normal": [],
+              "hoisted": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "c45fd3e2d9e5b58806aa2bb79afcae3c03a6936c2fa0e1a63c878c043e7fb295",
+    "scriptSha256": "9de97e219fa7c5a97ffb889153f8414bde5b594d4116917caba8237db87946aa",
+    "casesSha256": "38a216f9e1d70a96f15e6f507e7066b721c6581f442552b97ca5506aa176c154"
+  },
+  "limits": [
+    "Read-only post-layout box ownership; no rendering or hit-testing change.",
+    "Clips, scrolling, fragment effects and unsupported context styles remain adoption gates.",
+    "Collection success does not certify pixels, compatibility or performance.",
+    "Explicit resolve count excludes geometry reads performed by a supplied fixture; the public fixture performs none."
+  ]
+}

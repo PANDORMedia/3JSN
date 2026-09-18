@@ -1,0 +1,8 @@
+{
+  "sharedCpuHostBehaviorUnchanged": true,
+  "matchedChecks": 23,
+  "defaultProfile": true,
+  "reference": "docs/validation/2026-09-18-geometry-positioning/geometry/patched.json",
+  "referenceSha256": "ee9d93a8520581a35ae7fbd33ec352358d165d25d6cb04a5bfb9ab2c9c738173",
+  "executableSha256": "dc4312467abe01547233587cc0a444498e01faf4162a0e59e4330112520fd9fb"
+}

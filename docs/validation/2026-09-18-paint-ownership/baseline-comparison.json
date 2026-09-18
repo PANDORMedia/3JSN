@@ -1,0 +1,502 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 10,
+  "total": 18,
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "nativeDevice": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "criteria": {
+    "maxChannelDifference": 2,
+    "maxGeometryDifferenceCssPixels": 0.1,
+    "rasterEdgeExclusion": "Non-uniform browser 3x3 neighborhoods and outermost image pixels",
+    "nativePaintCallsPerCase": 1
+  },
+  "limits": [
+    "Edges are counted separately; interior parity does not prove identical antialiasing.",
+    "Only the recorded ordered cases, viewport and device scales were compared."
+  ],
+  "inputs": {
+    "browserReportSha256": "920de9c3fff2bdbeac60cc9290706d2158178c960493a112240ef7cc16e870a8",
+    "nativeReportSha256": "e9e1637d7d61d47fa5af6d2aeffbd2d06807fb0f586865c2d87d4148c64ce73c",
+    "comparatorSha256": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "subjectColorHelperSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "cases": [
+    {
+      "name": "relative-auto-positive",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112280,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "relative-auto-positive-1x.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      },
+      "native": {
+        "file": "000-case.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      }
+    },
+    {
+      "name": "absolute-auto-positive",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112280,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "absolute-auto-positive-1x.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      },
+      "native": {
+        "file": "001-case.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      }
+    },
+    {
+      "name": "zero-parent-positive",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112104,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 4672,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "zero-parent-positive-1x.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      },
+      "native": {
+        "file": "002-case.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      }
+    },
+    {
+      "name": "fixed-auto-positive",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 3520,
+      "interiorPixels": 112104,
+      "differingInteriorPixels": 3354,
+      "subjectReferencePixels": 4672,
+      "firstInteriorDifference": {
+        "x": 73,
+        "y": 61,
+        "browser": [
+          32,
+          160,
+          96,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "fixed-auto-positive-1x.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      },
+      "native": {
+        "file": "003-case.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      }
+    },
+    {
+      "name": "sticky-auto-positive",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112104,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 4672,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "sticky-auto-positive-1x.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      },
+      "native": {
+        "file": "004-case.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      }
+    },
+    {
+      "name": "zero-peer-first",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112280,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "zero-peer-first-1x.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      },
+      "native": {
+        "file": "005-case.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      }
+    },
+    {
+      "name": "zero-order-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112104,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 4672,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "zero-order-restored-1x.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      },
+      "native": {
+        "file": "006-case.png",
+        "pixelSha256": "d91df04e8472665a8d16433bf3d1f235bdcb57cc8ed2bec6eb9c3065ce926116"
+      }
+    },
+    {
+      "name": "opacity-fixed-escape",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 8192,
+      "interiorPixels": 111816,
+      "differingInteriorPixels": 7812,
+      "subjectReferencePixels": 8192,
+      "firstInteriorDifference": {
+        "x": 129,
+        "y": 73,
+        "browser": [
+          239,
+          143,
+          151,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "opacity-fixed-escape-1x.png",
+        "pixelSha256": "9a6003c5f41db9774f1ffce7967eac383dcaf4e2aa881a09ad051f0b38a9670b"
+      },
+      "native": {
+        "file": "007-case.png",
+        "pixelSha256": "850ab8ec6a37c2da4959e0a9268c8cab24ee13bef514c88e4dbb22886a96abf1"
+      }
+    },
+    {
+      "name": "opacity-relative-clipped",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112328,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1024,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "opacity-relative-clipped-1x.png",
+        "pixelSha256": "0896f85b5294eae6f1689ec0d0f84b5cc62c678c50ca9da61c612942fa978443"
+      },
+      "native": {
+        "file": "008-case.png",
+        "pixelSha256": "0896f85b5294eae6f1689ec0d0f84b5cc62c678c50ca9da61c612942fa978443"
+      }
+    },
+    {
+      "name": "clip-group-fixed-escape",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7168,
+      "interiorPixels": 112328,
+      "differingInteriorPixels": 7103,
+      "subjectReferencePixels": 1024,
+      "firstInteriorDifference": {
+        "x": 161,
+        "y": 72,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "clip-group-fixed-escape-1x.png",
+        "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22"
+      },
+      "native": {
+        "file": "009-case.png",
+        "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec"
+      }
+    },
+    {
+      "name": "clip-group-relative-clipped",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112328,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1024,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "clip-group-relative-clipped-1x.png",
+        "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22"
+      },
+      "native": {
+        "file": "010-case.png",
+        "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22"
+      }
+    },
+    {
+      "name": "effect-own-overflow-absolute",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 111688,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "effect-own-overflow-absolute-1x.png",
+        "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137"
+      },
+      "native": {
+        "file": "011-case.png",
+        "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137"
+      }
+    },
+    {
+      "name": "relative-in-escaping-carrier",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 15360,
+      "interiorPixels": 111688,
+      "differingInteriorPixels": 14787,
+      "subjectReferencePixels": 8192,
+      "firstInteriorDifference": {
+        "x": 33,
+        "y": 25,
+        "browser": [
+          32,
+          96,
+          224,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "relative-in-escaping-carrier-1x.png",
+        "pixelSha256": "b94601cb145c5fcd607e8c948a251101037b9c7c4d9ef1a2fcc4fe85324fa137"
+      },
+      "native": {
+        "file": "012-case.png",
+        "pixelSha256": "402ef3d1bf9d8217af765ae986fcf310a3cd5f31d20bbbb696878642656cb0c1"
+      }
+    },
+    {
+      "name": "css-rect-on-auto-carrier",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 2816,
+      "interiorPixels": 111800,
+      "differingInteriorPixels": 2491,
+      "subjectReferencePixels": 3200,
+      "firstInteriorDifference": {
+        "x": 128,
+        "y": 72,
+        "browser": [
+          32,
+          96,
+          224,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "css-rect-on-auto-carrier-1x.png",
+        "pixelSha256": "4445e12256fb9649ae7305362e5453af0479d32128152b685b26b818331945b2"
+      },
+      "native": {
+        "file": "013-case.png",
+        "pixelSha256": "168af3da5935a05e5552ead66fc759ed8e29b753d44a3603e1beaf5e83131b92"
+      }
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 13481,
+      "interiorPixels": 110535,
+      "differingInteriorPixels": 12359,
+      "subjectReferencePixels": 8036,
+      "firstInteriorDifference": {
+        "x": 65,
+        "y": 33,
+        "browser": [
+          224,
+          32,
+          48,
+          255
+        ],
+        "native": [
+          255,
+          255,
+          255,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "rounded-overflow-1x.png",
+        "pixelSha256": "32dc1150b78f3ec7c88d5bcfd45da7b723737ba1c28493339f95f438548f83ee"
+      },
+      "native": {
+        "file": "014-case.png",
+        "pixelSha256": "f790968b51528047e663881a17ac59781f41d5ce7ce79ff7c9d6e005add1d90e"
+      }
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 1250,
+      "interiorPixels": 450424,
+      "differingInteriorPixels": 355,
+      "subjectReferencePixels": 32210,
+      "firstInteriorDifference": {
+        "x": 80,
+        "y": 64,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "rounded-overflow-2x.png",
+        "pixelSha256": "e104fecb6f5f9d4f0b1a34f9306e83e14f212dd3a695415b2b15c923367a1e56"
+      },
+      "native": {
+        "file": "015-case.png",
+        "pixelSha256": "932e4fada07af64ca017afd22a4ea9938b2db28150b67bc197716beb0dfb0041"
+      }
+    },
+    {
+      "name": "clip-group-fixed-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7168,
+      "interiorPixels": 112328,
+      "differingInteriorPixels": 7103,
+      "subjectReferencePixels": 1024,
+      "firstInteriorDifference": {
+        "x": 161,
+        "y": 72,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "clip-group-fixed-restored-1x.png",
+        "pixelSha256": "a3afa37595fc9853787f970072e7e262b8fac990285e8cfcb51490a29e31ec22"
+      },
+      "native": {
+        "file": "016-case.png",
+        "pixelSha256": "43dca6e926824ee8a0a86c3e16c9cb395c92a80a26066ec7400ea7e5e00649ec"
+      }
+    },
+    {
+      "name": "auto-parent-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112280,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "auto-parent-restored-1x.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      },
+      "native": {
+        "file": "017-case.png",
+        "pixelSha256": "8904b7b8cd7479e0b512af94ad82225ea19c6f03cd93cfd28fcae21d8cbbd058"
+      }
+    }
+  ]
+}

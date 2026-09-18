@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent-recorded-paint-ownership-audit",
+  "status": "passed",
+  "report": "artifacts/paint-ownership/plan.json",
+  "reportSha256": "ba0fce3da1a7e61900a0e6c82987663c619e2a77bea27e93a36be72b2f869378",
+  "inputs": {
+    "htmlSha256": "c45fd3e2d9e5b58806aa2bb79afcae3c03a6936c2fa0e1a63c878c043e7fb295",
+    "scriptSha256": "9de97e219fa7c5a97ffb889153f8414bde5b594d4116917caba8237db87946aa",
+    "casesSha256": "38a216f9e1d70a96f15e6f507e7066b721c6581f442552b97ca5506aa176c154"
+  },
+  "auditScriptSha256": "c022403f7f5c80a3c62095c41bfe8b62fb8e389aa70b2e8faf8154d905e3cf4b",
+  "caseCount": 18,
+  "entryCount": 116,
+  "checksPassed": 190,
+  "checksTotal": 190,
+  "failedChecks": [],
+  "controls": [
+    "auto versus zero/fixed/sticky real contexts",
+    "effect attachment independent of viewport or ancestor geometry owner",
+    "fresh CSS-pixel prefixes and escaping carrier geometry",
+    "source reorder and three restoration pairs",
+    "exactly-once live contribution graph and stable IDs",
+    "hidden peer exclusion and scale-independent CSS geometry"
+  ],
+  "cases": [
+    {
+      "name": "relative-auto-positive",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "PositionedAuto",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "root",
+      "subjectPrefix": [
+        32.0,
+        24.0
+      ]
+    },
+    {
+      "name": "absolute-auto-positive",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "PositionedAuto",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "root",
+      "subjectPrefix": [
+        32.0,
+        24.0
+      ]
+    },
+    {
+      "name": "zero-parent-positive",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "fixed-auto-positive",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "sticky-auto-positive",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "zero-peer-first",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "zero-order-restored",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "opacity-fixed-escape",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "Document",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        -32.0,
+        -24.0
+      ]
+    },
+    {
+      "name": "opacity-relative-clipped",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "clip-group-fixed-escape",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "Document",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        -32.0,
+        -24.0
+      ]
+    },
+    {
+      "name": "clip-group-relative-clipped",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "effect-own-overflow-absolute",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "outer",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "relative-in-escaping-carrier",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        96.0,
+        48.0
+      ]
+    },
+    {
+      "name": "css-rect-on-auto-carrier",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        96.0,
+        48.0
+      ]
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "Ordinary",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "root",
+      "subjectPrefix": [
+        48.0,
+        40.0
+      ]
+    },
+    {
+      "name": "rounded-overflow",
+      "scale": 2.0,
+      "entries": 6,
+      "middleKind": "Ordinary",
+      "subjectGeometryOwner": "carrier",
+      "subjectPaintOwner": "root",
+      "subjectPrefix": [
+        48.0,
+        40.0
+      ]
+    },
+    {
+      "name": "clip-group-fixed-restored",
+      "scale": 1.0,
+      "entries": 6,
+      "middleKind": "StackingContext",
+      "subjectGeometryOwner": "Document",
+      "subjectPaintOwner": "middle",
+      "subjectPrefix": [
+        -32.0,
+        -24.0
+      ]
+    },
+    {
+      "name": "auto-parent-restored",
+      "scale": 1.0,
+      "entries": 7,
+      "middleKind": "PositionedAuto",
+      "subjectGeometryOwner": "middle",
+      "subjectPaintOwner": "root",
+      "subjectPrefix": [
+        32.0,
+        24.0
+      ]
+    }
+  ],
+  "limits": [
+    "Audits serialized ownership facts against explicit fixture expectations; does not execute a new render or claim pixel/hit-test correctness.",
+    "planAppliedToLegacyPaintLists is declaration of probe behavior; the JSON contains no before/after legacy mutation measurement. The separate CPU snapshot test covers that invariant.",
+    "Opacity and clip-path fixed cases have matching ownership entries but different browser clipping; no generic clip applicability rule is inferred.",
+    "Flex/grid, pseudos, generated wrappers, unsupported paths and hide/show lifecycle are covered by separate CPU tests, not by this eighteen-case box fixture."
+  ]
+}

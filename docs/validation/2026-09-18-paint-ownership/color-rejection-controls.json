@@ -1,0 +1,44 @@
+{
+  "binarySha256": "3514dac43df41e8b0d2e294805ac0a237c03a88caa33a23266855a9353e4632d",
+  "cases": [
+    {
+      "color": null,
+      "exitCode": 1,
+      "error": "Error: Error(\"invalid type: null, expected an array of length 4\", line: 1, column: 58)",
+      "outputNotCreated": true
+    },
+    {
+      "color": [
+        240,
+        144,
+        152,
+        256
+      ],
+      "exitCode": 1,
+      "error": "Error: Error(\"subjectColor must contain four integer RGBA channels in 0..255\", line: 1, column: 75)",
+      "outputNotCreated": true
+    },
+    {
+      "color": [
+        240.5,
+        144,
+        152,
+        255
+      ],
+      "exitCode": 1,
+      "error": "Error: Error(\"subjectColor must contain four integer RGBA channels in 0..255\", line: 1, column: 77)",
+      "outputNotCreated": true
+    },
+    {
+      "color": [
+        240,
+        144,
+        152,
+        "255"
+      ],
+      "exitCode": 1,
+      "error": "Error: Error(\"invalid type: string \\\"255\\\", expected f64\", line: 1, column: 75)",
+      "outputNotCreated": true
+    }
+  ]
+}

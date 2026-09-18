@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-paint-ownership-diagnostic",
+  "status": "unsupported",
+  "gpuRequested": false,
+  "planAppliedToLegacyPaintLists": false,
+  "v8": "15.0.245.2-rusty",
+  "cases": [
+    {
+      "name": "float-error",
+      "scale": 1.0,
+      "explicitResolveCalls": 1,
+      "plan": {
+        "status": "unsupported",
+        "node": {
+          "node": 4294967313,
+          "elementId": "middle"
+        },
+        "issue": "UnsupportedFloat",
+        "message": "paint ownership UnsupportedFloat at NodeId(17v1)"
+      }
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "c45fd3e2d9e5b58806aa2bb79afcae3c03a6936c2fa0e1a63c878c043e7fb295",
+    "scriptSha256": "7b1a6c0500c0d2efd97fe0b48e67b91406299b4d428713ed9c0836a53ea22909",
+    "casesSha256": "cca957757a9210b3ed9abcf9805487da9024efc4ccd9421ee15e18392892a705"
+  },
+  "limits": [
+    "Read-only post-layout box ownership; no rendering or hit-testing change.",
+    "Clips, scrolling, fragment effects and unsupported context styles remain adoption gates.",
+    "Collection success does not certify pixels, compatibility or performance.",
+    "Explicit resolve count excludes geometry reads performed by a supplied fixture; the public fixture performs none."
+  ]
+}
