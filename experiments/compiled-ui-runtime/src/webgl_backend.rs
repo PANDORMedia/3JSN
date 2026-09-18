@@ -7,6 +7,7 @@ use threejs_native_webgl_runtime::snapshot_consumer::{AlphaConversion, GpuSnapsh
 
 struct Generation {
     context_id: u32,
+    alpha_conversion: AlphaConversion,
     consumer: Option<GpuSnapshot>,
     revision: u64,
     released: bool,
@@ -48,12 +49,9 @@ impl Canvas {
         }
         if generation.consumer.is_none() {
             let snapshot = threejs_native_webgl_runtime::snapshot(runtime, self.context_id)?;
-            generation.consumer = Some(GpuSnapshot::new(
-                snapshot,
-                device,
-                queue,
-                AlphaConversion::Unpremultiply,
-            )?);
+            let alpha_conversion = generation.alpha_conversion;
+            generation.consumer =
+                Some(GpuSnapshot::new(snapshot, device, queue, alpha_conversion)?);
         }
         let consumer = generation
             .consumer
@@ -95,6 +93,7 @@ fn op_webgl_canvas_register(
     state: &mut OpState,
     #[string] node_key: String,
     context_id: u32,
+    premultiplied_alpha: bool,
 ) -> Result<(), JsErrorBox> {
     // Both identities come from private JS brands, never application properties.
     if node_key.parse::<u64>().is_err() {
@@ -112,6 +111,11 @@ fn op_webgl_canvas_register(
         node_key,
         Rc::new(RefCell::new(Generation {
             context_id,
+            alpha_conversion: if premultiplied_alpha {
+                AlphaConversion::Unpremultiply
+            } else {
+                AlphaConversion::Preserve
+            },
             consumer: None,
             revision: 0,
             released: false,

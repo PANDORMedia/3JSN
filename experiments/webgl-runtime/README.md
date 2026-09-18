@@ -148,3 +148,13 @@ parser modes pass offscreen GPU composition, including reset and node replacemen
 The native-window adapter compiles; successful presentation still requires an
 unlocked desktop. [Evidence and limits](../../docs/validation/2026-09-18-webgl-composition.md).
 No new packaging/platform support is declared.
+
+## Context attributes
+
+The DOM backend forwards the initial `getContext` options. Native alpha/depth/
+stencil attachments and the compositor's premultiplication interpretation now
+follow those options, including opaque RGB IOSurface buffers on Metal. Attribute
+getters run before allocation; recursive requests preserve the first context.
+[Hardware checks and remaining attribute gaps](../../docs/validation/2026-09-18-context-attributes.md).
+In particular, drawing-buffer preservation is still forced on, and antialiasing
+is still unavailable; this is not complete context-attribute conformance.

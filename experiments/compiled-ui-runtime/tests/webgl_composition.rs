@@ -51,9 +51,18 @@ globalThis.makeCanvas = () => {
 };
 globalThis.scene = makeCanvas();
 document.body.appendChild(scene);
-globalThis.gl = scene.getContext('webgl2');
-if (!gl || gl.canvas !== scene || !gl.getContextAttributes().premultipliedAlpha) {
-  throw Error('Missing real premultiplied DOM WebGL canvas');
+globalThis.gl = scene.getContext('webgl2', globalThis.contextOptions);
+if (!gl || gl.canvas !== scene) throw Error('Missing real DOM WebGL canvas');
+const expectedAttributes = { alpha: true, premultipliedAlpha: true, ...globalThis.contextOptions };
+for (const name of ['alpha', 'premultipliedAlpha']) {
+  if (gl.getContextAttributes()[name] !== expectedAttributes[name]) throw Error('Wrong context attribute: ' + name);
+}
+const observed = gl.getContextAttributes();
+observed.alpha = !observed.alpha;
+observed.premultipliedAlpha = !observed.premultipliedAlpha;
+gl.getContextAttributes = () => observed;
+if (scene.getContext('webgl2', { get alpha() { throw Error('Read second request'); } }) !== gl) {
+  throw Error('Repeated getContext changed context identity');
 }
 if (scene.getContext('webgpu') !== null) throw Error('Canvas mode ownership changed');
 globalThis.overlay = document.createElement('div');
@@ -215,18 +224,18 @@ fn check_composition(
     painter: &painter::Painter,
     output: &wgpu::Texture,
     painted: bool,
+    alpha: bool,
+    premultiplied: bool,
 ) -> Result<()> {
     let bytes = read_pixels(painter, output)?;
-    let canvas = if painted {
-        [128, 0, 127, 255]
-    } else {
-        [0, 0, 255, 255]
+    let canvas = match (painted, alpha, premultiplied) {
+        (true, false, _) => [128, 0, 0, 255],
+        (true, true, true) => [128, 0, 127, 255],
+        (true, true, false) => [64, 0, 127, 255],
+        (false, false, _) => [0, 0, 0, 255],
+        (false, true, _) => [0, 0, 255, 255],
     };
-    let overlap = if painted {
-        [191, 128, 191, 255]
-    } else {
-        [128, 128, 255, 255]
-    };
+    let overlap = [128 + canvas[0] / 2, 128, 128 + canvas[2] / 2, 255];
     for (label, (left, top, right, bottom), expected) in [
         ("blue background", (2, 2, 8, 8), [0, 0, 255, 255]),
         ("canvas", (14, 14, 26, 44), canvas),
@@ -255,6 +264,19 @@ fn check_composition(
 #[tokio::test(flavor = "current_thread")]
 #[ignore = "Requires macOS Metal, pinned ANGLE and a usable composition font"]
 async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
+    run_composition_case(true, true)
+}
+
+#[tokio::test(flavor = "current_thread")]
+#[ignore = "Requires macOS Metal, pinned ANGLE and a usable composition font"]
+async fn dom_webgl_context_alpha_attributes() -> Result<()> {
+    for (alpha, premultiplied) in [(true, false), (false, true), (false, false)] {
+        run_composition_case(alpha, premultiplied)?;
+    }
+    Ok(())
+}
+
+fn run_composition_case(alpha: bool, premultiplied: bool) -> Result<()> {
     let package = std::path::PathBuf::from(std::env::var("THREEJS_NATIVE_ANGLE_PACKAGE")?);
     let font_path = std::env::var_os("THREEJS_NATIVE_COMPOSITION_FONT")
         .map(std::path::PathBuf::from)
@@ -270,6 +292,12 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
         dom_bridge::release(&mut absent);
     }
     let mut runtime = runtime(document(&font)?, Some(&package.join("deps/darwin/dylib")))?;
+    runtime.execute_script(
+        "composition:attributes",
+        format!(
+            "globalThis.contextOptions = {{ alpha: {alpha}, premultipliedAlpha: {premultiplied} }};"
+        ),
+    )?;
     runtime.execute_script("composition:fixture", FIXTURE)?;
     let canvas = webgl_backend::find(&mut runtime, "scene")?.ok_or("WebGL canvas was not found")?;
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
@@ -313,7 +341,7 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
             &mut registration,
             &mut generation,
         )?;
-        check_composition(&painter, &output, true)?;
+        check_composition(&painter, &output, true, alpha, premultiplied)?;
         let first = generation.clone().ok_or("initial generation missing")?;
         runtime.execute_script("composition:reset", "scene.width=scene.width; if(scene.getContext('webgl2')!==gl)throw Error('Reset replaced context');")?;
         compose(
@@ -329,7 +357,7 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
             reset.0 == first.0 && reset.1 > first.1,
             "same-value reset did not retire its generation",
         )?;
-        check_composition(&painter, &output, false)?;
+        check_composition(&painter, &output, false, alpha, premultiplied)?;
         runtime.execute_script("composition:repaint", "paintCanvas()")?;
         compose(
             &mut runtime,
@@ -343,8 +371,8 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
             generation.as_ref() == Some(&reset),
             "ordinary repaint replaced its generation",
         )?;
-        check_composition(&painter, &output, true)?;
-        runtime.execute_script("composition:replace", "globalThis.oldScene=scene; globalThis.oldGl=gl; document.body.removeChild(scene); scene=makeCanvas(); document.body.insertBefore(scene,overlay); gl=scene.getContext('webgl2'); if(gl===oldGl || gl.canvas!==scene)throw Error('Replacement reused context'); paintCanvas();")?;
+        check_composition(&painter, &output, true, alpha, premultiplied)?;
+        runtime.execute_script("composition:replace", "globalThis.oldScene=scene; globalThis.oldGl=gl; document.body.removeChild(scene); scene=makeCanvas(); document.body.insertBefore(scene,overlay); gl=scene.getContext('webgl2',contextOptions); if(gl===oldGl || gl.canvas!==scene)throw Error('Replacement reused context'); paintCanvas();")?;
         let replacement =
             webgl_backend::find(&mut runtime, "scene")?.ok_or("replacement canvas missing")?;
         ensure(
@@ -361,7 +389,7 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
             &mut registration,
             &mut generation,
         )?;
-        check_composition(&painter, &output, true)?;
+        check_composition(&painter, &output, true, alpha, premultiplied)?;
         if let Some(path) = std::env::var_os("THREEJS_NATIVE_COMPOSITION_CAPTURE") {
             window_capture::save(&painter.bridge, &output, Path::new(&path))?;
         }
@@ -386,7 +414,11 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
         std::mem::forget(runtime);
         return Err(format!("composition cleanup failed: {error}; assertions: {outcome:?}").into());
     }
-    outcome
+    outcome?;
+    println!(
+        "context attributes passed: alpha={alpha}, premultipliedAlpha={premultiplied}; initial/reset/repaint/replacement/cleanup"
+    );
+    Ok(())
 }
 
 #[path = "support/webgl_demo_offscreen.rs"]

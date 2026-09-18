@@ -1,0 +1,29 @@
+
+running 25 tests
+test absent_webgl_registry_leaves_other_backends_available ... ok
+test dom_bridge::dom_focus_tests::dom_focus_html_attribute_case_does_not_bypass_eligibility ... ok
+test dom_bridge::dom_focus_tests::dom_focus_disabled_fieldsets_exempt_only_the_first_legend_subtree ... ok
+test dom_bridge::dom_focus_tests::dom_focus_candidates_sort_positive_then_natural_in_current_dom_order ... ok
+test dom_bridge::dom_focus_tests::dom_focus_navigation_uses_dom_order_from_negative_and_cycles_native_window ... ok
+test dom_bridge::dom_focus_tests::dom_focus_removal_preflight_preserves_state_and_checks_errors_first ... ok
+test dom_bridge::dom_focus_tests::dom_focus_resolves_display_inert_and_overridden_visibility ... ok
+test dom_bridge::dom_tree_tests::character_data_changes_existing_text_and_comment_payloads_only ... ok
+test dom_bridge::dom_focus_tests::dom_focus_subtree_removal_clears_focus_without_invalidating_retained_nodes ... ok
+test dom_bridge::dom_tree_tests::attribute_removal_updates_id_lookup_and_leaves_other_attributes_intact ... ok
+test dom_bridge::dom_focus_tests::dom_focus_uses_native_state_and_invalidates_focus_styles ... ok
+test dom_bridge::dom_tree_tests::cssom_writes_reflect_attributes_ignore_invalid_values_and_remove_properties ... ok
+test dom_bridge::dom_tree_tests::descriptions_expose_dom_kinds_names_and_namespace_without_layout_boxes ... ok
+test dom_bridge::dom_focus_tests::dom_focus_control_and_link_eligibility_rejects_disabled_and_hidden_inputs ... ok
+test dom_bridge::dom_tree_tests::invalid_tree_operations_leave_all_existing_relationships_unchanged ... ok
+test dom_bridge::dom_tree_tests::no_op_cssom_mutations_preserve_absent_and_unserialized_style_attributes ... ok
+test dom_bridge::dom_tree_tests::reordering_detaching_and_reattaching_preserve_node_identity_and_text ... ok
+test webgl_dom_canvas ... ignored, Requires native Metal, pinned ANGLE and a bundled public Three fixture
+test dom_bridge::dom_tree_tests::document_allows_comments_and_moving_its_single_existing_root ... ok
+test dom_bridge::dom_focus_tests::dom_focus_tabindex_parses_html_integer_prefixes_and_reflects_long_defaults ... ok
+test dom_bridge::dom_tree_tests::text_content_replaces_element_children_but_keeps_detached_subtrees_alive ... ok
+test dom_bridge::tests::parserless_creation_rejects_subdocuments_but_keeps_ordinary_elements ... ok
+test dom_bridge::tests::supplied_parser_receives_fragment_without_dropping_retained_nodes ... ok
+test dom_bridge::tests::absent_parser_rejects_html_before_detaching_children ... ok
+test dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation ... ok
+
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.03s

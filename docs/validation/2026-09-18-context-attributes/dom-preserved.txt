@@ -1,0 +1,6 @@
+
+running 1 test
+2026-09-18 22:32:50.342 webgl_dom-96dec4d5fe245569[17626:6206799] Metal API Validation Enabled
+test webgl_dom_canvas ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 1.64s

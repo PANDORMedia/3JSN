@@ -10,11 +10,12 @@ const backends = new Map();
 // after native success. This registry does not install application globals.
 export function registerCanvasBackend(name, backend) {
   if (typeof name !== 'string' || !name || typeof backend?.create !== 'function'
-    || typeof backend?.resize !== 'function') {
+    || typeof backend?.resize !== 'function'
+    || (backend.prepareOptions !== undefined && typeof backend.prepareOptions !== 'function')) {
     throw new TypeError('Expected a canvas backend name, create and resize callbacks');
   }
   if (backends.has(name)) throw new TypeError(`Canvas backend already registered: ${name}`);
-  backends.set(name, Object.freeze({ create: backend.create, resize: backend.resize }));
+  backends.set(name, Object.freeze({ create: backend.create, resize: backend.resize, prepareOptions: backend.prepareOptions }));
 }
 
 registerCanvasBackend('webgpu', {
@@ -31,7 +32,7 @@ class HTMLCanvasElement extends HTMLElement {
   set width(value) { this.setAttribute('width', String(+value >>> 0)); }
   get height() { return dimension(this, 'height', 150); }
   set height(value) { this.setAttribute('height', String(+value >>> 0)); }
-  getContext(kind) {
+  getContext(kind, options = undefined) {
     const node = core.ops.op_dom_read({ kind: 'describe', id: idOf(this) });
     if (node.nodeType !== 1 || node.localName !== 'canvas' || node.namespace !== 'http://www.w3.org/1999/xhtml') {
       throw new TypeError('Expected an HTML canvas node');
@@ -41,7 +42,12 @@ class HTMLCanvasElement extends HTMLElement {
     if (existing) return existing.kind === kind ? existing.context : null;
     const backend = backends.get(kind);
     if (!backend) return null;
-    const context = backend.create(this, this.width, this.height);
+    const prepared = backend.prepareOptions ? backend.prepareOptions(options) : options;
+    // Dictionary getters can resize this canvas or create its first context.
+    // Recheck ownership and read dimensions only after those getters finish.
+    const reentrant = contexts.get(this);
+    if (reentrant) return reentrant.kind === kind ? reentrant.context : null;
+    const context = backend.create(this, this.width, this.height, prepared);
     if (context === null) return null;
     if (typeof context !== 'object' && typeof context !== 'function') {
       throw new TypeError('Canvas backend must return a context object or null');

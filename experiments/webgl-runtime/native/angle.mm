@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
+#import <IOSurface/IOSurface.h>
 #include "angle.h"
 #include "angle-loader/egl_loader.h"
 #include "angle-loader/gles_loader.h"
@@ -24,6 +25,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <vector>
 
 namespace {
 thread_local char last_error[512] = {};
@@ -63,8 +65,6 @@ struct DisplayState {
     void *gles_module = nullptr;
     LoadProc get_proc = nullptr;
     EGLDisplay display = EGL_NO_DISPLAY;
-    EGLConfig config = nullptr;
-    EGLint max_width = 0, max_height = 0, max_pixels = 0;
     bool loaders_installed = false;
     bool initialized = false;
     bool thread_attached = false;
@@ -103,7 +103,11 @@ struct DisplayState {
             thread_attached = false;
         }
     }
-    void check_dimensions(unsigned width, unsigned height) const {
+    void check_dimensions(EGLConfig config, unsigned width, unsigned height) const {
+        const EGLint max_width = config_value(config, EGL_MAX_PBUFFER_WIDTH);
+        const EGLint max_height = config_value(config, EGL_MAX_PBUFFER_HEIGHT);
+        const EGLint max_pixels = config_value(config, EGL_MAX_PBUFFER_PIXELS);
+        require(max_width > 0 && max_height > 0 && max_pixels > 0, "ANGLE reports invalid pbuffer limits");
         require(width > 0 && height > 0 && width <= 16384 && height <= 16384,
                 "ANGLE dimensions must be in 1..16384");
         require(width <= static_cast<unsigned>(max_width) &&
@@ -111,7 +115,7 @@ struct DisplayState {
                     static_cast<uint64_t>(width) * height <= static_cast<uint64_t>(max_pixels),
                 "ANGLE dimensions exceed the selected pbuffer config limits");
     }
-    EGLint config_value(EGLint attribute) const {
+    EGLint config_value(EGLConfig config, EGLint attribute) const {
         EGLint value = 0;
         require_egl(eglGetConfigAttrib(display, config, attribute, &value), "ANGLE config query failed");
         return value;
@@ -133,7 +137,8 @@ struct DisplayState {
                     eglMakeCurrent && eglGetCurrentContext && eglGetCurrentDisplay &&
                     eglGetCurrentSurface && eglGetError && glGetString && glViewport && glScissor &&
                     glGetIntegerv && glGetBooleanv && glIsEnabled && glBindFramebuffer &&
-                    glDrawBuffers && glColorMask && glEnable && glDisable && glClearBufferfv,
+                    glDrawBuffers && glColorMask && glDepthMask && glStencilMaskSeparate &&
+                    glEnable && glDisable && glClearBufferfv && glClearBufferiv,
                 "ANGLE is missing required EGL/GLES entry points");
         thread_attached = true;
         const EGLint platform[] = {
@@ -153,24 +158,30 @@ struct DisplayState {
             }
         }
         require_egl(eglBindAPI(EGL_OPENGL_ES_API), "ANGLE OpenGL ES API binding failed");
+    }
+    EGLConfig select_config(bool depth, bool stencil) const {
         const EGLint attributes[] = {
             EGL_SURFACE_TYPE, EGL_PBUFFER_BIT, EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
             EGL_COLOR_BUFFER_TYPE, EGL_RGB_BUFFER, EGL_RED_SIZE, 8, EGL_GREEN_SIZE, 8,
-            EGL_BLUE_SIZE, 8, EGL_ALPHA_SIZE, 8, EGL_DEPTH_SIZE, 24, EGL_STENCIL_SIZE, 8,
-            EGL_SAMPLE_BUFFERS, 0, EGL_NONE,
+            EGL_BLUE_SIZE, 8, EGL_ALPHA_SIZE, 8, EGL_DEPTH_SIZE, depth ? 24 : 0,
+            EGL_STENCIL_SIZE, stencil ? 8 : 0, EGL_SAMPLE_BUFFERS, 0, EGL_NONE,
         };
         EGLint count = 0;
-        require_egl(eglChooseConfig(display, attributes, &config, 1, &count), "ANGLE ES3 config selection failed");
-        require(count == 1, "ANGLE RGBA8/depth24/stencil8 ES3 pbuffer config unavailable");
-        require(config_value(EGL_RED_SIZE) == 8 && config_value(EGL_GREEN_SIZE) == 8 &&
-                    config_value(EGL_BLUE_SIZE) == 8 && config_value(EGL_ALPHA_SIZE) == 8 &&
-                    config_value(EGL_DEPTH_SIZE) >= 24 && config_value(EGL_STENCIL_SIZE) >= 8 &&
-                    config_value(EGL_SAMPLE_BUFFERS) == 0,
-                "ANGLE config does not satisfy the requested framebuffer format");
-        max_width = config_value(EGL_MAX_PBUFFER_WIDTH);
-        max_height = config_value(EGL_MAX_PBUFFER_HEIGHT);
-        max_pixels = config_value(EGL_MAX_PBUFFER_PIXELS);
-        require(max_width > 0 && max_height > 0 && max_pixels > 0, "ANGLE reports invalid pbuffer limits");
+        require_egl(eglChooseConfig(display, attributes, nullptr, 0, &count), "ANGLE ES3 config enumeration failed");
+        require(count > 0, "ANGLE ES3 pbuffer config unavailable");
+        std::vector<EGLConfig> configs(count);
+        require_egl(eglChooseConfig(display, attributes, configs.data(), count, &count), "ANGLE ES3 config selection failed");
+        // EGL size requests are minima, including zero. Explicitly exclude omitted
+        // buffers so GL blending/depth/stencil semantics match the WebGL request.
+        for (EGLint i = 0; i < count; ++i) {
+            const EGLConfig config = configs[i];
+            if (config_value(config, EGL_RED_SIZE) == 8 && config_value(config, EGL_GREEN_SIZE) == 8 &&
+                config_value(config, EGL_BLUE_SIZE) == 8 && config_value(config, EGL_ALPHA_SIZE) == 8 &&
+                (depth ? config_value(config, EGL_DEPTH_SIZE) >= 24 : config_value(config, EGL_DEPTH_SIZE) == 0) &&
+                (stencil ? config_value(config, EGL_STENCIL_SIZE) >= 8 : config_value(config, EGL_STENCIL_SIZE) == 0) &&
+                config_value(config, EGL_SAMPLE_BUFFERS) == 0) return config;
+        }
+        throw std::runtime_error("ANGLE pbuffer config for requested alpha/depth/stencil attributes unavailable");
     }
 };
 
@@ -213,27 +224,58 @@ struct CurrentBinding {
 struct PendingSurface {
     DisplayState &owner;
     EGLSurface surface = EGL_NO_SURFACE;
-    PendingSurface(DisplayState &state, unsigned width, unsigned height) : owner(state) {
+    PendingSurface(DisplayState &state, EGLConfig config, unsigned width, unsigned height, bool alpha) : owner(state) {
         const EGLint attributes[] = {
             EGL_WIDTH, static_cast<EGLint>(width), EGL_HEIGHT, static_cast<EGLint>(height),
             EGL_LARGEST_PBUFFER, EGL_FALSE,
             EGL_ROBUST_RESOURCE_INITIALIZATION_ANGLE, EGL_TRUE, EGL_NONE,
         };
-        surface = eglCreatePbufferSurface(owner.display, owner.config, attributes);
-        require(surface != EGL_NO_SURFACE, "ANGLE pbuffer creation failed");
+        if (alpha) {
+            surface = eglCreatePbufferSurface(owner.display, config, attributes);
+        } else {
+            require(eglCreatePbufferFromClientBuffer &&
+                        has_extension(eglQueryString(owner.display, EGL_EXTENSIONS), "EGL_ANGLE_iosurface_client_buffer"),
+                    "ANGLE RGB IOSurface pbuffer support unavailable");
+            // Dimensions were checked against bounded EGL limits before this allocation.
+            // ANGLE retains the IOSurface for the EGL surface lifetime. There is no
+            // CPU lock, mapping or pixel copy; ANGLE initializes RGBX alpha on the GPU.
+            const size_t row_bytes = IOSurfaceAlignProperty(kIOSurfaceBytesPerRow, static_cast<size_t>(width) * 4);
+            require(row_bytes >= static_cast<size_t>(width) * 4 &&
+                        row_bytes <= std::numeric_limits<size_t>::max() / height,
+                    "ANGLE RGB IOSurface allocation size overflow");
+            NSDictionary *properties = @{
+                (id)kIOSurfaceWidth: @(width), (id)kIOSurfaceHeight: @(height),
+                (id)kIOSurfaceBytesPerElement: @4, (id)kIOSurfaceBytesPerRow: @(row_bytes),
+                (id)kIOSurfaceAllocSize: @(row_bytes * height), (id)kIOSurfacePixelFormat: @((uint32_t)'RGBA'),
+            };
+            IOSurfaceRef storage = IOSurfaceCreate((__bridge CFDictionaryRef)properties);
+            require(storage != nullptr, "ANGLE RGB IOSurface allocation failed");
+            const EGLint rgb_attributes[] = {
+                EGL_WIDTH, static_cast<EGLint>(width), EGL_HEIGHT, static_cast<EGLint>(height),
+                EGL_IOSURFACE_PLANE_ANGLE, 0, EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
+                EGL_TEXTURE_INTERNAL_FORMAT_ANGLE, GL_RGB, EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
+                EGL_TEXTURE_TYPE_ANGLE, GL_UNSIGNED_BYTE, EGL_NONE,
+            };
+            surface = eglCreatePbufferFromClientBuffer(owner.display, EGL_IOSURFACE_ANGLE,
+                reinterpret_cast<EGLClientBuffer>(storage), config, rgb_attributes);
+            CFRelease(storage);
+        }
+        require_egl(surface != EGL_NO_SURFACE ? EGL_TRUE : EGL_FALSE, "ANGLE pbuffer creation failed");
     }
     ~PendingSurface() noexcept {
         if (surface != EGL_NO_SURFACE && eglDestroySurface(owner.display, surface) != EGL_TRUE)
             set_error("ANGLE temporary pbuffer cleanup failed");
     }
-    void validate(unsigned width, unsigned height) const {
+    void validate(unsigned width, unsigned height, bool alpha) const {
         EGLint actual_width = 0, actual_height = 0, initialized = 0;
         require_egl(eglQuerySurface(owner.display, surface, EGL_WIDTH, &actual_width), "ANGLE pbuffer width query failed");
         require_egl(eglQuerySurface(owner.display, surface, EGL_HEIGHT, &actual_height), "ANGLE pbuffer height query failed");
+        // Client-buffer surfaces reject the robust-init attribute. Their fresh
+        // attachments are explicitly GPU-cleared before any application access.
         require_egl(eglQuerySurface(owner.display, surface, EGL_ROBUST_RESOURCE_INITIALIZATION_ANGLE, &initialized),
                     "ANGLE pbuffer initialization query failed");
         require(actual_width == static_cast<EGLint>(width) && actual_height == static_cast<EGLint>(height) &&
-                    initialized == EGL_TRUE, "ANGLE pbuffer size or robust initialization differs from the request");
+                    (!alpha || initialized == EGL_TRUE), "ANGLE pbuffer size or robust initialization differs from the request");
     }
     EGLSurface release() noexcept { EGLSurface value = surface; surface = EGL_NO_SURFACE; return value; }
 };
@@ -264,7 +306,7 @@ struct PbufferClearState {
     }
 };
 
-void initialize_pbuffer_color() {
+void initialize_pbuffer_attachments() {
     // ANGLE ac6cda4cbd71 reads a null lazy Metal color attachment when the
     // first operation on a robust pbuffer is a blit. Clear only newly allocated
     // storage through the draw path before exposing it; never clear on publish.
@@ -276,16 +318,36 @@ void initialize_pbuffer_color() {
     glDisable(GL_RASTERIZER_DISCARD);
     const GLfloat zero[4] = {};
     glClearBufferfv(GL_COLOR, 0, zero);
+    // IOSurface client buffers cannot request EGL robust initialization. Clear
+    // depth/stencil too, preserving application write masks across resize.
+    GLboolean depth_mask = GL_TRUE;
+    GLint front_mask = 0, back_mask = 0, depth_bits = 0, stencil_bits = 0;
+    glGetBooleanv(GL_DEPTH_WRITEMASK, &depth_mask);
+    glGetIntegerv(GL_STENCIL_WRITEMASK, &front_mask);
+    glGetIntegerv(GL_STENCIL_BACK_WRITEMASK, &back_mask);
+    glGetIntegerv(GL_DEPTH_BITS, &depth_bits);
+    glGetIntegerv(GL_STENCIL_BITS, &stencil_bits);
+    glDepthMask(GL_TRUE);
+    glStencilMaskSeparate(GL_FRONT_AND_BACK, ~0u);
+    const GLfloat depth = 1.0f;
+    const GLint stencil = 0;
+    if (depth_bits) glClearBufferfv(GL_DEPTH, 0, &depth);
+    if (stencil_bits) glClearBufferiv(GL_STENCIL, 0, &stencil);
+    glDepthMask(depth_mask);
+    glStencilMaskSeparate(GL_FRONT, static_cast<GLuint>(front_mask));
+    glStencilMaskSeparate(GL_BACK, static_cast<GLuint>(back_mask));
 }
 } // namespace
 
 struct AngleDisplay { std::shared_ptr<DisplayState> owner; };
 struct AngleContext {
     std::shared_ptr<DisplayState> owner;
+    EGLConfig config = nullptr;
     EGLContext context = EGL_NO_CONTEXT;
     EGLSurface surface = EGL_NO_SURFACE;
     unsigned width = 0, height = 0;
     unsigned live_snapshots = 0;
+    bool alpha = true;
 
     void check() const {
         owner->check_ready();
@@ -693,12 +755,20 @@ extern "C" void angle_display_destroy(AngleDisplay *display) noexcept {
 }
 
 extern "C" AngleContext *angle_context_create(AngleDisplay *display, unsigned width, unsigned height) noexcept {
+    return angle_context_create_with_attributes(display, width, height, 1, 1, 1);
+}
+
+extern "C" AngleContext *angle_context_create_with_attributes(AngleDisplay *display, unsigned width, unsigned height,
+                                                               int alpha, int depth, int stencil) noexcept {
     return protected_call<AngleContext *>(nullptr, [=] {
         require(display, "ANGLE display handle is required");
         display->owner->check_ready();
-        display->owner->check_dimensions(width, height);
+        const EGLConfig config = display->owner->select_config(depth != 0, stencil != 0);
+        display->owner->check_dimensions(config, width, height);
         auto result = std::make_unique<AngleContext>();
         result->owner = display->owner;
+        result->config = config;
+        result->alpha = alpha != 0;
         const CurrentBinding previous;
         require_egl(eglBindAPI(EGL_OPENGL_ES_API), "ANGLE OpenGL ES API binding failed");
         const EGLint attributes[] = {
@@ -706,11 +776,11 @@ extern "C" AngleContext *angle_context_create(AngleDisplay *display, unsigned wi
             EGL_ROBUST_RESOURCE_INITIALIZATION_ANGLE, EGL_TRUE,
             EGL_NONE,
         };
-        result->context = eglCreateContext(result->owner->display, result->owner->config, EGL_NO_CONTEXT, attributes);
+        result->context = eglCreateContext(result->owner->display, result->config, EGL_NO_CONTEXT, attributes);
         require(result->context != EGL_NO_CONTEXT, "ANGLE robust WebGL-compatible ES3 context creation failed");
         try {
-            PendingSurface surface(*result->owner, width, height);
-            surface.validate(width, height);
+            PendingSurface surface(*result->owner, result->config, width, height, result->alpha);
+            surface.validate(width, height, result->alpha);
             require_egl(eglMakeCurrent(result->owner->display, surface.surface, surface.surface, result->context),
                         "ANGLE initial make-current failed");
             const char *renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
@@ -722,7 +792,7 @@ extern "C" AngleContext *angle_context_create(AngleDisplay *display, unsigned wi
                                         EGL_ROBUST_RESOURCE_INITIALIZATION_ANGLE, &initialized),
                         "ANGLE context initialization query failed");
             require(version >= 3 && initialized == EGL_TRUE, "ANGLE context did not satisfy ES3 and initialization requirements");
-            initialize_pbuffer_color();
+            initialize_pbuffer_attachments();
             glViewport(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
             glScissor(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
             result->surface = surface.release();
@@ -770,13 +840,13 @@ extern "C" int angle_context_resize(AngleContext *context, unsigned width, unsig
         require(context, "ANGLE context handle is required");
         context->check();
         require(context->live_snapshots == 0, "ANGLE context has live snapshots; retire them before resize");
-        context->owner->check_dimensions(width, height);
-        PendingSurface replacement(*context->owner, width, height);
-        replacement.validate(width, height);
+        context->owner->check_dimensions(context->config, width, height);
+        PendingSurface replacement(*context->owner, context->config, width, height, context->alpha);
+        replacement.validate(width, height, context->alpha);
         const CurrentBinding previous;
         require_egl(eglMakeCurrent(context->owner->display, replacement.surface, replacement.surface, context->context),
                     "ANGLE resized make-current failed");
-        initialize_pbuffer_color();
+        initialize_pbuffer_attachments();
         if (eglDestroySurface(context->owner->display, context->surface) != EGL_TRUE) {
             const bool restored = previous.restore(context->owner->display);
             require(restored, "ANGLE resize failed and restoring the previous current context failed");
