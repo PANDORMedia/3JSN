@@ -54,3 +54,29 @@ of arbitrary dynamic behavior remain open in #36/#37. The parser inventory must
 not be treated as admission for the experimental native packaging profiles.
 The next rendering integration remains actual WebGL in the selected V8 host;
 the isolated ANGLE/native texture-sharing proof does not supply that binding.
+
+## Daily-review corrections
+
+The subsequent [PR review](https://github.com/PANDORMedia/3JSN/pull/63#pullrequestreview-5249906784)
+identified pathological member chains, uninterruptible parsing, excessive finding
+arrays and nested dependency snapshot scope. These were not covered by the earlier
+passing tests. The corrected analyzer uses constant-depth API recognition,
+terminable parser workers, explicit traversal/finding caps and an all-depth
+`node_modules` exclusion recorded in snapshot identity. The default snapshot API
+retains its original exact-path behavior for existing build callers.
+
+The real CLI now handles the reviewer's 20 KB member chain in 431 ms and the
+650 KB computed-access input in 682 ms on this Mac. Both return exit 1 with source
+preservation verified; the latter explicitly reports incomplete analysis. A pnpm
+workspace-link control completes in 350 ms. These are reproduction timings, not
+performance guarantees. [Results](2026-09-18-project-check/review/cli-reproductions.json).
+
+58 focused tests pass, including parser deadlines, real CLI SIGINT, typed snapshot
+scope, deep/wide HTML, colon script names, omitted metadata, BOM handling and
+unsupported component formats. The full Node suite passes 194 tests with one
+existing skip; 771 source/config/document checks passed before this receipt was
+added. Test logs and [source identities](2026-09-18-project-check/review/source-identities.json)
+are archived beside the reproduction results. Windows CLI signal semantics remain
+outside the macOS SIGINT result; worker AbortController tests run independently.
+
+No application build, native graphics support or platform certification is added.

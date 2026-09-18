@@ -170,7 +170,7 @@ new WebSocket('wss://alice:SECRET@host.invalid/socket?TOKEN=SECRET');
 require('node:fs'); import 'safe-package/subpath'; import './file with spaces.js';`);
   const serialized = JSON.stringify(result);
   assert.doesNotMatch(serialized, /SECRET|TOKEN|alice|host\.invalid|https:|wss:|blob:|data:/);
-  assert.deepEqual(result.imports.map(item => item.specifier), [undefined, undefined, './local.js', 'node:fs', 'safe-package/subpath', './file with spaces.js']);
+  assert.deepEqual(result.imports.map(item => item.specifier), [undefined, undefined, './local.js', 'node:fs', 'safe-package/subpath', undefined]);
   assert(result.assets.some(item => item.kind === 'fetch' && item.url === '/api/state'));
   assert(codes(result).has('JAVASCRIPT_EXTERNAL_REFERENCE'));
   assert(codes(result).has('JAVASCRIPT_REFERENCE_SUFFIX'));
@@ -218,4 +218,28 @@ test('invalid API arguments fail generically instead of leaking caller text', ()
   for (const options of [{ startLine: 0 }, { startLine: 1.5 }, { startColumn: -1 }]) {
     assert.throws(() => analyze('PRIVATE', 'path.js', options), error => error instanceof TypeError && !error.message.includes('PRIVATE'));
   }
+});
+
+test('deep member chains complete in a bounded child and retain inner API candidates', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const child = spawnSync(process.execPath, ['--input-type=module', '-e', `
+    import { analyzeJavaScript } from ${JSON.stringify(new URL('./check-javascript.mjs', import.meta.url).href)};
+    const result = analyzeJavaScript('navigator.gpu'+'.b'.repeat(10000)+';', 'deep.js');
+    if (!result.requirements.some(row=>row.feature==='graphics.webgpu')) process.exit(2);
+  `], { timeout: 5000, killSignal: 'SIGKILL', encoding: 'utf8' });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 0, child.stderr);
+});
+
+test('large computed inventories stop at an explicit finding limit', () => {
+  const result = analyze('a[b];'.repeat(130000));
+  assert.ok(result.uncertainties.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.ok(Object.values(result).reduce((sum, rows) => sum + rows.length, 0) <= 5001);
+});
+
+test('local references with whitespace are omitted consistently with HTML resources', () => {
+  const result = analyze('fetch("./private SECRET/data")');
+  assert.equal(result.assets[0].url, undefined);
+  assert.ok(codes(result).has('JAVASCRIPT_REFERENCE_OMITTED'));
+  assert.ok(!JSON.stringify(result).includes('SECRET'));
 });

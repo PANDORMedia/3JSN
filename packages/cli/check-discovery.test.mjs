@@ -69,3 +69,27 @@ test('inline CSS discovery locates stylesheet bodies and explicitly bounds decod
   assert.equal(result.entryPages[0].scripts.length, 0);
   assert.ok(!JSON.stringify(result).includes('SECRET'));
 });
+
+test('script colons and BOM manifests are retained; omitted metadata is explicit', () => {
+  const result = analyzeProjectFiles([{ path: 'package.json', source: '\uFEFF' + JSON.stringify({
+    scripts: { 'build:prod': 'SECRET', 'test:unit': 'SECRET', ['x\nSECRET']: 'SECRET' },
+    workspaces: ['apps/*', 'apps with spaces/*', 42, 'https://SECRET.invalid'],
+  }) }]);
+  assert.deepEqual(result.packages[0].scripts, ['build:prod', 'test:unit']);
+  assert.deepEqual(result.packages[0].workspaces, ['apps/*', 'apps with spaces/*']);
+  assert.ok(result.uncertainties.some(row => row.code === 'script-names-omitted'));
+  assert.ok(result.uncertainties.some(row => row.code === 'workspace-entries-omitted'));
+  assert.ok(!JSON.stringify(result).includes('SECRET'));
+});
+
+test('deep HTML stops with explicit incomplete coverage without recursive traversal failure', () => {
+  const result = analyzeProjectFiles([{ path: 'deep.html', source: '<!doctype html>' + '<div>'.repeat(1000) + '<script src="deep.js"></script>' }]);
+  assert.ok(result.uncertainties.some(row => row.code === 'ANALYSIS_INCOMPLETE' && /depth/.test(row.message)));
+  assert.equal(result.entryPages[0].scripts.length, 0);
+});
+
+test('many HTML findings are capped with explicit incomplete coverage', () => {
+  const result = analyzeProjectFiles([{ path: 'wide.html', source: '<!doctype html>' + '<img src="a.png">'.repeat(22000) }]);
+  assert.ok(result.resources.length <= 10000);
+  assert.ok(result.uncertainties.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+});

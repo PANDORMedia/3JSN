@@ -27,7 +27,16 @@ function normalizeExclusions(exclude) {
   return [...new Set(['.git', ...exclude])].sort(compare);
 }
 
-const isExcluded = (path, excluded) => excluded.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+const isExcluded = (path, excluded, basenames = []) => path.split('/').some(part => basenames.includes(part)) || excluded.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+
+function normalizeBasenames(values) {
+  if (!Array.isArray(values)) throw new SnapshotError('INVALID_EXCLUSIONS', 'Basename exclusions must be an array.');
+  for (const value of values) {
+    validatePath(value);
+    if (value.includes('/')) throw new SnapshotError('INVALID_EXCLUSIONS', 'Basename exclusions cannot contain a path.');
+  }
+  return [...new Set(values)].sort(compare);
+}
 
 function identity(stat) {
   return [stat.dev, stat.ino, stat.size, stat.mtimeNs, stat.ctimeNs].join(':');
@@ -52,10 +61,11 @@ async function fileEntry(path, name, initial) {
   }
 }
 
-/** Hash a quiescent project tree. Exclusions are exact root-relative paths, never globs. */
-export async function snapshotTree(inputRoot, { exclude = [] } = {}) {
+/** Hash a quiescent tree. Exact-path and optional all-depth basename exclusions are recorded in the digest. */
+export async function snapshotTree(inputRoot, { exclude = [], excludeBasenames = [] } = {}) {
   const root = resolve(inputRoot);
   const excluded = normalizeExclusions(exclude);
+  const basenames = normalizeBasenames(excludeBasenames);
   if (!(await lstat(root)).isDirectory()) throw new SnapshotError('INVALID_ROOT', 'The snapshot root must be a real directory, not a symbolic link.');
   const canonicalRoot = await realpath(root);
   const entries = [];
@@ -66,21 +76,21 @@ export async function snapshotTree(inputRoot, { exclude = [] } = {}) {
     for (const name of (await readdir(directory)).sort(compare)) {
       const path = prefix ? `${prefix}/${name}` : name;
       validatePath(path);
-      if (isExcluded(path, excluded)) continue;
+      if (isExcluded(path, excluded, basenames)) continue;
       const absolute = join(directory, name);
       const stat = await lstat(absolute, { bigint: true });
       if (stat.isSymbolicLink()) {
         const target = await readlink(absolute);
         const lexicalTarget = resolve(canonicalRoot, dirname(path), target);
         if (!within(canonicalRoot, lexicalTarget)) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);
-        if (isExcluded(relative(canonicalRoot, lexicalTarget).split(sep).join('/'), excluded)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
+        if (isExcluded(relative(canonicalRoot, lexicalTarget).split(sep).join('/'), excluded, basenames)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
         let resolved;
         try { resolved = await realpath(absolute); } catch (cause) {
           throw new SnapshotError('INVALID_LINK', `Dangling or cyclic symbolic link: ${path}`, { cause });
         }
         if (!within(canonicalRoot, resolved)) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);
         const targetPath = relative(canonicalRoot, resolved).split(sep).join('/');
-        if (isExcluded(targetPath, excluded)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
+        if (isExcluded(targetPath, excluded, basenames)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
         const entry = { path, kind: 'symlink', target };
         entries.push(entry);
         links.push({ entry, targetPath, absolute, identity: identity(stat) });
@@ -104,7 +114,7 @@ export async function snapshotTree(inputRoot, { exclude = [] } = {}) {
     if (await readlink(absolute) !== entry.target || identity(await lstat(absolute, { bigint: true })) !== initialIdentity) throw new SnapshotError('INPUT_CHANGED', `Symbolic link changed while reading ${entry.path}`);
   }
   entries.sort((a, b) => compare(a.path, b.path));
-  const content = { schemaVersion: 1, algorithm: 'sha256', exclusions: excluded, entries };
+  const content = { schemaVersion: 1, algorithm: 'sha256', exclusions: excluded, ...(basenames.length ? { excludeBasenames: basenames } : {}), entries };
   return { ...content, digest: digest(JSON.stringify(content)) };
 }
 
@@ -114,12 +124,14 @@ function validateSnapshotContents(manifest) {
   }
   const exclusions = normalizeExclusions(manifest.exclusions);
   if (JSON.stringify(exclusions) !== JSON.stringify(manifest.exclusions)) throw new SnapshotError('INVALID_MANIFEST', 'Exclusions must be sorted and unique.');
+  const basenames = normalizeBasenames(manifest.excludeBasenames ?? []);
+  if (manifest.excludeBasenames !== undefined && (!basenames.length || JSON.stringify(basenames) !== JSON.stringify(manifest.excludeBasenames))) throw new SnapshotError('INVALID_MANIFEST', 'Basename exclusions must be nonempty, sorted and unique.');
   let previous = '';
   for (const entry of manifest.entries) {
     if (!entry || typeof entry !== 'object' || Array.isArray(entry)) throw new SnapshotError('INVALID_MANIFEST', 'Snapshot entries must be objects.');
     validatePath(entry.path);
     if (previous && compare(previous, entry.path) >= 0) throw new SnapshotError('INVALID_MANIFEST', 'Entries must be sorted and unique.');
-    if (isExcluded(entry.path, exclusions)) throw new SnapshotError('INVALID_MANIFEST', `Excluded entry is present: ${entry.path}`);
+    if (isExcluded(entry.path, exclusions, basenames)) throw new SnapshotError('INVALID_MANIFEST', `Excluded entry is present: ${entry.path}`);
     previous = entry.path;
     if (entry.kind === 'file') {
       if (!Number.isSafeInteger(entry.bytes) || entry.bytes < 0 || !/^[a-f0-9]{64}$/.test(entry.sha256)) throw new SnapshotError('INVALID_MANIFEST', `Invalid file entry: ${entry.path}`);
@@ -130,7 +142,7 @@ function validateSnapshotContents(manifest) {
     }
   }
   const { schemaVersion, algorithm, entries } = manifest;
-  if (manifest.digest !== digest(JSON.stringify({ schemaVersion, algorithm, exclusions, entries }))) throw new SnapshotError('INVALID_MANIFEST', 'Snapshot digest does not match its contents.');
+  if (manifest.digest !== digest(JSON.stringify({ schemaVersion, algorithm, exclusions, ...(basenames.length ? { excludeBasenames: basenames } : {}), entries }))) throw new SnapshotError('INVALID_MANIFEST', 'Snapshot digest does not match its contents.');
   return manifest;
 }
 
@@ -155,7 +167,7 @@ export async function readSnapshot(file) {
 export function compareSnapshots(before, after) {
   validateSnapshot(before);
   validateSnapshot(after);
-  if (JSON.stringify(before.exclusions) !== JSON.stringify(after.exclusions)) throw new SnapshotError('SCOPE_CHANGED', 'Snapshot exclusions changed; preservation cannot be established.');
+  if (JSON.stringify(before.exclusions) !== JSON.stringify(after.exclusions) || JSON.stringify(before.excludeBasenames) !== JSON.stringify(after.excludeBasenames)) throw new SnapshotError('SCOPE_CHANGED', 'Snapshot exclusions changed; preservation cannot be established.');
   const oldEntries = new Map(before.entries.map((entry) => [entry.path, entry]));
   const newEntries = new Map(after.entries.map((entry) => [entry.path, entry]));
   const changes = [];

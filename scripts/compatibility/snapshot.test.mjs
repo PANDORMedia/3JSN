@@ -184,3 +184,35 @@ test('CLI rejects output aliases into the source tree', async (t) => {
   assert.equal(JSON.parse(result.stderr).error.code, 'INVALID_OUTPUT');
   await assert.rejects(snapshotTree(alias), { code: 'INVALID_ROOT' });
 });
+
+test('explicit basename exclusions skip nested dependency trees and record their scope', async t => {
+  const { root } = await setup(t);
+  await mkdir(join(root, 'packages/a/node_modules'), { recursive: true });
+  await mkdir(join(root, 'node_modules/.pnpm/foo'), { recursive: true });
+  await writeFile(join(root, 'packages/a/main.js'), 'export {};');
+  await writeFile(join(root, 'node_modules/.pnpm/foo/index.js'), 'dependency');
+  await symlink(process.platform === 'win32' ? join(root, 'node_modules/.pnpm/foo') : '../../../node_modules/.pnpm/foo', join(root, 'packages/a/node_modules/foo'), process.platform === 'win32' ? 'junction' : 'dir');
+  const policy = { exclude: ['node_modules'], excludeBasenames: ['node_modules'] };
+  const before = await snapshotTree(root, policy);
+  assert.deepEqual(before.excludeBasenames, ['node_modules']);
+  assert.ok(before.entries.every(entry => !entry.path.split('/').includes('node_modules')));
+  await writeFile(join(root, 'node_modules/.pnpm/foo/index.js'), 'changed excluded dependency');
+  assert.equal(compareSnapshots(before, await snapshotTree(root, policy)).preserved, true);
+  const tampered = structuredClone(before);
+  delete tampered.excludeBasenames;
+  assert.throws(() => validateSnapshot(tampered), { code: 'INVALID_MANIFEST' });
+  await symlink(process.platform === 'win32' ? join(root, 'packages/a/node_modules') : 'packages/a/node_modules', join(root, 'source-alias'), process.platform === 'win32' ? 'junction' : 'dir');
+  await assert.rejects(snapshotTree(root, policy), { code: 'EXCLUDED_LINK' });
+});
+
+test('basename exclusions do not alter legacy exact-path snapshot scope', async t => {
+  const { root } = await setup(t);
+  await mkdir(join(root, 'nested/node_modules'), { recursive: true });
+  await writeFile(join(root, 'nested/node_modules/file.js'), 'dependency');
+  const legacy = await snapshotTree(root, { exclude: ['node_modules'] });
+  assert.ok(legacy.entries.some(entry => entry.path === 'nested/node_modules/file.js'));
+  assert.equal(Object.hasOwn(legacy, 'excludeBasenames'), false);
+  const excluded = await snapshotTree(root, { exclude: ['node_modules'], excludeBasenames: ['node_modules'] });
+  assert.throws(() => compareSnapshots(legacy, excluded), { code: 'SCOPE_CHANGED' });
+  await assert.rejects(snapshotTree(root, { excludeBasenames: ['nested/node_modules'] }), { code: 'INVALID_EXCLUSIONS' });
+});

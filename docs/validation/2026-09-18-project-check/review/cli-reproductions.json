@@ -1,0 +1,26 @@
+[
+  {
+    "name": "chain",
+    "elapsedMilliseconds": 431,
+    "exitCode": 1,
+    "preserved": true,
+    "diagnostics": 2,
+    "incomplete": false
+  },
+  {
+    "name": "many",
+    "elapsedMilliseconds": 682,
+    "exitCode": 1,
+    "preserved": true,
+    "diagnostics": 5003,
+    "incomplete": true
+  },
+  {
+    "name": "pnpm",
+    "elapsedMilliseconds": 350,
+    "exitCode": 1,
+    "preserved": true,
+    "diagnostics": 2,
+    "incomplete": false
+  }
+]

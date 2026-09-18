@@ -34,16 +34,27 @@ source-map-remapped locations.
 - `diagnostics` distinguish unavailable features, unresolved syntax/dependencies
   and unverified targets. They include source locations where available.
 - `preservation` compares complete before/after content snapshots, including
-  assets and empty directories. Root `.git` and `node_modules` are excluded and
-  explicitly recorded. Contents of dependencies are not certified.
+  assets and empty directories. Root `.git` and `node_modules` at every depth are excluded and
+  explicitly recorded, including pnpm links inside those dependency trees. Contents of dependencies are not certified.
 - `artifacts` is empty: inspection does not package or launch anything.
 
 Analysis covers UTF-8 JS/TS/JSX, HTML, CSS and package manifests in the selected
 tree. It accepts at most 4,096 source files, 2 MiB per file and 32 MiB of analyzed
-text. Excess, undecodable and nested dependency source files are listed as skipped
-and cause an incomplete-analysis diagnostic. All nonexcluded files are still
+text. Excess and undecodable source files, plus unsupported `.vue`/`.svelte`
+inputs, are listed as skipped and cause an incomplete-analysis diagnostic.
+Dependency trees are excluded from both analysis and preservation, not walked or
+hashed. Discovery emits at most 10,000 findings; each JavaScript input emits at
+most 5,000 and project aggregation caps retained findings at 10,000. HTML traversal
+is iterative, with depth 256 and 20,000 visited/queued nodes. Reaching a cap emits
+`ANALYSIS_INCOMPLETE`; missing findings cannot establish compatibility.
+
+Default parsers run in a terminable worker with a 10-second wall-clock deadline
+per discovery operation or JavaScript input. A deadline emits `ANALYSIS_TIMEOUT`
+and `ANALYSIS_INCOMPLETE`, still verifies preservation, and returns exit 1 if that
+verification succeeds. These limits do not bound the complete filesystem snapshot:
+all nonexcluded assets must be hashed to support the preservation claim. All nonexcluded files are still
 included in content preservation. Contained symlinks are preserved in the snapshot;
-their targets are analyzed through their normal paths. External/dangling links
+their targets are analyzed through their normal paths. External/dangling links and source links into excluded dependencies
 cannot establish a self-contained snapshot and inspection fails explicitly.
 
 Static inventory does not resolve imports, aliases, installed dependencies,
@@ -56,14 +67,15 @@ certificate or broaden the experimental packaging profiles.
 
 | Exit | Meaning |
 | --- | --- |
-| 1 | Inventory completed with unsupported or unresolved compatibility |
+| 1 | Unsupported/unresolved compatibility, including explicitly incomplete bounded analysis |
 | 2 | Invalid invocation, target or profile configuration |
 | 3 | I/O/tool failure, including unverifiable source preservation |
 | 4 | Source changed during inspection |
 | 130 | Cancellation with source preservation verified |
 
 Source changes take precedence over cancellation or analysis errors. Cancellation
-waits for the current filesystem/parsing operation and then verifies preservation.
+terminates active parser work, waits for any current filesystem operation, and then
+verifies preservation.
 SIGTERM uses shell exit 143 with cancellation recorded in the JSON report; forced
 termination cannot return a verification report. Quiesce writers: this is a content
 snapshot comparison, not an atomic filesystem snapshot or hostile-process sandbox.

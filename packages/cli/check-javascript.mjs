@@ -61,11 +61,15 @@ function chain(node) {
   while (['MemberExpression', 'OptionalMemberExpression'].includes(node?.type)) {
     const name = property(node);
     if (name === undefined) return undefined;
-    result.unshift(name);
+    // Recognized APIs have at most two segments plus an optional global prefix.
+    // Inspecting longer prefixes at every AST node would make chains quadratic.
+    if (result.length === 3) return undefined;
+    result.push(name);
     node = unwrap(node.object);
   }
   if (node?.type !== 'Identifier') return undefined;
-  result.unshift(node.name);
+  result.push(node.name);
+  result.reverse();
   if (globalObjects.has(result[0]) && result.length > 1) result.shift();
   return result;
 }
@@ -201,7 +205,7 @@ export function analyzeJavaScript(source, path, { startLine = 1, startColumn = 0
   }
   function safeReference(value, node) {
     if (value === undefined) return undefined;
-    if (typeof value !== 'string' || /[\u0000-\u001f\u007f]/u.test(value) || value.includes('\\')) {
+    if (typeof value !== 'string' || /[\u0000-\u0020\u007f]/u.test(value) || value.includes('\\')) {
       uncertainty('JAVASCRIPT_REFERENCE_OMITTED', 'A reference with unsupported path characters was omitted.', node);
       return undefined;
     }
@@ -232,8 +236,13 @@ export function analyzeJavaScript(source, path, { startLine = 1, startColumn = 0
     result.assets.push({ kind, ...(url === undefined ? {} : { url }), dynamic, location: location(node) });
     if (dynamic) uncertainty('JAVASCRIPT_DYNAMIC_ASSET', 'The resource expression cannot be resolved by this bounded syntactic analysis.', node);
   }
+  const maxFindings = 5000;
   for (const item of nodes(ast)) {
     const { node } = item;
+    if (Object.values(result).reduce((sum, rows) => sum + rows.length, 0) >= maxFindings) {
+      uncertainty('ANALYSIS_INCOMPLETE', 'JavaScript finding limit reached; remaining source candidates were not inventoried.', node);
+      break;
+    }
     if (node.type === 'ImportDeclaration') {
       const typeOnly = node.importKind === 'type' || (node.specifiers.length > 0 && node.specifiers.every(s => s.importKind === 'type'));
       moduleImport(typeOnly ? 'import-type' : 'import', node.source.value, node, false);

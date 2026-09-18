@@ -151,3 +151,72 @@ test('CLI check emits its report and exit status; build options cannot accidenta
   assert.equal(JSON.parse(invalid.stderr).error.code, 'USAGE');
   assert((await readFile(join(f.project, 'package.json'), 'utf8')).includes('malicious-command'));
 });
+
+test('large finding arrays aggregate without argument spread and fail closed at project limit', async t => {
+  const f = await fixture(t);
+  const report = await checkProject(f.options, { analyze: () => ({
+    requirements: [], imports: [], assets: [], uncertainties: Array.from({ length: 130000 }, (_, index) => ({ code: 'COMPUTED', message: 'Unresolved access.', location: { path: 'main.ts', line: index + 1, column: 1 } })),
+  }) });
+  assert.equal(report.exitCode, 1);
+  assert.equal(report.preservation.preserved, true);
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.ok(report.diagnostics.length < 10100);
+});
+
+test('parser deadline returns incomplete inventory with preservation, not a tool crash', async t => {
+  const f = await fixture(t);
+  const report = await checkProject(f.options, { analysisMilliseconds: 1 });
+  assert.equal(report.exitCode, 1);
+  assert.equal(report.preservation.preserved, true);
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+});
+
+test('abort can interrupt actual parser work and still verify preservation', async t => {
+  const f = await fixture(t);
+  await writeFile(join(f.project, 'index.html'), '<div>'.repeat(40000));
+  const controller = new AbortController();
+  let timer;
+  t.after(() => clearTimeout(timer));
+  const report = await checkProject({ ...f.options, signal: controller.signal }, { snapshot: async (...args) => {
+    const value = await snapshotTree(...args);
+    timer ??= setTimeout(() => controller.abort(), 100);
+    return value;
+  } });
+  assert.equal(report.exitCode, 130);
+  assert.equal(report.preservation.preserved, true);
+});
+
+test('unparsed component formats appear in skipped coverage and diagnostics', async t => {
+  const f = await fixture(t);
+  await writeFile(join(f.project, 'screen.vue'), '<template>SECRET</template>');
+  await writeFile(join(f.project, 'screen.svelte'), '<script>SECRET()</script>');
+  const report = await checkProject(f.options);
+  assert.equal(report.exitCode, 1);
+  assert.deepEqual(report.analysisCoverage.skippedFiles, ['screen.svelte', 'screen.vue']);
+  assert.equal(report.diagnostics.filter(row => row.code === 'UNSUPPORTED_SOURCE_FORMAT').length, 2);
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.equal(report.preservation.preserved, true);
+  assert.ok(!JSON.stringify(report).includes('SECRET'));
+});
+
+test('CLI SIGINT interrupts pathological parsing and emits a preservation report', { timeout: 10000, skip: process.platform === 'win32' ? 'Windows process.kill does not deliver catchable SIGINT.' : false }, async t => {
+  const { spawn } = await import('node:child_process');
+  const f = await fixture(t);
+  await writeFile(join(f.project, 'index.html'), '<div>'.repeat(40000));
+  const cli = resolve('packages/cli/cli.mjs');
+  const child = spawn(process.execPath, [cli, 'check', f.project], { cwd: resolve('.'), stdio: ['ignore', 'pipe', 'pipe'] });
+  let output = '', errorOutput = '';
+  child.stdout.setEncoding('utf8'); child.stderr.setEncoding('utf8');
+  child.stdout.on('data', value => { output += value; });
+  child.stderr.on('data', value => { errorOutput += value; });
+  const interrupt = setTimeout(() => child.kill('SIGINT'), 500);
+  const deadline = setTimeout(() => child.kill('SIGKILL'), 5000);
+  t.after(() => { clearTimeout(interrupt); clearTimeout(deadline); child.kill('SIGKILL'); });
+  const [code, signal] = await new Promise((resolveExit, reject) => { child.once('exit', (...args) => resolveExit(args)); child.once('error', reject); });
+  assert.equal(signal, null, errorOutput);
+  assert.equal(code, 130, errorOutput);
+  const report = JSON.parse(output);
+  assert.equal(report.preservation.preserved, true);
+  assert.ok(report.diagnostics.some(row => row.code === 'CANCELLED'));
+});
