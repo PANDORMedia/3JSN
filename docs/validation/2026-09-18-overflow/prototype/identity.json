@@ -1,9 +1,9 @@
 {
   "phase": "unadopted-prototype",
-  "baseCommit": "838d063ff706ec52ad8782b4559db29b095315bd",
-  "capturedAt": "2026-09-18T00:41:46.870Z",
+  "baseCommit": "6c918c1cd0c2637466ac228d1d0e91f3d1c7aa6c",
+  "capturedAt": "2026-09-18T00:52:27.206Z",
   "metalApiValidation": true,
-  "binarySha256": "42dd7efb10e7415f7609939677b7dc07067f2351001910e880000a5fbdcb2a82",
+  "binarySha256": "f4af42decac85870763005d3c515c9e679b5b5a08745b1b2d8181b2593a9c21a",
   "commonSources": [
     {
       "path": "experiments/dom-canvas/Cargo.lock",

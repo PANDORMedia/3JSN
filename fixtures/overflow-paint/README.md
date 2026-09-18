@@ -22,6 +22,9 @@ reports geometry differences and all pixel differences. Its parity criterion
 excludes nonuniform browser 3x3 neighborhoods to separate rasterized edges from
 uniform interiors; it allows two channel levels and 0.1 CSS pixel in geometry.
 That criterion does not certify identical antialiasing or broad compatibility.
+Every non-hidden reference must contain visible subject pixels; an occluded box
+cannot establish clipping parity. The negative-z case uses a transparent body
+background so that its subject remains observable.
 
 See the [run instructions](../../experiments/dom-canvas/OVERFLOW.md) and
 [recorded results](../../docs/validation/2026-09-18-overflow.md).

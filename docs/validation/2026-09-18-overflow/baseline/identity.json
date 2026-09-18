@@ -1,8 +1,8 @@
 {
   "phase": "baseline",
-  "capturedAt": "2026-09-18T00:37:17.596Z",
+  "capturedAt": "2026-09-18T00:50:56.507Z",
   "metalApiValidation": true,
-  "binarySha256": "74d681aec6801126fae6b761f90ee3c59d34e4a7a022fd9165e66bed902367af",
+  "binarySha256": "585d2f6a8f7ad0cfee4e2c5dbf9e49b702b32c66f97de29fa5a20d27b23b1e4a",
   "sources": [
     {
       "path": "experiments/dom-canvas/src/clip_probe.rs",
@@ -14,7 +14,7 @@
     },
     {
       "path": "fixtures/overflow-paint/fixture.js",
-      "sha256": "590d4b24ff26aae0f1150c6255f76b9fca23b00bc9ab2397348a7fbc662a34a5"
+      "sha256": "189237fd169805afedbd46997da03418904be46d2755724d56b1043400f8ff36"
     },
     {
       "path": "fixtures/overflow-paint/cases.json",
@@ -29,7 +29,7 @@
       "sha256": "64bb8e1a479160c80c0999311830595c9ef921785d906eb7e70e7e17b55f59ab"
     }
   ],
-  "baseCommit": "838d063ff706ec52ad8782b4559db29b095315bd",
+  "baseCommit": "6c918c1cd0c2637466ac228d1d0e91f3d1c7aa6c",
   "commonSources": [
     {
       "path": "experiments/dom-canvas/Cargo.lock",

@@ -28,9 +28,9 @@
     "Only the recorded ordered cases, viewport and device scales were compared."
   ],
   "inputs": {
-    "browserReportSha256": "13656da0dc35ecc5344364cd928ed7a61da44b15c1ee355cc46667da37382750",
-    "nativeReportSha256": "a6234c64929bd87b9e9d0410339e0d018d35a6e94d0b4d44095577517dd80840",
-    "comparatorSha256": "ecf262eb286087a54f7d066ba9c9fd7db062a52fb81cdb4bef59eabd724bc849"
+    "browserReportSha256": "aa40d0b94590cbbd8cf93374acb8ed626b0582ddb8a3ee3a1d3a5529c747a7f1",
+    "nativeReportSha256": "41b7828a74080228fb740cc386d5867180255172e8f14b1768e5206f40756b62",
+    "comparatorSha256": "f442c9df609f8175b1ce562b7e48e09a141d0fe9459b3fcd4b9f9cfa066de992"
   },
   "cases": [
     {
@@ -40,6 +40,7 @@
       "differingPixels": 0,
       "interiorPixels": 110244,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 9000,
       "geometryDifferences": [],
       "browser": {
         "file": "visible-1x.png",
@@ -57,6 +58,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "one-clip-1x.png",
@@ -72,16 +74,17 @@
       "scale": 1,
       "interiorAndGeometryMatch": true,
       "differingPixels": 0,
-      "interiorPixels": 113284,
+      "interiorPixels": 112932,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "negative-z-1x.png",
-        "pixelSha256": "6c28586364462df0ca5704154d2962e6d2a714a2443388b2a97220269188dcac"
+        "pixelSha256": "fad40320400e2cca255d407c7e8a3debfa4e920b374bf0eeb03cf9258a225020"
       },
       "native": {
         "file": "002-case.png",
-        "pixelSha256": "6c28586364462df0ca5704154d2962e6d2a714a2443388b2a97220269188dcac"
+        "pixelSha256": "fad40320400e2cca255d407c7e8a3debfa4e920b374bf0eeb03cf9258a225020"
       }
     },
     {
@@ -91,6 +94,7 @@
       "differingPixels": 0,
       "interiorPixels": 111436,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1120,
       "geometryDifferences": [],
       "browser": {
         "file": "nested-clips-1x.png",
@@ -108,6 +112,7 @@
       "differingPixels": 324,
       "interiorPixels": 109160,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 15720,
       "geometryDifferences": [],
       "browser": {
         "file": "rounded-padding-1x.png",
@@ -125,6 +130,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "relative-subject-1x.png",
@@ -142,6 +148,7 @@
       "differingPixels": 9548,
       "interiorPixels": 109462,
       "differingInteriorPixels": 8716,
+      "subjectReferencePixels": 1834,
       "firstInteriorDifference": {
         "x": 176,
         "y": 120,
@@ -218,6 +225,7 @@
       "differingPixels": 0,
       "interiorPixels": 110664,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1584,
       "geometryDifferences": [],
       "browser": {
         "file": "moved-clip-1x.png",
@@ -235,6 +243,7 @@
       "differingPixels": 0,
       "interiorPixels": 110388,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 2496,
       "geometryDifferences": [],
       "browser": {
         "file": "resized-clip-1x.png",
@@ -252,6 +261,7 @@
       "differingPixels": 0,
       "interiorPixels": 111620,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 0,
       "geometryDifferences": [
         {
           "node": "middle",
@@ -306,6 +316,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "visible-again-1x.png",
@@ -323,6 +334,7 @@
       "differingPixels": 0,
       "interiorPixels": 111468,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "reparented-1x.png",
@@ -340,6 +352,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "restored-1x.png",
@@ -357,6 +370,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "stacking-control-1x.png",
@@ -374,6 +388,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "stacking-demoted-1x.png",
@@ -391,6 +406,7 @@
       "differingPixels": 0,
       "interiorPixels": 449960,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 7680,
       "geometryDifferences": [],
       "browser": {
         "file": "one-clip-2x.png",
@@ -408,6 +424,7 @@
       "differingPixels": 648,
       "interiorPixels": 447676,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 62992,
       "geometryDifferences": [],
       "browser": {
         "file": "rounded-padding-2x.png",
@@ -425,6 +442,7 @@
       "differingPixels": 0,
       "interiorPixels": 450696,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 6336,
       "geometryDifferences": [],
       "browser": {
         "file": "moved-clip-2x.png",
@@ -442,6 +460,7 @@
       "differingPixels": 6400,
       "interiorPixels": 110588,
       "differingInteriorPixels": 5981,
+      "subjectReferencePixels": 3840,
       "firstInteriorDifference": {
         "x": 183,
         "y": 125,
@@ -482,6 +501,7 @@
       "differingPixels": 1280,
       "interiorPixels": 110748,
       "differingInteriorPixels": 1170,
+      "subjectReferencePixels": 3840,
       "firstInteriorDifference": {
         "x": 112,
         "y": 25,
@@ -522,6 +542,7 @@
       "differingPixels": 9216,
       "interiorPixels": 109996,
       "differingInteriorPixels": 8802,
+      "subjectReferencePixels": 7680,
       "firstInteriorDifference": {
         "x": 181,
         "y": 161,
@@ -568,6 +589,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6488,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 176,
         "y": 120,

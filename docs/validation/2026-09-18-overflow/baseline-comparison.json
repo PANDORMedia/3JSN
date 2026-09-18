@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "partial",
-  "passed": 3,
+  "passed": 2,
   "total": 22,
   "browser": {
     "protocolVersion": "1.3",
@@ -28,9 +28,9 @@
     "Only the recorded ordered cases, viewport and device scales were compared."
   ],
   "inputs": {
-    "browserReportSha256": "13656da0dc35ecc5344364cd928ed7a61da44b15c1ee355cc46667da37382750",
-    "nativeReportSha256": "890dfe5736f77575fe0c541f17e22176fe0f27c7e9c753faeaf60f12b1c59cd5",
-    "comparatorSha256": "ecf262eb286087a54f7d066ba9c9fd7db062a52fb81cdb4bef59eabd724bc849"
+    "browserReportSha256": "aa40d0b94590cbbd8cf93374acb8ed626b0582ddb8a3ee3a1d3a5529c747a7f1",
+    "nativeReportSha256": "c34f579897d0042f57b56604bfff26f9d543b9b352a254e1bb6774ddf75b7f81",
+    "comparatorSha256": "f442c9df609f8175b1ce562b7e48e09a141d0fe9459b3fcd4b9f9cfa066de992"
   },
   "cases": [
     {
@@ -40,6 +40,7 @@
       "differingPixels": 13600,
       "interiorPixels": 110244,
       "differingInteriorPixels": 13034,
+      "subjectReferencePixels": 9000,
       "firstInteriorDifference": {
         "x": 120,
         "y": 80,
@@ -73,6 +74,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 217,
         "y": 120,
@@ -102,18 +104,35 @@
     {
       "name": "negative-z",
       "scale": 1,
-      "interiorAndGeometryMatch": true,
-      "differingPixels": 0,
-      "interiorPixels": 113284,
-      "differingInteriorPixels": 0,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 7080,
+      "interiorPixels": 112932,
+      "differingInteriorPixels": 6991,
+      "subjectReferencePixels": 1920,
+      "firstInteriorDifference": {
+        "x": 217,
+        "y": 120,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
       "geometryDifferences": [],
       "browser": {
         "file": "negative-z-1x.png",
-        "pixelSha256": "6c28586364462df0ca5704154d2962e6d2a714a2443388b2a97220269188dcac"
+        "pixelSha256": "fad40320400e2cca255d407c7e8a3debfa4e920b374bf0eeb03cf9258a225020"
       },
       "native": {
         "file": "002-case.png",
-        "pixelSha256": "6c28586364462df0ca5704154d2962e6d2a714a2443388b2a97220269188dcac"
+        "pixelSha256": "3a3093061e2290f5bd24dd52cf9414ac2e92aa721be5a500e24785bc4913f949"
       }
     },
     {
@@ -123,6 +142,7 @@
       "differingPixels": 12880,
       "interiorPixels": 111436,
       "differingInteriorPixels": 12252,
+      "subjectReferencePixels": 1120,
       "firstInteriorDifference": {
         "x": 120,
         "y": 88,
@@ -156,6 +176,7 @@
       "differingPixels": 38939,
       "interiorPixels": 109160,
       "differingInteriorPixels": 37143,
+      "subjectReferencePixels": 15720,
       "firstInteriorDifference": {
         "x": 84,
         "y": 49,
@@ -189,6 +210,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 217,
         "y": 120,
@@ -222,6 +244,7 @@
       "differingPixels": 9548,
       "interiorPixels": 109462,
       "differingInteriorPixels": 8716,
+      "subjectReferencePixels": 1834,
       "firstInteriorDifference": {
         "x": 176,
         "y": 120,
@@ -298,6 +321,7 @@
       "differingPixels": 0,
       "interiorPixels": 110664,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1584,
       "geometryDifferences": [],
       "browser": {
         "file": "moved-clip-1x.png",
@@ -315,6 +339,7 @@
       "differingPixels": 11296,
       "interiorPixels": 110388,
       "differingInteriorPixels": 10944,
+      "subjectReferencePixels": 2496,
       "firstInteriorDifference": {
         "x": 189,
         "y": 137,
@@ -348,6 +373,7 @@
       "differingPixels": 0,
       "interiorPixels": 111620,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 0,
       "geometryDifferences": [
         {
           "node": "middle",
@@ -402,6 +428,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6824,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 152,
         "y": 104,
@@ -435,6 +462,7 @@
       "differingPixels": 7080,
       "interiorPixels": 111468,
       "differingInteriorPixels": 6991,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 193,
         "y": 104,
@@ -468,6 +496,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 217,
         "y": 120,
@@ -501,6 +530,7 @@
       "differingPixels": 0,
       "interiorPixels": 110296,
       "differingInteriorPixels": 0,
+      "subjectReferencePixels": 1920,
       "geometryDifferences": [],
       "browser": {
         "file": "stacking-control-1x.png",
@@ -518,6 +548,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6639,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 217,
         "y": 120,
@@ -551,6 +582,7 @@
       "differingPixels": 28320,
       "interiorPixels": 449960,
       "differingInteriorPixels": 27439,
+      "subjectReferencePixels": 7680,
       "firstInteriorDifference": {
         "x": 433,
         "y": 240,
@@ -584,6 +616,7 @@
       "differingPixels": 73192,
       "interiorPixels": 447676,
       "differingInteriorPixels": 69987,
+      "subjectReferencePixels": 62992,
       "firstInteriorDifference": {
         "x": 131,
         "y": 96,
@@ -617,6 +650,7 @@
       "differingPixels": 29664,
       "interiorPixels": 450696,
       "differingInteriorPixels": 29120,
+      "subjectReferencePixels": 6336,
       "firstInteriorDifference": {
         "x": 264,
         "y": 168,
@@ -650,6 +684,7 @@
       "differingPixels": 6400,
       "interiorPixels": 110588,
       "differingInteriorPixels": 5981,
+      "subjectReferencePixels": 3840,
       "firstInteriorDifference": {
         "x": 183,
         "y": 125,
@@ -690,6 +725,7 @@
       "differingPixels": 1280,
       "interiorPixels": 110748,
       "differingInteriorPixels": 1170,
+      "subjectReferencePixels": 3840,
       "firstInteriorDifference": {
         "x": 112,
         "y": 25,
@@ -730,6 +766,7 @@
       "differingPixels": 9216,
       "interiorPixels": 109996,
       "differingInteriorPixels": 8802,
+      "subjectReferencePixels": 7680,
       "firstInteriorDifference": {
         "x": 181,
         "y": 161,
@@ -776,6 +813,7 @@
       "differingPixels": 7080,
       "interiorPixels": 110296,
       "differingInteriorPixels": 6488,
+      "subjectReferencePixels": 1920,
       "firstInteriorDifference": {
         "x": 176,
         "y": 120,

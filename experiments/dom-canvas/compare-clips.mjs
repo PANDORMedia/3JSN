@@ -42,10 +42,12 @@ for (const [index, expected] of browser.cases.entries()) {
   let differingPixels = 0;
   let interiorPixels = 0;
   let differingInteriorPixels = 0;
+  let subjectReferencePixels = 0;
   let firstInteriorDifference;
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const offset = (y * width + x) * 4;
+      if ([224, 32, 48, 255].every((channel, i) => reference.data[offset + i] === channel)) subjectReferencePixels++;
       const differs = [0, 1, 2, 3].some(channel => Math.abs(reference.data[offset + channel] - capture.data[offset + channel]) > 2);
       if (differs) differingPixels++;
       if (x === 0 || y === 0 || x === width - 1 || y === height - 1) continue;
@@ -67,6 +69,9 @@ for (const [index, expected] of browser.cases.entries()) {
     }
   }
   assert(interiorPixels > width * height * 0.8, 'Fixture has too little uniform interior for this comparator');
+  // A fully occluded subject cannot establish clipping or positioning parity.
+  if (expected.name === 'hidden') assert.equal(subjectReferencePixels, 0);
+  else assert(subjectReferencePixels > 100, `Subject is not visibly exercised: ${expected.name}`);
   const geometryDifferences = [];
   for (const node of ['outer', 'middle', 'subject']) {
     for (const field of ['x', 'y', 'width', 'height']) {
@@ -77,7 +82,7 @@ for (const [index, expected] of browser.cases.entries()) {
   }
   comparisons.push({ name: expected.name, scale: expected.scale,
     interiorAndGeometryMatch: differingInteriorPixels === 0 && geometryDifferences.length === 0,
-    differingPixels, interiorPixels, differingInteriorPixels, firstInteriorDifference, geometryDifferences,
+    differingPixels, interiorPixels, differingInteriorPixels, subjectReferencePixels, firstInteriorDifference, geometryDifferences,
     browser: { file: expected.file, pixelSha256: expected.pixelSha256 },
     native: { file: actual.file, pixelSha256: actual.pixelSha256 } });
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "overflow-paint-browser-reference",
-  "capturedAt": "2026-09-18T00:39:01.045Z",
+  "capturedAt": "2026-09-18T00:50:10.679Z",
   "browser": {
     "protocolVersion": "1.3",
     "product": "Chrome/153.0.8010.50",
@@ -15,7 +15,7 @@
   },
   "inputs": {
     "htmlSha256": "149583b2c5a485a450c23190793d499dbcb4767d513852ffb5baa34ee1839a32",
-    "scriptSha256": "590d4b24ff26aae0f1150c6255f76b9fca23b00bc9ab2397348a7fbc662a34a5",
+    "scriptSha256": "189237fd169805afedbd46997da03418904be46d2755724d56b1043400f8ff36",
     "casesSha256": "f05d21d2406ca885a0f81529c325065e34a6585bfe0592d6a71030421509b476"
   },
   "fixtureInputs": [
@@ -25,7 +25,7 @@
     },
     {
       "path": "fixtures/overflow-paint/fixture.js",
-      "sha256": "590d4b24ff26aae0f1150c6255f76b9fca23b00bc9ab2397348a7fbc662a34a5"
+      "sha256": "189237fd169805afedbd46997da03418904be46d2755724d56b1043400f8ff36"
     },
     {
       "path": "fixtures/overflow-paint/cases.json",
@@ -166,7 +166,7 @@
           "left": 176
         }
       },
-      "pixelSha256": "6c28586364462df0ca5704154d2962e6d2a714a2443388b2a97220269188dcac",
+      "pixelSha256": "fad40320400e2cca255d407c7e8a3debfa4e920b374bf0eeb03cf9258a225020",
       "file": "negative-z-1x.png"
     },
     {

@@ -85,6 +85,13 @@
     "strictClippy": true,
     "rustfmt": true,
     "sourceCheck": true,
-    "sourceIdentityMismatchRejected": true
+    "sourceIdentityMismatchRejected": true,
+    "occludedNegativeZControlRejected": true
+  },
+  "correctedFixture": {
+    "negativeSubjectReferencePixels": 1920,
+    "all22CasesRecaptured": true,
+    "baselineMatches": 2,
+    "prototypeMatches": 16
   }
 }

@@ -1,6 +1,6 @@
 # Overflow comparison
 
-Status: **partial**. The default prepared renderer matches 3 of 22 cases; an
+Status: **partial**. The default prepared renderer matches 2 of 22 cases; an
 unadopted research patch matches 16. Both return a nonzero comparison result.
 The patch is not applied by `prepare.mjs` and is not a supported renderer fix.
 See the [evidence and remaining problems](../../docs/validation/2026-09-18-overflow.md).

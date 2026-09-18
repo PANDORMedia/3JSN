@@ -33,6 +33,8 @@
     prepare(name) {
       const value = cases[name];
       if (!value) throw new Error(`Unknown overflow paint case: ${name}`);
+      // A body background would hide the negative-z subject before clipping is observable.
+      document.body.style.background = name === 'negative-z' ? 'transparent' : 'white';
       outer.setAttribute('style', base.outer + (value.outer ?? ''));
       middle.setAttribute('style', base.middle + (value.middle ?? ''));
       subject.setAttribute('style', base.subject + (value.subject ?? ''));
