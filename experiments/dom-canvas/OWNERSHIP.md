@@ -77,7 +77,7 @@ Routes share shape objects but clone vectors of inherited clip references. Frame
 storage therefore grows with total inherited clip depth. This simple prototype
 has no traversal, recursion or memory budget. Cache design and tighter effect
 bounds need measurements; the [dependency adoption gate](../../docs/dependencies.md#upgrade-policy)
-also requires reassessing the eleven-patch maintenance burden.
+also requires reassessing the twelve-patch maintenance burden.
 
 The Metal opacity-output checkpoint records 26/26 new geometry and uniform-interior
 matches against Chrome. Exact within-renderer image groups improve from 0/12 to
@@ -92,8 +92,8 @@ Its 16 captures match uniform interiors but retain four transformed-CSSOM query
 differences per case. All eight within-renderer groups are noninvariant, matching
 Chrome's classification; this does not assert equal edge colors.
 
-Validation includes 79 host tests (42 layout, 5 budget, 32 ownership), 22 private
-painter tests and 36 Node tests. These checks and the GPU captures establish the
+The CSS-rect checkpoint validated 79 host tests (42 layout, 5 budget, 32 ownership),
+22 private painter tests and 36 Node tests. These checks and the GPU captures establish the
 bounded change, not a speedup, memory bound or complete clip-edge parity.
 
 ## Current limits
@@ -117,9 +117,10 @@ bounded change, not a speedup, memory bound or complete clip-edge parity.
   pixels with maximum channel delta 1, while the new native pair is exact. Neither
   result establishes cross-renderer antialias equality. Current white-background
   captures provide RGB composition evidence, not varying-alpha validation.
-- Live DPR changes on a resolved box-only document can retain stale transform
-  and overflow caches. Fresh-document DPR 1/2 clipping tests do not validate a
-  display-scale transition; the checkpoint preserves the failing observation.
+- The [DPR cache repair](../../docs/validation/2026-09-18-dpr-cache.md) passes
+  three same-document CPU tests through DPR 1→2→2→1, including transform matrices,
+  overflow and paint bounds. Physical display-scale transitions, GPU rendering
+  and input across those transitions remain unverified.
 - Hit testing still consumes the older lists and lacks these clip routes. DOM
   geometry, scrolling, native presentation, other GPU backends and performance
   remain separate adoption gates.

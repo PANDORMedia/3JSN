@@ -1,0 +1,26 @@
+--- a/packages/blitz-dom/src/document.rs
++++ b/packages/blitz-dom/src/document.rs
+@@ -50,7 +50,7 @@
+ use style::media_queries::MediaType;
+ use style::properties::ComputedValues;
+ use style::properties::style_structs::Font;
+-use style::selector_parser::ServoElementSnapshot;
++use style::selector_parser::{RestyleDamage, ServoElementSnapshot};
+ use style::servo_arc::Arc as ServoArc;
+ use style::values::GenericAtomIdent;
+ use style::values::computed::UserSelect;
+@@ -2063,6 +2063,14 @@
+         // must be invalidated when the scale changes.
+         if changes.contains(DeviceChanges::SCALE) {
+             self.invalidate_inline_contexts();
++
++            // Transforms and overflow are cached in device pixels even when
++            // logical viewport geometry and computed styles stay unchanged.
++            for (_, node) in self.nodes.iter_mut() {
++                if node.flags.contains(NodeFlags::IS_IN_DOCUMENT) {
++                    node.insert_damage(RestyleDamage::RECALCULATE_OVERFLOW);
++                }
++            }
+         }
+ 
+         // Color-scheme changes affect values that are resolved at cascade time

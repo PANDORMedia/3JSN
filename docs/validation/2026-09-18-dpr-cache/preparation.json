@@ -1,0 +1,112 @@
+{
+  "status": "prepared-research-candidate",
+  "adopted": false,
+  "directory": ".cache/positioned-candidate",
+  "revision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+  "taffyRevision": "dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c",
+  "profile": "initial-owner",
+  "changedFiles": {
+    "packages/blitz-dom/src/document.rs": "62d58cf88dbfd661596d90368f88c8738a933ca391ee1cdc0cc628162cd8f3f5",
+    "packages/blitz-dom/src/node/node.rs": "b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24",
+    "packages/blitz-dom/src/resolve.rs": "6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556",
+    "packages/blitz-dom/src/layout/damage.rs": "6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603",
+    "packages/blitz-paint/src/render.rs": "e18f773798fd56632c2f4a6b5b838fefa83825523662ac73dc96d1cc5518b967",
+    "packages/blitz-dom/src/layout/mod.rs": "2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1",
+    "packages/blitz-dom/src/layout/initial_containing_block.rs": "3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099",
+    "packages/blitz-dom/src/layout/paint_order.rs": "0ebba71e5608324b9ba622a4f936d35c3fbf8c0bd6c3132e4910b81d750ef0a7",
+    "packages/blitz-dom/src/paint_ownership.rs": "cedd4ff218a19b1c10d4f4e2e5fe544fe6f884bd4834a4aeae61775f2a34a179",
+    "packages/blitz-dom/src/geometry/css_box.rs": "2ea64bc8a742bbdb61306a6d2109dd579f4ae8bb332abcfed227d3594cbad82b",
+    "packages/blitz-dom/src/geometry/mod.rs": "7f8c3e3912f7c0ae5be4706b9312c82d1238af7f6edf07b1d9db1a5d3bddf9cb",
+    "packages/blitz-dom/src/geometry/non_uniform_radii.rs": "26c389367e1bb2717e796760098d241e54c00f842537ecd75260f3fea60ea73a",
+    "packages/blitz-dom/src/lib.rs": "f8d1acc43dc86d94090e0e091b6f1d934d20ca8168ff1033b7f8dd3234626f8a",
+    "packages/blitz-paint/src/lib.rs": "9d0f391a00c4539c59e14508bc356ca7e8e6923b194947442a66141e862c8760",
+    "packages/blitz-paint/src/render/border.rs": "420e6bd5c30186a76aca4a0a33e83b344480371c4ca409a6376f6e43b96cf07d",
+    "packages/blitz-paint/src/checked_scene.rs": "398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925",
+    "packages/blitz-paint/src/layers.rs": "65bc4da97aef8c456be403eb10330ae85b42b5f2484e93f79de9f258642b4ec2",
+    "packages/blitz-paint/src/render/ownership.rs": "dc7079bcd929b6657682e9f98c170448a2465c6350134f86540655404fabc5ef",
+    "packages/blitz-paint/src/render/clip_path.rs": "659d27be9a16c433140cddd887c9dbb2838089df5298767b14486d1639dff8c4",
+    "packages/blitz-paint/src/render/ownership_clips.rs": "74f7e79fb835d909e379281de4efecff610d9d65feb10887ada311420941750b"
+  },
+  "addedFiles": [
+    "packages/blitz-paint/src/checked_scene.rs",
+    "packages/blitz-dom/src/paint_ownership.rs",
+    "packages/blitz-dom/src/layout/initial_containing_block.rs",
+    "packages/blitz-dom/src/layout/paint_order.rs",
+    "packages/blitz-dom/src/geometry/css_box.rs",
+    "packages/blitz-dom/src/geometry/mod.rs",
+    "packages/blitz-dom/src/geometry/non_uniform_radii.rs",
+    "packages/blitz-paint/src/render/ownership.rs",
+    "packages/blitz-paint/src/render/ownership_clips.rs"
+  ],
+  "removedFiles": [
+    "packages/blitz-paint/src/kurbo_css/css_box.rs",
+    "packages/blitz-paint/src/kurbo_css/mod.rs",
+    "packages/blitz-paint/src/kurbo_css/non_uniform_radii.rs"
+  ],
+  "patches": [
+    {
+      "name": "blitz-stacking-demotion.patch",
+      "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+    },
+    {
+      "name": "blitz-positioned-grid-state.patch",
+      "sha256": "83140eaab44b000cd5213279087486e37329c1f3ce121a4ec1d65ef512e6bc79"
+    },
+    {
+      "name": "blitz-initial-containing-block-layout.patch",
+      "sha256": "aa34a7f82fc02c97d5fc72cf09f6da58e326cc8e5dec5b7196aa801851c188f1"
+    },
+    {
+      "name": "blitz-initial-containing-block-paint.patch",
+      "sha256": "e799909a4c00764944356cbddfa2ae7e1cb58786e79b0baca6acb2ade2acbec3"
+    },
+    {
+      "name": "blitz-positioned-paint-order.patch",
+      "sha256": "29e0a1c4b14a1655391c74d0e353255bfd128a9f1e667bf15ecb02affcba43de"
+    },
+    {
+      "name": "blitz-transform-context.patch",
+      "sha256": "48c0837e2a24e2c0a7254cc56944fe700837909e2775e730793f153b619a80ab"
+    },
+    {
+      "name": "blitz-stacking-bounds.patch",
+      "sha256": "570a97b110f5bf90c66464dbff7afcb24364bf3718395e98b4f33962010360d7"
+    },
+    {
+      "name": "blitz-shared-clip-geometry.patch",
+      "sha256": "88c4920ce332a2535028cb1a7288d4ceab53a4294077f88d185eed54946f67ce"
+    },
+    {
+      "name": "blitz-paint-ownership.patch",
+      "sha256": "a4b2a64704ba3d7f96054d9c3c76809bff28da69bbf890805141abdef8729749"
+    },
+    {
+      "name": "blitz-layer-budget.patch",
+      "sha256": "ad167742d4464c70b16c817b68995a808e108dce7ba507f7868d162be2041f7a"
+    },
+    {
+      "name": "blitz-ownership-renderer.patch",
+      "sha256": "0ab8d2a3d427787d6468cd6ae329100e19bf3b614473b6d2c744b120fdfde8cb"
+    },
+    {
+      "name": "blitz-device-scale-cache.patch",
+      "sha256": "09cfead2d17c5e5f9898b02437a54dcb77affafb3bd1dc92692d59ca750b374b"
+    }
+  ],
+  "verifiedTrackedFiles": 413,
+  "verifiedAddedFiles": 9,
+  "verifiedRemovedFiles": 3,
+  "manifestInputSha256": "7df8a73befca390789c1db9c77a85d7589d3e623e335041df934c1c880bcb200",
+  "lockInputSha256": "c08095ef4baa62fd8005fa02095964f364c1e34c4f7baf9057d050d5762a5180",
+  "generatedManifestSha256": "b73a8c63fbb30beaa15b0fdb41ee1cea5ad900a9c380c018e591a016b13b0127",
+  "generatedLockSha256": "7e1d4cf0981cd5a4e74d8e1f3b7cb3399a0a750db6d968bdf4f56ab8e03dafa3",
+  "deno": {
+    "package": "deno_webgpu",
+    "version": "0.226.0",
+    "directory": ".cache/dom-canvas/deno_webgpu",
+    "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+    "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+    "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+    "verifiedPackagedFiles": 32
+  }
+}

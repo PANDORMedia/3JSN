@@ -88,6 +88,8 @@ and [diagnosis](2026-09-18-css-rect-effect/dpr-diagnosis/DIAGNOSIS.md) are prese
 Scale-only viewport invalidation can leave box-only transform/overflow caches
 clean. The final clipping test uses a fresh document at each DPR; it neither
 loosens expected coordinates nor validates live display-scale transitions.
+A later [DPR cache repair](2026-09-18-dpr-cache.md) now passes the same-document
+CPU regression; the original failing evidence above remains unchanged.
 
 General polygon composition, text/canvas integration through this renderer,
 input, scrolling, transformed DOM queries, live DPR changes and backend adoption

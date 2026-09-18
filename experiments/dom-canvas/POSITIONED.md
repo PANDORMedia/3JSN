@@ -25,7 +25,9 @@ The [own CSS rect follow-up](../../docs/validation/2026-09-18-css-rect-effect.md
 keeps the owner's CSS rect inside its opacity effect while preserving eligible
 incoming clips. All 190 previous ownership captures remain unchanged. Its 16
 new captures match uniform interiors and Chrome's group classification; DOM
-geometry, edge-color parity and live DPR transitions remain open.
+geometry and edge-color parity remain open. The subsequent
+[DPR cache repair](../../docs/validation/2026-09-18-dpr-cache.md) passes three
+same-document CPU transition tests; live-window and GPU DPI validation remain open.
 
 ## Ownership and patch boundaries
 
@@ -36,7 +38,7 @@ and uses the existing block and out-of-flow algorithms. It does not rewrite
 HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
 each resolve; descendant layout caches remain in use.
 
-Eleven ordered patches define this candidate:
+Twelve ordered patches define this candidate:
 
 | Patch | Responsibility |
 | --- | --- |
@@ -51,6 +53,7 @@ Eleven ordered patches define this candidate:
 | `blitz-paint-ownership.patch` | Build a read-only post-layout ownership plan with explicit unsupported errors; does not replace legacy rendering or hit lists. |
 | `blitz-layer-budget.patch` | Return explicit whole-paint layer errors before GPU submission, covering direct clips/effects, widgets and subdocuments. Also applied to the default and upstream baseline profiles. |
 | `blitz-ownership-renderer.patch` | Add an explicit ownership traversal, contribution clip routes, shared opacity-output prefixes and typed preflight errors while sharing checked lifecycle and primitives with legacy paint. |
+| `blitz-device-scale-cache.patch` | Invalidate device-space transform and overflow caches on scale changes using the existing damage pass; preserve styles and CSS-rect effect routing. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
@@ -121,8 +124,8 @@ Generated manifests derive from the tracked experiment manifest. Paths become
 absolute, Blitz revisions change, and package/binary names are distinct. The
 tracked lock changes only the Taffy source and probe package name. All profiles
 include the five public `layer-budget` tests. Only the
-initial-owner profile adds the `positioned-layout` and `ownership-render` test
-targets, `threejs-positioned-paint-owner-probe` diagnostic, and
+initial-owner profile adds the `positioned-layout`, `ownership-render` and
+`dpr-transition` test targets, `threejs-positioned-paint-owner-probe` diagnostic, and
 `threejs-positioned-ownership-paint-probe` renderer executable.
 Generated paths stay ignored. Save preparation JSON and executable hashes with
 captures; do not attribute an old executable to newly prepared source.
@@ -280,6 +283,7 @@ After preparing and building the candidate:
 
 ```sh
 cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml --test ownership-render
+cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml --test dpr-transition
 cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml -p blitz-paint --lib
 node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/ownership-render/browser ownership-render
 MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-ownership-paint-probe fixtures/ownership-render/index.html fixtures/ownership-render/fixture.js fixtures/ownership-render/cases.json artifacts/ownership-render/native

@@ -1,0 +1,112 @@
+   Compiling blitz-dom v0.3.0-beta.2 (<repo>/.cache/positioned-candidate/blitz/packages/blitz-dom)
+   Compiling blitz-html v0.3.0-beta.2 (<repo>/.cache/positioned-candidate/blitz/packages/blitz-html)
+   Compiling blitz-paint v0.3.0-beta.2 (<repo>/.cache/positioned-candidate/blitz/packages/blitz-paint)
+warning: variant `Intrinsic` is never constructed
+   --> <repo>/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (<repo>/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 12s
+     Running <repo>/experiments/dom-canvas/src/dpr_transition_tests.rs (target/debug/deps/dpr_transition-8afdeb87490dc134)
+
+running 3 tests
+test unchanged_box_document_refreshes_px_percent_transforms_and_overflow_across_dpr ... ok
+test early_device_flush_preserves_transform_and_overflow_invalidation_until_resolve ... ok
+test dpr_changes_scale_transform_origin_translation_without_scaling_linear_terms ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running <repo>/experiments/dom-canvas/src/ownership_render_tests.rs (target/debug/deps/ownership_render-b901f3922df74491)
+
+running 32 tests
+test css_rect_effect_tests::incoming_css_rect_can_clip_a_nested_effect_without_promoting_its_own_rect ... ok
+test boxless_body_canvas_propagation_is_explicitly_unsupported_and_recovers ... ok
+test canvas_body_propagation_distinguishes_visibility_from_missing_box ... ok
+test clip_contract_tests::unsupported_clip_declarations_fail_typed_before_commands_and_each_restore ... ok
+test clip_contract_tests::valid_empty_subject_path_does_not_suppress_ancestor_or_unrelated_sibling ... ok
+test hidden_ancestor_does_not_cull_explicitly_visible_descendant ... ok
+test negative_context_precedes_owners_widget_then_zero_and_positive_restore ... ok
+test one_opacity_group_keeps_per_contribution_clips_and_restores ... ok
+test opacity_bounds_keep_fixed_content_when_owner_moves_offscreen_or_becomes_empty ... ok
+test css_rect_effect_tests::own_css_rect_preserves_fixed_overflow_escape_empty_restore_and_budget_cleanup ... ok
+test nested_opacity_keeps_both_groups_around_escaping_fixed_content ... ok
+test output_clip_tests::an_empty_descendant_suffix_does_not_empty_the_shared_output_prefix ... ok
+test output_clip_tests::hidden_effect_keeps_explicitly_visible_atomic_content_and_canvas_background ... ok
+test clip_contract_tests::valid_empty_parent_path_suppresses_own_and_captured_fixed_pixels_then_restores ... ok
+test css_rect_effect_tests::own_css_rect_stays_inside_opacity_for_every_paint_phase ... ok
+test output_clip_tests::geometry_equal_authored_clips_remain_distinct_across_nested_effects ... ok
+test output_clip_tests::one_output_clip_surrounds_opacity_and_all_paint_phases_at_each_dpr ... ok
+test output_clip_tests::nested_effects_factor_only_the_prefix_retained_by_escaping_fixed_content ... ok
+test ownership_budget_failure_balances_and_does_not_poison_next_scene ... ok
+test output_clip_tests::own_widget_content_clip_stays_inside_opacity_after_shared_output_clip ... ok
+test output_clip_tests::output_clip_layers_count_toward_budget_and_recovery_stays_balanced ... ok
+test output_clip_tests::own_overflow_does_not_clip_the_effects_decoration_or_escaping_child ... ok
+test output_clip_tests::visibility_empty_clip_and_opacity_mutations_restore_output_scope ... ok
+test planar_transform_captures_fixed_geometry_and_restores_without_double_prefix ... ok
+test propagated_canvas_background_stays_outside_root_clip ... ok
+test root_compensation_device_scale_and_scene_offset_apply_once ... ok
+test replaced_content_tests::rounded_widget_clips_only_own_content_with_padding_dpr_and_restore ... ok
+test replaced_content_tests::raster_cover_and_position_clip_to_rounded_content_edge_at_both_scales ... ok
+test root_rgba_and_propagated_body_background_each_emit_once_and_restore ... ok
+test unsupported_root_effect_and_canvas_images_fail_before_any_background ... ok
+test unsupported_text_filter_3d_and_scroll_fail_explicitly_before_drawing ... ok
+test unavailable_replaced_content_rejects_independently_of_build_features ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running <repo>/experiments/dom-canvas/src/positioned_tests.rs (target/debug/deps/positioned_layout-7e3ab7dd0cafb3d1)
+
+running 42 tests
+test clip_geometry_tests::fill_predicate_closes_each_open_subpath_and_keeps_nonzero_holes ... ok
+test clip_geometry_tests::empty_degenerate_and_nonfinite_clip_geometry_cannot_hit ... ok
+test clip_geometry_tests::elliptical_corners_and_radius_overlap_keep_css_axis_orientation ... ok
+test clip_geometry_tests::rounded_padding_and_content_clips_use_the_painted_inner_edges ... ok
+test clip_geometry_tests::style_layout_conversion_resolves_percentage_radii_after_resize_at_each_scale ... ok
+test initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed ... ok
+test initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry ... ok
+test initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations ... ok
+test paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority ... ok
+test initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child ... ok
+test initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed ... ok
+test initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative ... ok
+test paint_order_hit_tests::positive_z_hit_targets_follow_order_across_geometry_owners ... ok
+test paint_order_hit_tests::negative_z_hit_targets_follow_order_across_geometry_owners ... ok
+test paint_order_tests::equal_z_cross_owner_boxes_follow_dom_reordering_for_both_signs ... ok
+test paint_order_hidden_tests::retained_hidden_nonzero_z_entry_does_not_mask_active_order_or_break_reshow ... ok
+test paint_order_tests::flattened_contents_children_use_their_own_order_not_the_wrappers ... ok
+test paint_order_tests::empty_before_and_after_boxes_preserve_ties_then_follow_css_order ... ok
+test paint_order_tests::detached_stacking_subtree_is_excluded_then_rejoins_resolved_paint_order ... ok
+test paint_order_tests::out_of_flow_order_values_do_not_reorder_flex_or_grid_paint_children ... ok
+test paint_ownership_tests::ownership_distinguishes_positioned_auto_from_real_zero_and_effect_contexts ... ok
+test paint_order_tests::hiding_mixed_content_releases_anonymous_wrappers_without_breaking_other_paint_lists ... ok
+test paint_ownership_tests::ownership_keeps_viewport_geometry_separate_from_static_opacity_attachment ... ok
+test paint_order_tests::flex_and_grid_equal_z_lists_follow_css_order_and_reset ... ok
+test paint_ownership_tests::ownership_reports_an_unresolved_root_as_an_error ... ok
+test paint_ownership_tests::ownership_preserves_formatting_order_contents_pseudos_and_out_of_flow_order_zero ... ok
+test paint_ownership_tests::ownership_retains_real_anonymous_boxes_and_rebuilds_after_hide_show_without_list_writes ... ok
+test paint_ownership_tests::ownership_uses_current_prefixes_inside_a_declared_identity_transform_context ... ok
+test positioned_grid_tests::block_after_grid_keeps_css_geometry_through_repeats_and_dpi_changes ... ok
+test paint_ownership_tests::ownership_zero_phase_follows_source_reordering_and_restoration ... ok
+test paint_ownership_tests::ownership_rejects_unimplemented_will_change_and_float_group_boundaries ... ok
+test positioned_grid_tests::restored_grid_keeps_tracks_across_repeats_and_updates_them_on_mutation ... ok
+test positioned_grid_tests::grid_owner_to_block_does_not_reuse_old_grid_area ... ok
+test stacking_bounds_tests::first_resolve_relative_stacking_children_have_current_hit_bounds ... ok
+test stacking_bounds_tests::relative_stacking_child_move_and_resize_refresh_bounds_in_the_same_resolve ... ok
+test transform_context_tests::preserve_3d_keeps_context_when_overflow_forces_flattening ... ok
+test paint_order_tests::relative_descendants_through_anonymous_wrappers_follow_reordered_items ... ok
+test paint_ownership_tests::ownership_rejects_unrepresented_fragment_and_coordinate_paths ... ok
+test transform_context_tests::positive_descendant_stops_escaping_on_first_resolve_and_resets ... ok
+test transform_context_tests::negative_descendant_stays_in_its_transform_context_on_first_resolve_and_resets ... ok
+test transform_context_tests::transform_context_classification_respects_supported_css_box_applicability ... ok
+test transform_context_tests::initially_authored_transforms_own_descendants_without_a_warm_resolve ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+

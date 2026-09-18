@@ -27,6 +27,7 @@ const changedFiles = baseline ? {
   'packages/blitz-paint/src/lib.rs': '7650e6b40569585ef308da42ac51192a072815fe7130a51909410b53ce5c0859',
   'packages/blitz-paint/src/render.rs': '266c97a17e3af65db6e7a9334eda3dc30b3fe5aea9d0a04abac5520b5a1317c1',
 } : {
+  'packages/blitz-dom/src/document.rs': '62d58cf88dbfd661596d90368f88c8738a933ca391ee1cdc0cc628162cd8f3f5',
   'packages/blitz-dom/src/node/node.rs': 'b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24',
   'packages/blitz-dom/src/resolve.rs': '6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
@@ -107,6 +108,10 @@ const patchInputs = [
   {
     'name': 'blitz-ownership-renderer.patch',
     'sha256': '0ab8d2a3d427787d6468cd6ae329100e19bf3b614473b6d2c744b120fdfde8cb'
+  },
+  {
+    'name': 'blitz-device-scale-cache.patch',
+    'sha256': '09cfead2d17c5e5f9898b02437a54dcb77affafb3bd1dc92692d59ca750b374b'
   }
 ];
 const selectedPatches = baseline
@@ -168,6 +173,7 @@ if (!baseline) manifest += `\n[[test]]\nname = "positioned-layout"\npath = ${JSO
 if (!baseline) manifest += `\n[[bin]]\nname = "threejs-positioned-paint-owner-probe"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/paint_owner_probe.rs'))}\n`;
 if (!baseline) manifest += `\n[[bin]]\nname = "threejs-positioned-ownership-paint-probe"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/ownership_clip_probe.rs'))}\n`;
 if (!baseline) manifest += `\n[[test]]\nname = "ownership-render"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/ownership_render_tests.rs'))}\n`;
+if (!baseline) manifest += `\n[[test]]\nname = "dpr-transition"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/dpr_transition_tests.rs'))}\n`;
 let lock = replaceExactly(lockInput,
   `git+https://github.com/DioxusLabs/taffy?rev=${baseTaffyRevision}#${baseTaffyRevision}`, taffySource, 1);
 lock = replaceExactly(lock, 'name = "threejs-dom-canvas-probe"', `name = "${namePrefix}dom-canvas-probe"`, 1);
