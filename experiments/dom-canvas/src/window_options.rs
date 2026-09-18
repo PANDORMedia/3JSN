@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use threejs_native_package::{Profile, load_for};
+use threejs_native_package::{Application, Profile, load_for, read_font};
 
 use crate::Result;
 
@@ -71,11 +71,14 @@ fn frame_option(args: &[OsString]) -> Result<Option<u64>> {
 }
 
 fn package(manifest: &Path, frames: Option<u64>) -> Result<Command> {
-    let app = load_for(manifest, Profile::DomWindow)?;
+    from_application(load_for(manifest, Profile::DomWindow)?, frames)
+}
+
+fn from_application(app: Application, frames: Option<u64>) -> Result<Command> {
     let html = app.html.ok_or("DOM package has no HTML entry")?;
     let font = app.font.ok_or("DOM package has no font")?;
     Ok(Command::Run(Options {
-        font: std::fs::read(font)?,
+        font,
         document: DocumentInput::Html(std::fs::read_to_string(html)?),
         module: app.entry,
         frames,
@@ -102,7 +105,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
                 return Err("compiled UI input exceeds 16 MiB".into());
             }
             Ok(Command::Run(Options {
-                font: std::fs::read(font)?,
+                font: read_font(Path::new(font))?,
                 document: DocumentInput::Compiled(bytes),
                 module: PathBuf::from(module).canonicalize()?,
                 frames,
@@ -117,7 +120,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
             Err(USAGE.into())
         }
         [font, html, module, rest @ ..] if rest.len() <= 1 => Ok(Command::Run(Options {
-            font: std::fs::read(font)?,
+            font: read_font(Path::new(font))?,
             document: DocumentInput::Html(std::fs::read_to_string(html)?),
             module: PathBuf::from(module).canonicalize()?,
             frames: rest.first().map(frame_count).transpose()?,
@@ -130,6 +133,50 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn interpreted_package_options_use_owned_fallback_bytes() {
+        use sha2::{Digest, Sha256};
+        use std::{
+            fs,
+            sync::atomic::{AtomicU64, Ordering},
+        };
+
+        static NEXT: AtomicU64 = AtomicU64::new(0);
+        let root = std::env::temp_dir().join(format!(
+            "3jsn-interpreted-font-{}-{}",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir_all(root.join("app")).unwrap();
+        let files: Vec<_> = [
+            ("app/main.mjs", b"throw new Error('must not execute');".as_slice()),
+            ("app/index.html", b"<!doctype html><body>fixture</body>".as_slice()),
+            ("app/font.woff2", b"verified original fallback".as_slice()),
+        ].into_iter().map(|(path, bytes)| {
+            fs::write(root.join(path), bytes).unwrap();
+            serde_json::json!({"path":path,"bytes":bytes.len(),"sha256":format!("{:x}",Sha256::digest(bytes))})
+        }).collect();
+        let manifest = root.join("app.json");
+        fs::write(
+            &manifest,
+            serde_json::to_vec(&serde_json::json!({
+                "schemaVersion":1,"profile":threejs_native_package::DOM_PROFILE,
+                "target":threejs_native_package::target(),"name":"fixture",
+                "entry":"app/main.mjs","html":"app/index.html","font":"app/font.woff2","files":files
+            }))
+            .unwrap(),
+        )
+        .unwrap();
+        let app = load_for(&manifest, Profile::DomWindow).unwrap();
+        fs::remove_file(root.join("app/font.woff2")).unwrap();
+        let Command::Run(options) = from_application(app, None).unwrap() else {
+            panic!("expected interpreted window options");
+        };
+        assert_eq!(options.font, b"verified original fallback");
+        fs::remove_dir_all(root).unwrap();
+    }
 
     #[test]
     fn diagnostics_are_gpu_independent_and_arguments_are_strict() {

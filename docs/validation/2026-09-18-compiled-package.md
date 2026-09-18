@@ -127,3 +127,22 @@ physical input/display transitions, general WebGL/framework compatibility,
 other platforms, exact-binary parser linkage, signed distribution and a stable UI
 format remain separate gates. Packages contain trusted local code and are not a
 hostile-code sandbox.
+
+## Verified fallback font correction
+
+The [daily review](https://github.com/PANDORMedia/3JSN/pull/59#pullrequestreview-5249905651)
+identified that runtime startup reopened the fallback font after its package hash
+was checked. Package loading now retains the exact verified bytes from the same
+bounded read, and both compiled and interpreted packaged hosts consume those
+bytes. Declared and actual font sizes are bounded to 16 MiB. Explicit developer
+font inputs use a bounded reader without claiming manifest verification.
+
+Package tests pass 26/26, including deletion/replacement after loading, exact and
+over-limit sizes, and specific integrity errors. Runtime option tests pass 13/13
+with the parser preserved and 11/11 restricted, including interpreted-host
+consumption. Strict package and scoped runtime Clippy pass in both modes.
+[Receipt](2026-09-18-compiled-package/font-review/receipt.json) and
+[reproduction commands](2026-09-18-compiled-package/font-review/reproduction.md)
+record the pre-commit source identities. No GPU run was needed or claimed for
+this byte-ownership correction. HTML/module reopening remains governed by the
+existing documented quiescent-package contract.

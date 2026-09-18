@@ -3,7 +3,7 @@ use serde_json::{Value, json};
 
 const UI: &[u8] = b"{\"opaqueRuntimeData\":true}\n";
 
-fn manifest(fixture: &Fixture, mode: HtmlParserMode, resources: bool) -> Value {
+pub(super) fn manifest(fixture: &Fixture, mode: HtmlParserMode, resources: bool) -> Value {
     let mut value = if resources {
         fixture.font_manifest()
     } else {
@@ -140,7 +140,7 @@ fn compiled_ui_and_web_font_bytes_survive_relocation_and_later_disk_changes() {
     .unwrap();
     assert!(app.html.is_none());
     assert_eq!(app.entry, fixture.0.join("app/main.mjs"));
-    assert_eq!(app.font.unwrap(), fixture.0.join("app/font.woff2"));
+    assert_eq!(app.font.unwrap(), b"integrity-only fixture");
     let ui = app.compiled_ui.unwrap();
     assert_eq!(ui.format, "future-format");
     assert_eq!(ui.version, 37);

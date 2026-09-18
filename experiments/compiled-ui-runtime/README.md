@@ -78,6 +78,12 @@ cached release archive for both variants and record its hash.
 | `--compiled-ui UI.json FONT BUNDLED_APP [--frames COUNT]` | Opens the shared native window. A positive frame limit closes after that many successful presentations; omission runs until close. |
 | `--measure-layout UI.json FONT BEHAVIOR.js [--verify]` | Creates the native realm and live DOM, evaluates a classic script providing `uiProbe`, and reports its initial snapshot. |
 
+Package startup consumes the fallback font bytes retained by the package loader's
+size/hash check, even if its file is subsequently deleted or replaced. Declared
+and actual fallback sizes are capped at 16 MiB. Direct `FONT` arguments have the
+same read bound but no package integrity check. Verification does not decode the
+font; usable-family validation belongs to runtime initialization.
+
 For each binary, run the fixture's positive behavior and feature-specific checks:
 
 ```sh
