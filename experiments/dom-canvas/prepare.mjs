@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { cp, mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
+import { prepareBlitz } from './prepare-blitz.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const cargoHome = resolve(process.env.CARGO_HOME || resolve(homedir(), '.cargo'));
@@ -77,8 +78,10 @@ if (args[0] !== '--check') {
   }
 }
 await verify(target, patchedSha256);
-console.log(JSON.stringify({
+const deno = {
   package: 'deno_webgpu', version: '0.226.0', directory: cacheDirectory,
   sourceCanvasSha256: sourceSha256, patchedCanvasSha256: patchedSha256,
   patchSha256: hash(await readFile(patchPath)), verifiedPackagedFiles: Object.keys(checksums).length,
-}, null, 2));
+};
+const blitz = await prepareBlitz(root, cargoHome, args[0] === '--check');
+console.log(JSON.stringify({ deno, blitz }, null, 2));

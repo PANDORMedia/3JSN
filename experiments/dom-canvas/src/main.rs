@@ -3,6 +3,7 @@ use blitz_traits::shell::{ColorScheme, Viewport};
 use serde_json::{Value, json};
 use std::{error::Error, fs, path::Path};
 
+mod canvas_init;
 mod canvas_texture;
 #[allow(
     dead_code,
@@ -16,6 +17,7 @@ mod evidence;
 )]
 #[path = "../../native-html-interop/src/host.rs"]
 mod host;
+mod initialization_tests;
 #[allow(
     dead_code,
     reason = "Reuse the verified same-device/queue bridge; its reverse direction is not used here."
@@ -24,6 +26,8 @@ mod host;
 mod metal;
 mod painter;
 mod scenario;
+#[cfg(test)]
+mod stacking_tests;
 
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 fn check(condition: bool, message: &str) -> Result<()> {
@@ -75,7 +79,7 @@ async fn main() -> Result<()> {
             "nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true,
             "limits":["Metal-only offscreen experiment; no native presentation or performance claim.",
             "Pinned Deno canvas patch and bounded DOM adapter; not full browser conformance.",
-            "Unsafe native export requires a trusted submitted full clear; arbitrary uninitialized canvas export remains unresolved.",
+            "Native export initializes Deno-created render-attachment canvases; other configured usages and imported producer textures remain unsupported.",
             "Each changed frame uses a GPU snapshot copy, alpha conversion and Vello atlas copy; not zero-copy.",
             "Canvas borders, padding, transforms, generic frame scheduling and color-space conversion are outside this test."]}))
     }

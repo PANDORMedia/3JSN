@@ -4,9 +4,10 @@ Status: research, 2026-09-18. The [source investigation and executable compariso
 update the candidate assessment below. HTML/CSS compatibility is required by the
 [unchanged-project contract](product.md). Isolated V8/Blitz/Vello probes now paint
 live HTML and native Three.js canvases. They are not integrated shipping support.
-The [DOM canvas evidence](validation/2026-09-18-dom-canvas.md) verifies matching
-canvas contracts and several composition behaviors while reproducing two upstream
-clipping/stacking failures. These correctness gates remain open.
+The [current DOM canvas evidence](validation/2026-09-18-canvas-handoff.md) verifies
+matching canvas contracts, initialized GPU handoff and several composition behaviors.
+A pinned stacking-list repair passes repeated transitions; the ancestor clipping
+gate remains open.
 
 ## The complete pipeline
 
@@ -36,7 +37,7 @@ with that realm; selecting a different engine may require revisiting V8.
 
 | Candidate | Useful capability | Missing decision |
 | --- | --- | --- |
-| [Blitz](https://github.com/DioxusLabs/blitz) | Modular Rust HTML/CSS stack; bounded V8 DOM, native text/paint and canvas probes work here | Full DOM semantics, ancestor clipping, stacking mutation and sustainable binding/patch scope remain gates |
+| [Blitz](https://github.com/DioxusLabs/blitz) | Modular Rust HTML/CSS stack; bounded V8 DOM, native text/paint and canvas probes work here | Full DOM semantics, ancestor clipping and sustainable binding/patch scope remain gates |
 | [Vello](https://github.com/linebender/vello) | GPU 2D painting component | Not an HTML parser, DOM, CSS layout engine or input system |
 | [Servo](https://book.servo.org/embedding/overview.html) | Embeddable web engine with more integrated web semantics | It is a browser engine, not a lightweight renderer swap; evaluate embedding, compositor and JS-engine implications |
 | [RmlUi](https://github.com/mikke89/RmlUi) | Game-oriented UI using HTML/CSS-like documents | Its own document/binding model does not establish unchanged browser DOM compatibility |

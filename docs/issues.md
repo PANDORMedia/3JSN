@@ -5,8 +5,8 @@
 The roadmap contains eight epics and 45 work items. GitHub holds current status,
 priorities and dependencies. Each work item has acceptance criteria and a native
 parent link; blocking relationships are recorded in GitHub as well as issue bodies.
-The additional paint defects are children of the HTML painting work item and
-block native composition. Verified research increments do not close the wider
+The additional paint regressions are children of the HTML painting work item;
+ancestor clipping still blocks native composition. Verified research increments do not close the wider
 shipping integration gates.
 
 ## M0 — Contract and architecture

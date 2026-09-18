@@ -156,15 +156,14 @@ impl CanvasImage {
     ///
     /// # Safety
     ///
-    /// Every source texel must be initialized by producer work already submitted
-    /// on the bridge's native queue, including pending writes flushed by Deno.
+    /// The source must be an ordinary Deno-created canvas, not a HAL import.
     /// The two registries must be used serially: no concurrent source access or
     /// unsubmitted producer work may cross this handoff. Keep the source alive
     /// until this call returns, then its JS texture may expire. Both registries
     /// and their devices remain alive until a successful teardown drain.
     ///
-    /// Deno's initialization tracker is private. These conditions are established
-    /// by the trusted full-clear fixture; this is not a generic canvas export API.
+    /// An empty load/store pass in Deno's registry initializes missing contents
+    /// without changing existing pixels. It requires RENDER_ATTACHMENT usage.
     pub unsafe fn update(
         &mut self,
         bridge: &MetalBridge,
@@ -180,6 +179,7 @@ impl CanvasImage {
             size == self.size && format == self.source_format,
             "canvas dimensions or format changed; recreate CanvasImage before updating",
         )?;
+        crate::canvas_init::initialize_for_export(source)?;
         let native = retain_source(bridge, source, size, format)?;
         let descriptor = wgpu::TextureDescriptor {
             label: Some("Host-only canvas copy alias"),
@@ -192,8 +192,8 @@ impl CanvasImage {
             view_formats: &[],
         };
         // SAFETY: native identity, shape, format, blit support and hazards were
-        // checked with HAL guards. The caller establishes initialization and
-        // queue ordering; importing does not consult Deno's lazy-init tracker.
+        // checked with HAL guards. The load/store pass submitted initialization
+        // above; the caller serializes both registries on the identical queue.
         // COPY_SRC grants only this host alias permission, never the JS texture.
         let alias = unsafe {
             let hal = wgpu_hal::metal::Device::texture_from_raw(

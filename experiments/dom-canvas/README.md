@@ -1,13 +1,14 @@
 # DOM canvas on a native GPU
 
 **Research result: partial.** The browser/native canvas contract matches, and a
-real DOM canvas paints Three.js among HTML elements. Two upstream HTML paint
-failures remain reproducible. The executable exits nonzero after saving them;
+real DOM canvas paints Three.js among HTML elements. Stacking-context demotion is
+fixed by a pinned one-line patch; ancestor clipping still fails. The executable exits nonzero after saving that result;
 this is not an adopted shipping DOM or compositor.
 
-[Recorded hardware evidence](../../docs/validation/2026-09-18-dom-canvas.md) includes
-13 captures, both failures, diagnostic controls and failure cleanup. This workspace
-is isolated from the shipping runtime and uses a small pinned Deno patch.
+[Current hardware evidence](../../docs/validation/2026-09-18-canvas-handoff.md) includes
+21 captures, 576,000 initialization pixel checks, repeated stacking transitions
+and failure cleanup. The [original failure evidence](../../docs/validation/2026-09-18-dom-canvas.md)
+is retained. This workspace is isolated from the shipping runtime.
 
 ## Run
 
@@ -32,9 +33,14 @@ not modify Cargo's registry. `prepare.mjs --check` verifies the copy without
 changing it. The patch introduces a metadata-only offscreen canvas, explicit
 texture expiry and bounded configuration/error fixes. The upstream CPU-image
 canvas and native surface paths retain their previous behavior.
+The same preparation step archives the pinned Blitz commit into an ignored copy,
+applies the one-line stacking-list fix, and verifies all 414 tracked files. The
+related workspace crates are patched together so their public types share one
+source identity. No Cargo registry or original Git checkout is edited.
 
 `run.mjs` runs with Metal API Validation, compares all 27 shared assertions to the
-committed Chrome reference, verifies the two expected HTML failures, injects an
+committed Chrome reference, verifies the remaining clip failure and repaired
+stacking behavior, checks canvas initialization, injects an
 error after two submitted frames, and records source/binary/dependency identities.
 It prints **PARTIAL** and exits zero only when this known-failure investigation
 is reproduced exactly. The underlying executable exits one for the unresolved
@@ -46,9 +52,9 @@ Neither result is a general compatibility certification.
 | Module | Responsibility |
 | --- | --- |
 | `src/canvas.js`, `src/dom_bridge.rs` | DOM canvas identity, bitmap dimensions and genuine Deno GPUCanvasContext objects |
-| `src/canvas_texture.rs` | Checked native Metal retain, GPU snapshot and straight-alpha conversion |
+| `src/canvas_init.rs`, `src/canvas_texture.rs` | Producer-registry initialization, checked Metal retain, GPU snapshot and alpha conversion |
 | `src/painter.rs` | Canvas widgets inside Blitz's normal paint traversal; Vello texture registration |
-| `src/scenario.rs`, `src/evidence.rs` | Lifecycle scenarios, assertions and capture-only readbacks |
+| `src/scenario.rs`, `src/initialization_tests.rs`, `src/evidence.rs` | Lifecycle/initialization assertions and capture-only readbacks |
 | `src/main.rs` | Owners, terminal cleanup and evidence status |
 
 The probe reuses the earlier realm bootstrap, DOM wrappers and Metal bridge.
@@ -60,7 +66,10 @@ DOM removal. Reattachment reconnects the paint widget to that snapshot.
 Deno and Vello have separate wgpu registries but retain the exact same native
 Metal device and queue. Resource IDs never cross registries. The source texture
 is independently retained through submitted copy work; host COPY_SRC permission
-does not alter JS usage validation. Every updated canvas performs a native GPU
+does not alter JS usage validation. Before export, a load/store pass in Deno's
+original registry initializes missing or discarded pixels while preserving existing
+contents. This supports ordinary Deno-created render-attachment canvases, without
+requiring an application full clear. Every updated canvas performs that pass, a native GPU
 snapshot copy, an alpha-conversion dispatch, and Vello's atlas copy. There is no
 CPU pixel transport between renderers. Readbacks exist only for assertions.
 Both registries are flushed/drained before snapshots or atlas registrations retire,
@@ -68,12 +77,13 @@ including on error; persistent V8 context roots are cleared before isolate dispo
 
 ## Adoption gates
 
-- Fix and regress the lost ancestor clip and stale stacking-context paint list
-  described in the evidence. CSS changes are diagnostic controls, not game fixes.
-- Replace the unsafe trusted-full-clear export condition with a generic initialized
-  texture handoff. Deno's initialization tracker is private; arbitrary canvas
-  contents cannot yet be safely exported through this adapter.
+- Fix and regress the lost ancestor clip, including positioned descendants that
+  legitimately escape intermediate clips. CSS controls are not game fixes.
+- Extend initialized handoff to other configured usages without exposing private
+  tracker state or silently widening JS permissions. HAL-imported producer textures
+  are outside the current contract; measure initialization-pass overhead.
 - Upstream or sustain the small Deno extension with explicit upgrade checks.
+  Do the same for the one-line Blitz fix; repeated-transition regressions must stay.
   `getConfiguration()` copying, full validation, color spaces and tone mapping
   still have upstream gaps. Generic frame/event-loop expiry is not implemented.
 - Complete DOM/IDL behavior and reclamation: wrappers and contexts remain strongly

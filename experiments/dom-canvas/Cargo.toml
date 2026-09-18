@@ -41,3 +41,11 @@ anyrender = "=0.13.0"
 
 [patch.crates-io]
 deno_webgpu = { path = "../../.cache/dom-canvas/deno_webgpu" }
+
+[patch."https://github.com/DioxusLabs/blitz"]
+blitz-dom = { path = "../../.cache/dom-canvas/blitz/packages/blitz-dom" }
+blitz-html = { path = "../../.cache/dom-canvas/blitz/packages/blitz-html" }
+blitz-paint = { path = "../../.cache/dom-canvas/blitz/packages/blitz-paint" }
+blitz-traits = { path = "../../.cache/dom-canvas/blitz/packages/blitz-traits" }
+stylo_taffy = { path = "../../.cache/dom-canvas/blitz/packages/stylo_taffy" }
+debug_timer = { path = "../../.cache/dom-canvas/blitz/packages/debug_timer" }

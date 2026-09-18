@@ -61,9 +61,24 @@ function clearColor(alphaMode) {
   const pass = encoder.beginRenderPass({ colorAttachments: [{ view: context.getCurrentTexture().createView(), loadOp: 'clear', storeOp: 'store', clearValue: [0, 0.5, 0, 0.5] }] });
   pass.end(); device.queue.submit([encoder.finish()]);
 }
+function initializationCase(name) {
+  const upload = name === 'partial' || name === 'discard-then-partial';
+  context.configure({ device, format: 'rgba8unorm', alphaMode: 'premultiplied',
+    usage: name === 'unsupported-usage' ? GPUTextureUsage.COPY_DST : GPUTextureUsage.RENDER_ATTACHMENT | (upload ? GPUTextureUsage.COPY_DST : 0) });
+  const texture = context.getCurrentTexture();
+  if (name === 'preserved' || name === 'discarded' || name === 'discard-then-partial') {
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass({ colorAttachments: [{ view: texture.createView(),
+      loadOp: 'clear', storeOp: name === 'preserved' ? 'store' : 'discard', clearValue: [0.25, 0.5, 0.75, 1] }] });
+    pass.end(); device.queue.submit([encoder.finish()]);
+  }
+  if (upload) device.queue.writeTexture({ texture, origin: [17, 11] }, new Uint8Array([255, 0, 0, 255]), {}, [1, 1]);
+  if (name === 'destroyed') texture.destroy();
+  return { width: texture.width, height: texture.height, usage: texture.usage };
+}
 async function finish() {
   scene?.dispose(); await renderer?.dispose(); context?.unconfigure();
   renderer = scene = canvas = context = undefined;
 }
-globalThis.probe = { device, contract, start, render, resize, configuration, detach, attach, assertExpired, clearColor, finish, errors,
+globalThis.probe = { device, contract, start, render, resize, configuration, detach, attach, assertExpired, clearColor, initializationCase, finish, errors,
   info: { adapter: adapter.info.description, three: THREE.REVISION } };

@@ -96,8 +96,10 @@ other-platform compositor validation remain open.
 The [DOM canvas experiment](experiments/dom-canvas/README.md) connects real
 `HTMLCanvasElement` objects to Three.js and paints them among HTML elements.
 Its 27 shared canvas assertions match Chrome; native stacking, resize, retention
-and alpha controls pass. Two upstream HTML clipping/stacking defects remain
-reproducible, so its integration result is explicitly partial.
+and alpha controls pass. A pinned patch repairs duplicate painting after a stacking
+change, and [initialized handoff](docs/validation/2026-09-18-canvas-handoff.md) handles
+untouched, partially written and discarded render-attachment canvases. Ancestor
+clipping still fails, so the integration result remains explicitly partial.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

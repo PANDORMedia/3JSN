@@ -1,0 +1,1262 @@
+{
+  "status": "partial",
+  "fixture": "dom-canvas-native-metal",
+  "device": {
+    "adapter": "Apple M1 Pro",
+    "three": "186"
+  },
+  "contract": [
+    {
+      "name": "canvas DOM brand",
+      "passed": true
+    },
+    {
+      "name": "default bitmap dimensions",
+      "passed": true,
+      "observed": [
+        300,
+        150
+      ]
+    },
+    {
+      "name": "absent dimensions stay absent attributes",
+      "passed": true
+    },
+    {
+      "name": "IDL dimension reflection",
+      "passed": true
+    },
+    {
+      "name": "invalid attribute defaults",
+      "passed": true,
+      "observed": 300
+    },
+    {
+      "name": "HTML integer parsing",
+      "passed": true,
+      "observed": 40
+    },
+    {
+      "name": "CSS size differs from bitmap size",
+      "passed": true,
+      "observed": {
+        "bitmap": [
+          64,
+          32
+        ],
+        "css": [
+          128,
+          96
+        ]
+      }
+    },
+    {
+      "name": "unknown context is null",
+      "passed": true
+    },
+    {
+      "name": "native context brand and identity",
+      "passed": true
+    },
+    {
+      "name": "incompatible context mode is null",
+      "passed": true
+    },
+    {
+      "name": "initial configuration is null",
+      "passed": true
+    },
+    {
+      "name": "unconfigured texture throws InvalidStateError",
+      "passed": true,
+      "observed": "InvalidStateError"
+    },
+    {
+      "name": "current texture identity and metadata",
+      "passed": true
+    },
+    {
+      "name": "rendered canvas texture is readable",
+      "passed": true,
+      "observed": [
+        255,
+        0,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "invalid format throws and preserves current texture",
+      "passed": true,
+      "observed": "TypeError"
+    },
+    {
+      "name": "valid reconfigure replaces current texture",
+      "passed": true
+    },
+    {
+      "name": "reconfigured texture expires",
+      "passed": true
+    },
+    {
+      "name": "bitmap resize preserves context and changes texture",
+      "passed": true
+    },
+    {
+      "name": "resized texture expires",
+      "passed": true
+    },
+    {
+      "name": "redundant width assignment replaces WebGPU texture",
+      "passed": true
+    },
+    {
+      "name": "attribute resize reaches context",
+      "passed": true
+    },
+    {
+      "name": "independent canvas context and pixels",
+      "passed": true,
+      "observed": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "detach and reinsert preserve context",
+      "passed": true
+    },
+    {
+      "name": "unconfigure clears state and expires texture",
+      "passed": true
+    },
+    {
+      "name": "unconfigure does not reset context mode",
+      "passed": true
+    },
+    {
+      "name": "default usage is only render attachment",
+      "passed": true,
+      "observed": 16
+    },
+    {
+      "name": "host cannot silently grant COPY_SRC usage",
+      "passed": true
+    }
+  ],
+  "paint": {
+    "captures": [
+      {
+        "name": "html-above",
+        "file": "html-above.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "fea57da86ec8342f4c3b68fe9fd62a569e8389479731cd041bf681703087c2ce",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "animated",
+        "file": "animated.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "8037407892d6164613fdaaac4fcfe3605e9ca4ac7edf1ef7e3527429481c57a2",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "html-below",
+        "file": "html-below.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "eb72fed7db30eb9dd4630552343b52cc4544849a6a8d47bdd8e2634fe8c04d77",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "bitmap-resized",
+        "file": "bitmap-resized.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "0efbd4635835920519c71f91e040b97e679e53380618bf6b1e07c093661b9b09",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "detached",
+        "file": "detached.png",
+        "layout": {
+          "canvases": [],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "2dea8d6a3a641b7b7ac9782fd1d0b16bc32bf37c9dbbd74c729e82fd4835ca30",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "reattached",
+        "file": "reattached.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "0efbd4635835920519c71f91e040b97e679e53380618bf6b1e07c093661b9b09",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "css-resized",
+        "file": "css-resized.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 200,
+                "height": 100
+              },
+              "contentSize": {
+                "width": 200,
+                "height": 100
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "9325d3e3cd2ff000c5c483ba098011184808a1bbc2348872d360df50b0af755f",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "premultiplied",
+        "file": "premultiplied.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 200,
+                "height": 100
+              },
+              "contentSize": {
+                "width": 200,
+                "height": 100
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "f69f8e8de084a75eb386ffce320144f834b0e62aa6db7e11612a384aa418ba20",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "opaque",
+        "file": "opaque.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 200,
+                "height": 100
+              },
+              "contentSize": {
+                "width": 200,
+                "height": 100
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "7f816494b85d310b85f0e0b56d2327afab1a31fdb08ff997ae9ada0a5c38ceb6",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "clipped-hoisted",
+        "file": "clipped-hoisted.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 340,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "6f11f58fb58c7110142f65cf58814111a5b50a9e29b5f9ee8261c9be49196bf2",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "clipped-stacking-context",
+        "file": "clipped-stacking-context.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 340,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "ac563742fe9e80167efc40bff87243b6f629fd9546d5629fc722f38bdb34bdb9",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "alpha-stacking-context",
+        "file": "alpha-stacking-context.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "0100d596c2447dd9affb8971f6d98d489a7c1c5ca100e6fd1094af3c9abb533b",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "alpha-after-demotion",
+        "file": "alpha-after-demotion.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "0100d596c2447dd9affb8971f6d98d489a7c1c5ca100e6fd1094af3c9abb533b",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-0-0",
+        "file": "stacking-cycle-0-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-0-auto",
+        "file": "stacking-cycle-0-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-1-0",
+        "file": "stacking-cycle-1-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-1-auto",
+        "file": "stacking-cycle-1-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-2-0",
+        "file": "stacking-cycle-2-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-2-auto",
+        "file": "stacking-cycle-2-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-3-0",
+        "file": "stacking-cycle-3-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-3-auto",
+        "file": "stacking-cycle-3-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24,
+                "y": 24,
+                "width": 256,
+                "height": 160
+              },
+              "contentSize": {
+                "width": 256,
+                "height": 160
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      }
+    ],
+    "clipping": {
+      "name": "ancestor overflow clips hoisted canvas",
+      "passed": false,
+      "sample": [
+        400,
+        100
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "actual": [
+        16,
+        21,
+        34,
+        255
+      ]
+    },
+    "stackingMutation": {
+      "name": "stacking context demotion paints canvas once",
+      "passed": true,
+      "sample": [
+        100,
+        100
+      ],
+      "expected": [
+        6,
+        136,
+        12,
+        255
+      ],
+      "actual": [
+        6,
+        136,
+        12,
+        255
+      ]
+    },
+    "stackingTransitions": [
+      {
+        "cycle": 0,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 0,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 1,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 1,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 2,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 2,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 3,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 3,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      }
+    ],
+    "initialization": {
+      "method": "original-registry-load-store-pass",
+      "cases": [
+        {
+          "name": "untouched",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        },
+        {
+          "name": "partial",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 18
+          },
+          "rgbaSha256": "74537730b19ab0d71ceb804819db4339a521288d5726d41e6eb4f238097e67fb"
+        },
+        {
+          "name": "preserved",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "2b1946f26de538071699a52d253498440ecc5cbd419e17fa6aa74a5ef5be092f"
+        },
+        {
+          "name": "discarded",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        },
+        {
+          "name": "discard-then-partial",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 18
+          },
+          "rgbaSha256": "74537730b19ab0d71ceb804819db4339a521288d5726d41e6eb4f238097e67fb"
+        },
+        {
+          "name": "unsupported-usage",
+          "rejected": true,
+          "reason": "canvas export initialization requires RENDER_ATTACHMENT usage"
+        },
+        {
+          "name": "destroyed",
+          "rejected": true,
+          "reason": "canvas initialization view failed: Texture with 'GPUCanvasContext' label has been destroyed"
+        },
+        {
+          "name": "untouched-after-errors",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        }
+      ],
+      "snapshotCopyBytes": 2304000,
+      "cpuImageTransport": false,
+      "jsUsageUnchanged": true
+    },
+    "alphaConversions": [
+      {
+        "mode": "premultiplied",
+        "straightRgba": [
+          0,
+          255,
+          0,
+          128
+        ]
+      },
+      {
+        "mode": "opaque",
+        "straightRgba": [
+          0,
+          128,
+          0,
+          255
+        ]
+      }
+    ],
+    "configuration": {
+      "format": "bgra8unorm",
+      "usage": 17,
+      "alphaMode": "premultiplied",
+      "width": 320,
+      "height": 200
+    },
+    "changedAnimationPixels": 3358,
+    "submittedCanvasFrames": 17,
+    "snapshotCopyBytes": 5504000,
+    "descriptorMismatchRejected": true,
+    "hostExpiryRejectedByJsValidation": true,
+    "reinsertedPixelsIdentical": true,
+    "validationErrors": []
+  },
+  "v8": "15.0.245.2-rusty",
+  "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+  "cpuImageTransport": false,
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "limits": [
+    "Metal-only offscreen experiment; no native presentation or performance claim.",
+    "Pinned Deno canvas patch and bounded DOM adapter; not full browser conformance.",
+    "Native export initializes Deno-created render-attachment canvases; other configured usages and imported producer textures remain unsupported.",
+    "Each changed frame uses a GPU snapshot copy, alpha conversion and Vello atlas copy; not zero-copy.",
+    "Canvas borders, padding, transforms, generic frame scheduling and color-space conversion are outside this test."
+  ],
+  "execution": {
+    "startedAt": "2026-09-18T00:19:18.027Z",
+    "finishedAt": "2026-09-18T00:19:25.133Z",
+    "exitCode": 1,
+    "timeoutSeconds": 120,
+    "metalValidationObserved": true,
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "failureInjection": {
+    "afterSubmittedFrames": 2,
+    "exitCode": 1,
+    "sharedGpuCleanupCompleted": true,
+    "metalValidationObserved": true
+  },
+  "patch": {
+    "deno": {
+      "package": "deno_webgpu",
+      "version": "0.226.0",
+      "directory": ".cache/dom-canvas/deno_webgpu",
+      "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+      "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+      "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+      "verifiedPackagedFiles": 32
+    },
+    "blitz": {
+      "package": "blitz",
+      "revision": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+      "directory": ".cache/dom-canvas/blitz",
+      "changedFile": "packages/blitz-dom/src/layout/damage.rs",
+      "patchedSha256": "64bb8e1a479160c80c0999311830595c9ef921785d906eb7e70e7e17b55f59ab",
+      "patchSha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f",
+      "verifiedTrackedFiles": 414
+    }
+  },
+  "browserComparison": {
+    "matchedAssertions": 27,
+    "browser": "Chrome/153.0.8010.50"
+  },
+  "actualResolvedVersions": [
+    {
+      "name": "anyrender_vello",
+      "version": "0.14.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "blitz-dom",
+      "version": "0.3.0-beta.2",
+      "source": null
+    },
+    {
+      "name": "blitz-paint",
+      "version": "0.3.0-beta.2",
+      "source": null
+    },
+    {
+      "name": "deno_core",
+      "version": "0.412.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_web",
+      "version": "0.290.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "deno_webgpu",
+      "version": "0.226.0",
+      "source": null
+    },
+    {
+      "name": "deno_webidl",
+      "version": "0.259.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "v8",
+      "version": "150.4.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "vello",
+      "version": "0.10.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-core",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-hal",
+      "version": "29.0.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "name": "wgpu-types",
+      "version": "29.0.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index"
+    }
+  ],
+  "compiler": "rustc 1.93.0 (254b59607 2026-01-19)\nbinary: rustc\ncommit-hash: 254b59607d4417e9dffbc307138ae5c86280fe4c\ncommit-date: 2026-01-19\nhost: aarch64-apple-darwin\nrelease: 1.93.0\nLLVM version: 21.1.8",
+  "sourceSha256": {
+    "Cargo.toml": "6c11eec2626c7980b8c75351152521801032ab404677282f4cc893b2a8f8e727",
+    "Cargo.lock": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+    "app.mjs": "c5cf801659ab5490787eb94184e8cf2be69b9bde4682c930b8835e577748e12b",
+    "fixture.html": "c8384c10acd48f627ad5f05233f680ef716ed3ad0d22ac2ef927d0a13f851c6b",
+    "bundle.mjs": "395f8f76b0c5066f14def4f2005284317460088d2b55809e1ea2448d8e6b9fbc",
+    "run.mjs": "ed22a7fb664e0ca6a1c1a203b6a4bfa58831f8f9b62b99dd9e3af216594a3ae5",
+    "prepare.mjs": "30ee89eebd420080dc5796788d5d12c9efd21909f8f306347b284bdd8cb1b96a",
+    "prepare-blitz.mjs": "00a742e3929c35befd6bff4df3c065b0a342dfbe741f7ca5a15c2fffeafa5dc5",
+    "patches/deno-webgpu-canvas.patch": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+    "patches/blitz-stacking-demotion.patch": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f",
+    "src/main.rs": "2e85a1cddbd820b447ed40c45028bebdef81d1cf9576bfdfaf5e1f561f869fd6",
+    "src/painter.rs": "696a4947d75433701f6488ae60796c475da6e345db1ceed72402687fb999296f",
+    "src/canvas_texture.rs": "96324cddf147357f11817d2eb84c7395727b41ea2fc4f2fa11ab36fc03129411",
+    "src/evidence.rs": "05c35b919bd3d00b9f267b68f5606bd7f991e0d0fe9a0248dc5b0bf6797df6ae",
+    "src/scenario.rs": "08cfa017aac844a464969ff08b9ef3ea9ed27f78b72234a020c5a8d908494659",
+    "src/dom_bridge.rs": "30d218ec44a8b23c0748d2c297b02ab7b81ea32c1ede6f48e18e7fd30a732e89",
+    "src/canvas.js": "f5bda273f0aaac8e5c71953c2c888a7cba74a7f2e28c5c5fbcc23b5df9cbbe26",
+    "src/stacking_tests.rs": "16031535920d12eaa423a44daf414a744af53cd1e6106b229582b100c11dd457",
+    "src/canvas_init.rs": "a9088eca951b1c17bb980a12ccf25ebc5132633021aebf3a2602783359c6073d",
+    "src/initialization_tests.rs": "4469aec57a8c79d77ba216941659da633575bdfc3746acecea952b672834eb69"
+  },
+  "sharedSourceSha256": {
+    "crates/runtime/src/web-globals.js": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "experiments/native-html-interop/src/host.rs": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732",
+    "experiments/native-html-interop/src/metal.rs": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26",
+    "experiments/native-html-interop/src/bindings.js": "2520bdcb843387d18c98f8d4fc257c78feebde210d0a5d5204b6ec3a7bcebefd",
+    "fixtures/webgpu-canvas/contract.mjs": "b30cfb1d465afc02b71b1c70a9b977262504272659654a1b5eeddb8581dfba27",
+    "fixtures/webgpu-canvas/reference-macos-arm64.json": "648cf03519d4cae9d195e18ef10e292a963b2889398429a94b16e306b0333e3f",
+    "examples/spinning-scene/scene.mjs": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+  },
+  "bundleSha256": "6675554a3eea7bf72aa46e272f1fb3ea65abd94e6140ce1303df42bfb1cb0009",
+  "executableSha256": "56b4c0941b3809b4e2f5a951abc8c9f38564efc734b4e0def0c466ef36c792d8",
+  "regressions": {
+    "firstTwelvePriorCapturesUnchanged": true,
+    "stackingRedGreen": {
+      "unpatchedExitCode": 101,
+      "unpatchedPaintOccurrences": 2,
+      "expectedPaintOccurrences": 1,
+      "patchedExitCode": 0,
+      "checkedTransitions": 24,
+      "targetsPerTransition": 2
+    },
+    "patchPreparationReproduced": true,
+    "modifiedPatchOutputRejected": true
+  }
+}

@@ -254,7 +254,6 @@ dependencies = [
 [[package]]
 name = "blitz-dom"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
 dependencies = [
  "accesskit",
  "anyrender",
@@ -265,7 +264,7 @@ dependencies = [
  "color",
  "cssparser 0.37.0",
  "cursor-icon",
- "debug_timer 0.1.3 (git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936)",
+ "debug_timer 0.1.3",
  "euclid",
  "html-escape",
  "image",
@@ -297,7 +296,6 @@ dependencies = [
 [[package]]
 name = "blitz-html"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -308,7 +306,6 @@ dependencies = [
 [[package]]
 name = "blitz-paint"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
 dependencies = [
  "anyrender",
  "blitz-dom",
@@ -327,7 +324,6 @@ dependencies = [
 [[package]]
 name = "blitz-traits"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
 dependencies = [
  "atomic_refcell",
  "bitflags",
@@ -699,13 +695,12 @@ checksum = "4583a4551df46e2792f82ceeac45e850d2e2d5debba0b91f102385cda5b11f06"
 [[package]]
 name = "debug_timer"
 version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da220af51a1a335e9a930beaaef53d261e41ea9eecfb3d973a3ddae1a7284b9c"
 
 [[package]]
 name = "debug_timer"
 version = "0.1.3"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da220af51a1a335e9a930beaaef53d261e41ea9eecfb3d973a3ddae1a7284b9c"
 
 [[package]]
 name = "debugid"
@@ -3164,7 +3159,6 @@ dependencies = [
 [[package]]
 name = "stylo_taffy"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz?rev=9d92719b37c801b8b41c81b799a2a474db8b3936#9d92719b37c801b8b41c81b799a2a474db8b3936"
 dependencies = [
  "bitflags",
  "stylo",

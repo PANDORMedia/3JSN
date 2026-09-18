@@ -71,13 +71,6 @@ impl Session {
         recreate: bool,
         premultiplied: bool,
     ) -> Result<()> {
-        host::with_device(runtime, |device| {
-            device
-                .instance
-                .queue_submit(device.queue, &[])
-                .map_err(|error| format!("Deno queue flush: {error:?}"))?;
-            Ok(())
-        })?;
         if recreate {
             self.retire_canvas()?;
             self.image = Some(dom_bridge::with_texture(runtime, "scene", |source| {
@@ -86,10 +79,9 @@ impl Session {
         }
         let image = self.image.as_mut().ok_or("missing canvas snapshot")?;
         dom_bridge::with_texture(runtime, "scene", |source| {
-            // SAFETY: the trusted fixture submitted a full attachment clear in
-            // Three.js render or clearColor. Its pending writes were flushed
-            // above. This call is serialized on the checked identical queue,
-            // with the V8 texture rooted until the snapshot submit completes.
+            // SAFETY: the Deno-created source is rooted and access is serialized
+            // on the checked identical queue. update initializes missing pixels
+            // in the producer registry before submitting the retained snapshot.
             unsafe { image.update(&self.painter.bridge, source, premultiplied) }
         })?;
         self.snapshot_bytes +=
@@ -197,8 +189,8 @@ pub async fn run(runtime: &mut JsRuntime, session: &mut Session, output: &Path) 
 
     host::evaluate::<()>(runtime, "probe.resize(400,240); probe.render(1.4)".into()).await?;
     let mismatch = match dom_bridge::with_texture(runtime, "scene", |source| {
-        // SAFETY: full initialized render is submitted; descriptor rejection
-        // occurs before any import. No native work is expected from this call.
+        // SAFETY: this rooted Deno-created source is used serially. Descriptor
+        // rejection must occur before initialization or native import.
         unsafe {
             session
                 .image
@@ -319,15 +311,37 @@ pub async fn run(runtime: &mut JsRuntime, session: &mut Session, output: &Path) 
     let actual = evidence::pixel(&pixels, 100, 100).to_vec();
     let stacking_mutation = json!({"name":"stacking context demotion paints canvas once","passed":actual.iter().zip(expected).all(|(a,b)| a.abs_diff(b) <= 2),
         "sample":[100,100],"expected":expected,"actual":actual});
+    check(
+        stacking_mutation["passed"] == true,
+        "stacking context demotion painted the canvas twice",
+    )?;
     captures.push(demoted);
+    host::evaluate::<()>(runtime, "const box = document.createElement('div'); box.id = 'blend-box'; box.setAttribute('style', 'position:absolute;left:300px;top:120px;width:40px;height:40px;z-index:2;background:rgba(0,255,0,0.5)'); document.getElementById('stage').appendChild(box)".into()).await?;
+    let mut transitions = vec![];
+    for cycle in 0..4 {
+        for value in ["0", "auto"] {
+            host::evaluate::<()>(
+                runtime,
+                format!("document.getElementById('stage').style.zIndex = '{value}'"),
+            )
+            .await?;
+            let (capture, pixels) =
+                session.capture(runtime, output, &format!("stacking-cycle-{cycle}-{value}"))?;
+            evidence::expect(&pixels, 100, 100, expected)?;
+            evidence::expect(&pixels, 310, 130, expected)?;
+            transitions.push(json!({"cycle":cycle,"zIndex":value,"canvasRgba":evidence::pixel(&pixels,100,100),"boxRgba":evidence::pixel(&pixels,310,130)}));
+            captures.push(capture);
+        }
+    }
     session.painter.drain()?;
+    let initialization = crate::initialization_tests::run(runtime, &session.painter.bridge).await?;
     let errors: Value = host::evaluate(runtime, "probe.errors".into()).await?;
     check(
         errors == json!([]),
         "Deno GPU errors during canvas painting",
     )?;
     Ok(
-        json!({"captures":captures,"clipping":clipping,"stackingMutation":stacking_mutation,"alphaConversions":alpha_conversions,"configuration":configuration,"changedAnimationPixels":changed,"submittedCanvasFrames":session.frames,
+        json!({"captures":captures,"clipping":clipping,"stackingMutation":stacking_mutation,"stackingTransitions":transitions,"initialization":initialization,"alphaConversions":alpha_conversions,"configuration":configuration,"changedAnimationPixels":changed,"submittedCanvasFrames":session.frames,
         "snapshotCopyBytes":session.snapshot_bytes,"descriptorMismatchRejected":true,
         "hostExpiryRejectedByJsValidation":true,"reinsertedPixelsIdentical":true,"validationErrors":errors}),
     )

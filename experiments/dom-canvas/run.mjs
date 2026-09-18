@@ -31,8 +31,10 @@ assert.match(result.stderr, /Metal API Validation Enabled/, 'Metal validation di
 const report = JSON.parse(await readFile(resolve(output, 'report.json'), 'utf8'));
 assert.equal(report.status, 'partial');
 assert.equal(report.paint.clipping.passed, false);
-assert.equal(report.paint.stackingMutation.passed, false);
-assert.equal(report.paint.captures.length, 13);
+assert.equal(report.paint.stackingMutation.passed, true);
+assert.equal(report.paint.stackingTransitions.length, 8);
+assert.equal(report.paint.captures.length, 21);
+assert.equal(report.paint.initialization.cases.length, 8);
 assert.deepEqual(report.paint.validationErrors, []);
 const reference = JSON.parse(await readFile(resolve(root, 'fixtures/webgpu-canvas/reference-macos-arm64.json'), 'utf8'));
 const browserChecks = new Map(reference.result.checks.map(check => [check.name, check]));
@@ -59,9 +61,9 @@ const versions = graph.packages.filter(item => names.has(item.name)).map(item =>
 for (const name of ['wgpu-core', 'wgpu-types']) assert.equal(versions.filter(item => item.name === name).length, 1, `duplicate ${name}`);
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const sources = {};
-for (const name of ['Cargo.toml', 'Cargo.lock', 'app.mjs', 'fixture.html', 'bundle.mjs', 'run.mjs', 'prepare.mjs',
-  'patches/deno-webgpu-canvas.patch', 'src/main.rs', 'src/painter.rs', 'src/canvas_texture.rs', 'src/evidence.rs',
-  'src/scenario.rs', 'src/dom_bridge.rs', 'src/canvas.js']) {
+for (const name of ['Cargo.toml', 'Cargo.lock', 'app.mjs', 'fixture.html', 'bundle.mjs', 'run.mjs', 'prepare.mjs', 'prepare-blitz.mjs',
+  'patches/deno-webgpu-canvas.patch', 'patches/blitz-stacking-demotion.patch', 'src/main.rs', 'src/painter.rs', 'src/canvas_texture.rs', 'src/evidence.rs',
+  'src/scenario.rs', 'src/dom_bridge.rs', 'src/canvas.js', 'src/stacking_tests.rs', 'src/canvas_init.rs', 'src/initialization_tests.rs']) {
   sources[name] = hash(await readFile(resolve(import.meta.dirname, name)));
 }
 const sharedSources = {};
@@ -78,4 +80,4 @@ const verification = { ...report, execution: { startedAt, finishedAt: new Date()
   sharedSourceSha256: sharedSources, bundleSha256: hash(await readFile(resolve(root, 'artifacts/dom-canvas/app.mjs'))),
   executableSha256: hash(await readFile(binary)) };
 await writeFile(resolve(output, 'verification.json'), `${JSON.stringify(verification, null, 2)}\n`);
-console.log(`PARTIAL: ${report.contract.length} canvas checks match Chrome; ${report.paint.submittedCanvasFrames} native canvas frames; ancestor clipping and stacking demotion fail. Evidence: ${output}/verification.json`);
+console.log(`PARTIAL: ${report.contract.length} canvas checks match Chrome; stacking demotion passes; ancestor clipping still fails. Evidence: ${output}/verification.json`);
