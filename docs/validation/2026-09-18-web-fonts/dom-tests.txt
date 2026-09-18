@@ -1,0 +1,44 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/experiments/dom-canvas)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.00s
+     Running unittests src/window_probe.rs (target/debug/deps/threejs_dom_window_probe-c3e3cdfdf9f8687e)
+
+running 16 tests
+test package_resources::tests::asset_count_uses_the_package_limit ... ok
+test package_resources::tests::aggregate_stored_bytes_are_bounded_independently_of_each_asset ... ok
+test package_resources::tests::font_and_stylesheet_limits_are_role_specific_and_inclusive ... ok
+test package_resources::tests::delivers_exact_verified_bytes_without_claiming_font_registration ... ok
+test package_resources::tests::rejected_requests_are_sticky_and_never_receive_bytes ... ok
+test package_resources::tests::missing_import_is_reported_before_layout ... ok
+test package_resources::tests::rejects_ambiguous_asset_paths_and_invalid_bases ... ok
+test package_resources::tests::rejects_cancelled_and_non_get_requests ... ok
+test window_options::tests::diagnostics_are_gpu_independent_and_arguments_are_strict ... ok
+test package_resources::tests::drains_real_linked_and_nested_stylesheet_responses_before_layout ... ok
+test inline_font_width_tests::integer_intrinsic_text_sizes_remain_unchanged ... ok
+test inline_font_width_tests::fractional_intrinsic_inline_width_is_independent_of_device_pixel_scale ... ok
+test inline_font_width_tests::explicit_fractional_width_and_padding_are_preserved ... ok
+test inline_font_width_tests::ligature_intrinsic_width_keeps_its_fractional_advance ... ok
+test package_resources::tests::request_budget_bounds_repeated_delivery ... ok
+test inline_font_width_tests::inline_wrap_thresholds_use_fractional_css_width ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s

@@ -29,7 +29,7 @@ function checkCss(source, context) {
   });
 }
 
-function inspect(source) {
+function inspect(source, webFonts = false) {
   if (/<\?xml(?:\s|\?)/i.test(source)) reject('XML declarations are not supported.');
   // Pinned Blitz sniffs the entire first DOCTYPE line, including later comments.
   if (source.startsWith('<!DOCTYPE') && /XHTML|xhtml/.test(source.split('\n', 1)[0])) reject('This first DOCTYPE line triggers the native XHTML parser.');
@@ -40,13 +40,14 @@ function inspect(source) {
   if (document.mode !== 'no-quirks' || !doctype || doctype.name !== 'html' || doctype.publicId || doctype.systemId) {
     reject('An ordinary HTML5 <!doctype html> document in no-quirks mode is required.');
   }
-  const scripts = [], canvases = [], sceneIds = [];
+  const scripts = [], canvases = [], sceneIds = [], styles = [];
   function visit(node) {
     if (node.tagName) {
-      if (node.namespaceURI !== 'http://www.w3.org/1999/xhtml' || !elements.has(node.tagName)) reject(`Element <${node.tagName}> is outside the interim HTML profile.`);
+      const isLink = webFonts && node.tagName === 'link';
+      if (node.namespaceURI !== 'http://www.w3.org/1999/xhtml' || !(elements.has(node.tagName) || isLink)) reject(`Element <${node.tagName}> is outside the interim HTML profile.`);
       for (const attr of node.attrs) {
         if (attr.namespace || attr.prefix || !((attributes.has(attr.name) || /^(?:aria|data)-[a-z0-9-]+$/.test(attr.name))
-          || elementAttributes[node.tagName]?.has(attr.name))) reject(`Attribute ${attr.name} on <${node.tagName}> is outside the interim HTML profile.`);
+          || elementAttributes[node.tagName]?.has(attr.name) || (isLink && ['rel', 'href', 'type'].includes(attr.name)))) reject(`Attribute ${attr.name} on <${node.tagName}> is outside the interim HTML profile.`);
         if (attr.name === 'style') checkCss(attr.value, 'declarationList');
         if (attr.name === 'id' && attr.value === 'scene') sceneIds.push(node);
         if (attr.name === 'charset' && attr.value.toLowerCase() !== 'utf-8') reject('Only UTF-8 HTML is supported.');
@@ -55,7 +56,18 @@ function inspect(source) {
         const css = textOf(node);
         // Blitz decodes semicolon-terminated entities in raw style text; browsers do not.
         if (/&(?:#[xX][0-9a-fA-F]+|#[0-9]+|[a-zA-Z][a-zA-Z0-9]*);/.test(css)) reject('Character references in raw <style> text are unsupported.');
-        checkCss(css, 'stylesheet');
+        if (webFonts) {
+          if (!node.sourceCodeLocation?.endTag) reject('Style elements require an explicit closing tag.');
+          styles.push({ kind: 'inline', css, start: node.sourceCodeLocation.startTag.endOffset, end: node.sourceCodeLocation.endTag.startOffset });
+        }
+        else checkCss(css, 'stylesheet');
+      }
+      if (isLink) {
+        const attrs = Object.fromEntries(node.attrs.map(attr => [attr.name, attr.value]));
+        if (attrs.rel !== 'stylesheet' || !attrs.href || (attrs.type !== undefined && attrs.type.toLowerCase() !== 'text/css')) reject('Only ordinary rel="stylesheet" links without alternate/media controls are accepted.');
+        const location = node.sourceCodeLocation?.attrs?.href;
+        if (!location) reject('Stylesheet href must have an explicit source location.');
+        styles.push({ kind: 'linked', href: attrs.href, start: location.startOffset, end: location.endOffset });
       }
       if (node.tagName === 'script') scripts.push(node);
       if (node.tagName === 'canvas') canvases.push(node);
@@ -71,7 +83,7 @@ function inspect(source) {
   if (attrs.type?.toLowerCase() !== 'module' || !attrs.src || textOf(script).trim()) reject('The script must have type="module", a local src, and no inline code.');
   const location = script.sourceCodeLocation?.attrs?.src;
   if (!location) reject('The script src must have an explicit source location.');
-  return { src: attrs.src, location };
+  return { src: attrs.src, location, styles };
 }
 
 function modulePath(htmlPath, src) {
@@ -82,18 +94,32 @@ function modulePath(htmlPath, src) {
 }
 
 /** Validate a bounded static document and rewrite only its generated module src. No source file is changed. */
-export function prepareHtml(bytes, htmlPath) {
+export function analyzeHtml(bytes, htmlPath, { webFonts = false } = {}) {
   let source;
   try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
     throw new BuildError('INVALID_HTML_ENCODING', 'HTML must be valid UTF-8.', { cause });
   }
   if (source.startsWith('\ufeff')) reject('UTF-8 BOMs are outside the interim HTML profile.');
-  const { src, location } = inspect(source);
+  const { src, location, styles } = inspect(source, webFonts);
   const entry = modulePath(htmlPath, src);
-  const generated = source.slice(0, location.startOffset) + 'src="./main.mjs"' + source.slice(location.endOffset);
-  if (inspect(generated).src !== './main.mjs') reject('Generated module src verification failed.');
-  return { entry, bytes: Buffer.from(generated), metadata: { interpretation: 'interim-runtime-html-css',
+  return { source, entry, location, styles, webFonts, metadata: { interpretation: 'interim-runtime-html-css',
     parsers: { html: 'parse5@8.0.1', css: 'css-tree@3.2.1' },
     originalModuleSrc: src, moduleEntry: entry, rewrite: 'Only the module src attribute is replaced in generated HTML.',
     grammar: 'HTML5 no-quirks UTF-8 without BOM; ordinary text/structural elements, one unique #scene canvas and one local external module; plain inline CSS with no at-rules, URLs, escapes, parse recovery or unlisted functions. No templates, noscript, foreign content, navigation, inline handlers or static resources.' } };
+}
+
+export function renderHtml(analysis, replacements = []) {
+  const edits = [{ start: analysis.location.startOffset, end: analysis.location.endOffset, text: 'src="./main.mjs"' }, ...replacements].sort((a, b) => b.start - a.start);
+  let generated = analysis.source, boundary = generated.length;
+  for (const edit of edits) {
+    if (edit.start < 0 || edit.end > boundary || edit.start > edit.end) reject('Generated HTML edits overlap or escape the input.');
+    generated = generated.slice(0, edit.start) + edit.text + generated.slice(edit.end); boundary = edit.start;
+  }
+  if (inspect(generated, analysis.webFonts).src !== './main.mjs') reject('Generated module src verification failed.');
+  return Buffer.from(generated);
+}
+
+export function prepareHtml(bytes, htmlPath) {
+  const analysis = analyzeHtml(bytes, htmlPath);
+  return { entry: analysis.entry, bytes: renderHtml(analysis), metadata: analysis.metadata };
 }

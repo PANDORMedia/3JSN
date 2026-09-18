@@ -1,0 +1,52 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+   Compiling threejsn-web-font-matcher v0.0.0 (/Users/sean/dev/3JSN/experiments/web-font-matcher)
+warning: `parley` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.87s
+     Running unittests src/lib.rs (.cache/web-fonts/target/debug/deps/threejsn_web_font_matcher-e66e5543fc26e4f8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/upstream_regressions.rs (.cache/web-fonts/target/debug/deps/upstream_regressions-639ba144f6e7d690)
+
+running 2 tests
+test duplicate_coverage_variants_are_all_queried ... ok
+test scalar_weight_override_still_sets_nondefault_variable_coordinate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/web_faces.rs (.cache/web-fonts/target/debug/deps/web_faces-edde7b2f8f405deb)
+
+running 14 tests
+test descriptors_validate_and_normalize_unicode_intervals ... ok
+test combining_cluster_falls_back_without_splitting_source_text ... ok
+test explicit_variations_keep_precedence_over_descriptor_limits ... ok
+test final_partial_candidate_cannot_resurrect_excluded_glyph_during_shaping ... ok
+test overlapping_rules_use_css_order_not_completion_order ... ok
+test restriction_selects_next_family_despite_raw_cmap_coverage ... ok
+test every_same_attribute_subset_is_reachable_and_bytes_remain_original ... ok
+test exact_descriptor_override_is_not_the_font_axis_default ... ok
+test variable_weight_ranges_choose_face_and_clamp_high_level_coordinates ... ok
+test projected_ranges_use_css_width_and_style_priority_before_weight ... ok
+test restrictions_preserve_original_ligatures ... ok
+test width_and_oblique_ranges_retain_fractional_coordinates ... ok
+test variation_selector_cannot_bypass_the_base_character_range ... ok
+test web_faces_shadow_installed_face_and_do_not_use_wrong_style_default ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests threejsn_web_font_matcher
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

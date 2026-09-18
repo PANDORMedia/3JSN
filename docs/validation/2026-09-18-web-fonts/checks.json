@@ -1,0 +1,55 @@
+{
+  "node": {
+    "passed": 119,
+    "skipped": 1
+  },
+  "workspaceRust": {
+    "passed": 25,
+    "ignored": 2
+  },
+  "domPlayerRust": {
+    "passed": 16
+  },
+  "fontMatcher": {
+    "passed": 16,
+    "upstreamExpectedFailures": 2
+  },
+  "blitzWebFonts": {
+    "passed": 15
+  },
+  "inlineWidth": {
+    "candidatePassed": 5,
+    "baselinePassed": 2,
+    "baselineFailed": 3
+  },
+  "blitzBroadSuite": {
+    "passed": 63,
+    "failed": 2,
+    "failures": [
+      "document::hover_invalidation_tests::hover_styles_apply_and_clear",
+      "node::element::tests::scroll_by_clamps_and_bubbles"
+    ],
+    "preWebFontBaseline": {
+      "passed": 48,
+      "failed": 2,
+      "sameFailures": true,
+      "dependencyVersionOrSourceDrift": [],
+      "rootCausesEstablished": false
+    }
+  },
+  "checks": {
+    "workspaceFormatting": "passed",
+    "domFormatting": "passed",
+    "domClippy": "passed",
+    "pinnedPreparation": "passed",
+    "sourceCheck": "passed"
+  },
+  "hardware": {
+    "webFonts": "passed",
+    "legacyDomPackage": "passed"
+  },
+  "limits": [
+    "CPU tests and one macOS arm64 Metal run; no native Windows/Linux font certification.",
+    "Broad upstream Blitz suite has two failures; focused changed-code suites pass."
+  ]
+}

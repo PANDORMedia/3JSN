@@ -14,6 +14,35 @@ use sha2::{Digest, Sha256};
 const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
 pub const DOM_PROFILE: &str = "dom-window-v1";
+pub const DOM_FONT_CAPABILITY: &str = "dom-package-fonts-v1";
+pub const MAX_RESOURCES: usize = 64;
+pub const MAX_STYLESHEET_BYTES: u64 = 1024 * 1024;
+pub const MAX_FONT_BYTES: u64 = 16 * 1024 * 1024;
+pub const MAX_RESOURCE_BYTES: u64 = 64 * 1024 * 1024;
+
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum ResourceKind {
+    Font,
+    Stylesheet,
+}
+
+impl ResourceKind {
+    pub fn byte_limit(self) -> u64 {
+        match self {
+            Self::Font => MAX_FONT_BYTES,
+            Self::Stylesheet => MAX_STYLESHEET_BYTES,
+        }
+    }
+}
+
+/// Integrity-checked bytes owned by the player, independent of later disk changes.
+#[derive(Debug)]
+pub struct Resource {
+    pub path: String,
+    pub kind: ResourceKind,
+    pub bytes: Vec<u8>,
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Profile {
@@ -54,7 +83,18 @@ struct Manifest {
     html: Option<String>,
     #[serde(default, deserialize_with = "present_string")]
     font: Option<String>,
+    #[serde(default, deserialize_with = "present_vec")]
+    requires: Option<Vec<String>>,
+    #[serde(default, deserialize_with = "present_vec")]
+    resources: Option<Vec<ResourceDescriptor>>,
     files: Vec<PackageFile>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ResourceDescriptor {
+    path: String,
+    kind: ResourceKind,
 }
 
 #[derive(Debug, Deserialize)]
@@ -71,11 +111,18 @@ fn present_string<'de, D: serde::Deserializer<'de>>(
     String::deserialize(deserializer).map(Some)
 }
 
+fn present_vec<'de, T: Deserialize<'de>, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> Result<Option<Vec<T>>, D::Error> {
+    Vec::deserialize(deserializer).map(Some)
+}
+
 #[derive(Debug)]
 pub struct Application {
     pub entry: PathBuf,
     pub html: Option<PathBuf>,
     pub font: Option<PathBuf>,
+    pub resources: Option<Vec<Resource>>,
 }
 
 pub fn target() -> &'static str {
@@ -121,6 +168,77 @@ fn validate_path(path: &str) -> Result<(), PackageError> {
         return Err(invalid(format!(
             "expected a portable path under app/: {path:?}"
         )));
+    }
+    Ok(())
+}
+
+fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), PackageError> {
+    let resources = match (&manifest.requires, &manifest.resources) {
+        (None, None) => return Ok(()),
+        (Some(requires), Some(resources))
+            if profile == Profile::DomWindow && requires == &[DOM_FONT_CAPABILITY] =>
+        {
+            resources
+        }
+        _ => {
+            return Err(invalid(
+                "resources require the dom-package-fonts-v1 DOM capability",
+            ));
+        }
+    };
+    if resources.len() > MAX_RESOURCES {
+        return Err(invalid("package exceeds 64 font/stylesheet resources"));
+    }
+    let mut paths = HashSet::new();
+    let mut total = 0_u64;
+    for resource in resources {
+        validate_path(&resource.path)?;
+        if !paths.insert(resource.path.to_lowercase()) {
+            return Err(invalid(format!("duplicate resource: {}", resource.path)));
+        }
+        if resource.path == manifest.entry
+            || Some(&resource.path) == manifest.html.as_ref()
+            || Some(&resource.path) == manifest.font.as_ref()
+        {
+            return Err(invalid(
+                "resource paths must be distinct from entry, HTML and fallback font",
+            ));
+        }
+        let suffixes: &[&str] = match resource.kind {
+            ResourceKind::Font => &[".ttf", ".otf", ".woff", ".woff2"],
+            ResourceKind::Stylesheet => &[".css"],
+        };
+        if !suffixes
+            .iter()
+            .any(|suffix| resource.path.ends_with(suffix))
+        {
+            return Err(invalid(format!(
+                "resource kind does not match its path: {}",
+                resource.path
+            )));
+        }
+        let file = manifest
+            .files
+            .iter()
+            .find(|file| file.path == resource.path)
+            .ok_or_else(|| {
+                invalid(format!(
+                    "resource must be listed in files: {}",
+                    resource.path
+                ))
+            })?;
+        if file.bytes > resource.kind.byte_limit() {
+            return Err(invalid(format!(
+                "resource exceeds its byte limit: {}",
+                resource.path
+            )));
+        }
+        total = total
+            .checked_add(file.bytes)
+            .ok_or_else(|| invalid("resource size overflow"))?;
+        if total > MAX_RESOURCE_BYTES {
+            return Err(invalid("package resource bytes exceed 64 MiB"));
+        }
     }
     Ok(())
 }
@@ -214,7 +332,7 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
             return Err(invalid("dom-window-v1 requires HTML and font fields"));
         }
     }
-    Ok(())
+    validate_resources(manifest, profile)
 }
 
 fn regular_file(root: &Path, relative: &str) -> Result<File, PackageError> {
@@ -266,11 +384,40 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
     }
     let manifest: Manifest = serde_json::from_slice(&bytes).map_err(|e| invalid(e.to_string()))?;
     validate_manifest(&manifest, profile)?;
+    let mut resources = manifest.resources.as_ref().map(|_| Vec::new());
     for item in &manifest.files {
         let path = root.join(&item.path);
         let mut file = regular_file(&root, &item.path)?;
         let mut hasher = Sha256::new();
-        let size = io::copy(&mut file, &mut hasher).map_err(|e| io_error(&path, e))?;
+        let resource = manifest
+            .resources
+            .as_ref()
+            .and_then(|resources| resources.iter().find(|resource| resource.path == item.path));
+        let size = if let Some(resource) = resource {
+            let mut bytes = Vec::new();
+            file.take(resource.kind.byte_limit() + 1)
+                .read_to_end(&mut bytes)
+                .map_err(|e| io_error(&path, e))?;
+            if bytes.len() as u64 > resource.kind.byte_limit() {
+                return Err(invalid(format!(
+                    "resource exceeds its byte limit: {}",
+                    item.path
+                )));
+            }
+            hasher.update(&bytes);
+            let size = bytes.len() as u64;
+            resources
+                .as_mut()
+                .expect("resource descriptors are present")
+                .push(Resource {
+                    path: item.path.clone(),
+                    kind: resource.kind,
+                    bytes,
+                });
+            size
+        } else {
+            io::copy(&mut file, &mut hasher).map_err(|e| io_error(&path, e))?
+        };
         if size != item.bytes || format!("{:x}", hasher.finalize()) != item.sha256 {
             return Err(PackageError::Integrity(item.path.clone()));
         }
@@ -279,6 +426,7 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
         entry: root.join(manifest.entry),
         html: manifest.html.map(|path| root.join(path)),
         font: manifest.font.map(|path| root.join(path)),
+        resources,
     })
 }
 
@@ -336,6 +484,25 @@ mod tests {
                 manifest["files"].as_array_mut().unwrap().push(json!({
                     "path": path, "bytes": bytes.len(),
                     "sha256": format!("{:x}", Sha256::digest(bytes)),
+                }));
+            }
+            manifest
+        }
+
+        fn font_manifest(&self) -> Value {
+            let mut manifest = self.dom_manifest();
+            manifest["requires"] = json!([DOM_FONT_CAPABILITY]);
+            manifest["resources"] = json!([
+                {"path":"app/type.css", "kind":"stylesheet"},
+                {"path":"app/type.ttf", "kind":"font"},
+            ]);
+            for (path, bytes) in [
+                ("app/type.css", b"body{}".as_slice()),
+                ("app/type.ttf", b"font fixture".as_slice()),
+            ] {
+                fs::write(self.0.join(path), bytes).unwrap();
+                manifest["files"].as_array_mut().unwrap().push(json!({
+                    "path":path, "bytes":bytes.len(), "sha256":format!("{:x}", Sha256::digest(bytes))
                 }));
             }
             manifest
@@ -530,6 +697,109 @@ mod tests {
                 .to_string()
                 .contains("duplicate field")
         );
+    }
+
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn resources_are_verified_once_and_owned_after_relocation() {
+        let mut fixture = Fixture::new();
+        fixture.write(&fixture.font_manifest());
+        let moved = fixture.0.with_extension("resources-relocated");
+        fs::rename(&fixture.0, &moved).unwrap();
+        fixture.0 = moved;
+        let path = fixture.0.join("app.json");
+        let app = load_for(&path, Profile::DomWindow).unwrap();
+        let resources = app.resources.unwrap();
+        assert_eq!(resources.len(), 2);
+        fs::write(fixture.0.join("app/type.css"), b"bad CSS").unwrap();
+        assert_eq!(resources[0].bytes, b"body{}");
+        assert_eq!(resources[0].kind, ResourceKind::Stylesheet);
+        assert!(matches!(
+            load_for(&path, Profile::DomWindow),
+            Err(PackageError::Integrity(_))
+        ));
+    }
+
+    #[test]
+    fn resource_capabilities_are_explicit_and_profile_specific() {
+        let fixture = Fixture::new();
+        for (requires, resources) in [
+            (json!([DOM_FONT_CAPABILITY]), json!([])),
+            (Value::Null, json!([])),
+        ] {
+            let mut manifest = fixture.manifest();
+            manifest["requires"] = requires;
+            manifest["resources"] = resources;
+            assert!(load(&fixture.write(&manifest)).is_err());
+        }
+        let valid = fixture.font_manifest();
+        // Exercise this profile's schema on every host, independently of host admission.
+        let validate = |value: &Value| {
+            let manifest: Manifest =
+                serde_json::from_value(value.clone()).map_err(|e| invalid(e.to_string()))?;
+            validate_resources(&manifest, Profile::DomWindow)
+        };
+        assert!(validate(&valid).is_ok());
+        for key in ["requires", "resources"] {
+            let mut value = valid.clone();
+            value.as_object_mut().unwrap().remove(key);
+            assert!(validate(&value).is_err());
+            value[key] = Value::Null;
+            assert!(validate(&value).is_err());
+        }
+        for requires in [
+            json!([]),
+            json!(["unknown"]),
+            json!([DOM_FONT_CAPABILITY, DOM_FONT_CAPABILITY]),
+        ] {
+            let mut value = valid.clone();
+            value["requires"] = requires;
+            assert!(validate(&value).is_err());
+        }
+        let mut empty = valid.clone();
+        empty["resources"] = json!([]);
+        assert!(validate(&empty).is_ok());
+        for resource in [
+            json!({"path":"app/missing.css","kind":"stylesheet"}),
+            json!({"path":"app/type.css","kind":"font"}),
+            json!({"path":"app/font.woff2","kind":"font"}),
+            json!({"path":"app/type.css","kind":"image"}),
+            json!({"path":"app/../type.css","kind":"stylesheet"}),
+        ] {
+            let mut value = valid.clone();
+            value["resources"][0] = resource;
+            assert!(validate(&value).is_err(), "accepted {value}");
+        }
+        let mut duplicate = valid.clone();
+        duplicate["resources"][1] = duplicate["resources"][0].clone();
+        assert!(validate(&duplicate).is_err());
+        let mut too_many = valid.clone();
+        too_many["resources"] = json!(vec![valid["resources"][0].clone(); MAX_RESOURCES + 1]);
+        assert!(validate(&too_many).unwrap_err().to_string().contains("64"));
+        for (index, limit) in [(3, MAX_STYLESHEET_BYTES), (4, MAX_FONT_BYTES)] {
+            let mut value = valid.clone();
+            value["files"][index]["bytes"] = json!(limit + 1);
+            assert!(
+                validate(&value)
+                    .unwrap_err()
+                    .to_string()
+                    .contains("byte limit")
+            );
+        }
+    }
+
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn actual_resource_bytes_cannot_exceed_declared_role_limits() {
+        let fixture = Fixture::new();
+        let manifest = fixture.font_manifest();
+        let path = fixture.write(&manifest);
+        File::create(fixture.0.join("app/type.css"))
+            .unwrap()
+            .set_len(MAX_STYLESHEET_BYTES + 1)
+            .unwrap();
+        let error = load_for(&path, Profile::DomWindow).unwrap_err();
+        assert!(error.to_string().contains("byte limit"));
     }
 
     #[cfg(unix)]

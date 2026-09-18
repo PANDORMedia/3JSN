@@ -23,6 +23,7 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 - [Architecture](docs/architecture.md) and [updated decision](docs/adr/0002-unchanged-project-compatibility.md): native host and compatibility boundaries.
 - [HTML/CSS research](docs/html-rendering.md): DOM, layout, interaction and GPU composition.
 - [Compiled UI direction](docs/adr/0003-compiled-ui-and-generic-compatibility.md): build-time HTML/CSS processing, live native UI state and proven parser omission.
+- [Webfont packaging](docs/web-fonts.md): opt-in static font downloads, pinned offline builds and native face loading.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.

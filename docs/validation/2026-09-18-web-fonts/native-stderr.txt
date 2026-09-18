@@ -1,0 +1,1 @@
+2026-09-18 12:12:30.263 3jsn-type-lab[4673:5287128] Metal API Validation Enabled

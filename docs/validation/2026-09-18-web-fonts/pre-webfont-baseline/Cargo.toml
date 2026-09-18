@@ -1,0 +1,10 @@
+[package]
+name = "pre-webfont-baseline"
+version = "0.0.0"
+edition = "2024"
+[workspace]
+exclude = ["blitz"]
+[dependencies]
+blitz-dom = { path = "blitz/packages/blitz-dom", default-features = false, features = ["woff", "custom-widget"] }
+parley = { version = "=0.11.1", default-features = false, features = ["std"] }
+fontique = { version = "=0.11.1", default-features = false, features = ["std"] }

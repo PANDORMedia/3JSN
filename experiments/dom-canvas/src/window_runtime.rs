@@ -12,7 +12,11 @@ use deno_core::{JsRuntime, OpState, op2, v8};
 use tokio::sync::{mpsc, watch};
 use winit::event_loop::EventLoopProxy;
 
-use crate::{Result, dom_bridge, host, window_scene::WindowScene};
+use crate::{
+    Result, dom_bridge, host,
+    package_resources::{PACKAGE_BASE_URL, PackageResources},
+    window_scene::WindowScene,
+};
 
 #[derive(Clone, Copy, PartialEq)]
 pub struct HostState {
@@ -193,6 +197,7 @@ fn dispatch_input(
 }
 
 pub struct Worker {
+    pub resources: Option<Vec<threejs_native_package::Resource>>,
     pub html: String,
     pub module: PathBuf,
     pub font: Vec<u8>,
@@ -212,6 +217,14 @@ async fn closed(mut state: watch::Receiver<HostState>) {
     }
 }
 
+fn check_resources(runtime: &mut JsRuntime, provider: &PackageResources) -> Result<()> {
+    dom_bridge::with_document(runtime, |doc| -> Result<()> {
+        provider.drain(doc)?;
+        doc.check_web_fonts()?;
+        Ok(())
+    })
+}
+
 pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> {
     let initial = *worker.state.borrow();
     let started = std::time::Instant::now();
@@ -219,9 +232,22 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
     if font_ctx.collection.family_names().next().is_none() {
         return Err("supplied font did not register a usable font family".into());
     }
+    let resources = worker
+        .resources
+        .take()
+        .map(|assets| PackageResources::new(PACKAGE_BASE_URL, assets))
+        .transpose()
+        .map_err(|error| error.to_string())?;
     let mut runtime = host::create_with_prepared_extensions(
         &worker.html,
         DocumentConfig {
+            defer_font_loads: resources.is_some(),
+            base_url: resources
+                .as_ref()
+                .map(|provider| provider.base_url().into()),
+            net_provider: resources
+                .as_ref()
+                .map(|provider| provider.clone() as Arc<dyn blitz_traits::net::NetProvider>),
             font_ctx: Some(font_ctx),
             viewport: Some(Viewport::new(
                 initial.width,
@@ -238,6 +264,22 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
     let mut scene = None;
     let mut presented = 0;
     let outcome: Result<(u64, u64)> = async {
+        if let Some(provider) = &resources {
+            let report = dom_bridge::with_document(&mut runtime, |doc| -> Result<_> {
+                provider.drain(doc)?;
+                doc.load_web_fonts()?;
+                let mut delivery = provider.finish_initial_load(doc)?;
+                let fonts = doc.check_web_fonts()?;
+                delivery.font_registration_verified = true;
+                Ok(
+                    serde_json::json!({"packagedResources":delivery, "webFonts":{
+                        "requested":fonts.requested, "registered":fonts.registered,
+                        "pending":fonts.pending, "decodedBytes":fonts.decoded_bytes
+                    }}),
+                )
+            })?;
+            println!("{report}");
+        }
         if worker.state.borrow().close {
             return Ok((0, 0));
         }
@@ -255,6 +297,9 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
             .clone()
             .ok_or("missing animation callback")?;
         call(&mut runtime, &first_frame, &[])?;
+        if let Some(provider) = &resources {
+            check_resources(&mut runtime, provider)?;
+        }
         drop(first_frame);
         scene = Some(WindowScene::new(
             &mut runtime,
@@ -281,6 +326,9 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
                 runtime.poll_event_loop(&mut Context::from_waker(Waker::noop()), Default::default())
             {
                 return Err(error.into());
+            }
+            if let Some(provider) = &resources {
+                check_resources(&mut runtime, provider)?;
             }
             if viewport != (current.width, current.height, current.scale) {
                 pending = None;
@@ -325,6 +373,9 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
                     };
                     if let Some(callback) = callback {
                         call(&mut runtime, &callback, &[])?;
+                    }
+                    if let Some(provider) = &resources {
+                        check_resources(&mut runtime, provider)?;
                     }
                     scene.compose(&mut runtime)?;
                     composed = true;

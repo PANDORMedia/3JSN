@@ -2,7 +2,7 @@
 import { buildProject } from './build.mjs';
 import { BuildError } from './contract.mjs';
 
-const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--font <font.woff2> (dom-window-v1 only)]';
+const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--font <font.woff2> (dom-window-v1 only)] [--bundle-web-fonts [--web-fonts-state <directory>] [--offline]]';
 const controller = new AbortController();
 let interruptedBy;
 const interrupt = signal => { interruptedBy ??= signal; controller.abort(); };
@@ -16,9 +16,10 @@ try {
   const options = { project, signal: controller.signal };
   for (let index = 0; index < args.length; index++) {
     const flag = args[index];
-    const key = { '--runtime': 'runtime', '--out': 'out', '--targets': 'targets', '--experimental': 'experimental', '--font': 'font' }[flag];
+    const key = { '--runtime': 'runtime', '--out': 'out', '--targets': 'targets', '--experimental': 'experimental', '--font': 'font',
+      '--bundle-web-fonts': 'bundleWebFonts', '--web-fonts-state': 'webFontsState', '--offline': 'offline' }[flag];
     if (!key || Object.hasOwn(options, key)) throw new BuildError('USAGE', usage);
-    if (key === 'experimental') options[key] = true;
+    if (['experimental', 'bundleWebFonts', 'offline'].includes(key)) options[key] = true;
     else {
       const value = args[++index];
       if (!value || value.startsWith('--')) throw new BuildError('USAGE', usage);

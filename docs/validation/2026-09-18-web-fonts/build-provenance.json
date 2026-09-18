@@ -1,0 +1,2463 @@
+{
+  "onlineSource": {
+    "before": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 107,
+          "sha256": "a2a12eddc7c19aaac28f3a941b107bce2b6be3bee24612b2f49eb55585f544db"
+        },
+        {
+          "path": "README.md",
+          "kind": "file",
+          "bytes": 1875,
+          "sha256": "daee59305c052cb567354c7ffea54374077fe4408edc090662e72a98146f62bf"
+        },
+        {
+          "path": "app.mjs",
+          "kind": "file",
+          "bytes": 1863,
+          "sha256": "c86e46c626a523f367ab203fcaa92d35c603aa61f1a8caf23b1340e6e0f4a381"
+        },
+        {
+          "path": "fonts.css",
+          "kind": "file",
+          "bytes": 793,
+          "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 2847,
+          "sha256": "b6d679f167fb8aa29e6be0baf63854a41d204d68e3307872e282842082d12513"
+        },
+        {
+          "path": "metrics.mjs",
+          "kind": "file",
+          "bytes": 479,
+          "sha256": "743c94649c46b285653f3535ff5460972f52897776adef132cd4ffebbcfd9f82"
+        },
+        {
+          "path": "notices",
+          "kind": "directory"
+        },
+        {
+          "path": "notices/Noto-Serif-OFL.txt",
+          "kind": "file",
+          "bytes": 4396,
+          "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+        },
+        {
+          "path": "notices/Roboto-OFL.txt",
+          "kind": "file",
+          "bytes": 4394,
+          "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+        },
+        {
+          "path": "provider.css",
+          "kind": "file",
+          "bytes": 13637,
+          "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+        }
+      ],
+      "digest": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897"
+    },
+    "after": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 107,
+          "sha256": "a2a12eddc7c19aaac28f3a941b107bce2b6be3bee24612b2f49eb55585f544db"
+        },
+        {
+          "path": "README.md",
+          "kind": "file",
+          "bytes": 1875,
+          "sha256": "daee59305c052cb567354c7ffea54374077fe4408edc090662e72a98146f62bf"
+        },
+        {
+          "path": "app.mjs",
+          "kind": "file",
+          "bytes": 1863,
+          "sha256": "c86e46c626a523f367ab203fcaa92d35c603aa61f1a8caf23b1340e6e0f4a381"
+        },
+        {
+          "path": "fonts.css",
+          "kind": "file",
+          "bytes": 793,
+          "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 2847,
+          "sha256": "b6d679f167fb8aa29e6be0baf63854a41d204d68e3307872e282842082d12513"
+        },
+        {
+          "path": "metrics.mjs",
+          "kind": "file",
+          "bytes": 479,
+          "sha256": "743c94649c46b285653f3535ff5460972f52897776adef132cd4ffebbcfd9f82"
+        },
+        {
+          "path": "notices",
+          "kind": "directory"
+        },
+        {
+          "path": "notices/Noto-Serif-OFL.txt",
+          "kind": "file",
+          "bytes": 4396,
+          "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+        },
+        {
+          "path": "notices/Roboto-OFL.txt",
+          "kind": "file",
+          "bytes": 4394,
+          "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+        },
+        {
+          "path": "provider.css",
+          "kind": "file",
+          "bytes": 13637,
+          "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+        }
+      ],
+      "digest": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897"
+    },
+    "preservation": {
+      "preserved": true,
+      "before": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897",
+      "after": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897",
+      "changes": []
+    }
+  },
+  "offlineSource": {
+    "before": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 107,
+          "sha256": "a2a12eddc7c19aaac28f3a941b107bce2b6be3bee24612b2f49eb55585f544db"
+        },
+        {
+          "path": "README.md",
+          "kind": "file",
+          "bytes": 1875,
+          "sha256": "daee59305c052cb567354c7ffea54374077fe4408edc090662e72a98146f62bf"
+        },
+        {
+          "path": "app.mjs",
+          "kind": "file",
+          "bytes": 1863,
+          "sha256": "c86e46c626a523f367ab203fcaa92d35c603aa61f1a8caf23b1340e6e0f4a381"
+        },
+        {
+          "path": "fonts.css",
+          "kind": "file",
+          "bytes": 793,
+          "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 2847,
+          "sha256": "b6d679f167fb8aa29e6be0baf63854a41d204d68e3307872e282842082d12513"
+        },
+        {
+          "path": "metrics.mjs",
+          "kind": "file",
+          "bytes": 479,
+          "sha256": "743c94649c46b285653f3535ff5460972f52897776adef132cd4ffebbcfd9f82"
+        },
+        {
+          "path": "notices",
+          "kind": "directory"
+        },
+        {
+          "path": "notices/Noto-Serif-OFL.txt",
+          "kind": "file",
+          "bytes": 4396,
+          "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+        },
+        {
+          "path": "notices/Roboto-OFL.txt",
+          "kind": "file",
+          "bytes": 4394,
+          "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+        },
+        {
+          "path": "provider.css",
+          "kind": "file",
+          "bytes": 13637,
+          "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+        }
+      ],
+      "digest": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897"
+    },
+    "after": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 107,
+          "sha256": "a2a12eddc7c19aaac28f3a941b107bce2b6be3bee24612b2f49eb55585f544db"
+        },
+        {
+          "path": "README.md",
+          "kind": "file",
+          "bytes": 1875,
+          "sha256": "daee59305c052cb567354c7ffea54374077fe4408edc090662e72a98146f62bf"
+        },
+        {
+          "path": "app.mjs",
+          "kind": "file",
+          "bytes": 1863,
+          "sha256": "c86e46c626a523f367ab203fcaa92d35c603aa61f1a8caf23b1340e6e0f4a381"
+        },
+        {
+          "path": "fonts.css",
+          "kind": "file",
+          "bytes": 793,
+          "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+        },
+        {
+          "path": "index.html",
+          "kind": "file",
+          "bytes": 2847,
+          "sha256": "b6d679f167fb8aa29e6be0baf63854a41d204d68e3307872e282842082d12513"
+        },
+        {
+          "path": "metrics.mjs",
+          "kind": "file",
+          "bytes": 479,
+          "sha256": "743c94649c46b285653f3535ff5460972f52897776adef132cd4ffebbcfd9f82"
+        },
+        {
+          "path": "notices",
+          "kind": "directory"
+        },
+        {
+          "path": "notices/Noto-Serif-OFL.txt",
+          "kind": "file",
+          "bytes": 4396,
+          "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+        },
+        {
+          "path": "notices/Roboto-OFL.txt",
+          "kind": "file",
+          "bytes": 4394,
+          "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+        },
+        {
+          "path": "provider.css",
+          "kind": "file",
+          "bytes": 13637,
+          "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+        }
+      ],
+      "digest": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897"
+    },
+    "preservation": {
+      "preserved": true,
+      "before": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897",
+      "after": "8bb64bf14fec76a505a06a559323fe4fd90dfe072f2d78b09dda8960761d9897",
+      "changes": []
+    }
+  },
+  "html": {
+    "interpretation": "interim-runtime-html-css",
+    "parsers": {
+      "html": "parse5@8.0.1",
+      "css": "css-tree@3.2.1"
+    },
+    "originalModuleSrc": "./app.mjs",
+    "moduleEntry": "app.mjs",
+    "rewrite": "Generated module src and static stylesheet/font URLs are localized; source files are untouched.",
+    "grammar": "Opt-in CSS/font localization extends the interim HTML grammar with ordinary stylesheet links, imported CSS and preserved @font-face rules; native font semantics require a separate capability gate.",
+    "source": {
+      "path": "index.html",
+      "bytes": 2847,
+      "sha256": "b6d679f167fb8aa29e6be0baf63854a41d204d68e3307872e282842082d12513"
+    },
+    "generated": {
+      "path": "app/index.html",
+      "bytes": 2914,
+      "sha256": "d9d634dfc1c48728043f486f10b97429b4a585282604fc011e8a566e214ff170"
+    }
+  },
+  "webFonts": {
+    "capability": "dom-package-fonts-v1",
+    "stateDir": "/Users/sean/dev/3JSN/artifacts/web-font-package-02/font-state",
+    "offline": false,
+    "sourceInputs": [
+      {
+        "path": "fonts.css",
+        "bytes": 793,
+        "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+      },
+      {
+        "path": "provider.css",
+        "bytes": 13637,
+        "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+      }
+    ],
+    "provenance": [
+      {
+        "kind": "stylesheet",
+        "local": {
+          "path": "fonts.css",
+          "bytes": 793,
+          "sha256": "0124e2906a500c1185efbbeff4f62a2272e66f6c3092eb3a4af83ee7a45521c1"
+        }
+      },
+      {
+        "kind": "stylesheet",
+        "local": {
+          "path": "provider.css",
+          "bytes": 13637,
+          "sha256": "8ed6a271a995f060284c5ec6b23efa523d6f72aafc2e69438517e0a4276d4236"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 30452,
+          "sha256": "bb4982fa7f34b1814c5c1addcc64831a5c2657b4905fcb77a5d1914c36ebb602"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 9928,
+          "sha256": "cc967469ff60e3386f8fc664b1df34ada138cfaac8ad4ae549b4849df687f27e"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 5596,
+          "sha256": "585d109a9951bf6a99b13386fe90dc4e19a0ad38c210bad0cd22140e238842d2"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 10112,
+          "sha256": "8d51258200de4d85d209eac6f0cd6798ec251b7be4672e8a2e6e7f6f07dc8460"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 29128,
+          "sha256": "beb4eb845df30631a69e29a0c46763583fe335322852e9506396dd69cd13126e"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 5736,
+          "sha256": "4b59ce2a13d696b34950c628aea26585b870169c78719f3d6fb6ad5dce00e4df"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 66588,
+          "sha256": "4851e60df7e67b489609516bdc9f53d3ed8b6090c3e16e149350a88f172a574e"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 15664,
+          "sha256": "a7386f772de25b62a3a449fa5d9f3e09916b65cf6a6dfc52f5a103c276fee157"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 25392,
+          "sha256": "0755b43b6a12ecbc955540aabe0e2753093eb744b6e0dbbab50c7a133bc5519b"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 7800,
+          "sha256": "8deaf453448fb06f5cdd79262bc0a22a8af999541ef2639202f6dc44d0cae392"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 5500,
+          "sha256": "82791822ba505972b0be62837a4875a07547859f0f66189572372c05614fda66"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 9368,
+          "sha256": "4f87b0a2fc2f0a9ce734414bb54edb9bb3e9f0143c4d17e3879881adf8058cfa"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 27188,
+          "sha256": "4c33efa73f0b53a28a48dae9034f12f32a23669e935f426ee8202936b3ef5680"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 5240,
+          "sha256": "207dac0723db2e3832fb864c23a416dd953df68b27289acaec79ed94cd37b7ee"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 60236,
+          "sha256": "536857e8de0e3b12176fefbf1233a294c7dece1f2f4d018d26cb386a8de75cd0"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 14400,
+          "sha256": "4c0cbe3eec50d260754d681c17ee2af49a43d7fd93ce42877f665fcb1a889b87"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 36652,
+          "sha256": "01f94d674db55952c35898fa4da22c3e7065c3cc4dbbcc9cb7beb8b6b017fbc9"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 23664,
+          "sha256": "481dd0c01e6bbb129fd147eb5d8571016193cba141c4627ca60ceabdb5a46ea8"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 4348,
+          "sha256": "ec7769b089813996276482bbe7017adfffdd6c7543fd1f76244e2ffc1138ed86"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 17624,
+          "sha256": "97fbf7bd0b4579e632392a4f483acdae73cbf59ad90c1e5d2c5ec4044c377fce"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 41348,
+          "sha256": "7cb4281a0ccc84cc18617842c639fc66541cbef94a9dd245c754700210b4fcec"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 20556,
+          "sha256": "2addf2d86d7a5778653b36d551e97a39da52855f82fac7461cfc1bd86d460aed"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 14340,
+          "sha256": "0b60bbe04e9c479444b31270a72179f53e400beee57b7dd176c08e5e2e716831"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 29392,
+          "sha256": "cedb374b05a35034cf96db185db4eeb8f8ce49e1a56197673702ff11b5533d6e"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 43136,
+          "sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 43136,
+          "sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 43136,
+          "sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc"
+        }
+      },
+      {
+        "kind": "font",
+        "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+        "requestHeaders": {
+          "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "accept-language": "*"
+        },
+        "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+        "redirects": [],
+        "response": {
+          "contentType": "font/woff2",
+          "bytes": 14400,
+          "sha256": "4c0cbe3eec50d260754d681c17ee2af49a43d7fd93ce42877f665fcb1a889b87"
+        }
+      }
+    ],
+    "requirements": [
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+1F00-1FFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "italic"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+1F00-1FFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Noto Serif\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+1F00-1FFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/provider.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "font-stretch",
+            "value": "100%"
+          },
+          {
+            "name": "font-display",
+            "value": "swap"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/fonts.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Restricted Roboto\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "100 900"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0041"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/fonts.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Ordered Face\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0000-00FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      },
+      {
+        "stylesheet": "file:///Users/sean/dev/3JSN/artifacts/web-font-package-02/input/fonts.css",
+        "descriptors": [
+          {
+            "name": "font-family",
+            "value": "\"Ordered Face\""
+          },
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "400"
+          },
+          {
+            "name": "src",
+            "value": "url(https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2)format(\"woff2\")"
+          },
+          {
+            "name": "unicode-range",
+            "value": "U+0000-00FF"
+          }
+        ],
+        "conditions": [],
+        "sources": [
+          {
+            "type": "url",
+            "value": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+            "format": [
+              "woff2"
+            ]
+          }
+        ]
+      }
+    ],
+    "lock": {
+      "schemaVersion": 1,
+      "entries": [
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTu8cKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 27188,
+            "sha256": "4c33efa73f0b53a28a48dae9034f12f32a23669e935f426ee8202936b3ef5680"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTw8cKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 7800,
+            "sha256": "8deaf453448fb06f5cdd79262bc0a22a8af999541ef2639202f6dc44d0cae392"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 14400,
+            "sha256": "4c0cbe3eec50d260754d681c17ee2af49a43d7fd93ce42877f665fcb1a889b87"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTxMcKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 9368,
+            "sha256": "4f87b0a2fc2f0a9ce734414bb54edb9bb3e9f0143c4d17e3879881adf8058cfa"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTy8cKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 5500,
+            "sha256": "82791822ba505972b0be62837a4875a07547859f0f66189572372c05614fda66"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyccKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 60236,
+            "sha256": "536857e8de0e3b12176fefbf1233a294c7dece1f2f4d018d26cb386a8de75cd0"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyMcKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 5240,
+            "sha256": "207dac0723db2e3832fb864c23a416dd953df68b27289acaec79ed94cd37b7ee"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTyscKtq8.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 25392,
+            "sha256": "0755b43b6a12ecbc955540aabe0e2753093eb744b6e0dbbab50c7a133bc5519b"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cErqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 5596,
+            "sha256": "585d109a9951bf6a99b13386fe90dc4e19a0ad38c210bad0cd22140e238842d2"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cFrqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 30452,
+            "sha256": "bb4982fa7f34b1814c5c1addcc64831a5c2657b4905fcb77a5d1914c36ebb602"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cGrqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 66588,
+            "sha256": "4851e60df7e67b489609516bdc9f53d3ed8b6090c3e16e149350a88f172a574e"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cHrqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 5736,
+            "sha256": "4b59ce2a13d696b34950c628aea26585b870169c78719f3d6fb6ad5dce00e4df"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cIrqs.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 15664,
+            "sha256": "a7386f772de25b62a3a449fa5d9f3e09916b65cf6a6dfc52f5a103c276fee157"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cLrqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 10112,
+            "sha256": "8d51258200de4d85d209eac6f0cd6798ec251b7be4672e8a2e6e7f6f07dc8460"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_cMrqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 9928,
+            "sha256": "cc967469ff60e3386f8fc664b1df34ada138cfaac8ad4ae549b4849df687f27e"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/notoserif/v33/ga6saw1J5X9T9RW6j9bNfFIMZhhWnFTyNZIQD1-_FXP0RgnaOg9MYBNLg_d0rqvyzw.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 29128,
+            "sha256": "beb4eb845df30631a69e29a0c46763583fe335322852e9506396dd69cd13126e"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3-UBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 17624,
+            "sha256": "97fbf7bd0b4579e632392a4f483acdae73cbf59ad90c1e5d2c5ec4044c377fce"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3CUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 4348,
+            "sha256": "ec7769b089813996276482bbe7017adfffdd6c7543fd1f76244e2ffc1138ed86"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 36652,
+            "sha256": "01f94d674db55952c35898fa4da22c3e7065c3cc4dbbcc9cb7beb8b6b017fbc9"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3iUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 23664,
+            "sha256": "481dd0c01e6bbb129fd147eb5d8571016193cba141c4627ca60ceabdb5a46ea8"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3KUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 29392,
+            "sha256": "cedb374b05a35034cf96db185db4eeb8f8ce49e1a56197673702ff11b5533d6e"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3OUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 14340,
+            "sha256": "0b60bbe04e9c479444b31270a72179f53e400beee57b7dd176c08e5e2e716831"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 43136,
+            "sha256": "1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMawCUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 41348,
+            "sha256": "7cb4281a0ccc84cc18617842c639fc66541cbef94a9dd245c754700210b4fcec"
+          }
+        },
+        {
+          "kind": "font",
+          "requestUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+          "requestHeaders": {
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 3JSN-font-bundler/1",
+            "accept": "*/*",
+            "accept-encoding": "identity",
+            "accept-language": "*"
+          },
+          "finalUrl": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2",
+          "redirects": [],
+          "response": {
+            "contentType": "font/woff2",
+            "bytes": 20556,
+            "sha256": "2addf2d86d7a5778653b36d551e97a39da52855f82fac7461cfc1bd86d460aed"
+          }
+        }
+      ]
+    }
+  },
+  "manifest": {
+    "bytes": 10276,
+    "sha256": "c63fa2e3b6a07ece0964f1d05ceaea472d6155de3d312b7e625da38be4e012ae"
+  },
+  "runtime": {
+    "executable": "3jsn-type-lab",
+    "bytes": 188652056,
+    "sha256": "cd25d269249e3de1e50e568649520ec05e4b17fe058171d52a8198f59ec3c825",
+    "description": {
+      "schemaVersion": 1,
+      "playerVersion": "0.0.0",
+      "packageVersions": [
+        1
+      ],
+      "profiles": [
+        "dom-window-v1"
+      ],
+      "capabilities": [
+        "dom-package-fonts-v1"
+      ],
+      "target": "macos-arm64",
+      "backend": "metal",
+      "v8": "15.0.245.2-rusty"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.48s
+     Running unittests src/lib.rs (target/debug/deps/blitz_dom-d4904abc009202a1)
+
+running 65 tests
+test document::font_face_override_tests::font_face_overrides_alias_family_name ... ok
+test document::hover_state_tests::hovering_text_in_anonymous_block_reports_text_cursor ... ok
+test layout::list::tests::test_marker_for_decimal ... ok
+test layout::list::tests::test_marker_for_disc ... ok
+test document::hover_invalidation_tests::hover_styles_apply_and_clear ... FAILED
+test layout::list::tests::test_marker_for_lower_alpha ... ok
+test layout::list::tests::test_marker_for_upper_alpha ... ok
+test document::hover_invalidation_tests::hover_updates_existing_pseudo_element_style ... ok
+test document::hover_invalidation_tests::checkbox_toggle_updates_checked_styles ... ok
+test document::hover_invalidation_tests::ancestor_hover_with_link_state_updates_descendant ... ok
+test document::zoom_tests::zoom_requests_redraw ... ok
+test document::hover_state_tests::hovering_anonymous_block_whitespace_reports_default_cursor ... ok
+test mutator::test::media_type_honors_config ... ok
+test mutator::test::media_type_defaults_to_screen ... ok
+test mutator::test::moving_subtree_out_of_document_clears_in_document_flag ... ok
+test document::hover_invalidation_tests::hover_updates_background_image_layers ... ok
+test mutator::test::get_element_by_id_duplicate_ids_first_in_tree_order_wins ... ok
+test mutator::test::mutator_requests_redraw_only_after_mutation ... ok
+test mutator::test::mutator_remove_disabled ... ok
+test mutator::test::mutator_id_attribute_updates_id_map ... ok
+test net::tests::italic_maps_to_italic ... ok
+test net::tests::oblique_range_uses_min_angle ... ok
+test net::tests::oblique_single_angle_maps_to_oblique_with_min ... ok
+test net::tests::oblique_zero_zero_maps_to_normal ... ok
+test node::element::tests::scroll_by_clamps_and_bubbles ... FAILED
+test mutator::test::set_media_type_updates_stylist_device ... ok
+test mutator::test::mutator_set_disabled ... ok
+test node::element::tests::multiline_scrolls_vertically_not_horizontally ... ok
+test mutator::test::mutator_set_disabled_invalid_node ... ok
+test node::element::tests::short_text_does_not_scroll ... ok
+test node::element::tests::single_line_does_not_scroll_when_text_fits ... ok
+test node::element::tests::single_line_scrolls_to_follow_caret ... ok
+test node::scrollbar::tests::opacity_holds_through_the_fade_delay_then_fades_out ... ok
+test stylo::assert_size_of_equals ... ok
+test stylo::parse_inline ... ok
+test stylo_to_parley::tests::caps_small_caps ... ok
+test stylo_to_parley::tests::east_asian_features ... ok
+test stylo_to_parley::tests::feature_settings_map_directly ... ok
+test stylo_to_parley::tests::ligatures_mixed_toggles ... ok
+test stylo_to_parley::tests::feature_settings_override_variant_features ... ok
+test stylo_to_parley::tests::ligatures_none_disables_all ... ok
+test stylo_to_parley::tests::ligatures_normal_emits_nothing ... ok
+test stylo_to_parley::tests::numeric_features ... ok
+test stylo_to_parley::tests::position_sub_and_super ... ok
+test mutator::test::style_property_updates_nested_layout ... ok
+test node::node::test::create_node_with_ignored_disable ... ok
+test node::node::test::create_empty_enabled_node ... ok
+test node::node::test::ignore_disabled_attr_content ... ok
+test node::node::test::create_node_with_disabled_attr ... ok
+test mutator::test::style_property_mutation_copies_blocks_in_rule_tree ... ok
+test web_fonts::tests::completed_imports_use_css_order_instead_of_response_order ... ok
+test web_fonts::tests::connected_stylesheet_order_changes_are_rejected ... ok
+test web_fonts::tests::cssom_text_style_changes_work_but_face_mutation_is_rejected ... ok
+test web_fonts::tests::deferred_loading_registers_css_alias_and_drains_exactly_once ... ok
+test web_fonts::tests::queued_decoded_bytes_are_bounded_before_document_registration ... ok
+test web_fonts::tests::format_hints_must_match_actual_font_bytes ... ok
+test web_fonts::tests::descriptors_keep_unicode_weight_width_and_oblique_intervals ... ok
+test web_fonts::tests::explicit_hundred_percent_stretch_matches_omitted_normal ... ok
+test web_fonts::tests::decode_and_registration_failures_are_distinct_and_sticky ... ok
+test web_fonts::tests::detaching_a_stylesheet_ancestor_is_a_font_set_mutation ... ok
+test web_fonts::tests::default_mode_keeps_eager_top_level_and_imported_font_loading ... ok
+test web_fonts::tests::woff_directory_bound_does_not_trust_total_sfnt_size ... ok
+test web_fonts::tests::stable_checks_and_unrelated_style_changes_do_not_walk_font_owners ... ok
+test web_fonts::tests::moving_or_reparenting_a_stylesheet_ancestor_invalidates_face_order ... ok
+test web_fonts::tests::unsupported_faces_fail_before_any_font_request ... ok
+
+failures:
+
+---- document::hover_invalidation_tests::hover_styles_apply_and_clear stdout ----
+
+thread 'document::hover_invalidation_tests::hover_styles_apply_and_clear' (5281382) panicked at /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom/src/document.rs:3013:9:
+assertion failed: doc.nodes[div].is_hovered()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- node::element::tests::scroll_by_clamps_and_bubbles stdout ----
+
+thread 'node::element::tests::scroll_by_clamps_and_bubbles' (5281409) panicked at /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom/src/node/element.rs:1062:9:
+test text should overflow the content box
+
+
+failures:
+    document::hover_invalidation_tests::hover_styles_apply_and_clear
+    node::element::tests::scroll_by_clamps_and_bubbles
+
+test result: FAILED. 63 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p blitz-dom --lib`

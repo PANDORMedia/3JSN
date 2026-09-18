@@ -1,0 +1,201 @@
+{
+  "kind": "experimental-dom-package-relocation",
+  "profile": "dom-window-v1",
+  "target": "macos-arm64",
+  "inputs": [
+    {
+      "path": "scripts/probe-dom-package.mjs",
+      "sha256": "20ffd96b5e166fe3fedbbccc2dfd4a7a237984ca2408a1b623fdf5300ce8a269"
+    },
+    {
+      "path": "packages/cli/build.mjs",
+      "sha256": "cf393367dbd798c6aaebdb6f7efd6d402fb32196d3b1d58a923bf52ae6ca9be5"
+    },
+    {
+      "path": "packages/cli/html.mjs",
+      "sha256": "f3b17c7924d0993afa1098c95053a4e6ab123682174daf0615c71430fad0759a"
+    },
+    {
+      "path": "packages/cli/contract.mjs",
+      "sha256": "91910e7ae2ff9a8ded9e09e17fce0afe74680bb01120ec56f5cd0e78aa439931"
+    },
+    {
+      "path": "packages/cli/cli.mjs",
+      "sha256": "b2b75371ad17ee5c867f45642bc31879c5e2f4bd6010c7f2c134db1fdfe4e1d3"
+    },
+    {
+      "path": "scripts/compatibility/snapshot.mjs",
+      "sha256": "cf30c3724b174cdfa018f7f33dff73ac087faa3f100d43c36541ac7926ee3637"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "5fbaec7116a1351d2bd4437d33d0d98a02b94912d023dd83ccbbdfb65cef03e7"
+    },
+    {
+      "path": "examples/3jsn.json",
+      "sha256": "1611310fc7bf1cf1b0233bf9f5c84769203884cf70ab03f0d1eec2af7e356969"
+    },
+    {
+      "path": "examples/dom-window/index.html",
+      "sha256": "3646ba63c941ce8f9eac378b622f3d961a5eac7262e2353e8f44bc69d522d8be"
+    },
+    {
+      "path": "examples/dom-window/app.mjs",
+      "sha256": "9f200c317d9486a63bf2889161a8384a9d6fcff9d4fd73afafde7c5212b756c3"
+    },
+    {
+      "path": "examples/spinning-scene/scene.mjs",
+      "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+    }
+  ],
+  "removedDisposableBuildInput": true,
+  "removedSuppliedFont": true,
+  "nodeOnRestrictedPath": false,
+  "deniedBuildTimeSourceDirectories": [
+    "/Users/sean/dev/3JSN/.cache",
+    "/Users/sean/dev/3JSN/node_modules",
+    "/Users/sean/dev/3JSN/crates",
+    "/Users/sean/dev/3JSN/experiments",
+    "/Users/sean/dev/3JSN/examples"
+  ],
+  "nativeNetworkDenied": true,
+  "deniedReadControls": [
+    ".cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+    "node_modules/three/package.json",
+    "crates/runtime/src/lib.rs",
+    "experiments/dom-canvas/src/window_probe.rs",
+    "examples/dom-window/index.html"
+  ],
+  "unrelatedWorkingDirectory": true,
+  "relocatedDirectoryContainsUnicodeAndSpaces": true,
+  "sourcePreservedDuringBuild": true,
+  "runtime": {
+    "executable": "3jsn-dom-demo",
+    "bytes": 188652056,
+    "sha256": "cd25d269249e3de1e50e568649520ec05e4b17fe058171d52a8198f59ec3c825",
+    "description": {
+      "schemaVersion": 1,
+      "playerVersion": "0.0.0",
+      "packageVersions": [
+        1
+      ],
+      "profiles": [
+        "dom-window-v1"
+      ],
+      "capabilities": [
+        "dom-package-fonts-v1"
+      ],
+      "target": "macos-arm64",
+      "backend": "metal",
+      "v8": "15.0.245.2-rusty"
+    }
+  },
+  "html": {
+    "interpretation": "interim-runtime-html-css",
+    "parsers": {
+      "html": "parse5@8.0.1",
+      "css": "css-tree@3.2.1"
+    },
+    "originalModuleSrc": "./app.mjs",
+    "moduleEntry": "dom-window/app.mjs",
+    "rewrite": "Only the module src attribute is replaced in generated HTML.",
+    "grammar": "HTML5 no-quirks UTF-8 without BOM; ordinary text/structural elements, one unique #scene canvas and one local external module; plain inline CSS with no at-rules, URLs, escapes, parse recovery or unlisted functions. No templates, noscript, foreign content, navigation, inline handlers or static resources.",
+    "source": {
+      "path": "dom-window/index.html",
+      "bytes": 1698,
+      "sha256": "3646ba63c941ce8f9eac378b622f3d961a5eac7262e2353e8f44bc69d522d8be"
+    },
+    "generated": {
+      "path": "app/index.html",
+      "bytes": 1699,
+      "sha256": "d2542dabc27c3c2556f34717a77c6a4669f0370c309bc7e8387e8432650ce76d"
+    }
+  },
+  "font": {
+    "sourceName": "build-font.woff2",
+    "packagedPath": "app/font.woff2",
+    "before": {
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "copied": {
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "after": {
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "preserved": true
+  },
+  "manifest": {
+    "sha256": "e4611bc5266aa101e451d06395c20eda18a05c637a2dadcb197c410cf8507e47",
+    "bytes": 813
+  },
+  "applicationFiles": [
+    {
+      "path": "app/font.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    {
+      "path": "app/index.html",
+      "bytes": 1699,
+      "sha256": "d2542dabc27c3c2556f34717a77c6a4669f0370c309bc7e8387e8432650ce76d"
+    },
+    {
+      "path": "app/main.mjs",
+      "bytes": 2171651,
+      "sha256": "4c47bdbd2d5260ae6c6b14484197d616624ce66c24ac531e32e1320add66357f"
+    },
+    {
+      "path": "app/main.mjs.map",
+      "bytes": 5204589,
+      "sha256": "d41db5b801a598248fead9d347743e2e45ea2897948bb68f48401b804b56a19a"
+    }
+  ],
+  "completion": {
+    "nativeDomWindow": true,
+    "backend": "Metal",
+    "presentedFrames": 120,
+    "canvasSnapshots": 120,
+    "cpuImageTransport": false,
+    "nativeDeviceIdentityChecked": true,
+    "nativeQueueIdentityChecked": true
+  },
+  "failures": [
+    {
+      "check": "corrupt-html",
+      "exitCode": 1,
+      "stderr": "3JSN DOM player: package file failed integrity verification: app/index.html\n"
+    },
+    {
+      "check": "corrupt-font",
+      "exitCode": 1,
+      "stderr": "3JSN DOM player: package file failed integrity verification: app/font.woff2\n"
+    },
+    {
+      "check": "wrong-profile",
+      "exitCode": 1,
+      "stderr": "3JSN DOM player: package requires native-window-v1, but this player provides dom-window-v1\n"
+    },
+    {
+      "check": "unusable-font",
+      "exitCode": 1,
+      "stderr": "2026-09-18 12:16:58.544 3jsn-dom-demo[5553:5294882] Metal API Validation Enabled\n3JSN DOM player: supplied font did not register a usable font family\n"
+    },
+    {
+      "check": "application-failure",
+      "exitCode": 1,
+      "stderr": "2026-09-18 12:17:01.323 3jsn-dom-demo[5577:5295078] Metal API Validation Enabled\n3JSN DOM player: Error: packaged DOM animation failure\n    at file:///Users/sean/dev/3JSN/artifacts/dom-package-after-fonts/Relocated DOM é #/app/main.mjs:59537:37\n    at Object.dispatch (ext:dom_window/animation.js:25:24)\n    at ext:dom_window/window.js:113:25\n    at ext:dom_window/window.js:103:7\n"
+    }
+  ],
+  "restoredPackageVerified": true,
+  "limitations": [
+    "One development Mac with Metal validation; not a clean-machine or performance certification.",
+    "Interpreted HTML/CSS with live DOM; no build-time UI compiler or parser omission.",
+    "The parent build/probe uses Node; only the native child has a restricted PATH.",
+    "Original repository/cache files remain but native reads are denied for the named directories; system libraries are still available.",
+    "Does not certify new DOM/input semantics, arbitrary projects, other platforms, font coverage or redistribution."
+  ]
+}

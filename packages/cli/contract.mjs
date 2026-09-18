@@ -26,15 +26,22 @@ export const LIMITATIONS = [...COMMON_LIMITATIONS,
   'The native-window-v1 profile provides no HTML/CSS integration, frontend command, custom plugin, inherited tsconfig, or runtime asset-copy workflow.',
 ];
 
-export function limitationsFor(profile) {
+export function limitationsFor(profile, { webFonts = false } = {}) {
   if (profile !== DOM_PROFILE) return LIMITATIONS;
   return [...COMMON_LIMITATIONS,
     'Interim interpreted-HTML profile: the native runtime still parses packaged HTML/CSS and maintains a dynamic DOM; this is not build-time UI compilation.',
     'Only an explicitly supplied current-host macOS Metal dom-window-v1 player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.',
-    'Static HTML and CSS resource references, foreign content, templates, classic/inline scripts and browser navigation are rejected; accepted syntax does not establish rendering or DOM API support.',
+    webFonts
+      ? 'Opt-in static CSS/font localization preserves rule order and descriptors; native font admission is separate. Other static resources and dynamic asset discovery remain unsupported.'
+      : 'Static HTML and CSS resource references, foreign content, templates, classic/inline scripts and browser navigation are rejected; accepted syntax does not establish rendering or DOM API support.',
     'CSS animation and transition timelines are not advanced by the current DOM painter, even when declarations parse successfully.',
     'No frontend command, custom plugin, inherited tsconfig or general asset-copy workflow is provided. Dynamic HTML, CSS and asset requests from JavaScript remain unresolved.',
     'Font packaging validates the WOFF2 header and content identity, not decoding, licensing or glyph coverage.',
+    ...(webFonts ? [
+      'Localized CSS preserves original comments/notices and remote cache blobs preserve original bytes. Fetching a font does not establish redistribution rights; licensing and required notices remain a manual distribution gate.',
+      'Font assets are copied without glyph subsetting; original provider queries remain unchanged. Native eager local loading does not certify browser font-display timing or FontFaceSet behavior.',
+      'Pinned remote CSS/font bytes are reused without silent refresh. Offline mode fails on missing pins/blobs; forced termination may leave a cache lease that must be cleared after its owner stops.',
+    ] : []),
   ];
 }
 

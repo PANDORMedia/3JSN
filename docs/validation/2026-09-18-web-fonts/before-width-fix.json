@@ -1,0 +1,415 @@
+{
+  "status": "partial",
+  "target": "macos-arm64",
+  "fonts": 25,
+  "offlineRebuildIdentical": true,
+  "nativeNetworkDenied": true,
+  "developmentSourceAndFontCacheReadsDenied": true,
+  "completion": {
+    "nativeDomWindow": true,
+    "backend": "Metal",
+    "presentedFrames": 120,
+    "canvasSnapshots": 120,
+    "cpuImageTransport": false,
+    "nativeDeviceIdentityChecked": true,
+    "nativeQueueIdentityChecked": true
+  },
+  "nativeMetrics": {
+    "initial": {
+      "thin": {
+        "text": "Affinity office café",
+        "width": 191
+      },
+      "middle": {
+        "text": "Affinity office café",
+        "width": 202
+      },
+      "heavy": {
+        "text": "Affinity office café",
+        "width": 210
+      },
+      "serif": {
+        "text": "Affinity office café",
+        "width": 217
+      },
+      "italic": {
+        "text": "Affinity office café",
+        "width": 206
+      },
+      "localized": {
+        "text": "Bonjour, monde",
+        "width": 173.5
+      },
+      "restricted": {
+        "text": "AB",
+        "width": 33
+      },
+      "roboto-a": {
+        "text": "A",
+        "width": 16.5
+      },
+      "serif-b": {
+        "text": "B",
+        "width": 16.5
+      },
+      "ordered": {
+        "text": "AB",
+        "width": 34
+      },
+      "serif-ab": {
+        "text": "AB",
+        "width": 34
+      }
+    },
+    "localized": {
+      "thin": {
+        "text": "Affinity office café",
+        "width": 191
+      },
+      "middle": {
+        "text": "Affinity office café",
+        "width": 202
+      },
+      "heavy": {
+        "text": "Affinity office café",
+        "width": 210
+      },
+      "serif": {
+        "text": "Affinity office café",
+        "width": 217
+      },
+      "italic": {
+        "text": "Affinity office café",
+        "width": 206
+      },
+      "localized": {
+        "text": "Καλημέρα · Привет",
+        "width": 218.5
+      },
+      "restricted": {
+        "text": "AB",
+        "width": 33
+      },
+      "roboto-a": {
+        "text": "A",
+        "width": 16.5
+      },
+      "serif-b": {
+        "text": "B",
+        "width": 16.5
+      },
+      "ordered": {
+        "text": "AB",
+        "width": 34
+      },
+      "serif-ab": {
+        "text": "AB",
+        "width": 34
+      }
+    }
+  },
+  "browser": {
+    "initial": {
+      "thin": {
+        "text": "Affinity office café",
+        "width": 190.796875
+      },
+      "middle": {
+        "text": "Affinity office café",
+        "width": 201.953125
+      },
+      "heavy": {
+        "text": "Affinity office café",
+        "width": 209.65625
+      },
+      "serif": {
+        "text": "Affinity office café",
+        "width": 216.859375
+      },
+      "italic": {
+        "text": "Affinity office café",
+        "width": 205.9375
+      },
+      "localized": {
+        "text": "Bonjour, monde",
+        "width": 173.109375
+      },
+      "restricted": {
+        "text": "AB",
+        "width": 32.671875
+      },
+      "roboto-a": {
+        "text": "A",
+        "width": 16.3125
+      },
+      "serif-b": {
+        "text": "B",
+        "width": 16.359375
+      },
+      "ordered": {
+        "text": "AB",
+        "width": 33.984375
+      },
+      "serif-ab": {
+        "text": "AB",
+        "width": 33.984375
+      }
+    },
+    "localized": {
+      "thin": {
+        "text": "Affinity office café",
+        "width": 190.796875
+      },
+      "middle": {
+        "text": "Affinity office café",
+        "width": 201.953125
+      },
+      "heavy": {
+        "text": "Affinity office café",
+        "width": 209.65625
+      },
+      "serif": {
+        "text": "Affinity office café",
+        "width": 216.859375
+      },
+      "italic": {
+        "text": "Affinity office café",
+        "width": 205.9375
+      },
+      "localized": {
+        "text": "Καλημέρα · Привет",
+        "width": 218.359375
+      },
+      "restricted": {
+        "text": "AB",
+        "width": 32.671875
+      },
+      "roboto-a": {
+        "text": "A",
+        "width": 16.3125
+      },
+      "serif-b": {
+        "text": "B",
+        "width": 16.359375
+      },
+      "ordered": {
+        "text": "AB",
+        "width": 33.984375
+      },
+      "serif-ab": {
+        "text": "AB",
+        "width": 33.984375
+      }
+    },
+    "fontFaces": 28,
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.50",
+      "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    }
+  },
+  "comparisons": [
+    {
+      "phase": "initial",
+      "id": "thin",
+      "expected": 190.796875,
+      "actual": 191,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "middle",
+      "expected": 201.953125,
+      "actual": 202,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "heavy",
+      "expected": 209.65625,
+      "actual": 210,
+      "passed": false
+    },
+    {
+      "phase": "initial",
+      "id": "serif",
+      "expected": 216.859375,
+      "actual": 217,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "italic",
+      "expected": 205.9375,
+      "actual": 206,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "localized",
+      "expected": 173.109375,
+      "actual": 173.5,
+      "passed": false
+    },
+    {
+      "phase": "initial",
+      "id": "restricted",
+      "expected": 32.671875,
+      "actual": 33,
+      "passed": false
+    },
+    {
+      "phase": "initial",
+      "id": "roboto-a",
+      "expected": 16.3125,
+      "actual": 16.5,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "serif-b",
+      "expected": 16.359375,
+      "actual": 16.5,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "ordered",
+      "expected": 33.984375,
+      "actual": 34,
+      "passed": true
+    },
+    {
+      "phase": "initial",
+      "id": "serif-ab",
+      "expected": 33.984375,
+      "actual": 34,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "thin",
+      "expected": 190.796875,
+      "actual": 191,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "middle",
+      "expected": 201.953125,
+      "actual": 202,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "heavy",
+      "expected": 209.65625,
+      "actual": 210,
+      "passed": false
+    },
+    {
+      "phase": "localized",
+      "id": "serif",
+      "expected": 216.859375,
+      "actual": 217,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "italic",
+      "expected": 205.9375,
+      "actual": 206,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "localized",
+      "expected": 218.359375,
+      "actual": 218.5,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "restricted",
+      "expected": 32.671875,
+      "actual": 33,
+      "passed": false
+    },
+    {
+      "phase": "localized",
+      "id": "roboto-a",
+      "expected": 16.3125,
+      "actual": 16.5,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "serif-b",
+      "expected": 16.359375,
+      "actual": 16.5,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "ordered",
+      "expected": 33.984375,
+      "actual": 34,
+      "passed": true
+    },
+    {
+      "phase": "localized",
+      "id": "serif-ab",
+      "expected": 33.984375,
+      "actual": 34,
+      "passed": true
+    }
+  ],
+  "selectionChecks": {
+    "familiesDiffer": true,
+    "weightsDiffer": true,
+    "unicodeRestriction": true,
+    "laterFaceWins": true
+  },
+  "integrityFailures": [
+    {
+      "kind": "stylesheet",
+      "rejected": true
+    },
+    {
+      "kind": "font",
+      "rejected": true
+    }
+  ],
+  "notices": [
+    {
+      "path": "metadata/font-notices/Roboto-OFL.txt",
+      "bytes": 4394,
+      "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "path": "metadata/font-notices/Noto-Serif-OFL.txt",
+      "bytes": 4396,
+      "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+    }
+  ],
+  "browserServedResources": [
+    "/app/styles/c654de930e7849d001484c779fa3f9d132dda8dbb2b56d4e477f1ed8cab2117c.css",
+    "/app/styles/0a2487e47b111c6666a70f09db4cc0940391cda00dd8e8de5e6aedc4d82b9b32.css",
+    "/app/fonts/1404ca348bd75ef836f4dd8b6f2cc719458642d1237c368296b2fc652dca47dc.woff2",
+    "/app/fonts/4c0cbe3eec50d260754d681c17ee2af49a43d7fd93ce42877f665fcb1a889b87.woff2",
+    "/app/fonts/a7386f772de25b62a3a449fa5d9f3e09916b65cf6a6dfc52f5a103c276fee157.woff2",
+    "/app/fonts/481dd0c01e6bbb129fd147eb5d8571016193cba141c4627ca60ceabdb5a46ea8.woff2",
+    "/app/fonts/97fbf7bd0b4579e632392a4f483acdae73cbf59ad90c1e5d2c5ec4044c377fce.woff2",
+    "/app/fonts/7cb4281a0ccc84cc18617842c639fc66541cbef94a9dd245c754700210b4fcec.woff2"
+  ],
+  "playerSha256": "d7dccad6a46b297aba2c92f26058f3d94ad56e4481a1a4131513953636eb1db1",
+  "manifestSha256": "c63fa2e3b6a07ece0964f1d05ceaea472d6155de3d312b7e625da38be4e012ae",
+  "measurementScriptSha256": "743c94649c46b285653f3535ff5460972f52897776adef132cd4ffebbcfd9f82",
+  "limits": [
+    "Experimental macOS Metal profile; no cross-platform certification or performance measurement.",
+    "Browser reference exercises the same generated HTML/CSS/fonts with a shared DOM measurement script; Three.js is separately exercised by the native window run.",
+    "Width checks establish tested face selection and layout; they do not certify all shaping, rasterization or font APIs."
+  ]
+}

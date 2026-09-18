@@ -85,6 +85,8 @@ external module. It rejects inline/classic scripts, templates, noscript, foreign
 content/XML, canvas fallback content, static resource/navigation elements,
 inline handlers and unsupported attributes. Plain inline CSS is accepted;
 at-rules, resource URLs, escapes, parse recovery and unlisted functions reject.
+The opt-in [webfont extension](web-fonts.md) additionally admits linked/imported
+CSS and a checked subset of static `@font-face` rules.
 The recorded grammar and exact generated/source hashes appear in build metadata.
 
 The fixed canvas ID and restricted document grammar belong to this experimental
@@ -96,8 +98,10 @@ The current painter does not advance CSS animation/transition timelines.
 `--font` is required for this profile and rejected for `native-window-v1`. The
 builder checks a regular WOFF2 input, its header/declared length and source/copy
 identities. The native worker rejects a font that registers no usable family.
-That single font supplies the generic-family fallback; this does not implement
-font-face loading, complete glyph coverage or font licensing. The example font
+That single font supplies the generic-family fallback. Separately,
+`--bundle-web-fonts` packages declared CSS faces and preserves their own families
+and supported matching descriptors. Neither option proves complete glyph
+coverage or determines font licensing. The example fallback font
 comes from the pinned upstream checkout; include applicable notices before any
 binary distribution.
 
@@ -145,9 +149,12 @@ Native-window manifests reject those fields. Both players use the shared
 `--describe`, `--verify-app`, `--app` and adjacent-manifest startup follow the same
 protocol. `--verify-app` checks manifest and payload integrity, not HTML behavior
 or font decoding. The old positional DOM-probe invocation remains available.
+Webfont builds also declare the `dom-package-fonts-v1` requirement and listed
+font/stylesheet resources; their verified bytes remain owned in memory. See the
+[resource bounds and native contract](web-fonts.md).
 
 These are corruption and configuration checks for trusted local code. The
-manifest is unsigned, execution reopens verified files, and packages must stay
+manifest is unsigned, module execution reopens verified files, and packages must stay
 quiescent. The existing runtime module loader can resolve dynamic file imports;
 this is not a hostile-code sandbox or a guarantee that future reads remain inside
 the package. The build metadata records unresolved dynamic behavior explicitly.
@@ -184,29 +191,20 @@ are part of the package's disclosure surface.
 
 ## Distribution gates
 
-### Planned webfont bundling
+### Opt-in webfont bundling
 
-`--bundle-web-fonts` is a planned opt-in build flag, tracked with font/asset
-loading. It is not accepted by the current CLI. The intended behavior is to
-resolve webfont stylesheets and `@font-face` sources at build time, package the
-required font files, and rewrite only generated CSS/HTML references to package
-URLs. Ordinary project sources remain unchanged. This replaces neither the
-native font-face loader nor CSS family/weight/style matching.
+Add `--bundle-web-fonts` to a DOM build to resolve supported static font
+stylesheets and sources, package full font bytes and rewrite generated references.
+The native player loads verified packaged resources and checks face registration
+before initial layout. No font request occurs without the flag. Use `--offline`
+for a rebuild from pinned state and `--web-fonts-state` to select that state.
 
-Preserve declared weights, styles, variable-font ranges, unicode ranges and
-fallback ordering. Do not subset from the initial screen: runtime text and
-localization can need other glyphs. Resolve relative URLs against the stylesheet's
-actual response URL; record redirects, content identities, resource provenance
-and available notices. A reproducible asset lock/cache must pin fetched bytes
-and support offline rebuilds. Download, format or decoding failures must fail
-with the originating stylesheet/declaration, never silently change the typeface.
-
-Validate the result with network access disabled, including multiple families,
-weights, variable fonts, localized/dynamic text and retained fallback behavior.
-Runtime-created font URLs that cannot be resolved during the build remain
-explicit dependencies; the flag must not imply their automatic discovery.
-The existing `--font` option packages one supplied fallback for the interim DOM
-fixture and is not this webfont-bundling feature.
+The [webfont contract](web-fonts.md) documents preserved descriptors, cache
+identities, errors, native capability limits and notices. Conditional or dynamic
+font faces, source fallback and full browser font APIs remain unsupported. The
+flag does not discover arbitrary runtime-generated URLs or infer font
+redistribution rights. The separate `--font` input remains the generic fallback
+for this interim DOM profile.
 
 ### Release artifacts
 

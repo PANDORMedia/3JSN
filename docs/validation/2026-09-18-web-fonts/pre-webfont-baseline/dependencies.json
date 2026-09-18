@@ -1,0 +1,75 @@
+{
+  "versionOrSourceDriftFromPublishedLock": [],
+  "additionalPackages": [
+    "pre-webfont-baseline"
+  ],
+  "keyDependencyFeatures": [
+    {
+      "name": "blitz-dom",
+      "version": "0.3.0-beta.2",
+      "source": null,
+      "features": [
+        "accessibility",
+        "accesskit",
+        "custom-widget",
+        "woff"
+      ]
+    },
+    {
+      "name": "encoding_rs",
+      "version": "0.8.35",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "features": [
+        "alloc",
+        "default"
+      ]
+    },
+    {
+      "name": "fontique",
+      "version": "0.11.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "features": [
+        "std"
+      ]
+    },
+    {
+      "name": "parley",
+      "version": "0.11.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "features": [
+        "std"
+      ]
+    },
+    {
+      "name": "stylo",
+      "version": "0.21.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "features": [
+        "default",
+        "encoding_rs",
+        "mime",
+        "serde",
+        "servo",
+        "string_cache",
+        "stylo_atoms",
+        "url",
+        "web_atoms"
+      ]
+    },
+    {
+      "name": "taffy",
+      "version": "0.14.0",
+      "source": "git+https://github.com/DioxusLabs/taffy?rev=c17b313cd1be5a4def91522cf3ea5995e664ebf7#c17b313cd1be5a4def91522cf3ea5995e664ebf7",
+      "features": [
+        "alloc",
+        "block_layout",
+        "calc",
+        "content_size",
+        "detailed_layout_info",
+        "flexbox",
+        "grid",
+        "std"
+      ]
+    }
+  ]
+}

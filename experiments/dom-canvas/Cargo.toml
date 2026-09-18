@@ -60,6 +60,8 @@ anyrender = "=0.13.0"
 
 [patch.crates-io]
 deno_webgpu = { path = "../../.cache/dom-canvas/deno_webgpu" }
+fontique = { path = "../../.cache/web-fonts/fontique" }
+parley = { path = "../../.cache/web-fonts/parley" }
 
 [patch."https://github.com/DioxusLabs/blitz"]
 blitz-dom = { path = "../../.cache/dom-canvas/blitz/packages/blitz-dom" }

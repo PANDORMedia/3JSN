@@ -35,7 +35,7 @@ executable and never supplies resources to the embedded host. Do not solve versi
 mismatches by passing pointers between these instances. The runtime links the
 wgpu-core version exported by deno_webgpu, avoiding a separately selected device.
 
-No upstream patches or vendored forks are needed for the current integration.
+No upstream patches or vendored forks are needed for the native-window integration.
 Its bootstrap is owned 3JSN code using pinned extension exports. A narrow native
 canvas adapter selects a surface-compatible GPU and owns texture acquisition,
 expiry and transient surface handling. These operations use the same GPU registry
@@ -48,6 +48,13 @@ files can be collected without hard-coded registry paths. This increases build
 cost; it avoids a release executable reading JavaScript from its build machine.
 
 ## Why this amount of reuse
+
+The separate experimental DOM player uses hash-verified patches for canvas/UI
+integration. Its [webfont path](web-fonts.md) adds checked Blitz loading and a
+bounded [Fontique/Parley candidate](../experiments/web-font-matcher/README.md) for
+CSS face ranges, Unicode eligibility and source order. Registry sources remain
+unchanged; these prepared copies are scoped to the experiment. This is not a
+decision to maintain permanent forks or a claim of complete font conformance.
 
 - Reuse Deno's maintained GPU and web bindings instead of implementing WebIDL,
   promises, buffer conversions and GPU object lifetime from scratch. The cost is
@@ -110,3 +117,13 @@ adapter surface, and replay the pinned geometry, paint, error and lifecycle
 corpus on an upgrade. The new renderer patch can be removed when an upstream or
 replacement consumer passes those same controls. Default preparation remains
 separate so this decision is not forced by a research checkpoint.
+
+The default DOM experiment separately prepares Fontique/Parley 0.11.1 and Blitz
+webfont candidates under [#56](https://github.com/PANDORMedia/3JSN/issues/56),
+owned by the CLI/resource and text integration work. Keep these changes isolated
+from the positioned renderer candidate. Replace the font patches when maintained
+upstream APIs pass the 16 matching regressions, checked loader tests and packaged
+provider-font comparison. Remove the separate intrinsic-width repair when an
+upstream layout path passes its five fractional-width/wrapping controls. The
+[webfont checkpoint](validation/2026-09-18-web-fonts.md) records current evidence;
+this patch burden is an adoption decision, not an implicit shipping commitment.

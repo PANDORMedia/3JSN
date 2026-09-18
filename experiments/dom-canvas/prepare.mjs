@@ -5,6 +5,7 @@ import { cp, mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import { prepareBlitz } from './prepare-blitz.mjs';
+import { prepareFonts } from './prepare-fonts.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const cargoHome = resolve(process.env.CARGO_HOME || resolve(homedir(), '.cargo'));
@@ -84,4 +85,5 @@ const deno = {
   patchSha256: hash(await readFile(patchPath)), verifiedPackagedFiles: Object.keys(checksums).length,
 };
 const blitz = await prepareBlitz(root, cargoHome, args[0] === '--check');
-console.log(JSON.stringify({ deno, blitz }, null, 2));
+const fonts = await prepareFonts(root, cargoHome, args[0] === '--check');
+console.log(JSON.stringify({ deno, blitz, fonts }, null, 2));

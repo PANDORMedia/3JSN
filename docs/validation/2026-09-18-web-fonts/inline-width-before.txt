@@ -1,0 +1,61 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/experiments/dom-canvas)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.54s
+     Running unittests src/window_probe.rs (target/debug/deps/threejs_dom_window_probe-c3e3cdfdf9f8687e)
+
+running 5 tests
+test inline_font_width_tests::fractional_intrinsic_inline_width_is_independent_of_device_pixel_scale ... FAILED
+test inline_font_width_tests::ligature_intrinsic_width_keeps_its_fractional_advance ... FAILED
+test inline_font_width_tests::inline_wrap_thresholds_use_fractional_css_width ... FAILED
+test inline_font_width_tests::explicit_fractional_width_and_padding_are_preserved ... ok
+test inline_font_width_tests::integer_intrinsic_text_sizes_remain_unchanged ... ok
+
+failures:
+
+---- inline_font_width_tests::fractional_intrinsic_inline_width_is_independent_of_device_pixel_scale stdout ----
+
+thread 'inline_font_width_tests::fractional_intrinsic_inline_width_is_independent_of_device_pixel_scale' (5276539) panicked at src/inline_font_width_tests.rs:44:5:
+intrinsic CSS width at DPR1: 20 != 19.875
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- inline_font_width_tests::ligature_intrinsic_width_keeps_its_fractional_advance stdout ----
+
+thread 'inline_font_width_tests::ligature_intrinsic_width_keeps_its_fractional_advance' (5276542) panicked at src/inline_font_width_tests.rs:44:5:
+ligature intrinsic width: 12 != 11.925
+
+---- inline_font_width_tests::inline_wrap_thresholds_use_fractional_css_width stdout ----
+
+thread 'inline_font_width_tests::inline_wrap_thresholds_use_fractional_css_width' (5276540) panicked at src/inline_font_width_tests.rs:98:17:
+assertion `left == right` failed: A A, DPR1, available19.859375
+  left: 1
+ right: 2
+
+
+failures:
+    inline_font_width_tests::fractional_intrinsic_inline_width_is_independent_of_device_pixel_scale
+    inline_font_width_tests::inline_wrap_thresholds_use_fractional_css_width
+    inline_font_width_tests::ligature_intrinsic_width_keeps_its_fractional_advance
+
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `--bin threejs-dom-window-probe`

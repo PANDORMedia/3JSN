@@ -48,11 +48,14 @@ changing it. The patch introduces a metadata-only offscreen canvas, explicit
 texture expiry and bounded configuration/error fixes. The upstream CPU-image
 canvas and native surface paths retain their previous behavior.
 The same preparation step archives the pinned Blitz commit into an ignored copy,
-applies the stacking-list, no-box geometry and checked layer-budget fixes, and
-verifies all 414 tracked files plus the added checked-scene module. Extra files
-and symlinks are rejected. The
+applies the stacking-list, no-box geometry, checked layer-budget, webfont
+loading and fractional intrinsic text-width fixes, and verifies the complete pinned tracked/added file set. Extra
+files and symlinks are rejected. The
 related workspace crates are patched together so their public types share one
 source identity. No Cargo registry or original Git checkout is edited.
+The [webfont extension](../../docs/web-fonts.md) also prepares pinned
+Fontique/Parley copies for CSS matching and Unicode coverage. These are
+experimental dependency candidates with separate regression evidence.
 
 Painting uses `paint_scene(..., PaintLimits) -> Result<PaintStats, PaintError>`.
 The default permits 1,024 total clip/effect layers and 1,024 open layers. All

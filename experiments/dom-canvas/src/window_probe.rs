@@ -14,6 +14,9 @@ use winit::{
     window::{Window, WindowId},
 };
 
+#[cfg(test)]
+mod inline_font_width_tests;
+
 mod canvas_init;
 mod canvas_texture;
 #[allow(
@@ -33,6 +36,7 @@ mod host;
 )]
 #[path = "../../native-html-interop/src/metal.rs"]
 mod metal;
+mod package_resources;
 mod painter;
 mod window_options;
 mod window_runtime;
@@ -209,6 +213,7 @@ impl App {
         let (input, events) = mpsc::channel(128);
         let proxy = self.proxy.clone();
         let worker = Worker {
+            resources: options.resources,
             html: options.html,
             module: options.module,
             font: options.font,

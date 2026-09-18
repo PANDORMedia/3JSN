@@ -35,7 +35,10 @@ discover or execute arbitrary HTML script tags or fetch application assets.
 
 The [packaging guide](../../docs/build.md) describes HTML-entry discovery during
 the build and native manifest-based startup. The packaged player loads only its
-declared bundled module, HTML and font. This is still interpreted HTML with a
+declared bundled module, HTML and fallback font. Opt-in
+[webfont packages](../../docs/web-fonts.md) also load verified CSS/font resources
+through an in-memory provider, register faces before startup and reject dynamic
+font-rule changes. This is still interpreted HTML with a
 live DOM. It does not implement the [compiled UI direction](../../docs/adr/0003-compiled-ui-and-generic-compatibility.md).
 
 ## Ownership and frame flow

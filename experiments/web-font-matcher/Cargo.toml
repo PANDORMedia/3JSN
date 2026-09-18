@@ -1,0 +1,14 @@
+[package]
+name = "threejsn-web-font-matcher"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+fontique = { path = "../../.cache/web-fonts/fontique", default-features = false, features = ["std"] }
+parley = { path = "../../.cache/web-fonts/parley", default-features = false, features = ["std"] }
+
+[patch.crates-io]
+fontique = { path = "../../.cache/web-fonts/fontique" }

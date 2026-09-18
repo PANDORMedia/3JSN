@@ -1,0 +1,1307 @@
+diff --git a/packages/blitz-dom/src/config.rs b/packages/blitz-dom/src/config.rs
+--- a/packages/blitz-dom/src/config.rs
++++ b/packages/blitz-dom/src/config.rs
+@@ -47,6 +47,9 @@
+     pub html_parser_provider: Option<Arc<dyn HtmlParserProvider>>,
+     /// Parley `FontContext`
+     pub font_ctx: Option<FontContext>,
++    /// Defer CSS fonts until `BaseDocument::load_web_fonts` after stylesheet delivery.
++    /// Enables checked initial loading; later font-rule mutations are unsupported.
++    pub defer_font_loads: bool,
+     /// The CSS media type used to evaluate `@media` rules.
+     /// Defaults to [`MediaType::screen`].
+     pub media_type: Option<MediaType>,
+diff --git a/packages/blitz-dom/src/cssom.rs b/packages/blitz-dom/src/cssom.rs
+--- a/packages/blitz-dom/src/cssom.rs
++++ b/packages/blitz-dom/src/cssom.rs
+@@ -487,7 +487,7 @@
+         };
+ 
+         let guard = lock.read();
+-        if let CssRule::FontFace(_) = &new_rule {
++        if !self.web_fonts.enabled && matches!(&new_rule, CssRule::FontFace(_)) {
+             crate::net::fetch_font_face_rules(
+                 std::iter::once(&new_rule),
+                 self.tx.clone(),
+@@ -508,6 +508,7 @@
+             ),
+         };
+         let ancestor_refs: Vec<CssRuleRef> = ancestors.iter().map(CssRuleRef::from).collect();
++        self.web_fonts.dirty = true;
+         self.stylist
+             .rule_changed(&sheet, &new_rule, &guard, change_kind, &ancestor_refs);
+         Ok(index)
+@@ -560,6 +561,7 @@
+ 
+         let guard = lock.read();
+         let ancestor_refs: Vec<CssRuleRef> = ancestors.iter().map(CssRuleRef::from).collect();
++        self.web_fonts.dirty = true;
+         self.stylist
+             .rule_changed(&sheet, &removed_rule, &guard, change_kind, &ancestor_refs);
+         Ok(())
+@@ -772,6 +774,7 @@
+ 
+         let guard = lock.read();
+         let ancestor_refs: Vec<CssRuleRef> = ancestors.iter().map(CssRuleRef::from).collect();
++        self.web_fonts.dirty = true;
+         self.stylist
+             .rule_changed(&sheet, &rule, &guard, change_kind, &ancestor_refs);
+         Ok(())
+@@ -826,6 +829,7 @@
+ 
+         let guard = lock.read();
+         let ancestor_refs: Vec<CssRuleRef> = ancestors.iter().map(CssRuleRef::from).collect();
++        self.web_fonts.dirty = true;
+         self.stylist
+             .rule_changed(&sheet, &rule, &guard, change_kind, &ancestor_refs);
+         Ok(removed_value)
+@@ -899,6 +903,7 @@
+         let guard = lock.read();
+         let rule = CssRule::Style(style_rule);
+         let ancestor_refs: Vec<CssRuleRef> = ancestors.iter().map(CssRuleRef::from).collect();
++        self.web_fonts.dirty = true;
+         self.stylist.rule_changed(
+             &sheet,
+             &rule,
+@@ -941,6 +946,7 @@
+             CssRuleType::PositionTry => RuleChangeKind::PositionTryDeclarations,
+             _ => RuleChangeKind::StyleRuleDeclarations,
+         };
++        self.web_fonts.dirty = true;
+         self.stylist
+             .rule_changed(&sheet, &rule, &guard, change_kind, &ancestor_refs);
+         Ok(())
+diff --git a/packages/blitz-dom/src/document.rs b/packages/blitz-dom/src/document.rs
+--- a/packages/blitz-dom/src/document.rs
++++ b/packages/blitz-dom/src/document.rs
+@@ -240,6 +240,8 @@
+     /// Stylo invalidation map. We insert into this map prior to mutating nodes.
+     pub(crate) snapshots: SnapshotMap,
+ 
++    pub(crate) web_fonts: crate::web_fonts::WebFontState,
++
+     // Parley contexts
+     /// A Parley font context
+     pub(crate) font_ctx: Arc<Mutex<parley::FontContext>>,
+@@ -458,6 +460,7 @@
+             nodes_to_stylesheet: BTreeMap::new(),
+             stylesheet_generation: 0,
+             font_ctx,
++            web_fonts: crate::web_fonts::WebFontState::new(config.defer_font_loads),
+             #[cfg(feature = "parallel-construct")]
+             thread_font_contexts: ThreadLocal::new(),
+             layout_ctx: parley::LayoutContext::new(),
+@@ -1190,17 +1193,19 @@
+             self.stylist.remove_stylesheet(old, &self.guard.read())
+         }
+ 
+-        // Fetch @font-face fonts
+-        crate::net::fetch_font_face(
+-            self.tx.clone(),
+-            self.id,
+-            Some(node_id),
+-            &stylesheet.0,
+-            &self.net_provider,
+-            &self.shell_provider,
+-            &self.guard.read(),
+-            self.abort_signal.as_ref(),
+-        );
++        if !self.web_fonts.enabled {
++            // Fetch @font-face fonts
++            crate::net::fetch_font_face(
++                self.tx.clone(),
++                self.id,
++                Some(node_id),
++                &stylesheet.0,
++                &self.net_provider,
++                &self.shell_provider,
++                &self.guard.read(),
++                self.abort_signal.as_ref(),
++            );
++        }
+ 
+         // Store data on element
+         let element = &mut self.nodes[node_id].element_data_mut().unwrap();
+@@ -1252,10 +1257,18 @@
+ 
+     pub fn load_resource(&mut self, res: ResourceLoadResponse) {
+         self.pending_critical_resources.remove(&res.request_id);
++        let checked_font = self.web_fonts.pending.remove(&res.request_id);
+ 
+         let resource = match res.result {
+             Ok(resource) => resource,
+             Err(err) => {
++                if checked_font {
++                    self.web_fonts
++                        .fail(crate::web_fonts::WebFontLoadError::Load {
++                            url: res.resolved_url.clone(),
++                            message: err.clone(),
++                        });
++                }
+                 if let Some(url) = res.resolved_url.as_ref() {
+                     let waiting_nodes = self.pending_images.remove(url).unwrap_or_default();
+                     #[cfg(feature = "tracing")]
+@@ -1283,6 +1296,19 @@
+                 self.add_stylesheet_for_node(css, node_id);
+             }
+             Resource::ImportedCss(import_rule, sheet) => {
++                if !self.web_fonts.enabled {
++                    crate::net::fetch_font_face(
++                        self.tx.clone(),
++                        self.id,
++                        res.node_id,
++                        &sheet,
++                        &self.net_provider,
++                        &self.shell_provider,
++                        &self.guard.read(),
++                        self.abort_signal.as_ref(),
++                    );
++                }
++                self.web_fonts.dirty = true;
+                 let mut guard = self.guard.write();
+                 import_rule.write_with(&mut guard).stylesheet =
+                     style::stylesheets::import_rule::ImportSheet::Sheet(sheet);
+@@ -1318,6 +1344,12 @@
+                 self.apply_iframe_html(node_id, res.request_id, res.resolved_url, &html);
+             }
+             Resource::Font(bytes, overrides) => {
++                if checked_font {
++                    if let Err(error) = self.web_fonts.accept_decoded_bytes(bytes.len()) {
++                        self.web_fonts.fail(error);
++                        return;
++                    }
++                }
+                 let font = Blob::new(Arc::new(bytes));
+ 
+                 // Build a `FontInfoOverride` from the `@font-face` descriptors
+@@ -1330,14 +1362,26 @@
+                     family_name: overrides.family_name.as_deref(),
+                     weight: weight_override,
+                     style: overrides.style,
++                    web_font: overrides.web_font.as_ref(),
+                     ..Default::default()
+                 };
+ 
+                 // TODO: Investigate eliminating double-box
+                 let mut global_font_ctx = self.font_ctx.lock().unwrap();
+-                global_font_ctx
++                let registered = global_font_ctx
+                     .collection
+                     .register_fonts(font.clone(), Some(info_override));
++                if checked_font {
++                    if registered.iter().all(|(_, faces)| faces.is_empty()) {
++                        self.web_fonts
++                            .fail(crate::web_fonts::WebFontLoadError::Load {
++                                url: res.resolved_url,
++                                message: "Fontique registered no usable faces".into(),
++                            });
++                        return;
++                    }
++                    self.web_fonts.registered += 1;
++                }
+ 
+                 #[cfg(feature = "parallel-construct")]
+                 {
+@@ -3310,6 +3354,7 @@
+                     family_name: Some(String::from(ALIAS)),
+                     weight: Some(800.0),
+                     style: Some(parley::fontique::FontStyle::Italic),
++                    web_font: None,
+                 },
+             )),
+         };
+diff --git a/packages/blitz-dom/src/iframe.rs b/packages/blitz-dom/src/iframe.rs
+--- a/packages/blitz-dom/src/iframe.rs
++++ b/packages/blitz-dom/src/iframe.rs
+@@ -67,6 +67,8 @@
+             shell_provider: Some(self.shell_provider.clone()),
+             html_parser_provider: Some(self.html_parser_provider.clone()),
+             font_ctx: Some(self.font_ctx.lock().unwrap().clone()),
++            // Checked font startup is explicitly initialized by the host per document.
++            defer_font_loads: false,
+             media_type: Some(self.media_type.clone()),
+             style_threading: self.style_threading,
+             incremental: Some(self.incremental_layout),
+diff --git a/packages/blitz-dom/src/lib.rs b/packages/blitz-dom/src/lib.rs
+--- a/packages/blitz-dom/src/lib.rs
++++ b/packages/blitz-dom/src/lib.rs
+@@ -45,6 +45,8 @@
+ mod debug;
+ mod events;
+ mod font_metrics;
++mod web_fonts;
++pub use web_fonts::{WebFontLoadError, WebFontLoadStatus};
+ mod form;
+ mod html;
+ /// Loading of `<iframe>` elements into sub-documents.
+diff --git a/packages/blitz-dom/src/mutator.rs b/packages/blitz-dom/src/mutator.rs
+--- a/packages/blitz-dom/src/mutator.rs
++++ b/packages/blitz-dom/src/mutator.rs
+@@ -266,6 +266,9 @@
+     }
+ 
+     pub fn set_attribute(&mut self, node_id: NodeId, name: QualName, value: &str) {
++        if matches!(name.local.as_ref(), "media" | "rel" | "type" | "disabled") {
++            self.doc.web_fonts.dirty = true;
++        }
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         if node_is_in_document {
+             self.doc.snapshot_node(node_id);
+@@ -394,6 +397,9 @@
+     }
+ 
+     pub fn clear_attribute(&mut self, node_id: NodeId, name: QualName) {
++        if matches!(name.local.as_ref(), "media" | "rel" | "type" | "disabled") {
++            self.doc.web_fonts.dirty = true;
++        }
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         if node_is_in_document {
+             self.doc.snapshot_node(node_id);
+@@ -531,6 +537,7 @@
+ 
+     /// Remove the node from it's parent but don't drop it
+     pub fn remove_node(&mut self, node_id: NodeId) {
++        self.doc.web_fonts.dirty = true;
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         // Process the subtree *before* severing the parent link so that
+         // interaction state referencing removed nodes can retarget to the
+@@ -562,6 +569,7 @@
+         node_id: NodeId,
+         on_drop: &mut dyn FnMut(NodeId),
+     ) -> Option<Node> {
++        self.doc.web_fonts.dirty = true;
+         let node_is_in_document = self.doc.nodes[node_id].flags.is_in_document();
+         self.process_removed_subtree(node_id);
+ 
+@@ -594,6 +602,7 @@
+     }
+ 
+     pub fn remove_and_drop_all_children(&mut self, node_id: NodeId) {
++        self.doc.web_fonts.dirty = true;
+         let parent = &mut self.doc.nodes[node_id];
+         let parent_is_in_doc = parent.flags.is_in_document();
+ 
+@@ -660,6 +669,7 @@
+         child_ids: &[NodeId],
+         insert_children_fn: &dyn Fn(&mut Node, &[NodeId]),
+     ) {
++        self.doc.web_fonts.dirty = true;
+         let new_parent_is_in_document = self.doc.nodes[parent_id].flags.is_in_document();
+         self.mutations_occurred |= new_parent_is_in_document && !child_ids.is_empty();
+         // Detach the children from their old parents *before* inserting them into
+diff --git a/packages/blitz-dom/src/net.rs b/packages/blitz-dom/src/net.rs
+--- a/packages/blitz-dom/src/net.rs
++++ b/packages/blitz-dom/src/net.rs
+@@ -46,6 +46,8 @@
+ pub struct FontFaceOverrides {
+     /// `font-family` descriptor (the alias the rest of the stylesheet uses).
+     pub family_name: Option<String>,
++    /// Validated CSS face metadata for opt-in checked loading.
++    pub web_font: Option<parley::fontique::WebFontFace>,
+     /// `font-weight` descriptor as a single CSS weight (100–900). Stylo
+     /// parses this as a range; we record the lower bound, which equals the
+     /// upper bound in the common single-value case.
+@@ -239,7 +241,6 @@
+                     lock: lock.clone(),
+                     media,
+                     import_rule: import.clone(),
+-                    net_provider: self.net_provider.clone(),
+                 },
+             ),
+         );
+@@ -254,7 +255,6 @@
+     url: ServoArc<Url>,
+     media: ServoArc<Locked<MediaList>>,
+     import_rule: ServoArc<Locked<ImportRule>>,
+-    net_provider: Arc<dyn NetProvider>,
+ }
+ 
+ impl NetHandler for ResourceHandler<NestedStylesheetHandler> {
+@@ -278,26 +278,15 @@
+             AllowImportRules::Yes,
+         ));
+ 
+-        // Fetch @font-face fonts
+-        fetch_font_face(
+-            self.tx.clone(),
+-            self.doc_id,
+-            self.node_id,
+-            &sheet,
+-            &self.data.net_provider,
+-            &self.shell_provider,
+-            &self.data.lock.read(),
+-            self.data.loader.abort_signal.as_ref(),
+-        );
+-
+         let import_rule = self.data.import_rule.clone();
+         self.respond(resolved_url, Ok(Resource::ImportedCss(import_rule, sheet)))
+     }
+ }
+ 
+-struct FontFaceHandler {
+-    format: FontFaceSourceFormatKeyword,
+-    overrides: FontFaceOverrides,
++pub(crate) struct FontFaceHandler {
++    pub(crate) format: FontFaceSourceFormatKeyword,
++    pub(crate) overrides: FontFaceOverrides,
++    pub(crate) decoded_budget: Option<Arc<AtomicUsize>>,
+ }
+ impl NetHandler for ResourceHandler<FontFaceHandler> {
+     fn bytes(mut self: Box<Self>, resolved_url: String, bytes: Bytes) {
+@@ -307,6 +296,13 @@
+ }
+ impl FontFaceHandler {
+     fn parse(&mut self, bytes: Bytes) -> Result<Resource, String> {
++        if self.overrides.web_font.is_some() {
++            let bytes = crate::web_fonts::decode_font(self.format, bytes)?;
++            if let Some(budget) = &self.decoded_budget {
++                crate::web_fonts::account_decoded_font(budget, bytes.len())?;
++            }
++            return Ok(Resource::Font(bytes, std::mem::take(&mut self.overrides)));
++        }
+         if self.format == FontFaceSourceFormatKeyword::None && bytes.len() >= 4 {
+             self.format = match &bytes.as_ref()[0..4] {
+                 // WOFF (v1) files begin with 0x774F4646 ('wOFF' in ascii)
+@@ -423,6 +419,7 @@
+                 // style) rather than whatever metadata the TTF reports.
+                 let overrides = FontFaceOverrides {
+                     family_name: Some(family.name.to_string()),
++                    web_font: None,
+                     weight: descriptor
+                         .font_weight
+                         .as_ref()
+@@ -508,7 +505,11 @@
+                         doc_id,
+                         node_id,
+                         shell_provider.clone(),
+-                        FontFaceHandler { format, overrides },
++                        FontFaceHandler {
++                            format,
++                            overrides,
++                            decoded_budget: None,
++                        },
+                     ),
+                 );
+             }
+diff --git a/packages/blitz-dom/src/web_fonts.rs b/packages/blitz-dom/src/web_fonts.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-dom/src/web_fonts.rs
+@@ -0,0 +1,917 @@
++//! Checked initial CSS font loading. The opt-in snapshot preserves CSS order,
++//! descriptors and decode failures; changing the face set later is unsupported.
++
++use std::{
++    collections::HashSet,
++    error::Error,
++    fmt,
++    sync::{
++        Arc,
++        atomic::{AtomicUsize, Ordering},
++    },
++};
++
++use blitz_traits::net::Bytes;
++use parley::fontique::{WebFontFace, WebFontStyle};
++use style::{
++    font_face::{
++        Descriptors, FontFaceSourceFormat, FontFaceSourceFormatKeyword as Format, FontStyleRange,
++        Source,
++    },
++    shared_lock::SharedRwLockReadGuard,
++    stylesheets::{
++        CssRule, StylesheetInDocument,
++        import_rule::{ImportLayer, ImportSheet},
++    },
++};
++use url::Url;
++
++use crate::{
++    BaseDocument, NodeId,
++    net::{FontFaceHandler, FontFaceOverrides, ResourceHandler, stamped_request},
++};
++
++const MAX_FACES: usize = 1024;
++const MAX_DECODED_FACE_BYTES: usize = 128 * 1024 * 1024;
++const MAX_DECODED_DOCUMENT_BYTES: usize = 256 * 1024 * 1024;
++
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub enum WebFontLoadError {
++    NotDeferred,
++    NotStarted,
++    Pending,
++    Unsupported(&'static str),
++    InvalidDescriptor(&'static str),
++    DynamicMutation,
++    Limit(&'static str),
++    Load {
++        url: Option<String>,
++        message: String,
++    },
++}
++impl fmt::Display for WebFontLoadError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        match self {
++            Self::NotDeferred => f.write_str("checked web fonts require defer_font_loads"),
++            Self::NotStarted => f.write_str("checked web font loading has not started"),
++            Self::Pending => f.write_str("stylesheet or font loading is still pending"),
++            Self::Unsupported(what) => write!(f, "unsupported checked web font behavior: {what}"),
++            Self::InvalidDescriptor(what) => write!(f, "invalid web font descriptor: {what}"),
++            Self::DynamicMutation => {
++                f.write_str("dynamic font-rule set/order mutation is unsupported")
++            }
++            Self::Limit(what) => write!(f, "web font limit exceeded: {what}"),
++            Self::Load { url, message } => write!(
++                f,
++                "web font load failed at {}: {message}",
++                url.as_deref().unwrap_or("unknown URL")
++            ),
++        }
++    }
++}
++impl Error for WebFontLoadError {}
++
++#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
++pub struct WebFontLoadStatus {
++    pub requested: usize,
++    pub registered: usize,
++    pub pending: usize,
++    pub decoded_bytes: usize,
++}
++
++#[derive(Default)]
++pub(crate) struct WebFontState {
++    pub(crate) enabled: bool,
++    pub(crate) dirty: bool,
++    pub(crate) pending: HashSet<usize>,
++    pub(crate) registered: usize,
++    decoded_bytes: usize,
++    signature: Option<Vec<String>>,
++    decoded_budget: Arc<AtomicUsize>,
++    generation: u64,
++    error: Option<WebFontLoadError>,
++    #[cfg(test)]
++    owner_checks: AtomicUsize,
++}
++impl WebFontState {
++    pub(crate) fn new(enabled: bool) -> Self {
++        Self {
++            enabled,
++            ..Self::default()
++        }
++    }
++    pub(crate) fn fail(&mut self, error: WebFontLoadError) {
++        if self.error.is_none() {
++            self.error = Some(error);
++        }
++    }
++    pub(crate) fn accept_decoded_bytes(&mut self, bytes: usize) -> Result<(), WebFontLoadError> {
++        if bytes > MAX_DECODED_FACE_BYTES {
++            return Err(WebFontLoadError::Limit("decoded face bytes"));
++        }
++        self.decoded_bytes = self
++            .decoded_bytes
++            .checked_add(bytes)
++            .filter(|total| *total <= MAX_DECODED_DOCUMENT_BYTES)
++            .ok_or(WebFontLoadError::Limit("decoded document bytes"))?;
++        Ok(())
++    }
++}
++
++#[derive(Debug)]
++struct FaceRequest {
++    url: Url,
++    format: Format,
++    overrides: FontFaceOverrides,
++}
++
++impl BaseDocument {
++    /// Call after all initial stylesheets/imports have arrived, then drain
++    /// responses and call `check_web_fonts` before application layout/painting.
++    /// No source fallback or asynchronous font-display timing is implemented.
++    pub fn load_web_fonts(&mut self) -> Result<(), WebFontLoadError> {
++        if !self.web_fonts.enabled {
++            return Err(WebFontLoadError::NotDeferred);
++        }
++        if self.web_fonts.signature.is_some() {
++            return self.check_web_fonts().map(|_| ());
++        }
++        if let Some(error) = &self.web_fonts.error {
++            return Err(error.clone());
++        }
++        let owners = self.font_stylesheet_owners();
++        let requests = match self.collect_web_fonts(&owners) {
++            Ok(requests) => requests,
++            Err(error) => {
++                self.web_fonts.fail(error.clone());
++                return Err(error);
++            }
++        };
++        self.web_fonts.signature = Some(requests.iter().map(|r| format!("{r:?}")).collect());
++        self.web_fonts.generation = self.stylesheet_generation;
++        self.web_fonts.dirty = false;
++        for request in requests {
++            let handler = ResourceHandler::new(
++                self.tx.clone(),
++                self.id(),
++                None,
++                self.shell_provider.clone(),
++                FontFaceHandler {
++                    format: request.format,
++                    overrides: request.overrides,
++                    decoded_budget: Some(self.web_fonts.decoded_budget.clone()),
++                },
++            );
++            self.web_fonts.pending.insert(handler.request_id());
++            self.net_provider.fetch(
++                self.id(),
++                stamped_request(request.url, self.abort_signal.as_ref()),
++                Box::new(handler),
++            );
++        }
++        Ok(())
++    }
++
++    /// Recheck after DOM/CSS callbacks and before layout. Ordinary text/style
++    /// changes are allowed; face removal, replacement or reordering is sticky.
++    /// Direct mutation through public interior cells bypasses this API contract.
++    pub fn check_web_fonts(&mut self) -> Result<WebFontLoadStatus, WebFontLoadError> {
++        if !self.web_fonts.enabled {
++            return Err(WebFontLoadError::NotDeferred);
++        }
++        if let Some(error) = &self.web_fonts.error {
++            return Err(error.clone());
++        }
++        let Some(original) = &self.web_fonts.signature else {
++            return Err(WebFontLoadError::NotStarted);
++        };
++        if self.web_fonts.dirty || self.web_fonts.generation != self.stylesheet_generation {
++            let owners = self.font_stylesheet_owners();
++            let check = self.collect_web_fonts(&owners).map(|requests| {
++                requests
++                    .iter()
++                    .map(|r| format!("{r:?}"))
++                    .collect::<Vec<_>>()
++            });
++            match check {
++                Ok(signature) if signature == *original => {}
++                Ok(_) => {
++                    self.web_fonts.fail(WebFontLoadError::DynamicMutation);
++                    return Err(WebFontLoadError::DynamicMutation);
++                }
++                Err(error) => {
++                    self.web_fonts.fail(error.clone());
++                    return Err(error);
++                }
++            }
++            self.web_fonts.generation = self.stylesheet_generation;
++            self.web_fonts.dirty = false;
++        }
++        if self.has_pending_critical_resources() || !self.web_fonts.pending.is_empty() {
++            return Err(WebFontLoadError::Pending);
++        }
++        Ok(WebFontLoadStatus {
++            requested: self.web_fonts.signature.as_ref().unwrap().len(),
++            registered: self.web_fonts.registered,
++            pending: self.web_fonts.pending.len(),
++            decoded_bytes: self.web_fonts.decoded_bytes,
++        })
++    }
++
++    fn font_stylesheet_owners(&self) -> Vec<(NodeId, bool)> {
++        #[cfg(test)]
++        self.web_fonts.owner_checks.fetch_add(1, Ordering::Relaxed);
++        let mut owners = Vec::new();
++        for &id in self.nodes_to_stylesheet.keys() {
++            let mut current = id;
++            let mut path = Vec::new();
++            while current != self.root_node_id {
++                let Some(parent) = self.nodes[current].parent else {
++                    break;
++                };
++                path.push(
++                    self.nodes[parent]
++                        .index_of_child(current)
++                        .expect("font owner must belong to its parent"),
++                );
++                current = parent;
++            }
++            if current != self.root_node_id {
++                continue;
++            }
++            path.reverse();
++            let restricted = self.nodes[id].element_data().is_some_and(|el| {
++                el.attr(crate::local_name!("media"))
++                    .is_some_and(|value| !value.is_empty())
++                    || el.attr(crate::local_name!("rel")).is_some_and(|value| {
++                        value
++                            .split_ascii_whitespace()
++                            .any(|part| part.eq_ignore_ascii_case("alternate"))
++                    })
++                    || el.attr(crate::local_name!("disabled")).is_some()
++                    || el.attr(crate::local_name!("type")).is_some_and(|value| {
++                        !value.is_empty() && !value.eq_ignore_ascii_case("text/css")
++                    })
++            });
++            owners.push((path, id, restricted));
++        }
++        owners.sort_unstable_by(|a, b| a.0.cmp(&b.0));
++        owners
++            .into_iter()
++            .map(|(_, id, restricted)| (id, restricted))
++            .collect()
++    }
++
++    fn collect_web_fonts(
++        &self,
++        owners: &[(NodeId, bool)],
++    ) -> Result<Vec<FaceRequest>, WebFontLoadError> {
++        if self.has_pending_critical_resources() {
++            return Err(WebFontLoadError::Pending);
++        }
++        let guard = self.guard.read();
++        let mut faces = Vec::new();
++        for (id, restricted) in owners {
++            let sheet = &self.nodes_to_stylesheet[id].0;
++            let conditional =
++                *restricted || sheet.media(&guard).is_some_and(|media| !media.is_empty());
++            collect_rules(
++                sheet.contents(&guard).rules(&guard),
++                &guard,
++                conditional,
++                &mut faces,
++                0,
++            )?;
++        }
++        Ok(faces)
++    }
++}
++
++fn collect_rules(
++    rules: &[CssRule],
++    guard: &SharedRwLockReadGuard,
++    conditional: bool,
++    faces: &mut Vec<FaceRequest>,
++    depth: usize,
++) -> Result<(), WebFontLoadError> {
++    if depth > 64 {
++        return Err(WebFontLoadError::Limit("font rule nesting"));
++    }
++    for rule in rules {
++        if let CssRule::FontFace(face) = rule {
++            if conditional {
++                return Err(WebFontLoadError::Unsupported(
++                    "conditional, nested or layered font faces",
++                ));
++            }
++            if faces.len() == MAX_FACES {
++                return Err(WebFontLoadError::Limit("font faces"));
++            }
++            faces.push(face_request(
++                &face.read_with(guard).descriptors,
++                faces.len() as u64,
++            )?);
++        } else if let CssRule::Import(import) = rule {
++            let import = import.read_with(guard);
++            if matches!(import.stylesheet, ImportSheet::Pending) {
++                return Err(WebFontLoadError::Pending);
++            }
++            // Refused imports cannot be inspected, so reject their conditions
++            // instead of accepting a hidden face set that can later activate.
++            if matches!(import.stylesheet, ImportSheet::Refused) {
++                return Err(WebFontLoadError::Unsupported("refused stylesheet import"));
++            }
++            let condition = conditional
++                || import.supports.is_some()
++                || !matches!(import.layer, ImportLayer::None)
++                || import
++                    .stylesheet
++                    .media(guard)
++                    .is_some_and(|media| !media.is_empty());
++            collect_rules(
++                import.stylesheet.rules(guard),
++                guard,
++                condition,
++                faces,
++                depth + 1,
++            )?;
++        } else {
++            collect_rules(rule.children(guard), guard, true, faces, depth + 1)?;
++        }
++    }
++    Ok(())
++}
++
++fn face_request(d: &Descriptors, source_order: u64) -> Result<FaceRequest, WebFontLoadError> {
++    let invalid = WebFontLoadError::InvalidDescriptor;
++    if d.font_feature_settings.is_some()
++        || d.font_variation_settings.is_some()
++        || d.font_language_override.is_some()
++        || d.ascent_override.is_some()
++        || d.descent_override.is_some()
++        || d.line_gap_override.is_some()
++        || d.size_adjust.is_some()
++    {
++        return Err(WebFontLoadError::Unsupported(
++            "font metrics, feature, variation or language overrides",
++        ));
++    }
++    let family = d
++        .font_family
++        .as_ref()
++        .ok_or(invalid("font-family"))?
++        .name
++        .to_string();
++    let sources = &d.src.as_ref().ok_or(invalid("src"))?.0;
++    if sources.len() != 1 {
++        return Err(WebFontLoadError::Unsupported("font source-list fallback"));
++    }
++    let Source::Url(source) = &sources[0] else {
++        return Err(WebFontLoadError::Unsupported("local() font sources"));
++    };
++    if !source.tech_flags.is_empty() {
++        return Err(WebFontLoadError::Unsupported("font source tech()"));
++    }
++    let format = match &source.format_hint {
++        None => Format::None,
++        Some(FontFaceSourceFormat::Keyword(format)) => *format,
++        Some(FontFaceSourceFormat::String(value)) => match value.as_str() {
++            "woff" => Format::Woff,
++            "woff2" => Format::Woff2,
++            "truetype" | "ttf" => Format::Truetype,
++            "opentype" | "otf" => Format::Opentype,
++            _ => return Err(WebFontLoadError::Unsupported("font format")),
++        },
++    };
++    if !matches!(
++        format,
++        Format::None | Format::Woff | Format::Woff2 | Format::Truetype | Format::Opentype
++    ) {
++        return Err(WebFontLoadError::Unsupported("font format"));
++    }
++    let url = source
++        .url
++        .url()
++        .ok_or(invalid("font URL"))?
++        .as_ref()
++        .clone();
++    let weight = if let Some(range) = &d.font_weight {
++        let range = range.compute().ok_or(invalid("font-weight"))?;
++        (range.0.value(), range.1.value())
++    } else {
++        (400.0, 400.0)
++    };
++    let width = if let Some(range) = &d.font_stretch {
++        let range = range.compute().ok_or(invalid("font-stretch"))?;
++        (
++            range.0.to_percentage().0 * 100.0,
++            range.1.to_percentage().0 * 100.0,
++        )
++    } else {
++        (100.0, 100.0)
++    };
++    let font_style = match &d.font_style {
++        None => WebFontStyle::Normal,
++        Some(FontStyleRange::Italic) => WebFontStyle::Italic,
++        Some(FontStyleRange::Oblique(first, last)) => {
++            let first = first.degrees().ok_or(invalid("font-style"))?;
++            let last = last.degrees().ok_or(invalid("font-style"))?;
++            if first == 0.0 && last == 0.0 {
++                WebFontStyle::Normal
++            } else {
++                WebFontStyle::Oblique {
++                    min: first.min(last),
++                    max: first.max(last),
++                }
++            }
++        }
++    };
++    let ranges = d
++        .unicode_range
++        .as_ref()
++        .map(|ranges| ranges.iter().map(|r| (r.start, r.end)).collect::<Vec<_>>())
++        .unwrap_or_else(|| vec![(0, 0x10ffff)]);
++    let face = WebFontFace::new(source_order, &ranges, weight, width, font_style)
++        .map_err(|_| invalid("face ranges"))?;
++    Ok(FaceRequest {
++        url,
++        format,
++        overrides: FontFaceOverrides {
++            family_name: Some(family),
++            web_font: Some(face),
++            ..Default::default()
++        },
++    })
++}
++
++pub(crate) fn decode_font(format: Format, bytes: Bytes) -> Result<Bytes, String> {
++    let sniffed = match bytes.get(..4) {
++        Some(b"wOFF") => Format::Woff,
++        Some(b"wOF2") => Format::Woff2,
++        Some(b"OTTO") => Format::Opentype,
++        Some(b"\0\x01\0\0" | b"true") => Format::Truetype,
++        _ => return Err("unsupported or invalid font signature".into()),
++    };
++    // CSS Fonts 4 makes these two sfnt hints synonymous, regardless of outline type.
++    let sfnt_hint = matches!(format, Format::Truetype | Format::Opentype)
++        && matches!(sniffed, Format::Truetype | Format::Opentype);
++    if format != Format::None && format != sniffed && !sfnt_hint {
++        return Err("font format hint does not match bytes".into());
++    }
++    let decoded = match sniffed {
++        #[cfg(feature = "woff")]
++        Format::Woff => {
++            validate_woff1_size(&bytes)?;
++            wuff::decompress_woff1(&bytes)
++                .map(Bytes::from)
++                .map_err(|error| format!("WOFF decode: {error:?}"))?
++        }
++        #[cfg(feature = "woff")]
++        Format::Woff2 => {
++            // wuff 0.2.9 bounds its directory-derived stream and reconstructed
++            // output to 128 MiB. Header totalSfntSize alone is not a safe bound.
++            wuff::decompress_woff2(&bytes)
++                .map(Bytes::from)
++                .map_err(|error| format!("WOFF2 decode: {error:?}"))?
++        }
++        Format::Truetype | Format::Opentype => bytes,
++        _ => return Err("WOFF support was not compiled".into()),
++    };
++    if !matches!(decoded.get(..4), Some(b"OTTO" | b"\0\x01\0\0" | b"true")) {
++        return Err(
++            "decoded font must be a single OpenType/TrueType face; collections are unsupported"
++                .into(),
++        );
++    }
++    if decoded.len() > MAX_DECODED_FACE_BYTES {
++        return Err("decoded font exceeds 128 MiB".into());
++    }
++    Ok(decoded)
++}
++
++#[cfg(feature = "woff")]
++fn validate_woff1_size(bytes: &[u8]) -> Result<(), String> {
++    let read32 = |offset| {
++        bytes
++            .get(offset..offset + 4)
++            .and_then(|b| b.try_into().ok())
++            .map(u32::from_be_bytes)
++            .map(|n| n as usize)
++    };
++    let fail = || "invalid or excessive WOFF table directory".to_string();
++    if bytes.len() < 44 {
++        return Err(fail());
++    }
++    let count = u16::from_be_bytes([bytes[12], bytes[13]]) as usize;
++    if count == 0 || count > 4095 || 44 + count * 20 > bytes.len() {
++        return Err(fail());
++    }
++    let mut decoded = 12 + count * 16;
++    for i in 0..count {
++        let offset = 44 + i * 20;
++        let compressed = read32(offset + 8).ok_or_else(fail)?;
++        let original = read32(offset + 12).ok_or_else(fail)?;
++        if compressed > original {
++            return Err(fail());
++        }
++        decoded = decoded
++            .checked_add(original.checked_add(3).ok_or_else(fail)? & !3)
++            .ok_or_else(fail)?;
++        if decoded > MAX_DECODED_FACE_BYTES {
++            return Err(fail());
++        }
++    }
++    if read32(16) != Some(decoded) {
++        return Err(fail());
++    }
++    Ok(())
++}
++
++/// Bound retained decoded messages before the document drains them. With the
++/// synchronous package provider, one additional face can be decoding at a time.
++pub(crate) fn account_decoded_font(budget: &AtomicUsize, bytes: usize) -> Result<(), String> {
++    budget
++        .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |total| {
++            total
++                .checked_add(bytes)
++                .filter(|value| *value <= MAX_DECODED_DOCUMENT_BYTES)
++        })
++        .map(|_| ())
++        .map_err(|_| "decoded font responses exceed 256 MiB".into())
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use crate::{DocumentConfig, qual_name};
++    use blitz_traits::net::{NetHandler, NetProvider, Request};
++    use std::sync::Mutex;
++    use style::stylesheets::Origin;
++
++    #[derive(Default)]
++    struct FixtureNet {
++        requests: Mutex<Vec<String>>,
++        bad_font: Option<&'static [u8]>,
++    }
++    impl NetProvider for FixtureNet {
++        fn fetch(&self, _: usize, request: Request, handler: Box<dyn NetHandler>) {
++            let url = request.url.to_string();
++            self.requests.lock().unwrap().push(url.clone());
++            let bytes: &[u8] = if url.ends_with("nested.css") {
++                b"@font-face {font-family: Imported;src:url(imported.otf)}"
++            } else {
++                self.bad_font.unwrap_or(crate::BULLET_FONT)
++            };
++            handler.bytes(url, Bytes::copy_from_slice(bytes));
++        }
++    }
++    fn document(net: Arc<FixtureNet>) -> BaseDocument {
++        BaseDocument::new(DocumentConfig {
++            defer_font_loads: true,
++            base_url: Some("threejsn://package/app/index.html".into()),
++            net_provider: Some(net),
++            ..Default::default()
++        })
++    }
++    fn sheet(doc: &mut BaseDocument, css: &str) -> NodeId {
++        let root = doc.root_node_id;
++        let id = {
++            let mut dom = doc.mutate();
++            let id = dom.create_element(qual_name!("div", html), vec![]);
++            dom.append_children(root, &[id]);
++            id
++        };
++        let sheet = doc.make_stylesheet(css, Origin::Author);
++        doc.add_stylesheet_for_node(sheet, id);
++        id
++    }
++    fn face_css(family: &str) -> String {
++        format!("@font-face {{font-family:{family};src:url({family}.otf)}}")
++    }
++
++    #[test]
++    fn deferred_loading_registers_css_alias_and_drains_exactly_once() {
++        let net = Arc::new(FixtureNet::default());
++        let mut doc = document(net.clone());
++        sheet(&mut doc, &face_css("Alias"));
++        assert!(net.requests.lock().unwrap().is_empty());
++        doc.load_web_fonts().unwrap();
++        assert_eq!(doc.check_web_fonts(), Err(WebFontLoadError::Pending));
++        doc.handle_messages();
++        let status = doc.check_web_fonts().unwrap();
++        assert_eq!(
++            (status.requested, status.registered, status.pending),
++            (1, 1, 0)
++        );
++        assert_eq!(status.decoded_bytes, crate::BULLET_FONT.len());
++        assert!(
++            doc.font_ctx
++                .lock()
++                .unwrap()
++                .collection
++                .family_id("Alias")
++                .is_some()
++        );
++        doc.load_web_fonts().unwrap();
++        assert_eq!(net.requests.lock().unwrap().len(), 1);
++    }
++
++    #[test]
++    fn completed_imports_use_css_order_instead_of_response_order() {
++        let net = Arc::new(FixtureNet::default());
++        let mut doc = document(net.clone());
++        sheet(
++            &mut doc,
++            "@import './nested.css'; @font-face {font-family:After;src:url(after.otf)}",
++        );
++        sheet(&mut doc, &face_css("Last"));
++        doc.handle_messages();
++        assert_eq!(
++            net.requests.lock().unwrap().len(),
++            1,
++            "only CSS is fetched before font discovery"
++        );
++        let requests = doc
++            .collect_web_fonts(&doc.font_stylesheet_owners())
++            .unwrap();
++        assert_eq!(
++            requests
++                .iter()
++                .map(|r| r.overrides.family_name.as_deref().unwrap())
++                .collect::<Vec<_>>(),
++            ["Imported", "After", "Last"]
++        );
++        for (index, request) in requests.iter().enumerate() {
++            let expected = WebFontFace::new(
++                index as u64,
++                &[(0, 0x10ffff)],
++                (400.0, 400.0),
++                (100.0, 100.0),
++                WebFontStyle::Normal,
++            )
++            .unwrap();
++            assert_eq!(
++                format!("{:?}", request.overrides.web_font.as_ref().unwrap()),
++                format!("{expected:?}")
++            );
++        }
++    }
++
++    #[test]
++    fn explicit_hundred_percent_stretch_matches_omitted_normal() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        sheet(
++            &mut doc,
++            "@font-face{font-family:Provider;src:url(provider.woff2) format('woff2');font-stretch:100%;font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}",
++        );
++        let requests = doc
++            .collect_web_fonts(&doc.font_stylesheet_owners())
++            .unwrap();
++        let expected = WebFontFace::new(
++            0,
++            &[(0, 255)],
++            (100.0, 900.0),
++            (100.0, 100.0),
++            WebFontStyle::Normal,
++        )
++        .unwrap();
++        assert_eq!(
++            format!("{:?}", requests[0].overrides.web_font.as_ref().unwrap()),
++            format!("{expected:?}")
++        );
++    }
++
++    #[test]
++    fn default_mode_keeps_eager_top_level_and_imported_font_loading() {
++        let net = Arc::new(FixtureNet::default());
++        let mut doc = BaseDocument::new(DocumentConfig {
++            base_url: Some("threejsn://package/app/index.html".into()),
++            net_provider: Some(net.clone()),
++            ..Default::default()
++        });
++        sheet(
++            &mut doc,
++            "@import './nested.css'; @font-face{font-family:Eager;src:url(eager.otf)}",
++        );
++        assert!(
++            net.requests
++                .lock()
++                .unwrap()
++                .iter()
++                .any(|url| url.ends_with("eager.otf"))
++        );
++        doc.handle_messages();
++        assert!(
++            net.requests
++                .lock()
++                .unwrap()
++                .iter()
++                .any(|url| url.ends_with("imported.otf"))
++        );
++        let mut context = doc.font_ctx.lock().unwrap();
++        assert!(context.collection.family_id("Eager").is_some());
++        assert!(context.collection.family_id("Imported").is_some());
++        drop(context);
++        assert_eq!(doc.check_web_fonts(), Err(WebFontLoadError::NotDeferred));
++    }
++    #[test]
++    fn descriptors_keep_unicode_weight_width_and_oblique_intervals() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        sheet(
++            &mut doc,
++            "@font-face {font-family:Ranges;src:url(ranges.otf);font-weight:300 700;font-stretch:75% 125%;font-style:oblique 5deg 20deg;unicode-range:U+0041-005A,U+0400-04FF}",
++        );
++        let requests = doc
++            .collect_web_fonts(&doc.font_stylesheet_owners())
++            .unwrap();
++        let expected = WebFontFace::new(
++            0,
++            &[(0x41, 0x5a), (0x400, 0x4ff)],
++            (300.0, 700.0),
++            (75.0, 125.0),
++            WebFontStyle::Oblique {
++                min: 5.0,
++                max: 20.0,
++            },
++        )
++        .unwrap();
++        assert_eq!(
++            format!("{:?}", requests[0].overrides.web_font.as_ref().unwrap()),
++            format!("{expected:?}")
++        );
++    }
++
++    #[test]
++    fn decode_and_registration_failures_are_distinct_and_sticky() {
++        for (bytes, expected) in [
++            (b"invalid".as_slice(), "signature"),
++            (b"OTTO".as_slice(), "registered no usable faces"),
++        ] {
++            let mut doc = document(Arc::new(FixtureNet {
++                bad_font: Some(bytes),
++                ..Default::default()
++            }));
++            sheet(&mut doc, &face_css("Broken"));
++            doc.load_web_fonts().unwrap();
++            doc.handle_messages();
++            let error = doc.check_web_fonts().unwrap_err();
++            assert!(error.to_string().contains(expected), "{error}");
++            doc.handle_messages();
++            assert_eq!(doc.check_web_fonts(), Err(error));
++        }
++    }
++
++    #[test]
++    fn unsupported_faces_fail_before_any_font_request() {
++        for css in [
++            "@font-face{font-family:X;src:local(X)}",
++            "@font-face{font-family:X;src:url(a.otf),url(b.otf)}",
++            "@font-face{font-family:X;src:url(a.otf);size-adjust:90%}",
++            "@media (min-width:1px){@font-face{font-family:X;src:url(a.otf)}}",
++            "@supports(display:block){@font-face{font-family:X;src:url(a.otf)}}",
++            "@layer fonts{@font-face{font-family:X;src:url(a.otf)}}",
++        ] {
++            let net = Arc::new(FixtureNet::default());
++            let mut doc = document(net.clone());
++            sheet(&mut doc, css);
++            assert!(
++                matches!(doc.load_web_fonts(), Err(WebFontLoadError::Unsupported(_))),
++                "{css}"
++            );
++            assert!(net.requests.lock().unwrap().is_empty());
++        }
++    }
++
++    #[test]
++    fn cssom_text_style_changes_work_but_face_mutation_is_rejected() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        let owner = sheet(&mut doc, &face_css("Original"));
++        doc.load_web_fonts().unwrap();
++        doc.handle_messages();
++        doc.stylesheet_insert_rule(owner, &[], "div { color: red }", 1)
++            .unwrap();
++        assert!(doc.check_web_fonts().is_ok());
++        doc.stylesheet_rule_style_set_property(owner, &[0], "unicode-range", "U+41", false)
++            .unwrap();
++        assert_eq!(
++            doc.check_web_fonts(),
++            Err(WebFontLoadError::DynamicMutation)
++        );
++    }
++
++    #[test]
++    fn connected_stylesheet_order_changes_are_rejected() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        let first = sheet(&mut doc, &face_css("First"));
++        sheet(&mut doc, &face_css("Second"));
++        doc.load_web_fonts().unwrap();
++        doc.handle_messages();
++        let root = doc.root_node_id;
++        doc.mutate().append_children(root, &[first]);
++        assert_eq!(
++            doc.check_web_fonts(),
++            Err(WebFontLoadError::DynamicMutation)
++        );
++    }
++
++    #[test]
++    fn stable_checks_and_unrelated_style_changes_do_not_walk_font_owners() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        let owner = sheet(&mut doc, &face_css("Stable"));
++        doc.load_web_fonts().unwrap();
++        doc.handle_messages();
++        doc.check_web_fonts().unwrap();
++        let before = doc.web_fonts.owner_checks.load(Ordering::Relaxed);
++        for _ in 0..60 {
++            doc.check_web_fonts().unwrap();
++        }
++        doc.mutate()
++            .set_attribute(owner, qual_name!("style"), "color:red");
++        doc.check_web_fonts().unwrap();
++        assert_eq!(doc.web_fonts.owner_checks.load(Ordering::Relaxed), before);
++    }
++
++    #[test]
++    fn moving_or_reparenting_a_stylesheet_ancestor_invalidates_face_order() {
++        for reparent in [false, true] {
++            let mut doc = document(Arc::new(FixtureNet::default()));
++            let first = sheet(&mut doc, &face_css("First"));
++            let second = sheet(&mut doc, &face_css("Second"));
++            let root = doc.root_node_id;
++            let (left, right) = {
++                let mut dom = doc.mutate();
++                let left = dom.create_element(qual_name!("section", html), vec![]);
++                let right = dom.create_element(qual_name!("section", html), vec![]);
++                dom.append_children(root, &[left, right]);
++                dom.append_children(left, &[first]);
++                dom.append_children(right, &[second]);
++                (left, right)
++            };
++            doc.load_web_fonts().unwrap();
++            doc.handle_messages();
++            doc.check_web_fonts().unwrap();
++            if reparent {
++                doc.mutate().append_children(right, &[left]);
++            } else {
++                doc.mutate().append_children(root, &[left]);
++            }
++            assert_eq!(
++                doc.check_web_fonts(),
++                Err(WebFontLoadError::DynamicMutation)
++            );
++        }
++    }
++
++    #[test]
++    fn detaching_a_stylesheet_ancestor_is_a_font_set_mutation() {
++        let mut doc = document(Arc::new(FixtureNet::default()));
++        let owner = sheet(&mut doc, &face_css("Detached"));
++        let root = doc.root_node_id;
++        let parent = {
++            let mut dom = doc.mutate();
++            let parent = dom.create_element(qual_name!("section", html), vec![]);
++            dom.append_children(root, &[parent]);
++            dom.append_children(parent, &[owner]);
++            parent
++        };
++        doc.load_web_fonts().unwrap();
++        doc.handle_messages();
++        doc.check_web_fonts().unwrap();
++        doc.mutate().remove_node(parent);
++        assert_eq!(
++            doc.check_web_fonts(),
++            Err(WebFontLoadError::DynamicMutation)
++        );
++    }
++    #[test]
++    fn queued_decoded_bytes_are_bounded_before_document_registration() {
++        let budget = AtomicUsize::new(MAX_DECODED_DOCUMENT_BYTES - 1);
++        assert!(account_decoded_font(&budget, 1).is_ok());
++        assert!(account_decoded_font(&budget, 1).is_err());
++        assert_eq!(budget.load(Ordering::Relaxed), MAX_DECODED_DOCUMENT_BYTES);
++    }
++
++    #[test]
++    fn format_hints_must_match_actual_font_bytes() {
++        assert!(decode_font(Format::Woff2, Bytes::from_static(crate::BULLET_FONT)).is_err());
++        assert!(decode_font(Format::None, Bytes::from_static(crate::BULLET_FONT)).is_ok());
++        assert!(decode_font(Format::Truetype, Bytes::from_static(b"OTTO")).is_ok());
++        assert!(decode_font(Format::Opentype, Bytes::from_static(b"\0\x01\0\0")).is_ok());
++        assert!(decode_font(Format::None, Bytes::from_static(b"ttcf")).is_err());
++        assert!(decode_font(Format::None, Bytes::from_static(b"wOF2garbage")).is_err());
++    }
++
++    #[cfg(feature = "woff")]
++    #[test]
++    fn woff_directory_bound_does_not_trust_total_sfnt_size() {
++        let mut bytes = vec![0; 64];
++        bytes[12..14].copy_from_slice(&1u16.to_be_bytes());
++        bytes[16..20].copy_from_slice(&32u32.to_be_bytes());
++        bytes[56..60].copy_from_slice(&4u32.to_be_bytes());
++        assert!(validate_woff1_size(&bytes).is_ok());
++        bytes[56..60].copy_from_slice(&(MAX_DECODED_FACE_BYTES as u32).to_be_bytes());
++        assert!(validate_woff1_size(&bytes).is_err());
++        bytes[56..60].copy_from_slice(&u32::MAX.to_be_bytes());
++        assert!(validate_woff1_size(&bytes).is_err());
++    }
++}

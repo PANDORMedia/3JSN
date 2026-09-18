@@ -1,0 +1,33 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.87s
+     Running unittests src/lib.rs (target/debug/deps/blitz_dom-d4904abc009202a1)
+
+running 15 tests
+test web_fonts::tests::deferred_loading_registers_css_alias_and_drains_exactly_once ... ok
+test web_fonts::tests::detaching_a_stylesheet_ancestor_is_a_font_set_mutation ... ok
+test web_fonts::tests::connected_stylesheet_order_changes_are_rejected ... ok
+test web_fonts::tests::cssom_text_style_changes_work_but_face_mutation_is_rejected ... ok
+test web_fonts::tests::format_hints_must_match_actual_font_bytes ... ok
+test web_fonts::tests::queued_decoded_bytes_are_bounded_before_document_registration ... ok
+test web_fonts::tests::default_mode_keeps_eager_top_level_and_imported_font_loading ... ok
+test web_fonts::tests::completed_imports_use_css_order_instead_of_response_order ... ok
+test web_fonts::tests::woff_directory_bound_does_not_trust_total_sfnt_size ... ok
+test web_fonts::tests::descriptors_keep_unicode_weight_width_and_oblique_intervals ... ok
+test web_fonts::tests::explicit_hundred_percent_stretch_matches_omitted_normal ... ok
+test web_fonts::tests::stable_checks_and_unrelated_style_changes_do_not_walk_font_owners ... ok
+test web_fonts::tests::decode_and_registration_failures_are_distinct_and_sticky ... ok
+test web_fonts::tests::moving_or_reparenting_a_stylesheet_ancestor_invalidates_face_order ... ok
+test web_fonts::tests::unsupported_faces_fail_before_any_font_request ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 50 filtered out; finished in 0.05s

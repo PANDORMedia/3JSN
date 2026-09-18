@@ -41,7 +41,8 @@ The initial profile certifies no feature and no target.
 
 This specifies future `3jsn check/run/build` for the unchanged-game profile.
 The separate [experimental packaging command](../build.md) accepts only the
-native-window fixture profile and does not certify this desktop contract.
+native-window and restricted DOM-window profiles, including opt-in static
+webfonts, and does not certify this desktop contract.
 Desktop target IDs are `macos-arm64`, `macos-x64`, `windows-x64` and `linux-x64`.
 Targets are requests, not support claims. Linux reports X11/Wayland independently.
 Platform minimum versions, drivers and packaging constraints remain unverified.

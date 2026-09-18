@@ -27,8 +27,12 @@ The [HTML-entry packaging checkpoint](validation/2026-09-18-dom-package.md)
 adds an interim DOM profile with embedded runtime sources, manifest validation,
 an explicit local font and a relocated Metal run with development-source reads
 and networking denied. Existing frontend builds and generic resource loading
-remain open. [Webfont bundling](https://github.com/PANDORMedia/3JSN/issues/56)
-is planned as an opt-in build capability.
+remain open. [Webfont bundling](web-fonts.md) adds an opt-in static resource graph,
+pinned offline state and checked native face loading. The
+[webfont checkpoint](validation/2026-09-18-web-fonts.md) verifies 28 face
+registrations and 22 browser/native width comparisons in an offline Metal run.
+Broader font behavior and
+distribution gates remain tracked in [#56](https://github.com/PANDORMedia/3JSN/issues/56).
 
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
 adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.

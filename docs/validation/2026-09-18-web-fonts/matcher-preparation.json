@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "fresh",
+    "repeat",
+    "check",
+    "modified source rejected",
+    "extra source rejected",
+    "source symlink rejected",
+    "restored"
+  ]
+}

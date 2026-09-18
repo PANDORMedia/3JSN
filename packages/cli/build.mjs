@@ -7,7 +7,9 @@ import { promisify } from 'node:util';
 import * as esbuild from 'esbuild';
 import { compareSnapshots, snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 import { BuildError, DOM_PROFILE, hostTarget, limitationsFor, portablePath, readConfig, validateDescription, validateProfileTarget, validateTargets } from './contract.mjs';
-import { prepareHtml } from './html.mjs';
+import { analyzeHtml, prepareHtml } from './html.mjs';
+import { localizeWebFonts } from './web-fonts.mjs';
+import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILITY } from './web-font-policy.mjs';
 
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -173,7 +175,8 @@ async function bundle(root, entry, staging) {
 }
 
 /** Build a trusted, quiescent project; inspect only an explicitly supplied player executable. */
-export async function buildProject(options, { describeRuntime: describe = describeRuntime } = {}) {
+export async function buildProject(options, { describeRuntime: describe = describeRuntime, fetchImpl = globalThis.fetch,
+  fontPolicy = validateWebFontRequirements } = {}) {
   const target = hostTarget();
   validateTargets(options.targets, target);
   if (options.experimental !== true) throw new BuildError('EXPERIMENTAL_REQUIRED', 'Pass --experimental to acknowledge the bounded experimental build profile.');
@@ -190,7 +193,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
   if (await exists(out)) throw new BuildError('OUTPUT_EXISTS', 'The output path already exists; no files were replaced.');
   if (!(await lstat(parent)).isDirectory()) throw new BuildError('INVALID_OUTPUT', 'The output parent must already be a directory.');
   const runtime = resolve(options.runtime);
-  let before, after, preservation, staging, config, font, reserved = false;
+  let before, after, preservation, staging, config, font, webFonts, reserved = false;
   const published = [];
   let primary;
   try {
@@ -199,18 +202,31 @@ export async function buildProject(options, { describeRuntime: describe = descri
     config = await readConfig(join(root, '3jsn.json'));
     validateProfileTarget(config.profile, target);
     const isDom = config.profile === DOM_PROFILE;
+    if (Object.hasOwn(options, 'bundleWebFonts') && options.bundleWebFonts !== true) throw new BuildError('USAGE', '--bundle-web-fonts must be an explicit opt-in.');
+    if (options.bundleWebFonts && !isDom) throw new BuildError('UNEXPECTED_WEB_FONTS', '--bundle-web-fonts is accepted only by dom-window-v1.');
+    if (!options.bundleWebFonts && ['webFontsState', 'offline'].some(key => Object.hasOwn(options, key))) throw new BuildError('UNEXPECTED_WEB_FONTS', '--web-fonts-state and --offline require --bundle-web-fonts.');
+    if (Object.hasOwn(options, 'webFontsState') && (typeof options.webFontsState !== 'string' || !options.webFontsState)) throw new BuildError('USAGE', '--web-fonts-state requires a directory path.');
+    if (Object.hasOwn(options, 'offline') && typeof options.offline !== 'boolean') throw new BuildError('USAGE', '--offline must be boolean.');
     if (!isDom && Object.hasOwn(options, 'font')) throw new BuildError('UNEXPECTED_FONT', '--font is accepted only by dom-window-v1.');
     if (isDom) font = await inspectFont(options.font);
     const configuredEntry = await regularContainedEntry(root, config.entry);
     const htmlSource = isDom ? await readFile(configuredEntry) : undefined;
-    const html = isDom ? prepareHtml(htmlSource, config.entry) : undefined;
+    let html = isDom ? (options.bundleWebFonts ? analyzeHtml(htmlSource, config.entry, { webFonts: true }) : prepareHtml(htmlSource, config.entry)) : undefined;
     const entry = html ? await regularContainedEntry(root, html.entry) : configuredEntry;
     const runtimeBefore = await fileIdentity(runtime);
     checkCancellation(signal);
     const description = validateDescription(await describe(runtime, { signal }), target, config.profile);
+    if (options.bundleWebFonts) validateWebFontRuntime(description);
     checkCancellation(signal);
     const runtimeAfter = await fileIdentity(runtime);
     if (JSON.stringify(runtimeBefore) !== JSON.stringify(runtimeAfter)) throw new BuildError('RUNTIME_CHANGED', 'The supplied player changed during inspection.');
+    if (options.bundleWebFonts) {
+      webFonts = await localizeWebFonts({ projectRoot: root, outputDir: out, htmlEntry: config.entry, htmlBytes: htmlSource,
+        stateDir: options.webFontsState ?? join(parent, '.3jsn-web-fonts', digest(root).slice(0, 16)),
+        offline: options.offline ?? false, signal, fontPolicy }, { fetchImpl });
+      html = webFonts;
+      checkCancellation(signal);
+    }
     staging = await mkdtemp(join(parent, '.3jsn-build-'));
     checkCancellation(signal);
     const built = await bundle(root, entry, staging);
@@ -222,6 +238,11 @@ export async function buildProject(options, { describeRuntime: describe = descri
       font.copied = await fileIdentity(join(staging, 'app/font.woff2'));
       if (font.copied.sha256 !== font.before.sha256 || font.copied.bytes !== font.before.bytes) throw new BuildError('FONT_CHANGED', 'The copied font differs from the inspected input.');
       built.files.push({ path: 'app/font.woff2', ...font.copied });
+      for (const resource of webFonts?.files ?? []) {
+        await mkdir(dirname(join(staging, resource.path)), { recursive: true });
+        await writeFile(join(staging, resource.path), resource.payload, { flag: 'wx' });
+        built.files.push({ path: resource.path, bytes: resource.bytes, sha256: resource.sha256 });
+      }
       built.files.sort((a, b) => a.path.localeCompare(b.path));
       checkCancellation(signal);
     }
@@ -232,7 +253,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
     checkCancellation(signal);
     if (JSON.stringify(copiedRuntime) !== JSON.stringify(runtimeBefore)) throw new BuildError('RUNTIME_CHANGED', 'The copied player differs from the inspected binary.');
     const manifest = { schemaVersion: 1, profile: config.profile, name: config.name, target, entry: 'app/main.mjs',
-      ...(html ? { html: 'app/index.html', font: 'app/font.woff2' } : {}), files: built.files };
+      ...(html ? { html: 'app/index.html', font: 'app/font.woff2' } : {}),
+      ...(webFonts ? { requires: [WEB_FONT_CAPABILITY], resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) } : {}), files: built.files };
     const manifestBytes = jsonBytes(manifest);
     if (Buffer.byteLength(manifestBytes) > 1024 * 1024 || manifest.files.length > 4096) throw new BuildError('MANIFEST_LIMIT', 'Package manifest exceeds version 1 limits.');
     after = await snapshotTree(root, { exclude: ['node_modules'] });
@@ -244,14 +266,21 @@ export async function buildProject(options, { describeRuntime: describe = descri
       checkCancellation(signal);
       if (final.sha256 !== initial.sha256 || final.bytes !== initial.bytes) throw new BuildError('INPUT_CHANGED', 'A bundled dependency changed before publication.');
     }
+    for (const initial of webFonts?.sourceInputs ?? []) {
+      const final = await fileIdentity(join(root, initial.path));
+      if (final.bytes !== initial.bytes || final.sha256 !== initial.sha256) throw new BuildError('FONT_SOURCE_CHANGED', 'A localized stylesheet/font input changed before publication.');
+      checkCancellation(signal);
+    }
     if (font) await verifyFont(font);
     checkCancellation(signal);
     const metadata = { schemaVersion: 1, status: 'experimental', profile: config.profile, target,
-      compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile) },
+      compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile, { webFonts: Boolean(webFonts) }) },
       config, runtime: { executable, ...copiedRuntime, description },
       source: { before, after, preservation }, esbuild: built.metadata,
       ...(html ? { html: { ...html.metadata, source: { path: config.entry, bytes: htmlSource.length, sha256: digest(htmlSource) },
         generated: { path: 'app/index.html', bytes: html.bytes.length, sha256: digest(html.bytes) } }, assets: { font: fontMetadata(font) } } : {}),
+      ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY, stateDir: webFonts.stateDir, offline: options.offline ?? false,
+        sourceInputs: webFonts.sourceInputs, provenance: webFonts.provenance, requirements: webFonts.requirements, lock: webFonts.lock } } : {}),
       manifest: { bytes: Buffer.byteLength(manifestBytes), sha256: digest(manifestBytes) } };
     await mkdir(join(staging, 'metadata'));
     await writeFile(join(staging, 'metadata', 'build.json'), jsonBytes(metadata), { flag: 'wx' });
@@ -271,7 +300,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
     }
     await rmdir(staging);
     staging = undefined;
-    return { status: 'experimental', target, profile: config.profile, output: out, executable: join(out, executable), manifest: join(out, 'app.json'), metadata: join(out, 'metadata', 'build.json'), sourcePreserved: true };
+    return { status: 'experimental', target, profile: config.profile, output: out, executable: join(out, executable), manifest: join(out, 'app.json'), metadata: join(out, 'metadata', 'build.json'), sourcePreserved: true,
+      ...(webFonts ? { webFontsState: webFonts.stateDir } : {}) };
   } catch (error) {
     primary = error;
   }

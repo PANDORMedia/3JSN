@@ -1,0 +1,661 @@
+diff --git a/src/charmap.rs b/src/charmap.rs
+--- a/src/charmap.rs
++++ b/src/charmap.rs
+@@ -44,6 +44,7 @@
+         let subtable = CmapSubtable::read(FontData::new(subtable_data)).ok()?;
+         Some(Charmap {
+             subtable,
++            unicode_ranges: None,
+             is_symbol: self.is_symbol,
+             is_mac_roman: self.is_mac_roman,
+         })
+@@ -53,16 +54,31 @@
+ /// Mapping from Unicode codepoints to nominal glyph identifiers.
+ #[derive(Clone)]
+ pub struct Charmap<'a> {
++    unicode_ranges: Option<&'a [(u32, u32)]>,
+     subtable: CmapSubtable<'a>,
+     is_symbol: bool,
+     is_mac_roman: bool,
+ }
+ 
+-impl Charmap<'_> {
++impl<'a> Charmap<'a> {
++    pub(crate) fn restrict(mut self, ranges: Option<&'a [(u32, u32)]>) -> Self {
++        self.unicode_ranges = ranges;
++        self
++    }
+     /// Returns the glyph identifier for the given codepoint.
+     pub fn map(&self, codepoint: impl Into<u32>) -> Option<u32> {
++        let codepoint = codepoint.into();
++        if self
++            .unicode_ranges
++            .is_some_and(|ranges| !crate::web_font::contains(ranges, codepoint))
++        {
++            return None;
++        }
++        self.map_unrestricted(codepoint)
++    }
++
++    fn map_unrestricted(&self, mut c: u32) -> Option<u32> {
+         const ASCII_MAX: u32 = 0x7F;
+-        let mut c = codepoint.into();
+         // The Mac Roman encoding requires special processing for codepoints
+         // above the ASCII range.
+         if self.is_mac_roman && c > ASCII_MAX {
+@@ -92,7 +108,7 @@
+             // Windows seems to do, and that's hinted about at:
+             // https://docs.microsoft.com/en-us/typography/opentype/spec/recom
+             // under "Non-Standard (Symbol) Fonts".
+-            return self.map(0xF000 + c);
++            return self.map_unrestricted(0xF000 + c);
+         }
+         result.map(|gid| gid.to_u32())
+     }
+diff --git a/src/collection/query.rs b/src/collection/query.rs
+--- a/src/collection/query.rs
++++ b/src/collection/query.rs
+@@ -3,9 +3,11 @@
+ 
+ //! Query support.
+ 
+-use crate::{Charmap, CharmapIndex};
+-
+-use super::super::{Collection, SourceCache};
++use crate::{Charmap, CharmapIndex, WebFontFace};
++use alloc::sync::Arc;
++use smallvec::SmallVec;
++
++use super::super::{Collection, SourceCache, matching::match_fonts};
+ 
+ use alloc::vec::Vec;
+ use parlance::Script;
+@@ -140,29 +142,33 @@
+             let Entry::Ok(family_info) = &family.family else {
+                 continue;
+             };
+-            let mut best_index = None;
+-            if let Some(font) = load_font(
++            let bucket = load_bucket(
+                 family_info,
+                 self.attributes,
+                 &mut family.best,
+-                false,
+                 self.source_cache,
+-            ) {
+-                best_index = Some(font.family.1);
++            );
++            let mut yielded_default = false;
++            for font in bucket {
++                yielded_default |= font.family.1 == family_info.default_font_index();
+                 if f(font) == QueryStatus::Stop {
+                     return;
+                 }
+             }
+-            // Don't invoke for the default font if it's the same as the
+-            // best match.
+-            if best_index == Some(family_info.default_font_index()) {
++            // A web face shadows installed fonts of the same name; a different
++            // style's default face must not bypass its selected composite face.
++            if yielded_default
++                || family_info
++                    .fonts()
++                    .iter()
++                    .any(|font| font.web_font().is_some())
++            {
+                 continue;
+             }
+             if let Some(font) = load_font(
+                 family_info,
+                 self.attributes,
+                 &mut family.default,
+-                true,
+                 self.source_cache,
+             ) {
+                 if f(font) == QueryStatus::Stop {
+@@ -235,12 +241,66 @@
+     pub synthesis: Synthesis,
+     /// Data used for constructing a character map for this font.
+     pub charmap_index: CharmapIndex,
++    /// Per-registration CSS eligibility, carried into both selection and shaping.
++    pub web_font: Option<Arc<WebFontFace>>,
+ }
+ 
+ impl QueryFont {
+     /// Attempts to construct a [Charmap] for this font.
+     pub fn charmap(&self) -> Option<Charmap<'_>> {
+-        self.charmap_index.charmap(self.blob.as_ref())
++        Some(
++            self.charmap_index
++                .charmap(self.blob.as_ref())?
++                .restrict(self.web_font.as_deref().map(WebFontFace::unicode_ranges)),
++        )
++    }
++}
++
++fn load_bucket<'a>(
++    family: &FamilyInfo,
++    attributes: Attributes,
++    bucket: &'a mut Entry<SmallVec<[QueryFont; 1]>>,
++    source_cache: &mut SourceCache,
++) -> &'a [QueryFont] {
++    match bucket {
++        Entry::Error => &[],
++        Entry::Ok(fonts) => fonts,
++        status @ Entry::Vacant => {
++            *status = Entry::Error;
++            let mut fonts = SmallVec::new();
++            for index in match_fonts(
++                family.fonts(),
++                attributes.width,
++                attributes.style,
++                attributes.weight,
++                true,
++            ) {
++                let font_info = &family.fonts()[index];
++                let Some(blob) = font_info.load(Some(source_cache)) else {
++                    continue;
++                };
++                fonts.push(QueryFont {
++                    family: (family.id(), index),
++                    blob,
++                    index: font_info.index(),
++                    synthesis: font_info.synthesis(
++                        attributes.width,
++                        attributes.style,
++                        attributes.weight,
++                    ),
++                    charmap_index: font_info.charmap_index(),
++                    web_font: font_info.web_font.clone(),
++                });
++            }
++            if fonts.is_empty() {
++                return &[];
++            }
++            *status = Entry::Ok(fonts);
++            let Entry::Ok(fonts) = status else {
++                unreachable!()
++            };
++            fonts
++        }
+     }
+ }
+ 
+@@ -248,7 +308,6 @@
+     family: &FamilyInfo,
+     attributes: Attributes,
+     font: &'a mut Entry<QueryFont>,
+-    is_default: bool,
+     source_cache: &mut SourceCache,
+ ) -> Option<&'a QueryFont> {
+     match font {
+@@ -258,11 +317,7 @@
+             // Set to error in case we fail. This simplifies
+             // the following code.
+             *status = Entry::Error;
+-            let family_index = if is_default {
+-                family.default_font_index()
+-            } else {
+-                family.match_index(attributes.width, attributes.style, attributes.weight, true)?
+-            };
++            let family_index = family.default_font_index();
+             let font_info = family.fonts().get(family_index)?;
+             let blob = font_info.load(Some(source_cache))?;
+             let blob_index = font_info.index();
+@@ -274,6 +329,7 @@
+                 index: blob_index,
+                 synthesis,
+                 charmap_index: font_info.charmap_index(),
++                web_font: font_info.web_font.clone(),
+             });
+             if let Entry::Ok(font) = status {
+                 Some(font)
+@@ -288,7 +344,7 @@
+ struct CachedFamily {
+     id: FamilyId,
+     family: Entry<FamilyInfo>,
+-    best: Entry<QueryFont>,
++    best: Entry<SmallVec<[QueryFont; 1]>>,
+     default: Entry<QueryFont>,
+ }
+ 
+diff --git a/src/font.rs b/src/font.rs
+--- a/src/font.rs
++++ b/src/font.rs
+@@ -3,7 +3,8 @@
+ 
+ //! Model for a font.
+ 
+-use crate::CharmapIndex;
++use crate::{Attributes, CharmapIndex, WebFontFace};
++use alloc::sync::Arc;
+ 
+ use super::source::{SourceInfo, SourceKind};
+ use super::{Blob, source_cache::SourceCache};
+@@ -25,6 +26,7 @@
+     axes: AxisVec,
+     attr_axes: u8,
+     charmap_index: CharmapIndex,
++    pub(crate) web_font: Option<Arc<WebFontFace>>,
+ }
+ 
+ impl FontInfo {
+@@ -86,21 +88,42 @@
+         self.weight
+     }
+ 
++    /// CSS descriptors attached to this registration, if any.
++    pub fn web_font(&self) -> Option<&WebFontFace> {
++        self.web_font.as_deref()
++    }
++
++    pub(crate) fn matching_attributes(
++        &self,
++        width: FontWidth,
++        style: FontStyle,
++        weight: FontWeight,
++    ) -> Attributes {
++        self.web_font().map_or_else(
++            || Attributes::new(self.width, self.style, self.weight),
++            |face| face.attributes(width, style, weight),
++        )
++    }
++
+     /// Returns synthesis suggestions for this font with the given attributes.
+     pub fn synthesis(&self, width: FontWidth, style: FontStyle, weight: FontWeight) -> Synthesis {
++        if let Some(face) = self.web_font() {
++            return self.web_synthesis(face, width, style, weight);
++        }
+         let mut synth = Synthesis::default();
+         let mut len = 0_usize;
+         if self.has_width_axis() && self.width != width {
+             synth.vars[len] = (Tag::new(b"wdth"), width.percentage());
+             len += 1;
+         }
+-        if self.weight != weight {
+-            if self.has_weight_axis() {
+-                synth.vars[len] = (Tag::new(b"wght"), weight.value());
++        // Compare with the axis default, not overridden matching metadata (Parley #723).
++        if let Some(axis) = self.axes.iter().find(|axis| axis.tag == Tag::new(b"wght")) {
++            if axis.default != weight.value() {
++                synth.vars[len] = (axis.tag, weight.value());
+                 len += 1;
+-            } else if weight.value() > self.weight.value() {
+-                synth.embolden = true;
+-            }
++            }
++        } else if weight.value() > self.weight.value() {
++            synth.embolden = true;
+         }
+         if self.style != style {
+             match style {
+@@ -138,6 +161,46 @@
+         synth
+     }
+ 
++    fn web_synthesis(
++        &self,
++        face: &WebFontFace,
++        width: FontWidth,
++        style: FontStyle,
++        weight: FontWeight,
++    ) -> Synthesis {
++        let matched = face.attributes(width, style, weight);
++        let mut synth = Synthesis::default();
++        let (italic, slant) = match matched.style {
++            FontStyle::Normal => (0.0, 0.0),
++            FontStyle::Italic => (1.0, -14.0),
++            FontStyle::Oblique(angle) => (0.0, -angle.unwrap_or(14.0)),
++        };
++        for (tag, value) in [
++            (Tag::new(b"wght"), matched.weight.value()),
++            (Tag::new(b"wdth"), matched.width.percentage()),
++            (Tag::new(b"ital"), italic),
++            (Tag::new(b"slnt"), slant),
++        ] {
++            if let Some(axis) = self.axes.iter().find(|axis| axis.tag == tag) {
++                // High-level CSS coordinates are constrained by the descriptor;
++                // later explicit font-variation-settings retain their precedence.
++                synth.vars[usize::from(synth.len)] = (tag, value.clamp(axis.min, axis.max));
++                synth.len += 1;
++            }
++        }
++        if !self.has_weight_axis() && weight.value() > matched.weight.value() {
++            synth.embolden = true;
++        }
++        if matched.style == FontStyle::Normal {
++            synth.skew = match style {
++                FontStyle::Italic => 14,
++                FontStyle::Oblique(angle) => angle.unwrap_or(14.0) as i8,
++                FontStyle::Normal => 0,
++            };
++        }
++        synth
++    }
++
+     /// Returns the variation [axes] for the font.
+     ///
+     /// [axes]: crate::AxisInfo
+@@ -246,6 +309,7 @@
+             axes,
+             attr_axes,
+             charmap_index,
++            web_font: None,
+         })
+     }
+ 
+@@ -268,6 +332,9 @@
+     }
+ 
+     pub(crate) fn apply_override(&mut self, info_override: &FontInfoOverride<'_>) {
++        if let Some(face) = info_override.web_font {
++            self.web_font = Some(Arc::new(face.clone()));
++        }
+         if let Some(width) = info_override.width {
+             self.width = width;
+         }
+@@ -335,7 +402,7 @@
+ /// [`QueryFont::synthesis`]: crate::QueryFont::synthesis
+ #[derive(Copy, Clone, Default, PartialEq)]
+ pub struct Synthesis {
+-    vars: [(Tag, f32); 3],
++    vars: [(Tag, f32); 4],
+     len: u8,
+     embolden: bool,
+     skew: i8,
+@@ -464,6 +531,9 @@
+ /// allows those defining the fonts to specify certain font properties manually.
+ #[derive(Copy, Clone, Debug, Default)]
+ pub struct FontInfoOverride<'a> {
++    /// CSS matching and coverage for this registration. These descriptors take
++    /// precedence over scalar metadata for matching without changing the blob.
++    pub web_font: Option<&'a WebFontFace>,
+     /// Font family name to be used instead of the one specified in the font
+     /// itself.
+     pub family_name: Option<&'a str>,
+diff --git a/src/lib.rs b/src/lib.rs
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -51,6 +51,7 @@
+ mod scan;
+ mod script;
+ mod source;
++mod web_font;
+ 
+ mod source_cache;
+ 
+@@ -66,6 +67,7 @@
+ pub use impl_fontconfig::FromFontconfig;
+ pub use parlance::{FontStyle, FontWeight, FontWidth, GenericFamily, Language, Script};
+ pub use source::{SourceId, SourceInfo, SourceKind};
++pub use web_font::{WebFontError, WebFontFace, WebFontStyle};
+ 
+ #[cfg(all(feature = "system", target_vendor = "apple"))]
+ use objc2 as _;
+diff --git a/src/matching.rs b/src/matching.rs
+--- a/src/matching.rs
++++ b/src/matching.rs
+@@ -8,6 +8,36 @@
+ use smallvec::SmallVec;
+ 
+ const DEFAULT_OBLIQUE_ANGLE: f32 = 14.0;
++
++// Based on upstream Parley #663, extended to descriptor ranges and CSS order.
++pub(crate) fn match_fonts(
++    set: &[FontInfo],
++    width: FontWidth,
++    style: FontStyle,
++    weight: FontWeight,
++    synthesize_style: bool,
++) -> alloc::vec::IntoIter<usize> {
++    let Some(best) = match_font(set, width, style, weight, synthesize_style) else {
++        return alloc::vec::Vec::new().into_iter();
++    };
++    let attrs = set[best].matching_attributes(width, style, weight);
++    let web = set[best].web_font().is_some();
++    let mut indices: alloc::vec::Vec<_> = set
++        .iter()
++        .enumerate()
++        .filter_map(|(index, font)| {
++            (font.web_font().is_some() == web
++                && font.matching_attributes(width, style, weight) == attrs)
++                .then_some(index)
++        })
++        .collect();
++    if web {
++        indices.sort_by_key(|&index| {
++            core::cmp::Reverse(set[index].web_font().unwrap().source_order())
++        });
++    }
++    indices.into_iter()
++}
+ 
+ pub fn match_font(
+     set: &[FontInfo],
+@@ -25,35 +55,40 @@
+     #[derive(Copy, Clone)]
+     struct Candidate {
+         index: usize,
+-        width: i32,
++        width: f32,
+         style: FontStyle,
+         weight: f32,
+         has_slnt: bool,
+     }
++    let has_web_faces = set.iter().any(|font| font.web_font().is_some());
+     let mut set: SmallVec<[Candidate; 16]> = set
+         .iter()
+         .enumerate()
+-        .map(|(i, font)| Candidate {
+-            index: i,
+-            width: (font.width().ratio() * 100.0) as i32,
+-            style: font.style(),
+-            weight: font.weight().value(),
+-            has_slnt: font.has_slant_axis(),
++        .filter(|(_, font)| !has_web_faces || font.web_font().is_some())
++        .map(|(i, font)| {
++            let attributes = font.matching_attributes(width, style, weight);
++            Candidate {
++                index: i,
++                width: attributes.width.percentage(),
++                style: attributes.style,
++                weight: attributes.weight.value(),
++                has_slnt: font.has_slant_axis() && font.web_font().is_none(),
++            }
+         })
+         .collect();
+-    let width = (width.ratio() * 100.0) as i32;
++    let width = width.percentage();
+     let weight = weight.value();
+     // font-width is tried first:
+     let mut use_width = set[0].width;
+     if !set.iter().any(|f| f.width == width) {
+         // If the desired width value is less than or equal to 100%...
+-        if width <= 100 {
++        if width <= 100.0 {
+             // width values below the desired width value are checked in
+             // descending order...
+             if let Some(found) = set
+                 .iter()
+                 .filter(|f| f.width < width)
+-                .max_by_key(|f| f.width)
++                .max_by(|a, b| a.width.total_cmp(&b.width))
+             {
+                 use_width = found.width;
+             }
+@@ -62,7 +97,7 @@
+             else if let Some(found) = set
+                 .iter()
+                 .filter(|f| f.width > width)
+-                .min_by_key(|f| f.width)
++                .min_by(|a, b| a.width.total_cmp(&b.width))
+             {
+                 use_width = found.width;
+             }
+@@ -74,7 +109,7 @@
+             if let Some(found) = set
+                 .iter()
+                 .filter(|f| f.width > width)
+-                .min_by_key(|f| f.width)
++                .min_by(|a, b| a.width.total_cmp(&b.width))
+             {
+                 use_width = found.width;
+             }
+@@ -83,7 +118,7 @@
+             else if let Some(found) = set
+                 .iter()
+                 .filter(|f| f.width < width)
+-                .max_by_key(|f| f.width)
++                .max_by(|a, b| a.width.total_cmp(&b.width))
+             {
+                 use_width = found.width;
+             }
+diff --git a/src/web_font.rs b/src/web_font.rs
+new file mode 100644
+--- /dev/null
++++ b/src/web_font.rs
+@@ -0,0 +1,144 @@
++// Copyright 2026 the 3JSN Authors
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
++//! Per-registration CSS matching and coverage, separate from immutable font bytes.
++
++use crate::{Attributes, FontStyle, FontWeight, FontWidth};
++use alloc::{sync::Arc, vec::Vec};
++
++/// The style descriptor of a web font. Oblique bounds are inclusive CSS degrees.
++#[derive(Clone, Copy, Debug, PartialEq)]
++pub enum WebFontStyle {
++    Normal,
++    Italic,
++    Oblique { min: f32, max: f32 },
++}
++
++/// Invalid input to [`WebFontFace::new`].
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum WebFontError {
++    UnicodeRange,
++    WeightRange,
++    WidthRange,
++    ObliqueRange,
++}
++
++impl core::fmt::Display for WebFontError {
++    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
++        write!(f, "invalid web-font {:?}", self)
++    }
++}
++impl core::error::Error for WebFontError {}
++
++/// Validated descriptors for one CSS face registration.
++///
++/// Callers supply CSS defaults, rather than inferring omitted descriptors from
++/// font metadata. `source_order` is stylesheet order, never request completion
++/// order. Distinct rules in one family must have distinct source orders.
++#[derive(Clone, Debug)]
++pub struct WebFontFace {
++    source_order: u64,
++    unicode_ranges: Arc<[(u32, u32)]>,
++    weight: (f32, f32),
++    width: (f32, f32),
++    style: WebFontStyle,
++}
++
++impl WebFontFace {
++    /// Creates a face with inclusive Unicode, weight, width and style ranges.
++    /// Width is a CSS percentage (normal is 100). An empty Unicode list permits
++    /// no characters; an omitted CSS descriptor is represented by 0..=0x10FFFF.
++    pub fn new(
++        source_order: u64,
++        unicode_ranges: &[(u32, u32)],
++        weight_range: (f32, f32),
++        width_range: (f32, f32),
++        style: WebFontStyle,
++    ) -> Result<Self, WebFontError> {
++        fn ordered((min, max): (f32, f32)) -> bool {
++            min.is_finite() && max.is_finite() && min <= max
++        }
++        if !ordered(weight_range) || weight_range.0 < 1.0 || weight_range.1 > 1000.0 {
++            return Err(WebFontError::WeightRange);
++        }
++        if !ordered(width_range) || width_range.0 <= 0.0 {
++            return Err(WebFontError::WidthRange);
++        }
++        if let WebFontStyle::Oblique { min, max } = style {
++            if !ordered((min, max)) || min < -90.0 || max > 90.0 {
++                return Err(WebFontError::ObliqueRange);
++            }
++        }
++        let mut ranges = unicode_ranges.to_vec();
++        if ranges.iter().any(|&(min, max)| min > max || max > 0x10FFFF) {
++            return Err(WebFontError::UnicodeRange);
++        }
++        ranges.sort_unstable();
++        let mut merged: Vec<(u32, u32)> = Vec::with_capacity(ranges.len());
++        for (min, max) in ranges {
++            if let Some(last) = merged.last_mut().filter(|last| min <= last.1 + 1) {
++                last.1 = last.1.max(max);
++            } else {
++                merged.push((min, max));
++            }
++        }
++        Ok(Self {
++            source_order,
++            unicode_ranges: merged.into(),
++            weight: weight_range,
++            width: width_range,
++            style,
++        })
++    }
++
++    pub fn source_order(&self) -> u64 {
++        self.source_order
++    }
++    pub fn unicode_ranges(&self) -> &[(u32, u32)] {
++        &self.unicode_ranges
++    }
++    pub fn weight_range(&self) -> (f32, f32) {
++        self.weight
++    }
++    pub fn width_range(&self) -> (f32, f32) {
++        self.width
++    }
++    pub fn style(&self) -> WebFontStyle {
++        self.style
++    }
++
++    /// Tests the original Unicode scalar, before symbol or legacy cmap remapping.
++    pub fn contains(&self, codepoint: u32) -> bool {
++        contains(&self.unicode_ranges, codepoint)
++    }
++
++    pub(crate) fn attributes(
++        &self,
++        width: FontWidth,
++        style: FontStyle,
++        weight: FontWeight,
++    ) -> Attributes {
++        let style = match self.style {
++            WebFontStyle::Normal => FontStyle::Normal,
++            WebFontStyle::Italic => FontStyle::Italic,
++            WebFontStyle::Oblique { min, max } => {
++                let target = match style {
++                    FontStyle::Normal => 0.0,
++                    FontStyle::Italic => 14.0,
++                    FontStyle::Oblique(angle) => angle.unwrap_or(14.0),
++                };
++                FontStyle::Oblique(Some(target.clamp(min, max)))
++            }
++        };
++        Attributes::new(
++            FontWidth::from_percentage(width.percentage().clamp(self.width.0, self.width.1)),
++            style,
++            FontWeight::new(weight.value().clamp(self.weight.0, self.weight.1)),
++        )
++    }
++}
++
++pub(crate) fn contains(ranges: &[(u32, u32)], codepoint: u32) -> bool {
++    let index = ranges.partition_point(|&(_, max)| max < codepoint);
++    ranges.get(index).is_some_and(|&(min, _)| min <= codepoint)
++}

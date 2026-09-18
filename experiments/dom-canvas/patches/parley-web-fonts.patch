@@ -1,0 +1,53 @@
+diff --git a/src/shape/mod.rs b/src/shape/mod.rs
+--- a/src/shape/mod.rs
++++ b/src/shape/mod.rs
+@@ -462,9 +462,15 @@
+             buffer.set_language(lang);
+         }
+ 
++        let mut web_font_funcs = font.font.web_font.as_deref().map(WebFontFuncs);
+         let glyph_buffer = harf_shaper.shape(
+             buffer,
+             ShapeOptions::new()
++                .font_funcs(
++                    web_font_funcs
++                        .as_mut()
++                        .map(|funcs| funcs as &mut dyn harfrust::font::FontFuncs),
++                )
+                 .plan(Some(shaper_plan))
+                 .features(&scx.features)
+                 .point_size(Some(item.size)),
+@@ -660,6 +666,33 @@
+     }
+ }
+ 
++struct WebFontFuncs<'a>(&'a fontique::WebFontFace);
++
++impl harfrust::font::FontFuncs for WebFontFuncs<'_> {
++    fn nominal_glyph(
++        &mut self,
++        builtin: &harfrust::font::BuiltinFontFuncs<'_>,
++        codepoint: u32,
++    ) -> Option<harfrust::GlyphId> {
++        self.0
++            .contains(codepoint)
++            .then(|| builtin.nominal_glyph(codepoint))
++            .flatten()
++    }
++
++    fn variant_glyph(
++        &mut self,
++        builtin: &harfrust::font::BuiltinFontFuncs<'_>,
++        codepoint: u32,
++        selector: u32,
++    ) -> Option<harfrust::GlyphId> {
++        self.0
++            .contains(codepoint)
++            .then(|| builtin.variant_glyph(codepoint, selector))
++            .flatten()
++    }
++}
++
+ struct SelectedFont {
+     font: QueryFont,
+     attrs: fontique::Attributes,

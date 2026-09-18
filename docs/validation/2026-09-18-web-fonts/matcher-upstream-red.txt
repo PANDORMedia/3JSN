@@ -1,0 +1,36 @@
+
+running 2 tests
+test scalar_weight_override_still_sets_nondefault_variable_coordinate ... FAILED
+test duplicate_coverage_variants_are_all_queried ... FAILED
+
+failures:
+
+---- scalar_weight_override_still_sets_nondefault_variable_coordinate stdout ----
+
+thread 'scalar_weight_override_still_sets_nondefault_variable_coordinate' (5252699) panicked at /Users/sean/dev/3JSN/experiments/web-font-matcher/tests/upstream_regressions.rs:79:5:
+assertion `left == right` failed
+  left: None
+ right: Some(700.0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- duplicate_coverage_variants_are_all_queried stdout ----
+
+thread 'duplicate_coverage_variants_are_all_queried' (5252698) panicked at /Users/sean/dev/3JSN/experiments/web-font-matcher/tests/upstream_regressions.rs:43:5:
+assertion `left == right` failed
+  left: [1]
+ right: [1, 2, 3]
+
+
+failures:
+    duplicate_coverage_variants_are_all_queried
+    scalar_weight_override_still_sets_nondefault_variable_coordinate
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Locking 1 package to latest Rust 1.93.0 compatible version
+      Adding fontique v0.11.1
+   Compiling fontique v0.11.1
+   Compiling web-font-baseline-check v0.0.0 (/Users/sean/dev/3JSN/.cache/web-fonts/baseline-check)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.11s
+     Running /Users/sean/dev/3JSN/experiments/web-font-matcher/tests/upstream_regressions.rs (.cache/web-fonts/target/debug/deps/upstream_regressions-af53d6571e2a7579)
+error: test failed, to rerun pass `--test upstream_regressions`
