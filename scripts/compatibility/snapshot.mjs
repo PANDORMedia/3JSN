@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { constants } from 'node:fs';
 import { lstat, open, readdir, readFile, readlink, realpath } from 'node:fs/promises';
-import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve, sep, toNamespacedPath } from 'node:path';
 
 export class SnapshotError extends Error {
   constructor(code, message, options) {
@@ -67,7 +67,9 @@ export async function snapshotTree(inputRoot, { exclude = [], excludeBasenames =
   const excluded = normalizeExclusions(exclude);
   const basenames = normalizeBasenames(excludeBasenames);
   if (!(await lstat(root)).isDirectory()) throw new SnapshotError('INVALID_ROOT', 'The snapshot root must be a real directory, not a symbolic link.');
-  const canonicalRoot = await realpath(root);
+  // Windows junction readlink values use namespace paths; compare both sides
+  // in that form while retaining the original link spelling in the manifest.
+  const canonicalRoot = toNamespacedPath(await realpath(root));
   const entries = [];
   const links = [];
 
@@ -81,11 +83,11 @@ export async function snapshotTree(inputRoot, { exclude = [], excludeBasenames =
       const stat = await lstat(absolute, { bigint: true });
       if (stat.isSymbolicLink()) {
         const target = await readlink(absolute);
-        const lexicalTarget = resolve(canonicalRoot, dirname(path), target);
+        const lexicalTarget = toNamespacedPath(resolve(canonicalRoot, dirname(path), target));
         if (!within(canonicalRoot, lexicalTarget)) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);
         if (isExcluded(relative(canonicalRoot, lexicalTarget).split(sep).join('/'), excluded, basenames)) throw new SnapshotError('EXCLUDED_LINK', `Symbolic link refers to excluded input: ${path}`);
         let resolved;
-        try { resolved = await realpath(absolute); } catch (cause) {
+        try { resolved = toNamespacedPath(await realpath(absolute)); } catch (cause) {
           throw new SnapshotError('INVALID_LINK', `Dangling or cyclic symbolic link: ${path}`, { cause });
         }
         if (!within(canonicalRoot, resolved)) throw new SnapshotError('EXTERNAL_LINK', `Symbolic link leaves the snapshot root: ${path}`);

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, symlink, unlink, utimes, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, readlink, realpath, rm, symlink, unlink, utimes, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join, resolve, toNamespacedPath } from 'node:path';
 import { test } from 'node:test';
 import { compareSnapshots, readSnapshot, snapshotTree, validateSnapshot } from './snapshot.mjs';
 
@@ -215,4 +215,24 @@ test('basename exclusions do not alter legacy exact-path snapshot scope', async 
   const excluded = await snapshotTree(root, { exclude: ['node_modules'], excludeBasenames: ['node_modules'] });
   assert.throws(() => compareSnapshots(legacy, excluded), { code: 'SCOPE_CHANGED' });
   await assert.rejects(snapshotTree(root, { excludeBasenames: ['nested/node_modules'] }), { code: 'INVALID_EXCLUSIONS' });
+});
+
+test('absolute directory links preserve raw spelling and match canonical root scope', async t => {
+  const { root, temporary } = await setup(t);
+  const target = join(root, 'included');
+  await mkdir(target);
+  await writeFile(join(target, 'value.txt'), 'included');
+  const alias = join(root, 'alias');
+  // Junctions expose namespace-prefixed readlink targets on Windows even when
+  // the caller supplied an ordinary absolute drive path.
+  await symlink(await realpath(target), alias, process.platform === 'win32' ? 'junction' : 'dir');
+  const captured = await snapshotTree(toNamespacedPath(root));
+  assert.equal(captured.entries.find(entry => entry.path === 'alias').target, await readlink(alias));
+  assert.ok(captured.entries.some(entry => entry.path === 'included/value.txt'));
+  await assert.rejects(snapshotTree(root, { exclude: ['included'] }), { code: 'EXCLUDED_LINK' });
+  await unlink(alias);
+  const outside = join(temporary, 'outside');
+  await mkdir(outside);
+  await symlink(outside, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  await assert.rejects(snapshotTree(root), { code: 'EXTERNAL_LINK' });
 });

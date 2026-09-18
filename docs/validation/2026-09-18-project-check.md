@@ -80,3 +80,11 @@ are archived beside the reproduction results. Windows CLI signal semantics remai
 outside the macOS SIGINT result; worker AbortController tests run independently.
 
 No application build, native graphics support or platform certification is added.
+
+The first correction passed macOS/Linux CI but exposed a Windows junction-path
+mismatch in the new scope regression. Windows namespace prefixes now use Node's
+`toNamespacedPath` consistently for containment comparisons; raw link spellings
+remain in snapshot identity. Twelve local snapshot tests pass, retaining exact
+excluded/external rejection assertions and adding a contained absolute-link
+control. Windows execution still requires the next CI run; this local result
+alone is not Windows validation.
