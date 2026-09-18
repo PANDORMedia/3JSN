@@ -1,10 +1,16 @@
 //! A bounded initial-tree loader into Blitz's authoritative live document.
-//! CSS remains parsed by Blitz and arbitrary dynamic HTML uses the configured
-//! parser provider. This experiment does not establish parser omission.
+//! CSS remains parsed by Blitz. The default `dynamic-html` feature installs its
+//! maintained HTML provider; restricted loading omits that provider. Artifact
+//! parser omission requires separate dependency and linkage evidence.
 
 pub mod contract;
 
-use std::{error::Error, fmt, sync::Arc};
+#[path = "../../html-v8/src/capabilities.rs"]
+pub mod capabilities;
+
+#[cfg(feature = "dynamic-html")]
+use std::sync::Arc;
+use std::{error::Error, fmt};
 
 use blitz_dom::{
     Attribute, BaseDocument, DEFAULT_CSS, DocumentConfig, DocumentMutator, NodeId, QualName,
@@ -50,6 +56,7 @@ pub struct LoadReport {
     /// The root tree uses construction APIs. Resource/subdocument providers may
     /// still invoke HTML parsing during attachment or later resource delivery.
     pub initial_document_html_parser_used: bool,
+    /// Semantic availability; BaseDocument keeps a no-op provider when absent.
     pub dynamic_html_parser_provider: &'static str,
 }
 
@@ -63,15 +70,51 @@ pub struct LoadedUi {
 
 pub fn load_json(bytes: &[u8], config: DocumentConfig) -> Result<LoadedUi, LoadError> {
     let input = CompiledUi::from_json(bytes)?;
-    load_validated(&input, config)
+    load_validated(&input, config, false)
 }
 
 pub fn load(input: &CompiledUi, config: DocumentConfig) -> Result<LoadedUi, LoadError> {
     input.validate()?;
-    load_validated(input, config)
+    load_validated(input, config, false)
 }
 
-fn load_validated(input: &CompiledUi, mut config: DocumentConfig) -> Result<LoadedUi, LoadError> {
+/// Startup gate for an explicitly restricted host. No default parser is
+/// installed, and caller-supplied parsers are rejected. Live DOM operations must
+/// separately enforce the same capability; BaseDocument is not a sandbox.
+pub fn load_json_restricted(bytes: &[u8], config: DocumentConfig) -> Result<LoadedUi, LoadError> {
+    let input = CompiledUi::from_json(bytes)?;
+    load_validated(&input, config, true)
+}
+
+/// Typed-IR counterpart of [`load_json_restricted`].
+pub fn load_restricted(input: &CompiledUi, config: DocumentConfig) -> Result<LoadedUi, LoadError> {
+    input.validate()?;
+    load_validated(input, config, true)
+}
+
+fn load_validated(
+    input: &CompiledUi,
+    mut config: DocumentConfig,
+    restricted: bool,
+) -> Result<LoadedUi, LoadError> {
+    if restricted && config.html_parser_provider.is_some() {
+        return Err(LoadError::Unsupported(
+            "restricted loading rejects a caller-provided HTML parser",
+        ));
+    }
+    let default_parser_enabled = cfg!(feature = "dynamic-html") && !restricted;
+    if config.html_parser_provider.is_none() && !default_parser_enabled {
+        for node in &input.nodes {
+            if let CompiledNode::Element {
+                namespace, name, ..
+            } = node
+                && let Some(requirement) =
+                    capabilities::element_html_parser_requirement(namespace, name)
+            {
+                return Err(LoadError::Unsupported(requirement));
+            }
+        }
+    }
     // Match HtmlDocument's UA policy, including callers supplying extra sheets.
     if let Some(sheets) = &mut config.ua_stylesheets
         && !sheets.iter().any(|sheet| sheet == DEFAULT_CSS)
@@ -80,10 +123,13 @@ fn load_validated(input: &CompiledUi, mut config: DocumentConfig) -> Result<Load
     }
     let dynamic_html_parser_provider = if config.html_parser_provider.is_some() {
         "caller-provided-unverified"
-    } else {
+    } else if default_parser_enabled {
         "blitz-html"
+    } else {
+        "absent"
     };
-    if config.html_parser_provider.is_none() {
+    #[cfg(feature = "dynamic-html")]
+    if config.html_parser_provider.is_none() && default_parser_enabled {
         config.html_parser_provider = Some(Arc::new(blitz_html::HtmlProvider));
     }
     let mut document = BaseDocument::new(config);
@@ -184,5 +230,8 @@ fn append(
     Ok(())
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "dynamic-html"))]
 mod tests;
+
+#[cfg(test)]
+mod parser_policy_tests;

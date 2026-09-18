@@ -1,0 +1,3563 @@
+{
+  "status": "completed",
+  "host": {
+    "platform": "macOS-26.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.9.6"
+  },
+  "inputs": {
+    "enabled": {
+      "path": "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+      "bytes": 92432032,
+      "sha256": "51d4f3f6c95836b0daa27124c15cc5629d6843e8f33a8adc4980b240c0cd6beb"
+    },
+    "disabled": {
+      "path": "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+      "bytes": 91298144,
+      "sha256": "66667b849beee784bb1ec2de5487d8dda94724e5aee4b192df46d6ae9a654e9f"
+    },
+    "ir": {
+      "path": "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+      "bytes": 12861,
+      "sha256": "12ad854f5b34dedc960159c3283ac8d7bba4c030ee41b00348f37cf33ce9c6d7"
+    },
+    "font": {
+      "path": "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+      "bytes": 258624,
+      "sha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a"
+    },
+    "behavior": {
+      "path": "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js",
+      "bytes": 3960,
+      "sha256": "6f80f472ac7fefceb565ebf23ca87e0eb75b2c36447fd0641992c04e8686d31c"
+    }
+  },
+  "samples": [
+    {
+      "phase": "warmup",
+      "round": 1,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-01-enabled-stdout.txt",
+      "stderr": "warmup-01-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 979368167,
+      "peakResidentBytes": 41484288,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 43985959,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 43985959,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-01-disabled-stdout.txt",
+      "stderr": "warmup-01-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 43336209,
+      "peakResidentBytes": 40583168,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 31260458,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 31260458,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-02-disabled-stdout.txt",
+      "stderr": "warmup-02-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28030375,
+      "peakResidentBytes": 40878080,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18401917,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18401917,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-02-enabled-stdout.txt",
+      "stderr": "warmup-02-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28361459,
+      "peakResidentBytes": 40452096,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18404750,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18404750,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "warmup",
+      "round": 3,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-03-enabled-stdout.txt",
+      "stderr": "warmup-03-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27490250,
+      "peakResidentBytes": 40517632,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 17715208,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17715208,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "warmup",
+      "round": 3,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "warmup-03-disabled-stdout.txt",
+      "stderr": "warmup-03-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27878417,
+      "peakResidentBytes": 40812544,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18182750,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18182750,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 1,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-01-enabled-stdout.txt",
+      "stderr": "measured-01-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27864666,
+      "peakResidentBytes": 40517632,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18099708,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18099708,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 1,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-01-disabled-stdout.txt",
+      "stderr": "measured-01-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28108959,
+      "peakResidentBytes": 39862272,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18252041,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18252041,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 2,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-02-disabled-stdout.txt",
+      "stderr": "measured-02-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27565208,
+      "peakResidentBytes": 40828928,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18201959,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18201959,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 2,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-02-enabled-stdout.txt",
+      "stderr": "measured-02-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28156042,
+      "peakResidentBytes": 41091072,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18257167,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18257167,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 3,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-03-enabled-stdout.txt",
+      "stderr": "measured-03-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27544000,
+      "peakResidentBytes": 41172992,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18065167,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18065167,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 3,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-03-disabled-stdout.txt",
+      "stderr": "measured-03-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28454708,
+      "peakResidentBytes": 41025536,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18487000,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18487000,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 4,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-04-disabled-stdout.txt",
+      "stderr": "measured-04-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28945250,
+      "peakResidentBytes": 40632320,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18677833,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18677833,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 4,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-04-enabled-stdout.txt",
+      "stderr": "measured-04-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27727709,
+      "peakResidentBytes": 40419328,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18013583,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18013583,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 5,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-05-enabled-stdout.txt",
+      "stderr": "measured-05-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27929375,
+      "peakResidentBytes": 40484864,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18019375,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18019375,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 5,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-05-disabled-stdout.txt",
+      "stderr": "measured-05-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27137375,
+      "peakResidentBytes": 40665088,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18014333,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18014333,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 6,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-06-disabled-stdout.txt",
+      "stderr": "measured-06-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27704459,
+      "peakResidentBytes": 40534016,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18273209,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18273209,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 6,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-06-enabled-stdout.txt",
+      "stderr": "measured-06-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28084375,
+      "peakResidentBytes": 40566784,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18489166,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18489166,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 7,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-07-enabled-stdout.txt",
+      "stderr": "measured-07-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27501542,
+      "peakResidentBytes": 41254912,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18177625,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18177625,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 7,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-07-disabled-stdout.txt",
+      "stderr": "measured-07-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27713042,
+      "peakResidentBytes": 40075264,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18125792,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18125792,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 8,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-08-disabled-stdout.txt",
+      "stderr": "measured-08-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27535917,
+      "peakResidentBytes": 40747008,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18278542,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18278542,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 8,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-08-enabled-stdout.txt",
+      "stderr": "measured-08-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27487291,
+      "peakResidentBytes": 40501248,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 17993375,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17993375,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 9,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-09-enabled-stdout.txt",
+      "stderr": "measured-09-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 26814959,
+      "peakResidentBytes": 40271872,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 17469542,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17469542,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 9,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-09-disabled-stdout.txt",
+      "stderr": "measured-09-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28840084,
+      "peakResidentBytes": 40648704,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18196959,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18196959,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 10,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-10-disabled-stdout.txt",
+      "stderr": "measured-10-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27951417,
+      "peakResidentBytes": 39944192,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18612708,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18612708,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 10,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-10-enabled-stdout.txt",
+      "stderr": "measured-10-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28323625,
+      "peakResidentBytes": 40468480,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18345875,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18345875,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 11,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-11-enabled-stdout.txt",
+      "stderr": "measured-11-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27450625,
+      "peakResidentBytes": 41238528,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18191875,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18191875,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 11,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-11-disabled-stdout.txt",
+      "stderr": "measured-11-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27780458,
+      "peakResidentBytes": 40517632,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18219583,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18219583,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 12,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-12-disabled-stdout.txt",
+      "stderr": "measured-12-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28009417,
+      "peakResidentBytes": 39796736,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18108625,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18108625,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 12,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-12-enabled-stdout.txt",
+      "stderr": "measured-12-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28230458,
+      "peakResidentBytes": 41222144,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18139125,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18139125,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 13,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-13-enabled-stdout.txt",
+      "stderr": "measured-13-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27943875,
+      "peakResidentBytes": 41123840,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18472458,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18472458,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 13,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-13-disabled-stdout.txt",
+      "stderr": "measured-13-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28653000,
+      "peakResidentBytes": 41025536,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18204250,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18204250,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 14,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-14-disabled-stdout.txt",
+      "stderr": "measured-14-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27574875,
+      "peakResidentBytes": 39911424,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18222542,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18222542,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 14,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-14-enabled-stdout.txt",
+      "stderr": "measured-14-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27812875,
+      "peakResidentBytes": 40321024,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 17776917,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17776917,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 15,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-15-enabled-stdout.txt",
+      "stderr": "measured-15-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28100834,
+      "peakResidentBytes": 41189376,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18314959,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18314959,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 15,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-15-disabled-stdout.txt",
+      "stderr": "measured-15-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27356625,
+      "peakResidentBytes": 40632320,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18002000,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18002000,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 16,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-16-disabled-stdout.txt",
+      "stderr": "measured-16-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27060000,
+      "peakResidentBytes": 40779776,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 17942833,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17942833,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 16,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-16-enabled-stdout.txt",
+      "stderr": "measured-16-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27372375,
+      "peakResidentBytes": 40484864,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 17727250,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17727250,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 17,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-17-enabled-stdout.txt",
+      "stderr": "measured-17-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27404209,
+      "peakResidentBytes": 41271296,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18136958,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18136958,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 17,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-17-disabled-stdout.txt",
+      "stderr": "measured-17-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 26945833,
+      "peakResidentBytes": 39813120,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 17599834,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 17599834,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 18,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-18-disabled-stdout.txt",
+      "stderr": "measured-18-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 29378083,
+      "peakResidentBytes": 39927808,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18268833,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18268833,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 18,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-18-enabled-stdout.txt",
+      "stderr": "measured-18-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28504541,
+      "peakResidentBytes": 41336832,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18733625,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18733625,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 19,
+      "order": 1,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-19-enabled-stdout.txt",
+      "stderr": "measured-19-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27864584,
+      "peakResidentBytes": 41287680,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18197875,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18197875,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 19,
+      "order": 2,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-19-disabled-stdout.txt",
+      "stderr": "measured-19-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 27841041,
+      "peakResidentBytes": 39895040,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18226542,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18226542,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 20,
+      "order": 1,
+      "variant": "disabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/disabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-20-disabled-stdout.txt",
+      "stderr": "measured-20-disabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28075583,
+      "peakResidentBytes": 39895040,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": false,
+        "initializationNanoseconds": 18126166,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18126166,
+      "snapshotMatches": true
+    },
+    {
+      "phase": "measured",
+      "round": 20,
+      "order": 2,
+      "variant": "enabled",
+      "command": [
+        "/Users/sean/dev/3JSN/.cache/parser-omission/enabled-target/aarch64-apple-darwin/release/threejs-compiled-ui-runtime",
+        "--measure-layout",
+        "/Users/sean/dev/3JSN/.cache/parser-omission/fixture.ui.json",
+        "/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2",
+        "/Users/sean/dev/3JSN/fixtures/parser-omission/behavior.js"
+      ],
+      "stdout": "measured-20-enabled-stdout.txt",
+      "stderr": "measured-20-enabled-stderr.txt",
+      "parentLifecycleNanoseconds": 28101125,
+      "peakResidentBytes": 41304064,
+      "measurement": {
+        "layoutMeasurement": true,
+        "dynamicHtml": true,
+        "initializationNanoseconds": 18215417,
+        "initial": {
+          "clicks": 0,
+          "samples": [
+            {
+              "key": "title",
+              "text": "Native UI, live state",
+              "rect": [
+                20,
+                41.4375,
+                314.625,
+                38
+              ]
+            },
+            {
+              "key": "button",
+              "text": "Advance",
+              "rect": [
+                354.625,
+                40.9375,
+                104.875,
+                39
+              ]
+            },
+            {
+              "key": "stable",
+              "text": "Original child",
+              "rect": [
+                20,
+                120.875,
+                284,
+                43
+              ]
+            },
+            {
+              "key": "status",
+              "text": "Ready",
+              "rect": [
+                20,
+                179.875,
+                760,
+                19
+              ]
+            }
+          ]
+        },
+        "verification": null,
+        "gpuDeviceRequested": false,
+        "metric": "main entry through IR, font, realm initialization and first layout snapshot"
+      },
+      "initializationNanoseconds": 18215417,
+      "snapshotMatches": true
+    }
+  ],
+  "summary": {
+    "enabled": {
+      "parentLifecycleNanoseconds": {
+        "count": 20,
+        "minimum": 26814959,
+        "median": 27864625.0,
+        "maximum": 28504541,
+        "mean": 27810954.25,
+        "sampleStdDev": 402474.7528534031
+      },
+      "initializationNanoseconds": {
+        "count": 20,
+        "minimum": 17469542,
+        "median": 18158375.0,
+        "maximum": 18733625,
+        "mean": 18141852.1,
+        "sampleStdDev": 280563.7332839011
+      },
+      "peakResidentBytes": {
+        "count": 20,
+        "minimum": 40271872,
+        "median": 41107456.0,
+        "maximum": 41336832,
+        "mean": 40876441.6,
+        "sampleStdDev": 405767.1822176902
+      }
+    },
+    "disabled": {
+      "parentLifecycleNanoseconds": {
+        "count": 20,
+        "minimum": 26945833,
+        "median": 27810749.5,
+        "maximum": 29378083,
+        "mean": 27931566.7,
+        "sampleStdDev": 650470.156881936
+      },
+      "initializationNanoseconds": {
+        "count": 20,
+        "minimum": 17599834,
+        "median": 18211916.5,
+        "maximum": 18677833,
+        "mean": 18202079.2,
+        "sampleStdDev": 231795.59118612742
+      },
+      "peakResidentBytes": {
+        "count": 20,
+        "minimum": 39796736,
+        "median": 40525824.0,
+        "maximum": 41025536,
+        "mean": 40357888,
+        "sampleStdDev": 444260.24920535035
+      }
+    }
+  },
+  "pairedDifferencesDisabledMinusEnabled": [
+    {
+      "round": 1,
+      "parentLifecycleNanoseconds": 244293,
+      "initializationNanoseconds": 152333,
+      "peakResidentBytes": -655360
+    },
+    {
+      "round": 2,
+      "parentLifecycleNanoseconds": -590834,
+      "initializationNanoseconds": -55208,
+      "peakResidentBytes": -262144
+    },
+    {
+      "round": 3,
+      "parentLifecycleNanoseconds": 910708,
+      "initializationNanoseconds": 421833,
+      "peakResidentBytes": -147456
+    },
+    {
+      "round": 4,
+      "parentLifecycleNanoseconds": 1217541,
+      "initializationNanoseconds": 664250,
+      "peakResidentBytes": 212992
+    },
+    {
+      "round": 5,
+      "parentLifecycleNanoseconds": -792000,
+      "initializationNanoseconds": -5042,
+      "peakResidentBytes": 180224
+    },
+    {
+      "round": 6,
+      "parentLifecycleNanoseconds": -379916,
+      "initializationNanoseconds": -215957,
+      "peakResidentBytes": -32768
+    },
+    {
+      "round": 7,
+      "parentLifecycleNanoseconds": 211500,
+      "initializationNanoseconds": -51833,
+      "peakResidentBytes": -1179648
+    },
+    {
+      "round": 8,
+      "parentLifecycleNanoseconds": 48626,
+      "initializationNanoseconds": 285167,
+      "peakResidentBytes": 245760
+    },
+    {
+      "round": 9,
+      "parentLifecycleNanoseconds": 2025125,
+      "initializationNanoseconds": 727417,
+      "peakResidentBytes": 376832
+    },
+    {
+      "round": 10,
+      "parentLifecycleNanoseconds": -372208,
+      "initializationNanoseconds": 266833,
+      "peakResidentBytes": -524288
+    },
+    {
+      "round": 11,
+      "parentLifecycleNanoseconds": 329833,
+      "initializationNanoseconds": 27708,
+      "peakResidentBytes": -720896
+    },
+    {
+      "round": 12,
+      "parentLifecycleNanoseconds": -221041,
+      "initializationNanoseconds": -30500,
+      "peakResidentBytes": -1425408
+    },
+    {
+      "round": 13,
+      "parentLifecycleNanoseconds": 709125,
+      "initializationNanoseconds": -268208,
+      "peakResidentBytes": -98304
+    },
+    {
+      "round": 14,
+      "parentLifecycleNanoseconds": -238000,
+      "initializationNanoseconds": 445625,
+      "peakResidentBytes": -409600
+    },
+    {
+      "round": 15,
+      "parentLifecycleNanoseconds": -744209,
+      "initializationNanoseconds": -312959,
+      "peakResidentBytes": -557056
+    },
+    {
+      "round": 16,
+      "parentLifecycleNanoseconds": -312375,
+      "initializationNanoseconds": 215583,
+      "peakResidentBytes": 294912
+    },
+    {
+      "round": 17,
+      "parentLifecycleNanoseconds": -458376,
+      "initializationNanoseconds": -537124,
+      "peakResidentBytes": -1458176
+    },
+    {
+      "round": 18,
+      "parentLifecycleNanoseconds": 873542,
+      "initializationNanoseconds": -464792,
+      "peakResidentBytes": -1409024
+    },
+    {
+      "round": 19,
+      "parentLifecycleNanoseconds": -23543,
+      "initializationNanoseconds": 28667,
+      "peakResidentBytes": -1392640
+    },
+    {
+      "round": 20,
+      "parentLifecycleNanoseconds": -25542,
+      "initializationNanoseconds": -89251,
+      "peakResidentBytes": -1409024
+    }
+  ],
+  "pairedDifferenceSummary": {
+    "parentLifecycleNanoseconds": {
+      "count": 20,
+      "minimum": -792000,
+      "median": -24542.5,
+      "maximum": 2025125,
+      "mean": 120612.45,
+      "sampleStdDev": 719317.8771924701
+    },
+    "initializationNanoseconds": {
+      "count": 20,
+      "minimum": -537124,
+      "median": 11333.0,
+      "maximum": 727417,
+      "mean": 60227.1,
+      "sampleStdDev": 342885.5308052068
+    },
+    "peakResidentBytes": {
+      "count": 20,
+      "minimum": -1458176,
+      "median": -466944.0,
+      "maximum": 376832,
+      "mean": -518553.6,
+      "sampleStdDev": 659041.9852392123
+    }
+  },
+  "methodology": {
+    "warmupsPerVariant": 3,
+    "measuredPairs": 20,
+    "timeoutSeconds": 30,
+    "order": "Sequential pairs, enabled/disabled on odd rounds and disabled/enabled on even rounds.",
+    "parentLifecycleNanoseconds": "Monotonic duration before Popen through wait4 child termination; includes launch, initialization, reporting and teardown.",
+    "initializationNanoseconds": "Child main entry through IR, font, realm initialization and first layout snapshot, as reported by the runtime.",
+    "peakResidentBytes": "Darwin wait4 per-child lifetime maximum resident set size in bytes; not steady-state heap or private footprint.",
+    "scope": "Warm-cache local DOM/layout subset, no verification workload or GPU device request; not a cold-start or GPU benchmark.",
+    "comparability": "Caller supplies binaries from identical source/build settings except dynamic-html; this harness records identities but cannot prove build provenance.",
+    "interpretation": "Raw observations and descriptive paired statistics only; no speedup or general performance claim."
+  }
+}

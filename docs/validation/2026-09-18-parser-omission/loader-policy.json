@@ -1,0 +1,38 @@
+{
+  "scope": "compiled UI loader parser capability policy; CPU and source checks only",
+  "defaultFeature": "dynamic-html",
+  "newApis": [
+    "load_json_restricted",
+    "load_restricted"
+  ],
+  "sharedHelper": "element_html_parser_requirement(namespace, local_name) -> Option<&'static str>",
+  "results": {
+    "defaultPolicyTests": 7,
+    "restrictedPolicyTests": 7,
+    "defaultAllTargetTests": 25,
+    "clippyDefault": "pass",
+    "clippyRestricted": "pass"
+  },
+  "automaticParserEntryAudit": [
+    "HTML iframe srcdoc attachment",
+    "iframe src fetch/resource delivery and navigation",
+    "same iframe hook for foreign namespace local name because pinned Blitz dispatches by local name"
+  ],
+  "explicitParserEntry": "DocumentMutator::set_inner_html; guarded separately by the DOM op host",
+  "noParserFeatureMeaning": "No maintained default provider in this library; ordinary APIs still preserve explicit providers. Restricted APIs reject supplied providers before constructing the document.",
+  "artifactParserOmission": "not evaluated by these checks",
+  "sourceSha256": {
+    "experiments/compiled-ui/Cargo.toml": "7e8c47950255b2747d2092fbaa8561395d0fa843ac0981a25468e1ccf24bde5b",
+    "experiments/compiled-ui/Cargo.lock": "a48099f9c86a844c9619c427c24935cfb4b8954edae9e9b87621fa12a4ca196f",
+    "experiments/compiled-ui/src/lib.rs": "1c00958303225780a6b9e5e88cbc9510f28c2810221b035ebe106104146a4789",
+    "experiments/compiled-ui/src/parser_policy_tests.rs": "29e99f43b2ed430cb4e46bd12833c05fcee0a36e9c9e39395ae1f398d8d6fe12",
+    "experiments/html-v8/src/capabilities.rs": "da80a344fa017a371b688a33cda6fc6042dd008d1c337403e0812ded482b6c27"
+  },
+  "logSha256": {
+    "parser-policy-default.log": "1b4b0af2e207ab0c8c4a8f8c105424e98cf3a0d9216401afba19f12ecae1d643",
+    "parser-policy-restricted.log": "a5af9404990e114fbb59e803a5130860e9c3a729ed05e9647497b25c5d110ad4",
+    "parser-policy-default-all.log": "2379497def6a69f1095024f42e1482c1a52bfff9b8cb8442eabac1b66614b5ff",
+    "parser-policy-clippy-default.log": "f1fe3b41a49de510a360ee1fb56d9a6937eeb82b5ef94dbe7b2151354ce64f44",
+    "parser-policy-clippy-restricted.log": "aaba119cdbc95a9ee7f391b4fc3c08ec3d1452aa1084082b9093e85ada2db9a2"
+  }
+}

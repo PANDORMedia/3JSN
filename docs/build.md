@@ -14,8 +14,9 @@ still need integration. Do not port a game to these fixtures as a compatibility 
 
 The DOM profile still parses HTML/CSS at runtime. The
 [compiled UI architecture](adr/0003-compiled-ui-and-generic-compatibility.md) is a
-separate planned path; neither parser omission nor generic project compatibility
-is implied by this packaging checkpoint.
+separate experimental path with a [restricted artifact proof](validation/2026-09-18-parser-omission.md).
+Compiled UI and parser capability selection are not integrated into these package
+profiles; generic project compatibility is not implied by this packaging checkpoint.
 
 ## Build the example
 

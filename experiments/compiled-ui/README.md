@@ -11,13 +11,24 @@ window fixture uses its own `#scene` canvas through the existing experimental
 window host; that fixture contract does not define the compiler grammar.
 
 This is not a shipping format, package profile or unchanged-project certification.
-CSS is still parsed and evaluated by Blitz. Dynamic HTML parsing remains linked;
-the fixture deliberately exercises `innerHTML`. No parser omission, binary-size
-reduction or speedup is established. The [checkpoint](../../docs/validation/2026-09-18-compiled-ui.md)
+CSS is still parsed and evaluated by Blitz. The default `dynamic-html` feature
+retains dynamic HTML parsing; the fixture deliberately exercises `innerHTML`.
+The original [checkpoint](../../docs/validation/2026-09-18-compiled-ui.md)
 records native construction parity and Metal presentation, including the shared
 stylesheet-order repair. SVG/MathML, inline-layout and table-size compatibility
 remain incomplete. The commands below produce evidence rather than promise a
 passing browser comparison.
+
+For restricted hosts, `load_json_restricted` / `load_restricted` reject a supplied
+parser provider and preflight all iframe hooks before creating the document.
+`--no-default-features` makes `blitz-html` optional and applies the same preflight
+when ordinary loading has no supplied provider. Ordinary loading preserves an
+explicit caller provider and reports it as unverified. The host must also guard
+live markup operations: the underlying native document's absent provider alone
+does not guarantee an explicit error or preserve children during replacement.
+The separate [optional-parser runtime](../compiled-ui-runtime/README.md) supplies
+that host policy and the artifact-comparison tools. Neither a feature flag nor
+this loader's report alone proves parser omission or performance improvement.
 
 ## Data and ownership
 

@@ -1,7 +1,7 @@
 # ADR 0003: Compile UI inputs while preserving generic application behavior
 
 - Date: 2026-09-18
-- Status: direction accepted; initial-tree construction prototype verified; parser omission remains unimplemented
+- Status: direction accepted; initial-tree construction and restricted parser linkage verified; new restricted-window validation pending
 - Extends: [ADR 0002](0002-unchanged-project-compatibility.md)
 
 ## Decision
@@ -107,8 +107,17 @@ fixtures match the interpreted-native construction path; browser comparison
 remains partial. One compiled fixture presents 120 Metal frames with reads of its
 original HTML denied, while retaining dynamic `innerHTML` behavior.
 
-This proves the construction portion of step 2, not the complete comparison or
-step 3. The prototype retains CSS and HTML parsers, drops native DocumentType
-nodes explicitly and rejects unsupported document modes. Script discovery,
-resource packaging, framework coverage and a shipping data format remain open.
-No footprint or performance improvement is claimed before measurement.
+This proves the construction portion of step 2, not the complete comparison.
+The default prototype retains CSS and HTML parsers, drops native DocumentType
+nodes explicitly and rejects unsupported document modes.
+
+The separate [restricted-artifact checkpoint](../validation/2026-09-18-parser-omission.md)
+now omits the HTML/XML parser crates from actual macOS arm64 release dependency,
+compiler, link-map and symbol records. Default dynamic markup remains available;
+restricted markup operations reject before mutation. One plain-DOM fixture
+matches the sampled Chrome behavior. The restricted binary is 1.08 MiB smaller;
+paired CPU measurements show no meaningful startup improvement in that workload.
+Native-window validation for the new artifact and shared-host extraction is
+pending an unlocked desktop. CSS compilation, script discovery, resource/build
+integration, dynamic dependency analysis, framework coverage and a shipping data
+format remain open.
