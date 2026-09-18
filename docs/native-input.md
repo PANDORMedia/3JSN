@@ -15,6 +15,15 @@ records bounded adjacent-motion batching, ordered discrete-event delivery, CPU
 burst/error controls and native React/completion regressions. Queue overflow
 remains explicit; this is not lossless pointer-trajectory or full input support.
 
+The shared DOM adapter now has bounded element focus and keyboard routing;
+see the [focus checkpoint](validation/2026-09-18-dom-focus.md). Each key event
+resolves the current active element and propagates through Document to Window.
+Uncanceled primary mousedown and Tab have bounded focus defaults. These DOM
+adapter events remain untrusted plain `Event` objects, distinct from the
+standalone player's trusted events described below. The checkpoint matches 44 bounded browser semantic cases in CPU and native
+window comparisons across both parser modes, then presents 120 Metal frames
+per mode; event-interface differences remain explicit.
+
 ## Ownership and delivery
 
 `crates/player/src/input.rs` converts winit events on the OS thread into owned
@@ -27,7 +36,8 @@ A shared bounded [input queue](../crates/input-queue/src/lib.rs) connects each
 window thread to its owning runtime worker. The standalone player holds at most
 1,024 records; the experimental DOM window holds at most 128. Adjacent queued
 mouse moves retain the newest position. The standalone player also requires
-matching button and modifier snapshots before combining two moves. A button,
+matching button and modifier snapshots before combining two moves; the DOM
+window requires matching modifier snapshots. A button,
 key, wheel, focus or leave/reset record is a barrier: moves never cross it, and
 discrete records are not combined. This is delivery of the latest motion samples,
 not lossless recording of the pointer trajectory.

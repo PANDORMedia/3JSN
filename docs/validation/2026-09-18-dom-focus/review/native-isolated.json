@@ -1,0 +1,346 @@
+{
+  "binary": "/Users/sean/dev/3JSN/artifacts/dom-focus-native-01/Focus native preserved \u00e9 #/3jsn-dom-focus",
+  "binarySha256": "7fc4cf625ca270f6f47d40b7f7ebe83eac38bf1a657e5c79929d8215f6d1ab7a",
+  "results": [
+    {
+      "case": "remove-parent-focus-sibling",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "remove-parent-focus-sibling",
+          "error": null,
+          "events": [
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focus",
+              "review-b",
+              "review-b",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusin",
+              "review-b",
+              "review-b",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "review-b",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "BODY",
+              4
+            ],
+            [
+              "layout",
+              "BODY",
+              4
+            ],
+            [
+              "task",
+              "BODY",
+              4
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    },
+    {
+      "case": "remove-refocus-self",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "remove-refocus-self",
+          "error": null,
+          "events": [
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focus",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusin",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "BODY",
+              4
+            ],
+            [
+              "layout",
+              "BODY",
+              4
+            ],
+            [
+              "task",
+              "BODY",
+              4
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    },
+    {
+      "case": "blur-refocus-self",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "blur-refocus-self",
+          "error": null,
+          "events": [
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focus",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusin",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "review-a",
+              4
+            ],
+            [
+              "layout",
+              "review-a",
+              4
+            ],
+            [
+              "task",
+              "review-a",
+              4
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    },
+    {
+      "case": "replace-stylesheet-text",
+      "exitCode": -6,
+      "result": null,
+      "errorHead": "\nthread 'main' (5747916) panicked at /Users/sean/dev/3JSN/.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/servo/selector_parser.rs:866:14:\ncalled `Option::unwrap()` on a `None` value\nnote: run wit"
+    },
+    {
+      "case": "append-stylesheet",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "append-stylesheet",
+          "error": null,
+          "events": [
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "review-a",
+              0
+            ],
+            [
+              "layout",
+              "review-a",
+              0
+            ],
+            [
+              "task",
+              "review-a",
+              0
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    },
+    {
+      "case": "focus-hides-self",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "focus-hides-self",
+          "error": null,
+          "events": [
+            [
+              "focus",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusin",
+              "review-a",
+              "review-a",
+              true,
+              "review-parent"
+            ],
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "review-a",
+              2
+            ],
+            [
+              "layout",
+              "review-a",
+              2
+            ],
+            [
+              "task",
+              "review-a",
+              2
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    },
+    {
+      "case": "blur-removes-anchor",
+      "exitCode": 0,
+      "result": [
+        {
+          "name": "blur-removes-anchor",
+          "error": "NotFoundError",
+          "events": [
+            [
+              "blur",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ],
+            [
+              "focusout",
+              "review-a",
+              "BODY",
+              true,
+              "review-parent"
+            ]
+          ],
+          "actions": [
+            [
+              "immediate",
+              "BODY",
+              2
+            ],
+            [
+              "layout",
+              "BODY",
+              2
+            ],
+            [
+              "task",
+              "BODY",
+              2
+            ]
+          ]
+        }
+      ],
+      "errorHead": null
+    }
+  ]
+}

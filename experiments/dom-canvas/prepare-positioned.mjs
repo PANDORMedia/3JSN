@@ -21,6 +21,11 @@ const directory = `.cache/positioned-candidate${baseline ? '-baseline' : ''}`;
 const target = resolve(root, directory);
 const namePrefix = baseline ? 'threejs-positioned-baseline-' : 'threejs-positioned-';
 const changedFiles = baseline ? {
+  'packages/blitz-dom/src/document.rs': '411f9dc3bb9719cf9de8ec5989c902ee475f585236ca1e06ddf5dac9370b5ffe',
+  'packages/blitz-dom/src/lib.rs': '4d63138169c1c913b4fa87b97d58b31822ccac8ea1f8cf865cffbd5fcbbe302a',
+  'packages/blitz-dom/src/mutator.rs': 'b230ebeeaa63c9ca1b077cc05e676293fc6f6dfb0f39cc8862c575cd2ec7362e',
+  'packages/blitz-dom/src/focus_within.rs': '3a5bde6cf92fcb983551574dbe7ea0eabf746328db0aa221acead1b1fb60d747',
+  'packages/blitz-dom/src/stylo.rs': '4af771b2589d7515f8361d7416e82beb334ccfbc8906475a5f67cdc2c3470ad0',
   'packages/blitz-dom/src/resolved_style.rs': '8dba3e9b3bee49852b10328e69859fee96d679226f7015484098e8cdab92ae6f',
   'packages/blitz-dom/src/layout/damage.rs': '47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85',
   'packages/blitz-paint/src/checked_scene.rs': '398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925',
@@ -29,7 +34,10 @@ const changedFiles = baseline ? {
   'packages/blitz-paint/src/render.rs': '266c97a17e3af65db6e7a9334eda3dc30b3fe5aea9d0a04abac5520b5a1317c1',
 } : {
   'packages/blitz-dom/src/resolved_style.rs': '8dba3e9b3bee49852b10328e69859fee96d679226f7015484098e8cdab92ae6f',
-  'packages/blitz-dom/src/document.rs': '62d58cf88dbfd661596d90368f88c8738a933ca391ee1cdc0cc628162cd8f3f5',
+  'packages/blitz-dom/src/document.rs': '6c8daaa403c8e332fb0da2310bf42e2c5d2f87e9f1accc6f682d7b8c2abe4ed9',
+  'packages/blitz-dom/src/mutator.rs': 'b230ebeeaa63c9ca1b077cc05e676293fc6f6dfb0f39cc8862c575cd2ec7362e',
+  'packages/blitz-dom/src/focus_within.rs': '3a5bde6cf92fcb983551574dbe7ea0eabf746328db0aa221acead1b1fb60d747',
+  'packages/blitz-dom/src/stylo.rs': '4af771b2589d7515f8361d7416e82beb334ccfbc8906475a5f67cdc2c3470ad0',
   'packages/blitz-dom/src/node/node.rs': 'b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24',
   'packages/blitz-dom/src/resolve.rs': '6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
@@ -41,7 +49,7 @@ const changedFiles = baseline ? {
   'packages/blitz-dom/src/geometry/css_box.rs': '2ea64bc8a742bbdb61306a6d2109dd579f4ae8bb332abcfed227d3594cbad82b',
   'packages/blitz-dom/src/geometry/mod.rs': '7f8c3e3912f7c0ae5be4706b9312c82d1238af7f6edf07b1d9db1a5d3bddf9cb',
   'packages/blitz-dom/src/geometry/non_uniform_radii.rs': '26c389367e1bb2717e796760098d241e54c00f842537ecd75260f3fea60ea73a',
-  'packages/blitz-dom/src/lib.rs': 'f8d1acc43dc86d94090e0e091b6f1d934d20ca8168ff1033b7f8dd3234626f8a',
+  'packages/blitz-dom/src/lib.rs': 'ce2984d893d6787dfb3f83317d41bef43dc9aafbd728915211f608da64407baf',
   'packages/blitz-paint/src/lib.rs': '9d0f391a00c4539c59e14508bc356ca7e8e6923b194947442a66141e862c8760',
   'packages/blitz-paint/src/render/border.rs': '420e6bd5c30186a76aca4a0a33e83b344480371c4ca409a6376f6e43b96cf07d',
   'packages/blitz-paint/src/checked_scene.rs': '398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925',
@@ -50,7 +58,8 @@ const changedFiles = baseline ? {
   'packages/blitz-paint/src/render/clip_path.rs': '659d27be9a16c433140cddd887c9dbb2838089df5298767b14486d1639dff8c4',
   'packages/blitz-paint/src/render/ownership_clips.rs': '74f7e79fb835d909e379281de4efecff610d9d65feb10887ada311420941750b',
 };
-const addedFiles = baseline ? ['packages/blitz-paint/src/checked_scene.rs'] : [
+const addedFiles = baseline ? ['packages/blitz-paint/src/checked_scene.rs', 'packages/blitz-dom/src/focus_within.rs'] : [
+  'packages/blitz-dom/src/focus_within.rs',
   'packages/blitz-paint/src/checked_scene.rs',
   'packages/blitz-dom/src/paint_ownership.rs',
   'packages/blitz-dom/src/layout/initial_containing_block.rs',
@@ -118,10 +127,18 @@ const patchInputs = [
   {
     'name': 'blitz-cssom-empty-value.patch',
     'sha256': 'c1115c4b2b2791d09d95ab4128b154168af17fb4b6b4269073ff0b7a2372b44b'
+  },
+  {
+    'name': 'blitz-focus-within.patch',
+    'sha256': 'cc5b35cb492b9cf964bc015c9e3773eec09d17b8804924ad807de9a719b74b63'
+  },
+  {
+    'name': 'blitz-stylesheet-state-snapshots.patch',
+    'sha256': 'fa344a40c56b6d4f581503f61d7605b5e5bedfbba5d0087beef661a6de5148ef'
   }
 ];
 const selectedPatches = baseline
-  ? patchInputs.filter(patch => ['blitz-stacking-demotion.patch', 'blitz-layer-budget.patch', 'blitz-cssom-empty-value.patch'].includes(patch.name))
+  ? patchInputs.filter(patch => ['blitz-stacking-demotion.patch', 'blitz-layer-budget.patch', 'blitz-cssom-empty-value.patch', 'blitz-focus-within.patch', 'blitz-stylesheet-state-snapshots.patch'].includes(patch.name))
   : patchInputs;
 const source = await realpath(resolve(sourceArgument));
 let canonicalTarget;

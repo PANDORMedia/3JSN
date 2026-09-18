@@ -1,0 +1,1 @@
+cat: /Users/sean/dev/3JSN/node_modules/react/package.json: Operation not permitted

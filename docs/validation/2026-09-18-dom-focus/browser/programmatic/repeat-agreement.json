@@ -1,0 +1,16 @@
+{
+  "reports": [
+    {
+      "path": "artifacts/dom-focus-reference-01/report.json",
+      "sha256": "8a8b6c1ae2b6e1fd9235aa7a62c2f6b22787592e7367c61f533eb5eaeaa98e38"
+    },
+    {
+      "path": "artifacts/dom-focus-reference-01/report-repeat.json",
+      "sha256": "8a8b6c1ae2b6e1fd9235aa7a62c2f6b22787592e7367c61f533eb5eaeaa98e38"
+    }
+  ],
+  "inputIdentityEqual": true,
+  "programmaticEqual": true,
+  "sequentialEqual": true,
+  "differingCases": []
+}

@@ -1,0 +1,45 @@
+{
+  "commands": [
+    {
+      "mode": "preserved",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2"
+      ],
+      "exitCode": 0,
+      "seconds": 25.62820792198181,
+      "log": "build-preserved.txt",
+      "executable": {
+        "path": "/Users/sean/dev/3JSN/.cache/dom-focus/runtime-preserved",
+        "sha256": "7fc4cf625ca270f6f47d40b7f7ebe83eac38bf1a657e5c79929d8215f6d1ab7a",
+        "bytes": 190499488
+      }
+    },
+    {
+      "mode": "restricted",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "experiments/compiled-ui-runtime/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--no-default-features"
+      ],
+      "exitCode": 0,
+      "seconds": 7.931374788284302,
+      "log": "build-restricted.txt",
+      "executable": {
+        "path": "/Users/sean/dev/3JSN/.cache/dom-focus/runtime-restricted",
+        "sha256": "34684a9199715036a6949f708e75e129bd411efe0e38bfac1ce022348baf03a7",
+        "bytes": 188618480
+      }
+    }
+  ]
+}

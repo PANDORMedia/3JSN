@@ -1,0 +1,35 @@
+   Compiling fontique v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/fontique)
+   Compiling parley v0.11.1 (/Users/sean/dev/3JSN/.cache/web-fonts/parley)
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling blitz-dom v0.3.0-beta.2 (/Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.44s
+     Running unittests src/lib.rs (target/debug/deps/blitz_dom-720d81d51309afae)
+
+running 3 tests
+test focus_within::tests::focus_within_reparenting_updates_both_chains_without_changing_focus_policy ... ok
+test focus_within::tests::focus_within_focus_switch_and_clear_restyle_ancestors_descendants_and_siblings ... ok
+test focus_within::tests::focus_within_subtree_detach_drop_and_replace_clear_surviving_ancestors ... FAILED
+
+failures:
+
+---- focus_within::tests::focus_within_subtree_detach_drop_and_replace_clear_surviving_ancestors stdout ----
+
+thread 'focus_within::tests::focus_within_subtree_detach_drop_and_replace_clear_surviving_ancestors' (5732137) panicked at /Users/sean/dev/3JSN/.cache/dom-canvas/blitz/packages/blitz-dom/src/layout/damage.rs:577:37:
+invalid SlotMap key used
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    focus_within::tests::focus_within_subtree_detach_drop_and_replace_clear_surviving_ancestors
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 71 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `-p blitz-dom --lib`

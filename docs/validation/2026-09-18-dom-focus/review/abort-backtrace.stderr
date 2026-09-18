@@ -1,0 +1,92 @@
+
+thread 'main' (5748641) panicked at /Users/sean/dev/3JSN/.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/servo/selector_parser.rs:866:14:
+called `Option::unwrap()` on a `None` value
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:689:5
+   1: core::panicking::panic_fmt
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:80:14
+   2: core::panicking::panic
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:150:5
+   3: core::option::unwrap_failed
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/option.rs:2175:5
+   4: core::option::Option<T>::unwrap
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/option.rs:1016:21
+   5: style::servo::selector_parser::ServoElementSnapshot::get_attr
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/servo/selector_parser.rs:866:14
+   6: <style::servo::selector_parser::ServoElementSnapshot as style::invalidation::element::element_wrapper::ElementSnapshot>::id_attr
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/servo/selector_parser.rs:905:14
+   7: style::invalidation::stylesheets::StylesheetInvalidationSet::invalidation_kind_for::{{closure}}
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:235:63
+   8: core::option::Option<T>::and_then
+             at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/option.rs:1546:24
+   9: style::invalidation::stylesheets::StylesheetInvalidationSet::invalidation_kind_for
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:235:48
+  10: style::invalidation::stylesheets::StylesheetInvalidationSet::process_invalidations_in_subtree
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:319:20
+  11: style::invalidation::stylesheets::StylesheetInvalidationSet::process_invalidations_in_subtree
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:347:22
+  12: style::invalidation::stylesheets::StylesheetInvalidationSet::process_invalidations_in_subtree
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:347:22
+  13: style::invalidation::stylesheets::StylesheetInvalidationSet::process_invalidations_in_subtree
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:347:22
+  14: style::invalidation::stylesheets::StylesheetInvalidationSet::process_style
+             at ./.cache/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stylo-0.21.0/invalidation/stylesheets.rs:280:14
+  15: blitz_dom::stylo::<impl blitz_dom::document::BaseDocument>::resolve_stylist
+             at ./.cache/dom-canvas/blitz/packages/blitz-dom/src/stylo.rs:80:14
+  16: blitz_dom::resolve::<impl blitz_dom::document::BaseDocument>::resolve
+             at ./.cache/dom-canvas/blitz/packages/blitz-dom/src/resolve.rs:83:14
+  17: threejs_compiled_ui_runtime::dom_bridge::read_dom
+             at ./experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:236:17
+  18: threejs_compiled_ui_runtime::dom_bridge::op_dom_read::op_dom_read::call
+             at ./experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:161:5
+  19: threejs_compiled_ui_runtime::dom_bridge::op_dom_read::op_dom_read::slow_function_impl
+             at ./experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:155:1
+  20: threejs_compiled_ui_runtime::dom_bridge::op_dom_read::op_dom_read::v8_fn_ptr
+             at ./experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:155:1
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+thread 'main' (5748641) panicked at library/core/src/panicking.rs:225:5:
+panic in a function that cannot unwind
+stack backtrace:
+   0:        0x108ab6cf8 - std::backtrace_rs::backtrace::libunwind::trace::h7577bad47ee3e6ee
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/../../backtrace/src/backtrace/libunwind.rs:117:9
+   1:        0x108ab6cf8 - std::backtrace_rs::backtrace::trace_unsynchronized::hf8c23094259ea49b
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/../../backtrace/src/backtrace/mod.rs:66:14
+   2:        0x108ab6cf8 - std::sys::backtrace::_print_fmt::hec8e3b1f0ce9dbc4
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:68:9
+   3:        0x108ab6cf8 - <std::sys::backtrace::BacktraceLock::print::DisplayBacktrace as core::fmt::Display>::fmt::h8c5ab870ebd4c242
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:38:26
+   4:        0x108ac7578 - core::fmt::rt::Argument::fmt::hc2e0c24e74ca59ff
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/fmt/rt.rs:152:76
+   5:        0x108ac7578 - core::fmt::write::h64810b21425781ec
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/fmt/mod.rs:1686:22
+   6:        0x108a96d0c - std::io::default_write_fmt::h1ab19e39432de194
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/io/mod.rs:639:11
+   7:        0x108a96d0c - std::io::Write::write_fmt::h947344a43c638468
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/io/mod.rs:1994:13
+   8:        0x108a9f2bc - std::sys::backtrace::BacktraceLock::print::h17b78e7978fd7389
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:41:25
+   9:        0x108a9f2bc - std::panicking::default_hook::{{closure}}::ha0993a93f6e4994d
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:292:27
+  10:        0x108a9f1bc - std::panicking::default_hook::h7aae5c8c53b8a669
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:319:9
+  11:        0x108a9f6b4 - std::panicking::panic_with_hook::hb885411bb59bebf4
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:825:13
+  12:        0x108a9f394 - std::panicking::panic_handler::{{closure}}::hb04320f9e43192c5
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:691:13
+  13:        0x108a9c2a0 - std::sys::backtrace::__rust_end_short_backtrace::ha3c55a1c4767eecf
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/sys/backtrace.rs:176:18
+  14:        0x108a8fb50 - __rustc[d131491b17107b07]::rust_begin_unwind
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/panicking.rs:689:5
+  15:        0x108b7f76c - core::panicking::panic_nounwind_fmt::runtime::hb388857b28a2e612
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:122:22
+  16:        0x108b7f76c - core::panicking::panic_nounwind_fmt::hbf0afcf6d5b364a7
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/intrinsics/mod.rs:2449:9
+  17:        0x108b7f6f4 - core::panicking::panic_nounwind::h7d65473595109eb7
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:225:5
+  18:        0x108b7f848 - core::panicking::panic_cannot_unwind::h3992364626a126ab
+                               at /rustc/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/panicking.rs:337:5
+  19:        0x104384284 - threejs_compiled_ui_runtime::dom_bridge::op_dom_read::op_dom_read::v8_fn_ptr::he5375f670b1dc242
+                               at /Users/sean/dev/3JSN/experiments/compiled-ui-runtime/src/../../dom-canvas/src/../../html-v8/src/dom_ops.rs:155:1
+thread caused non-unwinding panic. aborting.

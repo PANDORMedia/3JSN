@@ -5,6 +5,8 @@ use std::{collections::BTreeMap, env, fmt::Write, fs, path::PathBuf, sync::Arc};
 
 use deno_core::{Extension, ExtensionFileSourceCode};
 
+mod dom_event_parent;
+
 fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, String>) {
     for source in [
         &extension.js_files,
@@ -18,10 +20,13 @@ fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, St
         if let ExtensionFileSourceCode::LoadedFromFsDuringSnapshot(path) = source.code {
             println!("cargo:rerun-if-changed={path}");
         }
-        let code = source
+        let mut code = source
             .load()
             .unwrap_or_else(|error| panic!("cannot embed {}: {error}", source.specifier))
             .to_string();
+        if source.specifier == "ext:deno_web/02_event.js" {
+            code = dom_event_parent::patch(&code);
+        }
         assert!(
             code.is_ascii(),
             "extension source is not ASCII: {}",
@@ -37,6 +42,7 @@ fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, St
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=dom_event_parent.rs");
     let extensions = [
         deno_webidl::deno_webidl::init(),
         deno_web::deno_web::init(

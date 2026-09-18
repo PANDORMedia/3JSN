@@ -151,9 +151,7 @@ pub(super) fn set_text_content(
 
 pub(super) fn require_element(document: &BaseDocument, id: NodeId) -> Result<(), JsErrorBox> {
     if !matches!(document.get_node(id).unwrap().data, NodeData::Element(_)) {
-        return Err(JsErrorBox::type_error(
-            "Attribute operations require an Element",
-        ));
+        return Err(JsErrorBox::type_error("Operation requires an Element"));
     }
     Ok(())
 }
@@ -183,8 +181,8 @@ pub(super) fn require_child(
     Ok(())
 }
 
-pub(super) fn insert(
-    document: &mut BaseDocument,
+pub(super) fn validate_insert(
+    document: &BaseDocument,
     receiver: NodeId,
     child: NodeId,
     before: Option<NodeId>,
@@ -229,6 +227,16 @@ pub(super) fn insert(
             return Err(hierarchy("A Document cannot have multiple root elements"));
         }
     }
+    Ok(())
+}
+
+pub(super) fn insert(
+    document: &mut BaseDocument,
+    receiver: NodeId,
+    child: NodeId,
+    before: Option<NodeId>,
+) -> Result<(), JsErrorBox> {
+    validate_insert(document, receiver, child, before)?;
     if before == Some(child) {
         return Ok(());
     }

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "sourceBefore": {
+    "path": "experiments/dom-canvas/tests/fixtures/focus-stylesheets.js",
+    "byteLength": 1817,
+    "sha256": "1a76341f9ffa59fba802ac1397b850a0e4783a4dba675742765e46ba6499ff54"
+  },
+  "sourceAfter": {
+    "path": "experiments/dom-canvas/tests/fixtures/focus-stylesheets.js",
+    "byteLength": 1817,
+    "sha256": "1a76341f9ffa59fba802ac1397b850a0e4783a4dba675742765e46ba6499ff54"
+  },
+  "sourcePreserved": true,
+  "exactSourceEvaluatedWithoutRewriting": true,
+  "browser": {
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/153.0.8010.50",
+      "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+      "jsVersion": "15.3.76.12"
+    },
+    "viewport": {
+      "width": 800,
+      "height": 600,
+      "deviceScaleFactor": 1
+    },
+    "initial": {
+      "active": "body",
+      "hasFocus": true,
+      "readyState": "complete"
+    },
+    "result": [
+      {
+        "mode": "append-stylesheet",
+        "immediate": "focus-stylesheet-target",
+        "afterMicrotask": "focus-stylesheet-target",
+        "afterLayout": "focus-stylesheet-target",
+        "afterTask": "body",
+        "focus": null
+      },
+      {
+        "mode": "replace-stylesheet-text",
+        "immediate": "focus-stylesheet-target",
+        "afterMicrotask": "focus-stylesheet-target",
+        "afterLayout": "focus-stylesheet-target",
+        "afterTask": "body",
+        "focus": null
+      },
+      {
+        "mode": "focus-hides-self",
+        "immediate": "focus-stylesheet-target",
+        "afterMicrotask": "focus-stylesheet-target",
+        "afterLayout": "focus-stylesheet-target",
+        "afterTask": "body",
+        "focus": null
+      }
+    ],
+    "after": {
+      "active": "body",
+      "hasFocus": true,
+      "bodyChildren": 0,
+      "focus": null
+    },
+    "rawErrors": {
+      "installation": null,
+      "execution": null,
+      "events": []
+    },
+    "rawExecution": {
+      "result": {
+        "type": "object",
+        "value": [
+          {
+            "mode": "append-stylesheet",
+            "immediate": "focus-stylesheet-target",
+            "afterMicrotask": "focus-stylesheet-target",
+            "afterLayout": "focus-stylesheet-target",
+            "afterTask": "body",
+            "focus": null
+          },
+          {
+            "mode": "replace-stylesheet-text",
+            "immediate": "focus-stylesheet-target",
+            "afterMicrotask": "focus-stylesheet-target",
+            "afterLayout": "focus-stylesheet-target",
+            "afterTask": "body",
+            "focus": null
+          },
+          {
+            "mode": "focus-hides-self",
+            "immediate": "focus-stylesheet-target",
+            "afterMicrotask": "focus-stylesheet-target",
+            "afterLayout": "focus-stylesheet-target",
+            "afterTask": "body",
+            "focus": null
+          }
+        ]
+      }
+    }
+  },
+  "expected": [
+    {
+      "mode": "append-stylesheet",
+      "immediate": "focus-stylesheet-target",
+      "afterMicrotask": "focus-stylesheet-target",
+      "afterLayout": "focus-stylesheet-target",
+      "afterTask": "body",
+      "focus": null
+    },
+    {
+      "mode": "replace-stylesheet-text",
+      "immediate": "focus-stylesheet-target",
+      "afterMicrotask": "focus-stylesheet-target",
+      "afterLayout": "focus-stylesheet-target",
+      "afterTask": "body",
+      "focus": null
+    },
+    {
+      "mode": "focus-hides-self",
+      "immediate": "focus-stylesheet-target",
+      "afterMicrotask": "focus-stylesheet-target",
+      "afterLayout": "focus-stylesheet-target",
+      "afterTask": "body",
+      "focus": null
+    }
+  ],
+  "nativeValidated": false
+}

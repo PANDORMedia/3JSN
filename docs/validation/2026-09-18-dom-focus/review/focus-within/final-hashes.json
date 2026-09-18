@@ -1,0 +1,26 @@
+{
+  "patch": "cc5b35cb492b9cf964bc015c9e3773eec09d17b8804924ad807de9a719b74b63",
+  "variants": {
+    "normal": {
+      "mutator.rs": "e2c2061c964336a36bbf741c0da5f0ec3e428b07eeeaf5f1eb18ffed623c61ca",
+      "stylo.rs": "5e4b1d601b5548350f3a4af169037f51de1be896f730c4e63b0e0ab0cb4a2709",
+      "lib.rs": "60bd28cedaf63c303e2fdbb73b3f01cd85991b2b96d7b3828b0320f3a0e644e5",
+      "document.rs": "afbda28abe3c5955579f7bc2a395e79880567a147c8070c7836368edd0599858",
+      "focus_within.rs": "3a5bde6cf92fcb983551574dbe7ea0eabf746328db0aa221acead1b1fb60d747"
+    },
+    "candidate": {
+      "mutator.rs": "b230ebeeaa63c9ca1b077cc05e676293fc6f6dfb0f39cc8862c575cd2ec7362e",
+      "stylo.rs": "5e4b1d601b5548350f3a4af169037f51de1be896f730c4e63b0e0ab0cb4a2709",
+      "lib.rs": "ce2984d893d6787dfb3f83317d41bef43dc9aafbd728915211f608da64407baf",
+      "document.rs": "6c8daaa403c8e332fb0da2310bf42e2c5d2f87e9f1accc6f682d7b8c2abe4ed9",
+      "focus_within.rs": "3a5bde6cf92fcb983551574dbe7ea0eabf746328db0aa221acead1b1fb60d747"
+    },
+    "baseline": {
+      "mutator.rs": "b230ebeeaa63c9ca1b077cc05e676293fc6f6dfb0f39cc8862c575cd2ec7362e",
+      "stylo.rs": "5e4b1d601b5548350f3a4af169037f51de1be896f730c4e63b0e0ab0cb4a2709",
+      "lib.rs": "4d63138169c1c913b4fa87b97d58b31822ccac8ea1f8cf865cffbd5fcbbe302a",
+      "document.rs": "411f9dc3bb9719cf9de8ec5989c902ee475f585236ca1e06ddf5dac9370b5ffe",
+      "focus_within.rs": "3a5bde6cf92fcb983551574dbe7ea0eabf746328db0aa221acead1b1fb60d747"
+    }
+  }
+}

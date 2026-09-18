@@ -1,0 +1,82 @@
+{
+  "patchSha256": "cc5b35cb492b9cf964bc015c9e3773eec09d17b8804924ad807de9a719b74b63",
+  "sourceFiles": {
+    "experiments/dom-canvas/patches/blitz-focus-within.patch": "cc5b35cb492b9cf964bc015c9e3773eec09d17b8804924ad807de9a719b74b63",
+    "experiments/dom-canvas/prepare-blitz.mjs": "f1de5052d09a6a22a54087256e23e3fac4ec99256490efb2f1f4c3a4ea7e0da8",
+    "experiments/dom-canvas/prepare-positioned.mjs": "1a567e21db173b25153fd7309e480ceb5250395b095dd48fc108a5e95fdfbf46"
+  },
+  "normalBlitzRevision": "9d92719b37c801b8b41c81b799a2a474db8b3936",
+  "candidateAndBaselineBlitzRevision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+  "command": "CARGO_HOME=/Users/sean/dev/3JSN/.cache/cargo CARGO_TARGET_DIR=/Users/sean/dev/3JSN/target CARGO_INCREMENTAL=0 RUSTY_V8_ARCHIVE=/Users/sean/dev/3JSN/target/release/gn_out/obj/librusty_v8.a cargo test --manifest-path experiments/dom-canvas/Cargo.toml -p blitz-dom --lib focus_within --offline --locked -j2",
+  "finalTestResult": {
+    "exitCode": 0,
+    "passed": 6,
+    "failed": 0,
+    "filtered": 71,
+    "buildSeconds": 11.06,
+    "testSeconds": 0.03
+  },
+  "isolationResult": {
+    "exitCode": 101,
+    "passed": 4,
+    "failed": 2,
+    "finding": "remove_and_drop_all_children panics on resolve with or without focus because old layout child slots are freed without ALL_DAMAGE invalidation. One-line parent.insert_damage(ALL_DAMAGE) fixes both controls."
+  },
+  "preparationChecks": {
+    "normal": true,
+    "candidate": true,
+    "baseline": true
+  },
+  "generatedManifestAndLockChangesSinceInitialFocusPrepare": {
+    "candidate": {
+      "manifestInputSha256": {
+        "before": "0cdfb55b30073457b04e3682be8eb60e4b720ca7c05c7e903629a1854102d4e2",
+        "after": "0cdfb55b30073457b04e3682be8eb60e4b720ca7c05c7e903629a1854102d4e2",
+        "changed": false
+      },
+      "lockInputSha256": {
+        "before": "15c231ecfc9eebfec0fe2252dff63fc6eb5deef050168b363bc3afdc5c784c35",
+        "after": "15c231ecfc9eebfec0fe2252dff63fc6eb5deef050168b363bc3afdc5c784c35",
+        "changed": false
+      },
+      "generatedManifestSha256": {
+        "before": "13c8c3414e006a1f4167fd550fefb5dcde931f85164ea6145e34d4db1e86d33b",
+        "after": "13c8c3414e006a1f4167fd550fefb5dcde931f85164ea6145e34d4db1e86d33b",
+        "changed": false
+      },
+      "generatedLockSha256": {
+        "before": "57337af90477d12c90639c673844c5a9d0f5f739a9b60fd342656766222446d1",
+        "after": "57337af90477d12c90639c673844c5a9d0f5f739a9b60fd342656766222446d1",
+        "changed": false
+      }
+    },
+    "baseline": {
+      "manifestInputSha256": {
+        "before": "0cdfb55b30073457b04e3682be8eb60e4b720ca7c05c7e903629a1854102d4e2",
+        "after": "0cdfb55b30073457b04e3682be8eb60e4b720ca7c05c7e903629a1854102d4e2",
+        "changed": false
+      },
+      "lockInputSha256": {
+        "before": "15c231ecfc9eebfec0fe2252dff63fc6eb5deef050168b363bc3afdc5c784c35",
+        "after": "15c231ecfc9eebfec0fe2252dff63fc6eb5deef050168b363bc3afdc5c784c35",
+        "changed": false
+      },
+      "generatedManifestSha256": {
+        "before": "937d7fd71599442e8775c5c24543295529fc8d37a9e6e914624b2099bcf906a9",
+        "after": "937d7fd71599442e8775c5c24543295529fc8d37a9e6e914624b2099bcf906a9",
+        "changed": false
+      },
+      "generatedLockSha256": {
+        "before": "c1f24458ce07195abcf9bce940efea4fc6e9b1336b9d74c7e2d9e40b38d9056b",
+        "after": "c1f24458ce07195abcf9bce940efea4fc6e9b1336b9d74c7e2d9e40b38d9056b",
+        "changed": false
+      }
+    }
+  },
+  "limits": [
+    "Only normal-cache dependency unit tests executed; candidate and baseline have verified patch preparation, not execution.",
+    "Focus-visible remains unsupported; upstream FOCUSRING is set on every focus and does not provide a modality policy.",
+    "No additional focus pointer or JS event handling; authoritative BaseDocument focus state is used.",
+    "No GPU or native-window integration in this dependency subtask."
+  ]
+}

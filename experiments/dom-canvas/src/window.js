@@ -1,6 +1,6 @@
 import { core } from 'ext:core/mod.js';
 import { createAnimationFrames } from 'ext:dom_window/animation.js';
-import { wrap } from 'ext:html_v8_probe/bindings.js';
+import { wrap, focusController } from 'ext:html_v8_probe/bindings.js';
 
 const ops = core.ops;
 let width;
@@ -43,7 +43,7 @@ function emit(target, kind, fields = {}, bubbles = false, cancelable = false) {
   for (const [name, value] of Object.entries(fields)) {
     Object.defineProperty(event, name, { value, enumerable: true });
   }
-  target.dispatchEvent(event);
+  return target.dispatchEvent(event);
 }
 
 function resetPointer() {
@@ -51,7 +51,9 @@ function resetPointer() {
   pressedTargets.clear();
 }
 
-function input(kind, clientX, clientY, button, key, nodeId) {
+function input(kind, clientX, clientY, button, key, nodeId, physicalCode = '', nativeRepeat = false,
+  shiftKey = false, ctrlKey = false, altKey = false, metaKey = false) {
+  const modifiers = { shiftKey, ctrlKey, altKey, metaKey };
   if (kind === 'pointerreset') { resetPointer(); return; }
   if (kind === 'blur' || kind === 'focus') {
     if (kind === 'blur') { resetPointer(); heldKeys.clear(); }
@@ -61,12 +63,16 @@ function input(kind, clientX, clientY, button, key, nodeId) {
   if (kind === 'keydown' || kind === 'keyup') {
     if (typeof key !== 'string') throw new TypeError('Expected a keyboard key string');
     const value = key === 'Space' ? ' ' : key;
-    const code = value === ' ' ? 'Space' : value.toLowerCase() === 'r' ? 'KeyR' : '';
+    const code = physicalCode || (value === ' ' ? 'Space' : value.toLowerCase() === 'r' ? 'KeyR' : '');
     const identity = code || value;
-    const repeat = kind === 'keydown' && heldKeys.has(identity);
+    const repeat = kind === 'keydown' && (nativeRepeat || heldKeys.has(identity));
     if (kind === 'keydown') heldKeys.add(identity);
     else heldKeys.delete(identity);
-    emit(globalThis, kind, { key: value, code, repeat, isComposing: false }, true, true);
+    const target = focusController.activeElement() ?? document.body ?? document;
+    const accepted = emit(target, kind, { key: value, code, repeat, isComposing: false, ...modifiers }, true, true);
+    if (kind === 'keydown' && value === 'Tab' && accepted && !ctrlKey && !altKey && !metaKey) {
+      focusController.navigate(shiftKey);
+    }
     return;
   }
   if (!['mousedown', 'mouseup', 'mousemove'].includes(kind)) {
@@ -89,8 +95,10 @@ function input(kind, clientX, clientY, button, key, nodeId) {
     buttons &= ~bit;
     pressedTargets.delete(button);
   }
-  const fields = { clientX, clientY, button: kind === 'mousemove' ? 0 : button, buttons, detail: 0 };
-  emit(target, kind, fields, true, true);
+  const fields = { clientX, clientY, button: kind === 'mousemove' ? 0 : button, buttons, detail: 0, ...modifiers };
+  const accepted = emit(target, kind, fields, true, true);
+  // Eligibility is resolved after handlers, which may disable or detach the target.
+  if (kind === 'mousedown' && button === 0 && accepted && nodeId) focusController.pointer(target);
   // This fixture activates only matching primary presses, not common ancestors or auxiliary buttons.
   if (kind === 'mouseup' && button === 0 && pressedTarget === nodeId) {
     emit(target, 'click', { ...fields, detail: 1 }, true, true);

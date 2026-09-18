@@ -8,6 +8,11 @@ use serde_json::{Value, json};
 
 #[path = "capabilities.rs"]
 mod capabilities;
+#[path = "dom_focus.rs"]
+mod dom_focus;
+#[cfg(test)]
+#[path = "dom_focus_tests.rs"]
+mod dom_focus_tests;
 #[path = "dom_tree.rs"]
 mod dom_tree;
 #[cfg(test)]
@@ -27,6 +32,17 @@ struct DomState {
 #[derive(Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase")]
 enum Read {
+    Focused,
+    FocusRemoval {
+        mutation: Mutation,
+    },
+    Focusability {
+        id: String,
+    },
+    FocusCandidates,
+    FocusNext {
+        backward: bool,
+    },
     FindById {
         value: String,
     },
@@ -60,6 +76,9 @@ enum Read {
 #[derive(Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase")]
 enum Mutation {
+    Focus {
+        id: Option<String>,
+    },
     Create {
         tag: String,
     },
@@ -133,6 +152,18 @@ fn attr_name(name: String) -> QualName {
     QualName::new(None, ns!(), LocalName::from(name))
 }
 
+fn attribute_name(document: &BaseDocument, id: NodeId, name: String) -> String {
+    if document
+        .get_node(id)
+        .and_then(|node| node.element_data())
+        .is_some_and(|element| element.name.ns.as_ref() == capabilities::HTML_NAMESPACE)
+    {
+        name.to_ascii_lowercase()
+    } else {
+        name
+    }
+}
+
 #[op2]
 #[serde]
 fn op_dom_read(
@@ -145,6 +176,28 @@ fn op_dom_read(
 fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
     let doc = &mut state.document;
     match request {
+        Read::Focused => Ok(id_value(dom_focus::focused(doc))),
+        Read::FocusRemoval { mutation } => {
+            focus_removal(doc, state.html_fragment_parser.is_some(), mutation)
+        }
+        Read::Focusability { id } => {
+            let id = node_id(doc, &id)?;
+            doc.resolve(state.started.elapsed().as_secs_f64());
+            Ok(json!(dom_focus::focusability(doc, id)))
+        }
+        Read::FocusCandidates => {
+            doc.resolve(state.started.elapsed().as_secs_f64());
+            Ok(Value::Array(
+                dom_focus::candidates(doc)
+                    .into_iter()
+                    .map(|id| id_value(Some(id)))
+                    .collect(),
+            ))
+        }
+        Read::FocusNext { backward } => {
+            doc.resolve(state.started.elapsed().as_secs_f64());
+            Ok(id_value(dom_focus::next(doc, backward)))
+        }
         Read::FindById { value } => Ok(id_value(doc.get_element_by_id(&value))),
         Read::Describe { id } => {
             let id = match id {
@@ -155,6 +208,14 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
         }
         Read::Query { id, selector, all } => {
             let id = node_id(doc, &id)?;
+            if !matches!(
+                doc.get_node(id).unwrap().data,
+                NodeData::Element(_) | NodeData::Document(_)
+            ) {
+                return Err(JsErrorBox::type_error(
+                    "Selectors require an Element or Document",
+                ));
+            }
             if all {
                 let ids = doc
                     .query_selector_all_in(id, &selector)
@@ -171,6 +232,7 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
         }
         Read::Attribute { id, name } => {
             let id = node_id(doc, &id)?;
+            let name = attribute_name(doc, id, name);
             let value = doc
                 .get_node(id)
                 .unwrap()
@@ -192,6 +254,7 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
         }
         Read::Rect { id } => {
             let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
             doc.resolve(state.started.elapsed().as_secs_f64());
             let rect = doc
                 .get_client_bounding_rect(id)
@@ -216,6 +279,63 @@ fn read_dom(state: &mut DomState, request: Read) -> Result<Value, JsErrorBox> {
     }
 }
 
+// Preflight runs without mutation. JS can then dispatch blur while the old tree
+// is still connected; the actual mutator validates again after those callbacks.
+fn focus_removal(
+    doc: &BaseDocument,
+    has_parser: bool,
+    mutation: Mutation,
+) -> Result<Value, JsErrorBox> {
+    let (subtree, include_root) = match mutation {
+        Mutation::Remove { id, child } => {
+            let parent = node_id(doc, &id)?;
+            let child = node_id(doc, &child)?;
+            dom_tree::require_child(doc, parent, child)?;
+            (child, true)
+        }
+        Mutation::Append { id, child } => {
+            let parent = node_id(doc, &id)?;
+            let child = node_id(doc, &child)?;
+            dom_tree::validate_insert(doc, parent, child, None)?;
+            (child, true)
+        }
+        Mutation::Insert { id, child, before } => {
+            let parent = node_id(doc, &id)?;
+            let child = node_id(doc, &child)?;
+            let before = before.map(|id| node_id(doc, &id)).transpose()?;
+            dom_tree::validate_insert(doc, parent, child, before)?;
+            (child, true)
+        }
+        Mutation::Text { id, .. } => {
+            let id = node_id(doc, &id)?;
+            if !matches!(doc.get_node(id).unwrap().data, NodeData::Element(_)) {
+                return Ok(Value::Null);
+            }
+            (id, false)
+        }
+        Mutation::Html { id, .. } => {
+            if !has_parser {
+                return Err(JsErrorBox::generic(capabilities::HTML_PARSER_UNAVAILABLE));
+            }
+            let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
+            (id, false)
+        }
+        _ => return Ok(Value::Null),
+    };
+    let focused = dom_focus::focused(doc);
+    let mut current = focused;
+    while let Some(id) = current {
+        if id == subtree {
+            return Ok(id_value(
+                focused.filter(|id| include_root || *id != subtree),
+            ));
+        }
+        current = doc.get_node(id).and_then(|node| node.parent);
+    }
+    Ok(Value::Null)
+}
+
 #[op2]
 #[serde]
 fn op_dom_mutate(
@@ -229,6 +349,20 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
     let parser = state.html_fragment_parser;
     let doc = &mut state.document;
     match request {
+        Mutation::Focus { id } => {
+            match id {
+                None => doc.clear_focus(),
+                Some(raw) => {
+                    if let Ok(id) = node_id(doc, &raw) {
+                        doc.resolve(state.started.elapsed().as_secs_f64());
+                        if dom_focus::focusability(doc, id).programmatic {
+                            doc.set_focus_to(id);
+                        }
+                    }
+                }
+            }
+            Ok(id_value(dom_focus::focused(doc)))
+        }
         Mutation::Create { tag } => {
             if parser.is_none()
                 && let Some(reason) = capabilities::element_html_parser_requirement(
@@ -247,14 +381,18 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
         Mutation::CreateText { value } => Ok(id_value(Some(doc.mutate().create_text_node(&value)))),
         Mutation::Attribute { id, name, value } => {
             let id = node_id(doc, &id)?;
-            doc.mutate().set_attribute(id, attr_name(name), &value);
-            Ok(Value::Null)
+            dom_tree::require_element(doc, id)?;
+            let name = attribute_name(doc, id, name);
+            doc.mutate()
+                .set_attribute(id, attr_name(name.clone()), &value);
+            Ok(json!(name))
         }
         Mutation::RemoveAttribute { id, name } => {
             let id = node_id(doc, &id)?;
             dom_tree::require_element(doc, id)?;
-            doc.mutate().clear_attribute(id, attr_name(name));
-            Ok(Value::Null)
+            let name = attribute_name(doc, id, name);
+            doc.mutate().clear_attribute(id, attr_name(name.clone()));
+            Ok(json!(name))
         }
         Mutation::CharacterData { id, value } => {
             let id = node_id(doc, &id)?;
@@ -270,6 +408,7 @@ fn mutate_dom(state: &mut DomState, request: Mutation) -> Result<Value, JsErrorB
             let parse =
                 parser.ok_or_else(|| JsErrorBox::generic(capabilities::HTML_PARSER_UNAVAILABLE))?;
             let id = node_id(doc, &id)?;
+            dom_tree::require_element(doc, id)?;
             let mut mutator = doc.mutate();
             // set_inner_html drops old children, which would invalidate retained wrappers.
             for child in mutator.child_ids(id) {
@@ -340,6 +479,7 @@ fn op_observe(state: &mut OpState, #[string] message: String) -> Result<(), JsEr
 #[cfg(test)]
 mod tests {
     use super::*;
+    use deno_error::JsErrorClass;
 
     fn state(parser: Option<HtmlFragmentParser>) -> (DomState, NodeId, NodeId) {
         let mut document = BaseDocument::new(Default::default());
@@ -370,6 +510,44 @@ mod tests {
     fn fragment_callback(dom: &mut DocumentMutator<'_>, parent: NodeId, value: &str) {
         let text = dom.create_text_node(&format!("callback:{value}"));
         dom.append_children(parent, &[text]);
+    }
+
+    #[test]
+    fn non_element_html_rejects_before_parser_or_tree_mutation() {
+        fn unexpected_parser(_: &mut DocumentMutator<'_>, _: NodeId, _: &str) {
+            panic!("non-element receiver reached the fragment parser");
+        }
+        for receiver_is_document in [false, true] {
+            let (mut state, parent, retained) = state(Some(unexpected_parser));
+            let root = state.document.root_node().id;
+            let receiver = if receiver_is_document { root } else { retained };
+            let error = mutate_dom(
+                &mut state,
+                Mutation::Html {
+                    id: receiver.as_u64().to_string(),
+                    value: "<b>replacement</b>".into(),
+                },
+            )
+            .unwrap_err();
+            assert_eq!(error.get_class(), "TypeError");
+            assert_eq!(
+                state.document.get_node(root).unwrap().children.as_slice(),
+                &[parent]
+            );
+            assert_eq!(state.document.get_node(parent).unwrap().parent, Some(root));
+            assert_eq!(
+                state.document.get_node(parent).unwrap().children.as_slice(),
+                &[retained]
+            );
+            assert_eq!(
+                state.document.get_node(retained).unwrap().parent,
+                Some(parent)
+            );
+            assert_eq!(
+                state.document.get_node(retained).unwrap().text_content(),
+                "retained"
+            );
+        }
     }
 
     #[test]

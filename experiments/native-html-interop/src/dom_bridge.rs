@@ -8,10 +8,16 @@ pub fn extension(html: &str, config: DocumentConfig) -> deno_core::Extension {
         messages: vec![],
         html_fragment_parser: Some(DocumentHtmlParser::parse_inner_html_into_mutator),
     });
-    extension.esm_files = vec![deno_core::ExtensionFileSource::new(
-        "ext:html_v8_probe/bindings.js",
-        deno_core::ascii_str_include!("bindings.js"),
-    )]
+    extension.esm_files = vec![
+        deno_core::ExtensionFileSource::new(
+            "ext:html_v8_probe/bindings.js",
+            deno_core::ascii_str_include!("bindings.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
+            "ext:html_v8_probe/focus.js",
+            deno_core::ascii_str_include!("focus.js"),
+        ),
+    ]
     .into();
     extension
 }

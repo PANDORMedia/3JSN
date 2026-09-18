@@ -117,6 +117,7 @@ fn input(kind: &'static str, x: f64, y: f64, key: &str) -> window_input::Input {
         y,
         button: 0,
         key: key.into(),
+        ..Default::default()
     }
 }
 
@@ -146,6 +147,12 @@ fn dispatch(runtime: &mut JsRuntime, input: window_input::Input) -> Result<()> {
         let button = v8::Number::new(scope, f64::from(input.button));
         let key = v8::String::new(scope, &input.key).unwrap();
         let target = v8::String::new(scope, &target).unwrap();
+        let code = v8::String::new(scope, &input.code).unwrap();
+        let repeat = v8::Boolean::new(scope, input.repeat);
+        let shift = v8::Boolean::new(scope, input.modifiers.shift);
+        let control = v8::Boolean::new(scope, input.modifiers.control);
+        let alt = v8::Boolean::new(scope, input.modifiers.alt);
+        let meta = v8::Boolean::new(scope, input.modifiers.meta);
         [
             kind.into(),
             x.into(),
@@ -153,6 +160,12 @@ fn dispatch(runtime: &mut JsRuntime, input: window_input::Input) -> Result<()> {
             button.into(),
             key.into(),
             target.into(),
+            code.into(),
+            repeat.into(),
+            shift.into(),
+            control.into(),
+            alt.into(),
+            meta.into(),
         ]
         .map(|value: v8::Local<v8::Value>| v8::Global::new(scope, value))
     };
@@ -178,6 +191,27 @@ fn observation(runtime: &mut JsRuntime) -> Value {
     let key = v8::String::new(scope, "__inputDelivery").unwrap();
     let value = global.get(scope, key.into()).unwrap();
     serde_v8::from_v8(scope, value).unwrap()
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn stylesheet_and_focus_state_changes_defer_focus_fixup_without_panicking() {
+    let mut runtime = runtime();
+    runtime
+        .execute_script(
+            "test:focus-stylesheets",
+            include_str!("fixtures/focus-stylesheets.js"),
+        )
+        .unwrap();
+    runtime.execute_script("test:run-focus-stylesheets", "runFocusStylesheetBehavior().then(result => { globalThis.__inputDelivery = result; });").unwrap();
+    runtime.run_event_loop(Default::default()).await.unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([
+            { "mode": "append-stylesheet", "immediate": "focus-stylesheet-target", "afterMicrotask": "focus-stylesheet-target", "afterLayout": "focus-stylesheet-target", "afterTask": "body", "focus": null },
+            { "mode": "replace-stylesheet-text", "immediate": "focus-stylesheet-target", "afterMicrotask": "focus-stylesheet-target", "afterLayout": "focus-stylesheet-target", "afterTask": "body", "focus": null },
+            { "mode": "focus-hides-self", "immediate": "focus-stylesheet-target", "afterMicrotask": "focus-stylesheet-target", "afterLayout": "focus-stylesheet-target", "afterTask": "body", "focus": null }
+        ])
+    );
 }
 
 #[tokio::test(flavor = "current_thread")]
@@ -316,8 +350,8 @@ async fn coalesced_bursts_preserve_dom_transitions_and_record_microtasks() {
                 true,
                 false
             ],
-            ["keydown", " ", "Space", false, true, true],
-            ["keydown", " ", "Space", true, true, true],
+            ["keydown", " ", "Space", false, false, true],
+            ["keydown", " ", "Space", true, false, true],
             [
                 "mousemove",
                 "button",
@@ -330,7 +364,7 @@ async fn coalesced_bursts_preserve_dom_transitions_and_record_microtasks() {
                 true,
                 false
             ],
-            ["keyup", " ", "Space", false, true, true],
+            ["keyup", " ", "Space", false, false, true],
             ["mouseup", "button", "button", 32, 42, 0, 0, 0, true, false],
             ["click", "button", "button", 32, 42, 0, 0, 1, true, true],
             ["click", "button", "parent", 32, 42, 0, 0, 1, true, true],
@@ -358,7 +392,7 @@ async fn coalesced_bursts_preserve_dom_transitions_and_record_microtasks() {
                 true,
                 false
             ],
-            ["keydown", "r", "KeyR", false, true, true],
+            ["keydown", "r", "KeyR", false, false, true],
             ["blur", true],
             ["focus", true],
             [
@@ -373,8 +407,8 @@ async fn coalesced_bursts_preserve_dom_transitions_and_record_microtasks() {
                 true,
                 false
             ],
-            ["keydown", "r", "KeyR", false, true, true],
-            ["keyup", "r", "KeyR", false, true, true],
+            ["keydown", "r", "KeyR", false, false, true],
+            ["keyup", "r", "KeyR", false, false, true],
             ["mouseup", "button", "button", 34, 44, 0, 0, 0, true, false],
             [
                 "mousedown",
@@ -491,5 +525,263 @@ fn discrete_dom_records_still_reject_queue_overflow_without_reordering() {
     assert_eq!(
         receiver.try_recv(),
         Err(threejs_native_input_queue::TryRecvError::Empty)
+    );
+}
+
+#[test]
+fn modifier_changes_bar_motion_coalescing() {
+    let (sender, mut receiver) = window_input::channel();
+    let plain = input("mousemove", 1.0, 2.0, "");
+    let mut shifted = input("mousemove", 3.0, 4.0, "");
+    shifted.modifiers.shift = true;
+    sender.try_send(plain.clone()).unwrap();
+    sender.try_send(shifted.clone()).unwrap();
+    let mut latest = shifted.clone();
+    latest.x = 9.0;
+    sender.try_send(latest.clone()).unwrap();
+    assert_eq!(receiver.try_recv().unwrap(), plain);
+    assert_eq!(receiver.try_recv().unwrap(), latest);
+    assert!(receiver.try_recv().is_err());
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn native_keyboard_focus_routing_and_pointer_defaults() {
+    let mut runtime = runtime();
+    runtime.execute_script("test:focus-input", r#"
+      globalThis.__inputDelivery = [];
+      const first = document.getElementById('button');
+      const second = document.createElement('button'); second.id = 'second';
+      document.body.appendChild(second);
+      first.focus();
+      first.addEventListener('keydown', event => {
+        __inputDelivery.push([event.type,event.target.id,event.code,event.repeat,event.shiftKey,event.ctrlKey,event.altKey,event.metaKey]);
+        second.focus();
+      }, { once: true });
+      second.addEventListener('keyup', event => __inputDelivery.push([event.type,event.target.id]));
+    "#).unwrap();
+    let mut key = input("keydown", 0.0, 0.0, "é");
+    key.code = "Digit2".into();
+    key.repeat = true;
+    key.modifiers = window_input::Modifiers {
+        shift: true,
+        control: true,
+        alt: true,
+        meta: true,
+    };
+    dispatch(&mut runtime, key.clone()).unwrap();
+    key.kind = "keyup";
+    key.repeat = false;
+    dispatch(&mut runtime, key).unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([
+            ["keydown", "button", "Digit2", true, true, true, true, true],
+            ["keyup", "second"]
+        ])
+    );
+    runtime.execute_script("test:cancel-tab", r#"
+      document.getElementById('second').addEventListener('keydown', event => event.preventDefault(), { once:true });
+    "#).unwrap();
+    let mut tab = input("keydown", 0.0, 0.0, "Tab");
+    tab.code = "Tab".into();
+    dispatch(&mut runtime, tab.clone()).unwrap();
+    runtime
+        .execute_script(
+            "test:observe",
+            "__inputDelivery = document.activeElement.id",
+        )
+        .unwrap();
+    assert_eq!(observation(&mut runtime), json!("second"));
+    tab.modifiers.shift = true;
+    dispatch(&mut runtime, tab).unwrap();
+    runtime
+        .execute_script(
+            "test:observe",
+            "__inputDelivery = document.activeElement.id",
+        )
+        .unwrap();
+    assert_eq!(observation(&mut runtime), json!("button"));
+    runtime.execute_script("test:cancel-pointer", r#"
+      document.getElementById('second').focus();
+      document.getElementById('button').addEventListener('mousedown', event => event.preventDefault(), { once:true });
+    "#).unwrap();
+    dispatch(&mut runtime, input("mousedown", 1.0, 2.0, "")).unwrap();
+    runtime
+        .execute_script(
+            "test:observe",
+            "__inputDelivery = document.activeElement.id",
+        )
+        .unwrap();
+    assert_eq!(observation(&mut runtime), json!("second"));
+    runtime.execute_script("test:detach-pointer", r#"
+      document.getElementById('button').addEventListener('mousedown', event => event.target.parentNode.removeChild(event.target), { once:true });
+    "#).unwrap();
+    dispatch(&mut runtime, input("mousedown", 1.0, 2.0, "")).unwrap();
+    runtime
+        .execute_script(
+            "test:observe",
+            "__inputDelivery = document.activeElement.id",
+        )
+        .unwrap();
+    assert_ne!(observation(&mut runtime), json!("button"));
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn focus_mutations_validate_before_blur_and_preserve_focused_contents() {
+    let mut runtime = runtime();
+    runtime.execute_script("test:focus-mutations", r#"
+      const button = document.getElementById('button');
+      const parent = document.getElementById('parent');
+      const log = globalThis.__inputDelivery = [];
+      button.addEventListener('blur', () => log.push(['blur',button.isConnected,button.parentNode?.id]));
+      button.focus();
+      for (const mutate of [() => document.body.removeChild(button), () => button.appendChild(parent)]) {
+        try { mutate(); log.push('unexpected success'); }
+        catch (error) { log.push([error.name,document.activeElement===button]); }
+      }
+      button.textContent = 'Updated';
+      log.push(['own text',document.activeElement===button]);
+      parent.textContent = 'Removed';
+      log.push(['ancestor text',document.activeElement===document.body,button.isConnected]);
+    "#).unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([
+            ["NotFoundError", true],
+            ["HierarchyRequestError", true],
+            ["own text", true],
+            ["blur", true, "parent"],
+            ["ancestor text", true, false]
+        ])
+    );
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn focused_node_blurs_before_reparenting() {
+    let mut runtime = runtime();
+    runtime.execute_script("test:focus-reparent", r#"
+      const button = document.getElementById('button');
+      const other = document.createElement('div'); other.id='other'; document.body.appendChild(other);
+      const log = globalThis.__inputDelivery = [];
+      button.addEventListener('blur', () => log.push(['blur',button.isConnected,button.parentNode.id]));
+      button.focus();
+      other.appendChild(button);
+      log.push(['moved',button.parentNode.id,document.activeElement===document.body]);
+    "#).unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([["blur", true, "parent"], ["moved", "other", true]])
+    );
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn focused_no_op_insertions_still_run_focus_removal_steps() {
+    for operation in [
+        "parent.insertBefore(button,button)",
+        "parent.appendChild(button)",
+        "parent.insertBefore(button,button.nextSibling)",
+    ] {
+        let mut runtime = runtime();
+        let source = format!(
+            r#"
+          const button=document.getElementById('button'), parent=document.getElementById('parent');
+          const log=globalThis.__inputDelivery=[];
+          button.addEventListener('blur',()=>log.push(['blur',button.parentNode===parent]));
+          button.addEventListener('focusout',()=>log.push(['focusout',button.parentNode===parent]));
+          button.focus();
+          {operation};
+          log.push(['activeBody',document.activeElement===document.body]);
+        "#
+        );
+        runtime.execute_script("test:focus-no-op", source).unwrap();
+        assert_eq!(
+            observation(&mut runtime),
+            json!([["blur", true], ["focusout", true], ["activeBody", true]])
+        );
+    }
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn native_keys_follow_window_document_capture_and_bubble_path() {
+    let mut runtime = runtime();
+    runtime
+        .execute_script(
+            "test:key-event-path",
+            r#"
+      const button=document.getElementById('button');
+      button.focus();
+      globalThis.__inputDelivery=[];
+      const record=(label,owner)=>event=>__inputDelivery.push([
+        label,event.target===button,event.currentTarget===owner,event.eventPhase
+      ]);
+      globalThis.addEventListener('keydown',record('window capture',globalThis),true);
+      document.addEventListener('keydown',record('document capture',document),true);
+      button.addEventListener('keydown',record('target',button));
+      document.addEventListener('keydown',record('document bubble',document));
+      globalThis.addEventListener('keydown',record('window bubble',globalThis));
+    "#,
+        )
+        .unwrap();
+    dispatch(&mut runtime, input("keydown", 0.0, 0.0, "a")).unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([
+            ["window capture", true, true, 1],
+            ["document capture", true, true, 1],
+            ["target", true, true, 2],
+            ["document bubble", true, true, 3],
+            ["window bubble", true, true, 3]
+        ])
+    );
+    runtime
+        .execute_script(
+            "test:cancel-stop-tab",
+            r#"
+      __inputDelivery=[];
+      const second=document.createElement('button'); document.body.appendChild(second);
+      button.addEventListener('keydown',event=>{
+        event.preventDefault(); event.stopPropagation();
+      },{once:true});
+    "#,
+        )
+        .unwrap();
+    dispatch(&mut runtime, input("keydown", 0.0, 0.0, "Tab")).unwrap();
+    runtime
+        .execute_script(
+            "test:observe-tab",
+            "__inputDelivery.push(['focus retained',document.activeElement===button])",
+        )
+        .unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([
+            ["window capture", true, true, 1],
+            ["document capture", true, true, 1],
+            ["target", true, true, 2],
+            ["focus retained", true]
+        ])
+    );
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn document_load_does_not_propagate_to_default_view() {
+    let mut runtime = runtime();
+    runtime
+        .execute_script(
+            "test:document-load",
+            r#"
+      globalThis.__inputDelivery=[['defaultView',document.defaultView===globalThis]];
+      globalThis.addEventListener('load',()=>__inputDelivery.push('window capture'),true);
+      globalThis.addEventListener('load',()=>__inputDelivery.push('window bubble'));
+      document.addEventListener('load',event=>__inputDelivery.push([
+        'document',event.target===document,event.currentTarget===document
+      ]));
+      document.dispatchEvent(new Event('load',{bubbles:true}));
+    "#,
+        )
+        .unwrap();
+    assert_eq!(
+        observation(&mut runtime),
+        json!([["defaultView", true], ["document", true, true]])
     );
 }

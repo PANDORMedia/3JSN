@@ -4,7 +4,7 @@ import test from 'node:test';
 
 test('DOM-window bootstrap connects standard globals to the bounded host protocol', async t => {
   const names = ['window', 'self', 'innerWidth', 'innerHeight', 'devicePixelRatio',
-    'requestAnimationFrame', 'cancelAnimationFrame', 'performance', 'dispatchEvent'];
+    'requestAnimationFrame', 'cancelAnimationFrame', 'performance', 'dispatchEvent', 'document'];
   const descriptors = new Map(names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
   const globalTarget = new EventTarget();
   const node = new EventTarget();
@@ -17,8 +17,17 @@ test('DOM-window bootstrap connects standard globals to the bounded host protoco
   let clock = 10;
   let callbacks;
   let bindings = 0;
+  let focused;
+  let enableFocus = false;
+  const pointerFocus = [];
+  const navigation = [];
   const key = Symbol.for('3jsn.dom-window.bootstrap-test');
   const harness = {
+    focusController: {
+      activeElement: () => focused,
+      pointer(target) { pointerFocus.push(target); if (enableFocus && target.eligible) focused = target; },
+      navigate(backward) { navigation.push(backward); focused = backward ? node : otherNode; },
+    },
     core: {
       ops: {
         op_dom_window_viewport: () => [960, 640, 2],
@@ -37,6 +46,7 @@ test('DOM-window bootstrap connects standard globals to the bounded host protoco
   };
   globalThis[key] = harness;
   Object.defineProperties(globalThis, {
+    document: { configurable: true, value: { body: globalThis } },
     performance: { configurable: true, value: { now: () => clock } },
     dispatchEvent: { configurable: true, value: event => {
       globalEvents.push(event);
@@ -58,7 +68,7 @@ test('DOM-window bootstrap connects standard globals to the bounded host protoco
         const access = 'globalThis[Symbol.for("3jsn.dom-window.bootstrap-test")]';
         return { shortCircuit: true, format: 'module', source: url.endsWith('core/mod.js')
           ? `export const core = ${access}.core;`
-          : `export const wrap = id => ${access}.wrap(id);` };
+          : `export const wrap = id => ${access}.wrap(id); export const focusController = ${access}.focusController;` };
       }
       return next(url, context);
     },
@@ -208,6 +218,52 @@ test('DOM-window bootstrap connects standard globals to the bounded host protoco
     assert.equal(globalEvents.at(-1).repeat, false);
     input('mousemove', 10, 10, -1, '', '');
     assert.equal(globalEvents.at(-1).buttons, 0);
+  });
+
+  await t.test('keyboard routing re-reads focus, carries native fields and honors canceled Tab', () => {
+    const events = [];
+    focused = node;
+    const down = event => { events.push(['down', event.target, event.code, event.repeat, event.shiftKey, event.ctrlKey, event.altKey, event.metaKey]); focused = otherNode; };
+    const up = event => events.push(['up', event.target]);
+    node.addEventListener('keydown', down, { once: true });
+    otherNode.addEventListener('keyup', up, { once: true });
+    input('keydown', 0, 0, 0, 'é', '', 'Digit2', true, true, true, true, true);
+    input('keyup', 0, 0, 0, 'é', '', 'Digit2', false);
+    assert.deepEqual(events, [['down', node, 'Digit2', true, true, true, true, true], ['up', otherNode]]);
+    const cancel = event => event.preventDefault();
+    otherNode.addEventListener('keydown', cancel, { once: true });
+    input('keydown', 0, 0, 0, 'Tab', '', 'Tab');
+    assert.deepEqual(navigation, []);
+    input('keydown', 0, 0, 0, 'Tab', '', 'Tab', false, true);
+    assert.deepEqual(navigation, [true]);
+    assert.equal(focused, node);
+    input('keydown', 0, 0, 0, 'Tab', '', 'Tab', false, false, true);
+    assert.deepEqual(navigation, [true], 'Control+Tab is outside sequential element navigation');
+    input('blur', 0, 0, 0, '', '');
+    assert.equal(focused, node, 'window blur must not blur the element');
+    focused = undefined;
+  });
+
+  await t.test('pointer focus waits for uncanceled primary mousedown and fresh eligibility', () => {
+    enableFocus = true;
+    node.eligible = true;
+    focused = otherNode;
+    const before = pointerFocus.length;
+    node.addEventListener('mousedown', event => event.preventDefault(), { once: true });
+    input('mousedown', 10, 10, 0, '', '17');
+    assert.equal(pointerFocus.length, before);
+    assert.equal(focused, otherNode);
+    node.addEventListener('mousedown', () => { node.eligible = false; }, { once: true });
+    input('mousedown', 10, 10, 0, '', '17');
+    assert.equal(focused, otherNode);
+    node.eligible = true;
+    input('mousedown', 10, 10, 2, '', '17');
+    assert.equal(focused, otherNode);
+    input('mousedown', 10, 10, 0, '', '17', '', false, true, false, true);
+    assert.equal(focused, node);
+    focused = undefined;
+    enableFocus = false;
+    input('pointerreset', 0, 0, 0, '', '');
   });
 
   await t.test('production RAF scheduling snapshots callbacks and checkpoints cancellation', () => {

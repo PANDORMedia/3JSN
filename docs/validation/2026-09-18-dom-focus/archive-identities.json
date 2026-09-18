@@ -1,0 +1,882 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "source": "artifacts/dom-focus-native-02/report.json",
+      "path": "native-report.json",
+      "bytes": 1061747,
+      "sha256": "5e963d18a1dd68bad261f0e15de89171a99cf934a0a201f47ae691896bef2667"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/report.json",
+      "path": "native-incomplete-report.json",
+      "bytes": 617211,
+      "sha256": "99b3f339124361c2a2986fc5534e49d7eae00e6a21fd013bca827b3279c4c943"
+    },
+    {
+      "source": "artifacts/dom-focus-reference-01/report.json",
+      "path": "browser-reference.json",
+      "bytes": 179769,
+      "sha256": "8a8b6c1ae2b6e1fd9235aa7a62c2f6b22787592e7367c61f533eb5eaeaa98e38"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/report.json",
+      "path": "navigation-report.json",
+      "bytes": 128956,
+      "sha256": "0ccbafc3888ac90f90f3bc44b5379bd709bfa49ccce07d656b4008cf67a1e717"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/analysis.json",
+      "path": "navigation-analysis.json",
+      "bytes": 6978,
+      "sha256": "892bdc0aaf9ca7777e406d1add9908cb30ab3851d5eb9e4760cebdcde45abdec"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/report.json",
+      "path": "stylesheet-browser-report.json",
+      "bytes": 3823,
+      "sha256": "a36d763fcf6a07d98e034e9707510480a92a74ca462229de32753c8b09ea1324"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/report.json",
+      "path": "react-report.json",
+      "bytes": 155678,
+      "sha256": "de486da19fd59534aa5cfbbdd074b6afa1d6557e9f864372dcc73262a6f91ff5"
+    },
+    {
+      "source": ".cache/dom-focus/build-02/builds.json",
+      "path": "builds.json",
+      "bytes": 1176,
+      "sha256": "cfb4cc0007f26ef69b92031369b8b2a6ce869197380444ec8d1b1574ab8611d9"
+    },
+    {
+      "source": ".cache/dom-focus/builds.json",
+      "path": "initial-builds.json",
+      "bytes": 1157,
+      "sha256": "07445f79f7ac9a727c59de1a3981887e2f71ba2fe47a6b404d9c8432ff831c80"
+    },
+    {
+      "source": ".cache/dom-focus/input-stylesheet-final.txt",
+      "path": "checks/input-final.txt",
+      "bytes": 5066,
+      "sha256": "561e091054229d71c4af07aaced3027b65099d616c4b700746984994b68e4723"
+    },
+    {
+      "source": ".cache/dom-focus/input-tests-node.txt",
+      "path": "checks/dom-window-node.txt",
+      "bytes": 1234,
+      "sha256": "5f4c89d7dd03d57f483401655171c17d3a4ff94ea03876eb94997601dff184cb"
+    },
+    {
+      "source": ".cache/dom-focus/node-tests-unrestricted.txt",
+      "path": "checks/node-tests.txt",
+      "bytes": 14263,
+      "sha256": "7c8dc827daffed25a2797831b21083607fa708456bba4c33fbc1361f0a131450"
+    },
+    {
+      "source": ".cache/dom-focus/source-check-final.txt",
+      "path": "checks/source-check.txt",
+      "bytes": 117,
+      "sha256": "9351034bdf2e8e1fcb41730c31eaa2217ccd951bed67c2c734c6d21cefb13349"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/build-preserved-stderr.txt",
+      "path": "native-logs/build-preserved-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/build-preserved-stdout.txt",
+      "path": "native-logs/build-preserved-stdout.txt",
+      "bytes": 471,
+      "sha256": "54632267c75cb7c30831afbde0f1f441753362ce49918080ec82b3e7aa79ff7c"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/build-restricted-stderr.txt",
+      "path": "native-logs/build-restricted-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/build-restricted-stdout.txt",
+      "path": "native-logs/build-restricted-stdout.txt",
+      "bytes": 475,
+      "sha256": "2fb7f1d2a8443ffd3a9f13b8b1af52509a26e3550ddcc04f1a1dba01f37f6b09"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/denied-read-0-stderr.txt",
+      "path": "native-logs/denied-read-0-stderr.txt",
+      "bytes": 83,
+      "sha256": "c966254d10dbd3a28c3f6e987b8ecaae2fa641ad537a615350f95b984dc9739d"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/denied-read-0-stdout.txt",
+      "path": "native-logs/denied-read-0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/denied-read-1-stderr.txt",
+      "path": "native-logs/denied-read-1-stderr.txt",
+      "bytes": 87,
+      "sha256": "d6ebc293d356efcb00776215478b38b4e7bb5c89bf2df409ba1e0d212ec3de4b"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/denied-read-1-stdout.txt",
+      "path": "native-logs/denied-read-1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-measure-stderr.txt",
+      "path": "native-logs/preserved-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-measure-stdout.txt",
+      "path": "native-logs/preserved-measure-stdout.txt",
+      "bytes": 89213,
+      "sha256": "a3ca21d6483634fe1db4f73bd015d8caff9552291f5027452e445ed89b922a54"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-native-stderr.txt",
+      "path": "native-logs/preserved-native-stderr.txt",
+      "bytes": 83,
+      "sha256": "55e3195815d111c4173cafc62dbe4559625b91660aa6046e74ba6eb40534449a"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-native-stdout.txt",
+      "path": "native-logs/preserved-native-stdout.txt",
+      "bytes": 89226,
+      "sha256": "e6567a47f6e6927b7cd4dd5f303a566859f3c54f84300e0e88e9ae2e38728148"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-verify-stderr.txt",
+      "path": "native-logs/preserved-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/preserved-verify-stdout.txt",
+      "path": "native-logs/preserved-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-measure-stderr.txt",
+      "path": "native-logs/restricted-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-measure-stdout.txt",
+      "path": "native-logs/restricted-measure-stdout.txt",
+      "bytes": 89210,
+      "sha256": "231c50fddadd1a5197cedce7078f09a79b0a99af0c0fecffe208e4a2fe5de088"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-native-stderr.txt",
+      "path": "native-logs/restricted-native-stderr.txt",
+      "bytes": 83,
+      "sha256": "78ab57524dca71d952173fc1a31373349973b0b66d2376a19692ed3dc69be982"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-native-stdout.txt",
+      "path": "native-logs/restricted-native-stdout.txt",
+      "bytes": 89222,
+      "sha256": "ef24e43a5bd33960161d26de2c85cc1d4e0202173e313818b73f01aa4cb86c70"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-verify-stderr.txt",
+      "path": "native-logs/restricted-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-02/restricted-verify-stdout.txt",
+      "path": "native-logs/restricted-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/build-preserved-stderr.txt",
+      "path": "native-incomplete-logs/build-preserved-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/build-preserved-stdout.txt",
+      "path": "native-incomplete-logs/build-preserved-stdout.txt",
+      "bytes": 471,
+      "sha256": "a825aea3c75da1b5d2e8a1749ecee31629fad7367a9b5857dd9693e1293d02da"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/build-restricted-stderr.txt",
+      "path": "native-incomplete-logs/build-restricted-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/build-restricted-stdout.txt",
+      "path": "native-incomplete-logs/build-restricted-stdout.txt",
+      "bytes": 475,
+      "sha256": "45bcd7b0b494fc49e820b9c2cdc340924cfdaac38c9041bacd1edd9d86692ef0"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/denied-read-0-stderr.txt",
+      "path": "native-incomplete-logs/denied-read-0-stderr.txt",
+      "bytes": 83,
+      "sha256": "c966254d10dbd3a28c3f6e987b8ecaae2fa641ad537a615350f95b984dc9739d"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/denied-read-0-stdout.txt",
+      "path": "native-incomplete-logs/denied-read-0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/denied-read-1-stderr.txt",
+      "path": "native-incomplete-logs/denied-read-1-stderr.txt",
+      "bytes": 87,
+      "sha256": "d6ebc293d356efcb00776215478b38b4e7bb5c89bf2df409ba1e0d212ec3de4b"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/denied-read-1-stdout.txt",
+      "path": "native-incomplete-logs/denied-read-1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-measure-stderr.txt",
+      "path": "native-incomplete-logs/preserved-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-measure-stdout.txt",
+      "path": "native-incomplete-logs/preserved-measure-stdout.txt",
+      "bytes": 89213,
+      "sha256": "cd8abd84c38f9ce392fb6d2b0e07c2768bb593816f5a12cc1ac886d707fa544a"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-native-stderr.txt",
+      "path": "native-incomplete-logs/preserved-native-stderr.txt",
+      "bytes": 83,
+      "sha256": "0cc870a2fb69d2b2be131fda6a90c3b66b0e1572edde3bfc8a8251997c2a064b"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-native-stdout.txt",
+      "path": "native-incomplete-logs/preserved-native-stdout.txt",
+      "bytes": 561,
+      "sha256": "15869e9a57b5557f4ab670f2c4f363270ad36660e982c34924fe6b290d1c91f2"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-verify-stderr.txt",
+      "path": "native-incomplete-logs/preserved-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/preserved-verify-stdout.txt",
+      "path": "native-incomplete-logs/preserved-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-measure-stderr.txt",
+      "path": "native-incomplete-logs/restricted-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-measure-stdout.txt",
+      "path": "native-incomplete-logs/restricted-measure-stdout.txt",
+      "bytes": 89210,
+      "sha256": "db6a583ec7f093d887d57d4711c12b817d5f89d6557b5f412b3a12f7f2822313"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-native-stderr.txt",
+      "path": "native-incomplete-logs/restricted-native-stderr.txt",
+      "bytes": 83,
+      "sha256": "b1fae0b3e975be908e328d1d7ae677218e9790ff7d669640305ad4f14605889d"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-native-stdout.txt",
+      "path": "native-incomplete-logs/restricted-native-stdout.txt",
+      "bytes": 557,
+      "sha256": "8db9421b095484298cfa44b6c4f0c35c01fc8cd83f9de187db86e647164134a3"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-verify-stderr.txt",
+      "path": "native-incomplete-logs/restricted-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-native-01/restricted-verify-stdout.txt",
+      "path": "native-incomplete-logs/restricted-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/build-preserved-stderr.txt",
+      "path": "react-logs/build-preserved-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/build-preserved-stdout.txt",
+      "path": "react-logs/build-preserved-stdout.txt",
+      "bytes": 473,
+      "sha256": "69fcfae297745096c0cd240d3e8a7762c9103fd4a263e0631d53331aa517ee9b"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/build-restricted-stderr.txt",
+      "path": "react-logs/build-restricted-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/build-restricted-stdout.txt",
+      "path": "react-logs/build-restricted-stdout.txt",
+      "bytes": 477,
+      "sha256": "a44f218f179ceaa61cdbfdc133632a15399c00a49a03bc9ffd0116460b8a42a7"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/denied-read-0-stderr.txt",
+      "path": "react-logs/denied-read-0-stderr.txt",
+      "bytes": 81,
+      "sha256": "78fe59665ec2aea074e7d7326dd144a156af5d5cb0e3ceab871c91ef831bd070"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/denied-read-0-stdout.txt",
+      "path": "react-logs/denied-read-0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/denied-read-1-stderr.txt",
+      "path": "react-logs/denied-read-1-stderr.txt",
+      "bytes": 83,
+      "sha256": "1e2097a6ca21f6bfa7a5e363edde0f4a8236c9c2abb28ec98127d35bad9f0b5f"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/denied-read-1-stdout.txt",
+      "path": "react-logs/denied-read-1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-measure-stderr.txt",
+      "path": "react-logs/preserved-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-measure-stdout.txt",
+      "path": "react-logs/preserved-measure-stdout.txt",
+      "bytes": 11868,
+      "sha256": "550ae17d05147d98b44c754262a61feba4c1ee9e7b3841af7a6fe55f5e3485c9"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-native-stderr.txt",
+      "path": "react-logs/preserved-native-stderr.txt",
+      "bytes": 89,
+      "sha256": "b70d394142d1aefe1e991c0a35b6f996c9d69bec1ab934771507f474f3359504"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-native-stdout.txt",
+      "path": "react-logs/preserved-native-stdout.txt",
+      "bytes": 11896,
+      "sha256": "a9f3555da992b4dc811f474b363c491c09611ec5d2d63e4e533585ee1cdd6566"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-verify-stderr.txt",
+      "path": "react-logs/preserved-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/preserved-verify-stdout.txt",
+      "path": "react-logs/preserved-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-measure-stderr.txt",
+      "path": "react-logs/restricted-measure-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-measure-stdout.txt",
+      "path": "react-logs/restricted-measure-stdout.txt",
+      "bytes": 11865,
+      "sha256": "a986d2b99de208be1510bbe984c0bb69f8a434ff0da9b4178c0d794da679b918"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-native-stderr.txt",
+      "path": "react-logs/restricted-native-stderr.txt",
+      "bytes": 89,
+      "sha256": "88b9081b95452b4c1d6a29107898e462d68f7bd8cd9654094cb3751848694c16"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-native-stdout.txt",
+      "path": "react-logs/restricted-native-stdout.txt",
+      "bytes": 11892,
+      "sha256": "6816d476036fec1fdf34e7ebf70bb25a2d87583645fa436325afd5fd2cfb2391"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-verify-stderr.txt",
+      "path": "react-logs/restricted-verify-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "artifacts/dom-focus-react-01/restricted-verify-stdout.txt",
+      "path": "react-logs/restricted-verify-stdout.txt",
+      "bytes": 25,
+      "sha256": "56040bf4c6fdb32c7d805058f6dce184854dd72fd4b54508e9f3ef20251cbc8e"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/report.json",
+      "path": "checks/first/report.json",
+      "bytes": 2432,
+      "sha256": "46e3cd4d67e39c552f071e8408c0575cb5fd59575523c39fe5b6c2dc417f3c4d"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/compiled-preserved-clippy.txt",
+      "path": "checks/first/compiled-preserved-clippy.txt",
+      "bytes": 1455,
+      "sha256": "65e2e516f45fdc58921ed2678b519d3abba1bbcefce779467457d90608bbc20a"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/compiled-restricted-clippy.txt",
+      "path": "checks/first/compiled-restricted-clippy.txt",
+      "bytes": 1140,
+      "sha256": "9591dee316f62035e4196fe46b265f5adaa55f51265fe8fdeed6c1504587d3fc"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/input-clippy.txt",
+      "path": "checks/first/input-clippy.txt",
+      "bytes": 1761,
+      "sha256": "bbd0c32b6dcbd8e2258e3d34713e8a0169ec82fc350b8d8ed49ca0f559f08d81"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/input-tests.txt",
+      "path": "checks/first/input-tests.txt",
+      "bytes": 4242,
+      "sha256": "f570be69846b0bc2c7492aeda0426e7a352d674e6bcbd3675b54e2a4282f6671"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/workspace-clippy.txt",
+      "path": "checks/first/workspace-clippy.txt",
+      "bytes": 320,
+      "sha256": "5602cc95e7c69975f7e8c3aab4d193123df132e486575697bd7adf6317aa2cdd"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/workspace-format.txt",
+      "path": "checks/first/workspace-format.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/dom-focus/checks-01/workspace-tests.txt",
+      "path": "checks/first/workspace-tests.txt",
+      "bytes": 6068,
+      "sha256": "5ecd1bfa712371dc6869a3eda4a38b6b2fd77000058781a63e63ef4b87157422"
+    },
+    {
+      "source": ".cache/dom-focus/checks-02/report.json",
+      "path": "checks/final/report.json",
+      "bytes": 1256,
+      "sha256": "7dcb402a3b8f3d0ce2ea658cd34b81fc750330c237cdddc9f23a13ed23fd416c"
+    },
+    {
+      "source": ".cache/dom-focus/checks-02/compiled-preserved-clippy.txt",
+      "path": "checks/final/compiled-preserved-clippy.txt",
+      "bytes": 1455,
+      "sha256": "1288ccc7d615af79236119738f72c760da0b643e7790eb622ac43958c99a5d1e"
+    },
+    {
+      "source": ".cache/dom-focus/checks-02/compiled-restricted-clippy.txt",
+      "path": "checks/final/compiled-restricted-clippy.txt",
+      "bytes": 1140,
+      "sha256": "6b7b44a52b4db1f483c7026ca5171f1e2be73828007c155e4a470121a304b582"
+    },
+    {
+      "source": ".cache/dom-focus/checks-02/input-clippy.txt",
+      "path": "checks/final/input-clippy.txt",
+      "bytes": 1761,
+      "sha256": "ee3d6fff8951c9a48aab323f14a01b422b8b7bc29f7ce69a66f95254e08a2aca"
+    },
+    {
+      "source": ".cache/dom-focus/build-02/build-preserved.txt",
+      "path": "checks/build/build-preserved.txt",
+      "bytes": 1456,
+      "sha256": "91e6180dc6e310e3aa4ffef492cf5c2dbce4bb43773d416ad0b6bb037f04bb9f"
+    },
+    {
+      "source": ".cache/dom-focus/build-02/build-restricted.txt",
+      "path": "checks/build/build-restricted.txt",
+      "bytes": 1141,
+      "sha256": "b2ddbd1f9f4c13661df555a8ebbf2ab8680ae52de92761a752280535fb66687c"
+    },
+    {
+      "source": ".cache/focus-review/browser.json",
+      "path": "review/browser.json",
+      "bytes": 6984,
+      "sha256": "94e0051f85b5e626dc764e5689443c96b3858a0b9add0e6bd4838e54d885204c"
+    },
+    {
+      "source": ".cache/focus-review/native-isolated.json",
+      "path": "review/native-isolated.json",
+      "bytes": 7279,
+      "sha256": "a180385b3ee055306df177522f7395c5bc449be7edd65a76f11dfd790617d7a5"
+    },
+    {
+      "source": ".cache/focus-review/native.json",
+      "path": "review/native.jsonl",
+      "bytes": 379,
+      "sha256": "538e62c24b6125490420bfa4855a805279b759d2fa2061a67e2e29f6a44a36c5"
+    },
+    {
+      "source": ".cache/focus-review/append-stylesheet.js",
+      "path": "review/append-stylesheet.js",
+      "bytes": 2545,
+      "sha256": "38f78dae92c52db003a03c2ae1e956a1376f6e35c7fccc3eaf3ec4f9c4676e2b"
+    },
+    {
+      "source": ".cache/focus-review/blur-refocus-self.js",
+      "path": "review/blur-refocus-self.js",
+      "bytes": 2545,
+      "sha256": "077d9ac01ae553e30dc6d3136ac18c0b5e1c709e5d675d58127609827e2ae8ba"
+    },
+    {
+      "source": ".cache/focus-review/blur-removes-anchor.js",
+      "path": "review/blur-removes-anchor.js",
+      "bytes": 2547,
+      "sha256": "a817a34cd951596b5e80d2cb7e66c6525a591a1c043fd9f9fd510023c7f92788"
+    },
+    {
+      "source": ".cache/focus-review/focus-hides-self.js",
+      "path": "review/focus-hides-self.js",
+      "bytes": 2544,
+      "sha256": "52ec592109c12e8873754fe59f941c96fab014b70c780488977814984e90c568"
+    },
+    {
+      "source": ".cache/focus-review/probe.js",
+      "path": "review/probe.js",
+      "bytes": 2690,
+      "sha256": "1c1da2a27408a835ef671a58eede6921b6e145e7783eb1e0a06da8ee78332edc"
+    },
+    {
+      "source": ".cache/focus-review/remove-parent-focus-sibling.js",
+      "path": "review/remove-parent-focus-sibling.js",
+      "bytes": 2555,
+      "sha256": "cd70f7caa293402035bf7782983ed6fe91a40f3af9390685296364481ea01a71"
+    },
+    {
+      "source": ".cache/focus-review/remove-refocus-self.js",
+      "path": "review/remove-refocus-self.js",
+      "bytes": 2547,
+      "sha256": "ebfdaf3d2426396aa0c1a953c80f6ade6dcba48e99e203108f78b2ec53184ed8"
+    },
+    {
+      "source": ".cache/focus-review/replace-stylesheet-text.js",
+      "path": "review/replace-stylesheet-text.js",
+      "bytes": 2551,
+      "sha256": "b084cb7d82c63630844ed5b79b3bb9a58ef2f545ab59f06917ae02685b32e177"
+    },
+    {
+      "source": ".cache/focus-review/abort-backtrace.stderr",
+      "path": "review/abort-backtrace.stderr",
+      "bytes": 8531,
+      "sha256": "3208e0d0dd726371223f41a047901e4a8f6bdbfdafb9ef4ee1358f7a493a4260"
+    },
+    {
+      "source": ".cache/focus-review/append-stylesheet.stderr",
+      "path": "review/append-stylesheet.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/blur-refocus-self.stderr",
+      "path": "review/blur-refocus-self.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/blur-removes-anchor.stderr",
+      "path": "review/blur-removes-anchor.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/focus-hides-self.stderr",
+      "path": "review/focus-hides-self.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/native.stderr",
+      "path": "review/native.stderr",
+      "bytes": 4638,
+      "sha256": "d0c208f511e0e0f511b5b58b328857b4a19000ab9ce59ac3911ec38239dbd061"
+    },
+    {
+      "source": ".cache/focus-review/remove-parent-focus-sibling.stderr",
+      "path": "review/remove-parent-focus-sibling.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/remove-refocus-self.stderr",
+      "path": "review/remove-refocus-self.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".cache/focus-review/replace-stylesheet-text.stderr",
+      "path": "review/replace-stylesheet-text.stderr",
+      "bytes": 4638,
+      "sha256": "cd859d4f31f952e71a0766a6982ee80fd4604051095f9513e9b7de4b319ed9c3"
+    },
+    {
+      "source": ".cache/focus-review/abort-backtrace.stdout",
+      "path": "review/abort-backtrace.stdout",
+      "bytes": 379,
+      "sha256": "538e62c24b6125490420bfa4855a805279b759d2fa2061a67e2e29f6a44a36c5"
+    },
+    {
+      "source": ".cache/focus-review/append-stylesheet.stdout",
+      "path": "review/append-stylesheet.stdout",
+      "bytes": 847,
+      "sha256": "31882924a1233a86951a3ed552d67bade10cabb39b71e875ede185ecd412d031"
+    },
+    {
+      "source": ".cache/focus-review/blur-refocus-self.stdout",
+      "path": "review/blur-refocus-self.stdout",
+      "bytes": 1059,
+      "sha256": "fd3a12b2f956d427acb5466116705e97efb2870cfdeee590858dff5c9e93aa55"
+    },
+    {
+      "source": ".cache/focus-review/blur-removes-anchor.stdout",
+      "path": "review/blur-removes-anchor.stdout",
+      "bytes": 848,
+      "sha256": "0ea15dd9cedd62b204f693cf624227af675907332c590c11bbdf8389db2c4f94"
+    },
+    {
+      "source": ".cache/focus-review/focus-hides-self.stdout",
+      "path": "review/focus-hides-self.stdout",
+      "bytes": 954,
+      "sha256": "02ab0f2925949f86a0c9defb3eb5ea33139bde8fbea1dbb75399e39332e34a76"
+    },
+    {
+      "source": ".cache/focus-review/remove-parent-focus-sibling.stdout",
+      "path": "review/remove-parent-focus-sibling.stdout",
+      "bytes": 957,
+      "sha256": "070ed550d1e1e8e47156c9ae2a1cbd089a406a8e5be96430572bd2f6a244e035"
+    },
+    {
+      "source": ".cache/focus-review/remove-refocus-self.stdout",
+      "path": "review/remove-refocus-self.stdout",
+      "bytes": 949,
+      "sha256": "605388217fc22957b98bafbe4714d72975b4622bdecfe2f189bc1ca115619d61"
+    },
+    {
+      "source": ".cache/focus-review/replace-stylesheet-text.stdout",
+      "path": "review/replace-stylesheet-text.stdout",
+      "bytes": 379,
+      "sha256": "538e62c24b6125490420bfa4855a805279b759d2fa2061a67e2e29f6a44a36c5"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/baseline-check.json",
+      "path": "review/stylesheet-snapshot/baseline-check.json",
+      "bytes": 3282,
+      "sha256": "fd2dd0ebe4fa1fe0af0145acd7c6ecf4c4b03902ed5fc6c4b08c21e9814888f5"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/candidate-check.json",
+      "path": "review/stylesheet-snapshot/candidate-check.json",
+      "bytes": 6881,
+      "sha256": "4afe492bc6ef6cd713b72f9011be7b31d3d8dcf2ecebd9da275c536ca77d0d8b"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/normal-check.json",
+      "path": "review/stylesheet-snapshot/normal-check.json",
+      "bytes": 5128,
+      "sha256": "fc63fb2f0043752c8ddde05d62d613b062b9975f0defae0bd05d071c763b45cb"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/receipt.json",
+      "path": "review/stylesheet-snapshot/receipt.json",
+      "bytes": 2772,
+      "sha256": "71c81719f3f4b306f2214bd6059192ffc20284e586dc25b32f88eee731586ec7"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/dependency-tests-final.log",
+      "path": "review/stylesheet-snapshot/dependency-tests-final.txt",
+      "bytes": 1303,
+      "sha256": "12566d44888b5d53026d066ddfa0bd06d0d0459b56719529a734f5a9056ff3da"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/dependency-tests.log",
+      "path": "review/stylesheet-snapshot/dependency-tests.txt",
+      "bytes": 1918,
+      "sha256": "d1b761b264830d70b6518e85b4622c69f2343e90e0a42e7031f0b13b9cf86930"
+    },
+    {
+      "source": ".cache/focus-review/stylesheet-snapshot/focus-tests.log",
+      "path": "review/stylesheet-snapshot/focus-tests.txt",
+      "bytes": 1263,
+      "sha256": "6126924d0ce6efb10c9555d3980ec2dfbcc3e34bdd77f8e347f7d4c96f8bb359"
+    },
+    {
+      "source": ".cache/focus-within/baseline-check-final.json",
+      "path": "review/focus-within/baseline-check-final.json",
+      "bytes": 3130,
+      "sha256": "c263d3be762993d1b9cb0450b51fce77a4a0868cfef5461b57a2ff1b6223f5aa"
+    },
+    {
+      "source": ".cache/focus-within/candidate-check-final.json",
+      "path": "review/focus-within/candidate-check-final.json",
+      "bytes": 6729,
+      "sha256": "0cdfa0a1b180795d8d86b95a388a12bfd686474d37a1daa4816f3ef6021a9af7"
+    },
+    {
+      "source": ".cache/focus-within/final-hashes.json",
+      "path": "review/focus-within/final-hashes.json",
+      "bytes": 1493,
+      "sha256": "8830800391aa79df659c81fded76701e9eea4354d42548248c862bf688f085c2"
+    },
+    {
+      "source": ".cache/focus-within/normal-check-final.json",
+      "path": "review/focus-within/normal-check-final.json",
+      "bytes": 4968,
+      "sha256": "8ee1670633c04ec780b024ae4a8145f80e3e98e5ce4b6963388d50937d1f97b7"
+    },
+    {
+      "source": ".cache/focus-within/receipt.json",
+      "path": "review/focus-within/receipt.json",
+      "bytes": 3952,
+      "sha256": "5ad12272999cc1e82143b52c65a42621e3eb3ab3aab9065dc143537840743f1a"
+    },
+    {
+      "source": ".cache/focus-within/focus-within-final-tests.log",
+      "path": "review/focus-within/focus-within-final-tests.txt",
+      "bytes": 1521,
+      "sha256": "e352dc42b6e595eac7121fc9764a797dd1a7cf6cc92de381219b5094392e2b98"
+    },
+    {
+      "source": ".cache/focus-within/focus-within-isolation.log",
+      "path": "review/focus-within/focus-within-isolation.txt",
+      "bytes": 2343,
+      "sha256": "b39da24b8c51d95f5688e745eecb287fb3e247d5d3b7d511abe6cdd15b890afc"
+    },
+    {
+      "source": ".cache/focus-within/focus-within-tests.log",
+      "path": "review/focus-within/focus-within-tests.txt",
+      "bytes": 1884,
+      "sha256": "960d31f64866f4e8ee472519c219de30597fabbb9f9ea8da90c2497b4bec15f3"
+    },
+    {
+      "source": "artifacts/dom-focus-reference-01/capture.mjs",
+      "path": "browser/programmatic/capture.mjs",
+      "bytes": 4701,
+      "sha256": "48f95e1925fc377bfa7439d9fc38b9dbef36a8790ebc19e141665e6fd2b78c4b"
+    },
+    {
+      "source": "artifacts/dom-focus-reference-01/repeat-agreement.json",
+      "path": "browser/programmatic/repeat-agreement.json",
+      "bytes": 455,
+      "sha256": "a417f3d9a92dca2e4607e05b014d2cbf018869e3640c27dc07e9c3a866d19746"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/capture.mjs",
+      "path": "browser/navigation/capture.mjs",
+      "bytes": 8385,
+      "sha256": "223a742e42cdc40dadbb4364143915356c1c442858d1f11e35c4199af7d5b464"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/page.js",
+      "path": "browser/navigation/page.js",
+      "bytes": 2607,
+      "sha256": "2803b72180f28c0cf8b50a0a023adf43b29dff90dc1dd1c822b13bed19fba8ad"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/tree.html",
+      "path": "browser/navigation/tree.html",
+      "bytes": 1022,
+      "sha256": "4b47ba8aec2e118ed389a5715ec6ff222a3c4b4f616b51871908f22dbb67dfdf"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/README.md",
+      "path": "browser/navigation/README.md",
+      "bytes": 5344,
+      "sha256": "0cba9368d438a49c0a78ae6a65c381a25858a90e4eaa5103ac87f10be3d1bdd4"
+    },
+    {
+      "source": "artifacts/dom-focus-navigation-01/repeat-agreement.json",
+      "path": "browser/navigation/repeat-agreement.json",
+      "bytes": 181,
+      "sha256": "09a3fe1ab2413724521e29e434dbad3aabdfb54f5139e270cfa35a922072fa01"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/capture.mjs",
+      "path": "browser/stylesheets/capture.mjs",
+      "bytes": 5017,
+      "sha256": "d7b070b9ea6fcd63700d68633884dce96c45108d877c31ff9a062b2d5373cbdb"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/report-repeat-source.js",
+      "path": "browser/stylesheets/report-repeat-source.js",
+      "bytes": 1817,
+      "sha256": "1a76341f9ffa59fba802ac1397b850a0e4783a4dba675742765e46ba6499ff54"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/report-source.js",
+      "path": "browser/stylesheets/report-source.js",
+      "bytes": 1817,
+      "sha256": "1a76341f9ffa59fba802ac1397b850a0e4783a4dba675742765e46ba6499ff54"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/README.md",
+      "path": "browser/stylesheets/README.md",
+      "bytes": 2052,
+      "sha256": "115c51447eac4a1ab7741a3503ec092cbc54b3aee7cc11294a2df87185b50b04"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/report-raw-errors.json",
+      "path": "browser/stylesheets/report-raw-errors.json",
+      "bytes": 64,
+      "sha256": "55760ca7a40bcb4c64db28c5407e82eff899549947aa54bc59186dcb2366a2c7"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/report-repeat-raw-errors.json",
+      "path": "browser/stylesheets/report-repeat-raw-errors.json",
+      "bytes": 64,
+      "sha256": "55760ca7a40bcb4c64db28c5407e82eff899549947aa54bc59186dcb2366a2c7"
+    },
+    {
+      "source": "artifacts/dom-focus-stylesheets-01/repeat-agreement.json",
+      "path": "browser/stylesheets/repeat-agreement.json",
+      "bytes": 181,
+      "sha256": "6443b7cd50f53c833b031eb3640d952659adae2a4330f4991643ee18a95b217c"
+    },
+    {
+      "source": "artifacts/dom-focus-extra-01/capture.mjs",
+      "path": "browser/mutations/capture.mjs",
+      "bytes": 2473,
+      "sha256": "348b418fbd416903f2b1c19bd7836908730d3ae9c02c891bdd5c802cf496a016"
+    },
+    {
+      "source": "artifacts/dom-focus-extra-01/report.json",
+      "path": "browser/mutations/report.json",
+      "bytes": 2214,
+      "sha256": "c1d180caec7d644a555a7cdc03fa597cc2e322ba124423621006a20c75b6f485"
+    }
+  ],
+  "note": "Exact original receipt bytes retained; paths inside copied receipts describe the original local captures. This manifest maps original files to archived locations. Log extensions become .txt so they are tracked."
+}

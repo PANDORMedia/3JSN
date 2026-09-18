@@ -177,6 +177,12 @@ fn dispatch_input(
         let button = v8::Number::new(scope, f64::from(input.button));
         let key = v8::String::new(scope, &input.key).ok_or("input key allocation failed")?;
         let target = v8::String::new(scope, &target).ok_or("input target allocation failed")?;
+        let code = v8::String::new(scope, &input.code).ok_or("input code allocation failed")?;
+        let repeat = v8::Boolean::new(scope, input.repeat);
+        let shift = v8::Boolean::new(scope, input.modifiers.shift);
+        let control = v8::Boolean::new(scope, input.modifiers.control);
+        let alt = v8::Boolean::new(scope, input.modifiers.alt);
+        let meta = v8::Boolean::new(scope, input.modifiers.meta);
         [
             kind.into(),
             x.into(),
@@ -184,6 +190,12 @@ fn dispatch_input(
             button.into(),
             key.into(),
             target.into(),
+            code.into(),
+            repeat.into(),
+            shift.into(),
+            control.into(),
+            alt.into(),
+            meta.into(),
         ]
         .map(|value: v8::Local<v8::Value>| v8::Global::new(scope, value))
     };
