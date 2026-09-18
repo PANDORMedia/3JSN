@@ -3,7 +3,8 @@
 This Metal-only experiment presents the [Orbit Study fixture](../../examples/dom-window/README.md)
 using the same HTML and bundled JavaScript as its browser reference. It combines
 the existing DOM canvas adapter, Blitz layout/text, Vello paint and the checked
-Metal device/queue bridge. It does not change the current CLI compatibility profile.
+Metal device/queue bridge. The interim `dom-window-v1` CLI profile packages this
+fixture; it does not establish generic project compatibility or compiled UI.
 
 From the repository root, after `npm ci` and the [DOM canvas preparation](README.md):
 
@@ -13,11 +14,11 @@ export CARGO_TARGET_DIR="$PWD/target"
 node experiments/dom-canvas/prepare.mjs --check
 mkdir -p artifacts/dom-window
 cp examples/dom-window/index.html artifacts/dom-window/index.html
-npx --no-install esbuild examples/dom-window/app.mjs --bundle --platform=browser --format=esm --sourcemap --outfile=artifacts/dom-window/app.bundle.mjs
+npx --no-install esbuild examples/dom-window/app.mjs --bundle --platform=browser --format=esm --sourcemap --outfile=artifacts/dom-window/app.mjs
 cargo build --offline --locked -j2 --manifest-path experiments/dom-canvas/Cargo.toml --bin threejs-dom-window-probe
 MTL_DEBUG_LAYER=1 target/debug/threejs-dom-window-probe \
   .cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2 \
-  examples/dom-window/index.html artifacts/dom-window/app.bundle.mjs
+  examples/dom-window/index.html artifacts/dom-window/app.mjs
 ```
 
 Append `120` to stop after 120 presented frames. A bounded run has a 90-second
@@ -31,6 +32,11 @@ CSS viewport, the canvas drawing buffer and the native surface. To compare the
 same build in a browser, serve `artifacts/dom-window` over localhost. Native
 startup receives the HTML and bundled module as separate arguments; it does not
 discover or execute arbitrary HTML script tags or fetch application assets.
+
+The [packaging guide](../../docs/build.md) describes HTML-entry discovery during
+the build and native manifest-based startup. The packaged player loads only its
+declared bundled module, HTML and font. This is still interpreted HTML with a
+live DOM. It does not implement the [compiled UI direction](../../docs/adr/0003-compiled-ui-and-generic-compatibility.md).
 
 ## Ownership and frame flow
 

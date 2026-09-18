@@ -39,11 +39,14 @@ service locator to bypass these directions.
 | Frame dispatch | Player requests one frame; runtime dispatches callbacks with one monotonic timestamp | Snapshot callbacks, allow cancellation during dispatch, defer new callbacks until another frame; report exceptions without losing later callbacks |
 
 The [initial package protocol](build.md) now has a consumer: `packages/cli`
-emits an experimental manifest and source/asset identities, while
-`crates/player/src/package.rs` validates the local package before GPU startup.
+emits an experimental manifest and source/asset identities, while the shared
+`crates/package` validator checks local payloads before GPU startup. Each player
+accepts only its own profile. `crates/js-sources` embeds the common Deno extension
+sources at compile time; it owns no window, GPU device or application module.
 Node/esbuild remain developer tools and are not launched by the shipping player.
-This bounded profile does not implement the full application-manifest contract
-for HTML entry pages, service permissions or unchanged-game capabilities.
+The native-window and interim HTML-entry profiles do not implement the full
+application-manifest contract for generic projects, services or unchanged-game
+capabilities.
 
 The offscreen player drains referenced async work. The interactive adapter now
 uses one current-thread reactor on a dedicated worker, a coalescing OS-state

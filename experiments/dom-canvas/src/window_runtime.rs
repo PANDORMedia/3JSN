@@ -215,10 +215,14 @@ async fn closed(mut state: watch::Receiver<HostState>) {
 pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> {
     let initial = *worker.state.borrow();
     let started = std::time::Instant::now();
-    let mut runtime = host::create_with_extensions(
+    let mut font_ctx = blitz_dom::build_single_font_ctx(&worker.font);
+    if font_ctx.collection.family_names().next().is_none() {
+        return Err("supplied font did not register a usable font family".into());
+    }
+    let mut runtime = host::create_with_prepared_extensions(
         &worker.html,
         DocumentConfig {
-            font_ctx: Some(blitz_dom::build_single_font_ctx(&worker.font)),
+            font_ctx: Some(font_ctx),
             viewport: Some(Viewport::new(
                 initial.width,
                 initial.height,
@@ -228,6 +232,7 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
             ..Default::default()
         },
         vec![extension(initial)],
+        threejs_native_js_sources::embed_extension_sources,
     );
     *worker.interrupt.lock().unwrap() = Some(runtime.v8_isolate().thread_safe_handle());
     let mut scene = None;

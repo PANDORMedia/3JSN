@@ -75,6 +75,7 @@ shipping integration gates.
 - [#39 Bring up and validate the native runtime on Windows x64](https://github.com/PANDORMedia/3JSN/issues/39)
 - [#40 Bring up and validate Linux x64 on X11 and Wayland](https://github.com/PANDORMedia/3JSN/issues/40)
 - [#41 Package reproducible native applications for every supported desktop target](https://github.com/PANDORMedia/3JSN/issues/41)
+- [#56 Add opt-in build-time webfont bundling and offline native font loading](https://github.com/PANDORMedia/3JSN/issues/56)
 
 ## M6 — Performance and developer preview
 

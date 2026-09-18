@@ -1,0 +1,2 @@
+2026-09-18 11:19:02.073 3jsn-dom-demo[94361:5194305] Metal API Validation Enabled
+3JSN DOM player: supplied font did not register a usable font family

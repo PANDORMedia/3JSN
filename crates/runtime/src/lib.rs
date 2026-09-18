@@ -24,7 +24,6 @@ deno_core::extension!(
         op_native_keep_alive, op_native_request_adapter, op_native_canvas_context,
         op_native_resize, op_native_discard, op_native_current_texture, op_native_bind_input],
     esm_entry_point = "ext:threejs_native_bootstrap/bootstrap.js",
-    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js", "input.js"],
     options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface>, input: InputCallback },
     state = |state, options| {
         state.put(options.instance);
@@ -91,6 +90,9 @@ impl Runtime {
         window_owner: Option<Box<dyn Any>>,
     ) -> Self {
         let input = InputCallback::default();
+        let mut bootstrap =
+            threejs_native_bootstrap::init(instance, surface.clone(), input.clone());
+        bootstrap.esm_files = embedded::bootstrap_sources();
         let mut extensions = vec![
             deno_webidl::deno_webidl::init(),
             deno_web::deno_web::init(
@@ -100,11 +102,11 @@ impl Runtime {
                 deno_web::InMemoryBroadcastChannel::default(),
             ),
             deno_webgpu::deno_webgpu::init(),
-            threejs_native_bootstrap::init(instance, surface.clone(), input.clone()),
+            bootstrap,
         ];
         extensions
             .iter_mut()
-            .for_each(embedded::embed_extension_sources);
+            .for_each(threejs_native_js_sources::embed_extension_sources);
         let mut js = JsRuntime::new(RuntimeOptions {
             module_loader: Some(Rc::new(FsModuleLoader)),
             extensions,

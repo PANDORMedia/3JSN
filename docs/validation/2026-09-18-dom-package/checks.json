@@ -1,0 +1,39 @@
+{
+  "node": {
+    "passed": 94,
+    "skipped": 1,
+    "failed": 0
+  },
+  "rustWorkspace": {
+    "passed": 22,
+    "ignored": 2,
+    "failed": 0
+  },
+  "domArguments": {
+    "passed": 1,
+    "failed": 0
+  },
+  "host": {
+    "machine": "arm64",
+    "macos": "26.1"
+  },
+  "experimentalProfile": "dom-window-v1",
+  "sharedExtraction": "package integrity validator and Deno extension source embedding",
+  "earlierFindings": [
+    "Native main returned Debug errors instead of Display messages; fixed explicit ExitCode wrapper.",
+    "Worker failure was masked by closed input receiver during startup; await Stopped result.",
+    "DOM realm used build-machine dependency JS; shared compile-time source embedding now used."
+  ],
+  "notImplemented": [
+    "compiled UI",
+    "HTML parser omission",
+    "--bundle-web-fonts",
+    "generic web project compatibility",
+    "cross-platform DOM packages"
+  ],
+  "scopedClippy": {
+    "workspace": true,
+    "domWindow": true
+  },
+  "formatting": true
+}

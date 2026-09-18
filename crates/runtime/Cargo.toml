@@ -6,6 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+threejs-native-js-sources = { path = "../js-sources" }
 deno_core.workspace = true
 deno_web.workspace = true
 deno_webidl.workspace = true
@@ -16,9 +17,3 @@ thiserror.workspace = true
 
 [dev-dependencies]
 tokio.workspace = true
-
-[build-dependencies]
-deno_core.workspace = true
-deno_web.workspace = true
-deno_webidl.workspace = true
-deno_webgpu.workspace = true

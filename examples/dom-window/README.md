@@ -16,7 +16,7 @@ For a browser reference, run these commands from the repository root:
 ```sh
 mkdir -p .cache/dom-window-web
 cp examples/dom-window/index.html .cache/dom-window-web/index.html
-npx --no-install esbuild examples/dom-window/app.mjs --bundle --platform=browser --format=esm --sourcemap --outfile=.cache/dom-window-web/app.bundle.mjs
+npx --no-install esbuild examples/dom-window/app.mjs --bundle --platform=browser --format=esm --sourcemap --outfile=.cache/dom-window-web/app.mjs
 python3 -m http.server 8000 --directory .cache/dom-window-web
 ```
 
@@ -24,8 +24,9 @@ Open `http://localhost:8000` in a browser with hardware WebGPU. The HTML is copi
 unchanged; both hosts load the same generated application module. A hardware
 adapter is required, and GPU initialization, validation and device-loss failures
 are surfaced. This is a fixture, not unchanged-project compatibility certification.
-The current `native-window-v1` CLI profile does not package this HTML document;
-this fixture targets the separate DOM-window integration experiment.
+The interim `dom-window-v1` CLI profile can package this HTML document, module
+and an explicit font; see the [build guide](../../docs/build.md). It retains
+runtime HTML/CSS parsing and the experimental host's restricted grammar.
 Use the [native run instructions](../../experiments/dom-canvas/WINDOW.md) to open
 the combined window. Its [hardware checkpoint](../../docs/validation/2026-09-18-dom-window.md)
 records the tested behavior and remaining gates.

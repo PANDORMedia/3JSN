@@ -23,17 +23,17 @@ declarations need the adapter described here.
 
 ## Build and runtime ownership
 
-[build.rs](../../crates/runtime/build.rs) constructs the dependency extension
+[build.rs](../../crates/js-sources/build.rs) constructs the dependency extension
 declarations and enumerates `js_files`, `esm_files`, `lazy_loaded_esm_files` and
 `lazy_loaded_js_files`. It does not create an isolate or GPU device, or execute the
 extensions' state callbacks. Dependency source filenames are discovered from
 their declarations, rather than duplicated in a maintained list.
 
-The build script also declares the four current 3JSN modules: `bootstrap.js`,
-`web-globals.js`, `window.js` and `animation.js`. The shared web globals initialize
-the same Event/EventTarget and WebGPU classes before window or DOM adapters.
-Keep that local declaration aligned with the
-runtime's bootstrap extension when adding modules. Source paths produce Cargo
+The native runtime's local `bootstrap.js`, `web-globals.js`, `window.js`,
+`animation.js` and `input.js` use direct `ascii_str_include!` declarations in
+[embedded.rs](../../crates/runtime/src/embedded.rs). They no longer need a generated
+build-time table. The shared web globals initialize the same Event/EventTarget
+and WebGPU classes before window or DOM adapters. Dependency source paths produce Cargo
 `rerun-if-changed` instructions. Missing files, duplicate specifiers and non-ASCII
 extension sources fail the build. The pinned Deno API requires ASCII for these
 fast static strings.
@@ -44,7 +44,7 @@ source bytes rather than absolute file paths; its order and contents are
 deterministic for the same inputs. The four Deno crates are also build dependencies
 at the same workspace-pinned versions, which adds a host-side build cost.
 
-[embedded.rs](../../crates/runtime/src/embedded.rs) replaces filesystem-backed
+[The shared source adapter](../../crates/js-sources/src/lib.rs) replaces filesystem-backed
 entries in all four categories before `JsRuntime` registers extensions. It keeps
 existing in-memory sources, source specifiers, entry points, synthetic module
 mappings and op/state declarations. An absent compiled entry panics with its
@@ -55,13 +55,18 @@ parses the embedded JavaScript.
 ## Validation
 
 The focused unit tests cover every source category, the complete current
-dependency declarations and local modules, unique sorted keys, preservation of
+dependency declarations, unique sorted keys, preservation of
 in-memory sources and a missing-entry failure. They substitute unavailable paths
 before adaptation and load every resulting source from memory. Run them with:
 
 ```sh
-cargo test --locked -p threejs-native-runtime --lib embedded::tests
+cargo test --locked -p threejs-native-js-sources --lib
 ```
+
+The [DOM packaging checkpoint](2026-09-18-dom-package.md) extracted this adapter
+into `threejs-native-js-sources` for both players. The five shared tests still
+pass; native V8 execution checks cover the directly embedded local bootstrap.
+The counts and results below describe earlier revisions before that extraction.
 
 On the macOS arm64 development host, all five tests passed on 2026-09-18. The
 then-generated table contained 32 sources: 29 dependency modules and three 3JSN modules.

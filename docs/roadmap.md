@@ -23,6 +23,13 @@ separate [DPR cache repair](validation/2026-09-18-dpr-cache.md) passes its CPU
 regressions. Next integration gates are broader DOM/input semantics and project
 loading, alongside unchanged WebGL support; these checkpoints do not complete M3.
 
+The [HTML-entry packaging checkpoint](validation/2026-09-18-dom-package.md)
+adds an interim DOM profile with embedded runtime sources, manifest validation,
+an explicit local font and a relocated Metal run with development-source reads
+and networking denied. Existing frontend builds and generic resource loading
+remain open. [Webfont bundling](https://github.com/PANDORMedia/3JSN/issues/56)
+is planned as an opt-in build capability.
+
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
 adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.
 The runtime retains live UI state and required dynamic parsing. This work is

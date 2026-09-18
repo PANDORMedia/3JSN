@@ -7,7 +7,7 @@ The goal is **unchanged game source → `3jsn build` → native desktop applicat
 
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
 and compatibility experiments. An experimental host-only build CLI packages the
-native-window fixture; existing web-project builds are not integrated.
+native-window fixture and a restricted HTML-entry demo; existing web-project builds are not integrated.
 No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
@@ -128,8 +128,10 @@ a working HTML button and a real Three.js canvas together through Metal. The
 same fixture HTML and bundle run in the browser. Its
 [hardware checkpoint](docs/validation/2026-09-18-dom-window.md) covers 120 frames,
 canvas retention, animation-error propagation and observed native pause/resize
-controls. This remains a separate experiment; the CLI does not yet package
-unchanged HTML/WebGL applications.
+controls. The [HTML-entry packaging checkpoint](docs/validation/2026-09-18-dom-package.md)
+now runs the relocated fixture with development-source reads and networking
+denied. It remains an interpreted HTML experiment; generic unchanged HTML/WebGL
+applications and build-time UI compilation are not yet supported.
 
 A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
 now matches Chrome on 23 shared checks. A separately pinned upstream layout

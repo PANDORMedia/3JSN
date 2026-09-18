@@ -28,6 +28,8 @@ path = "src/window_probe.rs"
 [workspace]
 
 [dependencies]
+threejs-native-js-sources = { path = "../../crates/js-sources" }
+threejs-native-package = { path = "../../crates/package" }
 blitz-dom = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false, features = ["woff"] }
 blitz-html = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
 blitz-paint = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false, features = ["custom-widget"] }

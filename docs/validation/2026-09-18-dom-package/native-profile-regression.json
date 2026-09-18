@@ -1,0 +1,103 @@
+{
+  "kind": "experimental-native-package-relocation",
+  "target": "macos-arm64",
+  "profile": "native-window-v1",
+  "inputs": [
+    {
+      "path": "scripts/probe-package.mjs",
+      "sha256": "bd8aee3004ef847a11f27460c7bc72324df93bed92054698b57ea7635a301b27"
+    },
+    {
+      "path": "packages/cli/build.mjs",
+      "sha256": "73d333bc1b701f7e4395b2fef2eeec728efa56f0ac5af1640dfe8adef54cb359"
+    },
+    {
+      "path": "packages/cli/contract.mjs",
+      "sha256": "02a9f24ccefdf6e8383d26bccca83af42013f51dd9ec3ed1a3ffba7671faa07b"
+    },
+    {
+      "path": "scripts/compatibility/snapshot.mjs",
+      "sha256": "cf30c3724b174cdfa018f7f33dff73ac087faa3f100d43c36541ac7926ee3637"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "5fbaec7116a1351d2bd4437d33d0d98a02b94912d023dd83ccbbdfb65cef03e7"
+    },
+    {
+      "path": "examples/spinning-scene/3jsn.json",
+      "sha256": "d61acdab48fb3cf68055e0690cd8abd00e5f955753f2d0d57540d353984b983f"
+    },
+    {
+      "path": "examples/spinning-scene/native.mjs",
+      "sha256": "aa962695969f2890ab8cfa0a9d5784b7104d0294afc9a66ac5f5f9ae76399b15"
+    },
+    {
+      "path": "examples/spinning-scene/scene.mjs",
+      "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+    },
+    {
+      "path": "examples/spinning-scene/controls.mjs",
+      "sha256": "257c8c40e318d71f4414b59207b1b6242d8a91b13833400c1fd0d06b43ab4f3f"
+    }
+  ],
+  "nodeOnRestrictedPath": false,
+  "removedDisposableBuildInput": true,
+  "unrelatedWorkingDirectory": true,
+  "relocatedDirectoryContainsUnicodeAndSpaces": true,
+  "sourcePreservedDuringBuild": true,
+  "runtime": {
+    "executable": "3jsn-demo",
+    "bytes": 127313512,
+    "sha256": "8bb4ee44e6e052a04c699811dff2963b3be66485af1a25a8630f7f83469b8fb4",
+    "description": {
+      "schemaVersion": 1,
+      "playerVersion": "0.0.0",
+      "packageVersions": [
+        1
+      ],
+      "profiles": [
+        "native-window-v1"
+      ],
+      "target": "macos-arm64",
+      "backend": "metal",
+      "v8": "15.0.245.2-rusty"
+    }
+  },
+  "manifest": {
+    "sha256": "055654ca679711c060c41f543aba251bb7c0d5ae7cb98e99a82ac25e72a1dbba",
+    "bytes": 456
+  },
+  "applicationFiles": [
+    {
+      "path": "app/main.mjs",
+      "bytes": 2173588,
+      "sha256": "80f6f3cd978a182b1dc7e31ed05d356b56010e75aa85fc92507c8187a9052b9f"
+    },
+    {
+      "path": "app/main.mjs.map",
+      "bytes": 5207918,
+      "sha256": "0626357c7d4c3eac3460d2ed3d95076d46da15ba4253a487f883f0a697b6834f"
+    }
+  ],
+  "completion": {
+    "nativeWindow": true,
+    "backend": "metal",
+    "presentedFrames": 120
+  },
+  "corruption": {
+    "exitCode": 1,
+    "stderr": "package file failed integrity verification: app/main.mjs.map\n"
+  },
+  "applicationFailure": {
+    "exitCode": 1,
+    "generatedSourceLocation": true,
+    "manifestSha256": "b7f6e58ecb81e56659231e55b004ae02fa73156b4d139dd43080a1bd9d1ec337"
+  },
+  "limitations": [
+    "One-machine hardware observation; not a clean-machine or performance certification.",
+    "No-node PATH is evidence only when nodeOnRestrictedPath is false; the parent probe uses Node.",
+    "The disposable build input was intentionally deleted after the preservation check.",
+    "Other copies of fixture sources and system/dependency libraries may exist on this development machine.",
+    "No original-source stack mapping, web-game compatibility or binary redistribution certification."
+  ]
+}

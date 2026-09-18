@@ -2,11 +2,6 @@ use std::{collections::BTreeMap, env, fmt::Write, fs, path::PathBuf, sync::Arc};
 
 use deno_core::{Extension, ExtensionFileSourceCode};
 
-deno_core::extension!(
-    threejs_native_bootstrap,
-    esm = [dir "src", "bootstrap.js", "window.js", "animation.js", "web-globals.js", "input.js"],
-);
-
 fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, String>) {
     for source in [
         &extension.js_files,
@@ -48,7 +43,6 @@ fn main() {
             deno_web::InMemoryBroadcastChannel::default(),
         ),
         deno_webgpu::deno_webgpu::init(),
-        threejs_native_bootstrap::init(),
     ];
     let mut sources = BTreeMap::new();
     for extension in extensions {

@@ -1,6 +1,5 @@
 use std::{
     error::Error,
-    path::PathBuf,
     sync::{Arc, Mutex},
     thread::JoinHandle,
     time::{Duration, Instant},
@@ -35,44 +34,38 @@ mod host;
 #[path = "../../native-html-interop/src/metal.rs"]
 mod metal;
 mod painter;
+mod window_options;
 mod window_runtime;
 mod window_scene;
 
+use window_options::{Command, Options};
 use window_runtime::{HostEvent, HostState, Input, Interrupt, Worker};
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
-struct Options {
-    font: Vec<u8>,
-    html: String,
-    module: PathBuf,
-    frames: Option<u64>,
+fn main() -> std::process::ExitCode {
+    match run() {
+        Ok(()) => std::process::ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("3JSN DOM player: {error}");
+            std::process::ExitCode::FAILURE
+        }
+    }
 }
 
-fn main() -> Result<()> {
+fn run() -> Result<()> {
     let args: Vec<_> = std::env::args_os().skip(1).collect();
-    if !(3..=4).contains(&args.len()) {
-        return Err(
-            "usage: threejs-dom-window-probe <font> <html> <bundled-app> [frame-count]".into(),
-        );
-    }
-    let options = Options {
-        font: std::fs::read(&args[0])?,
-        html: std::fs::read_to_string(&args[1])?,
-        module: PathBuf::from(&args[2]).canonicalize()?,
-        frames: args
-            .get(3)
-            .map(|value| {
-                value
-                    .to_str()
-                    .ok_or("invalid frame count")?
-                    .parse::<u64>()
-                    .map_err(|_| "invalid frame count")
-            })
-            .transpose()?,
+    let options = match window_options::parse(&args, &std::env::current_exe()?)? {
+        Command::Describe => {
+            println!("{}", window_options::description());
+            return Ok(());
+        }
+        Command::Verify(path) => {
+            threejs_native_package::load_for(&path, threejs_native_package::Profile::DomWindow)?;
+            println!("{{\"packageVerified\":true}}");
+            return Ok(());
+        }
+        Command::Run(options) => options,
     };
-    if options.frames == Some(0) {
-        return Err("frame count must be positive".into());
-    }
     let event_loop = EventLoop::<HostEvent>::with_user_event().build()?;
     let mut app = App {
         proxy: event_loop.create_proxy(),
@@ -157,7 +150,7 @@ impl App {
         }
         let (x, y) = self.pointer.unwrap_or_default();
         if let Some(sender) = &self.input
-            && let Err(error) = sender.try_send(Input {
+            && let Err(mpsc::error::TrySendError::Full(_)) = sender.try_send(Input {
                 kind,
                 x,
                 y,
@@ -165,8 +158,10 @@ impl App {
                 key,
             })
         {
-            self.stop(Some(format!("native DOM input queue failed: {error}")));
+            self.stop(Some("native DOM input queue is full".into()));
         }
+        // A closed receiver is followed by Stopped, which carries the worker's
+        // result. Do not replace that cause with a secondary channel error.
     }
 
     fn viewport(&mut self) {

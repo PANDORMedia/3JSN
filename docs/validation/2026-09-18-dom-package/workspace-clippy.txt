@@ -1,0 +1,6 @@
+   Compiling threejs-native-js-sources v0.0.0 (/Users/sean/dev/3JSN/crates/js-sources)
+    Checking threejs-native-package v0.0.0 (/Users/sean/dev/3JSN/crates/package)
+    Checking threejs-native-gpu-probe v0.0.0 (/Users/sean/dev/3JSN/crates/gpu-probe)
+    Checking threejs-native-runtime v0.0.0 (/Users/sean/dev/3JSN/crates/runtime)
+    Checking threejs-native-player v0.0.0 (/Users/sean/dev/3JSN/crates/player)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.03s

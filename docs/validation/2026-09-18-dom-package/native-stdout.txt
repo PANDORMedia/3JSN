@@ -1,0 +1,1 @@
+{"nativeDomWindow":true,"backend":"Metal","presentedFrames":120,"canvasSnapshots":120,"cpuImageTransport":false,"nativeDeviceIdentityChecked":true,"nativeQueueIdentityChecked":true}
