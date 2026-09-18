@@ -67,7 +67,8 @@ The separate paint runner captures the [overflow](overflow-paint/README.md),
 [paint ownership/effect clipping](paint-ownership/README.md),
 [effect clip routing](effect-clip-routing/README.md), and
 [paint layer budget](paint-budget/README.md), and
-[ownership renderer phases and bounds](ownership-render/README.md) matrices:
+[ownership renderer phases and bounds](ownership-render/README.md), and
+[complete-image clip-edge controls](clip-edges/README.md) matrices:
 
 ```sh
 node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-order/browser paint-order

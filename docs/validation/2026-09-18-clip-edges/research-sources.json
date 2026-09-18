@@ -1,0 +1,23 @@
+[
+  {
+    "path": "third_party/blink/renderer/platform/graphics/compositing/paint_chunks_to_cc_layer.cc",
+    "revision": "583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "url": "https://chromium.googlesource.com/chromium/src/+/583c5b4655acea7450a3b5224ea5121ae8caca9b/third_party/blink/renderer/platform/graphics/compositing/paint_chunks_to_cc_layer.cc?format=TEXT",
+    "sha256": "35bd22aa64ca3864226ab060886bb3e131018cfdea5cded7b96f8efb23992607",
+    "bytes": 70493
+  },
+  {
+    "path": "third_party/blink/renderer/platform/graphics/compositing/property_tree_manager.cc",
+    "revision": "583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "url": "https://chromium.googlesource.com/chromium/src/+/583c5b4655acea7450a3b5224ea5121ae8caca9b/third_party/blink/renderer/platform/graphics/compositing/property_tree_manager.cc?format=TEXT",
+    "sha256": "375f55ed0448304bd039a1eaa4a35ed71292c96eaef7399fe9980ebbfb8e4e99",
+    "bytes": 62889
+  },
+  {
+    "path": "third_party/blink/renderer/core/paint/object_paint_properties.h",
+    "revision": "583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "url": "https://chromium.googlesource.com/chromium/src/+/583c5b4655acea7450a3b5224ea5121ae8caca9b/third_party/blink/renderer/core/paint/object_paint_properties.h?format=TEXT",
+    "sha256": "e2ab8ba7f70f1de438af9c53086b2a7ae45512b2ebf4e26e2b842ae24e2473ed",
+    "bytes": 27740
+  }
+]

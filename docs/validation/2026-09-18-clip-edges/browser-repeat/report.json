@@ -1,0 +1,979 @@
+{
+  "schemaVersion": 1,
+  "kind": "clip-edges-browser-reference",
+  "capturedAt": "2026-09-18T05:30:16.497Z",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "inputs": {
+    "htmlSha256": "70cbe7da34a2551d1bb0b1871f90b623efb2c282f17a13232582c71880924d3d",
+    "scriptSha256": "c87bf8449f7cd6a3a6dd6f745d72551d3051a151e803ef475167010aca03e039",
+    "casesSha256": "c9acb95f1ce9dab371cdf56820035ba550e88d412b3a939ea43d28b97851ecb2"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/clip-edges/index.html",
+      "sha256": "70cbe7da34a2551d1bb0b1871f90b623efb2c282f17a13232582c71880924d3d"
+    },
+    {
+      "path": "fixtures/clip-edges/fixture.js",
+      "sha256": "c87bf8449f7cd6a3a6dd6f745d72551d3051a151e803ef475167010aca03e039"
+    },
+    {
+      "path": "fixtures/clip-edges/cases.json",
+      "sha256": "c9acb95f1ce9dab371cdf56820035ba550e88d412b3a939ea43d28b97851ecb2"
+    },
+    {
+      "path": "scripts/compatibility/paint-reference.mjs",
+      "sha256": "51850e61f2f7e99887854987d365b25d06bbd1cd42831dca1d774faeca94a8bf"
+    },
+    {
+      "path": "scripts/compatibility/browser-session.mjs",
+      "sha256": "4df27990b827f080687c38dc6012dac62a700e8ab0ccbbe0658a6a709629e73a"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/paint-colors.mjs",
+      "sha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+    }
+  ],
+  "cases": [
+    {
+      "name": "polygon-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "80142ca961221e6de5a0388e602d07ad8ff6f6eb1d73d1780f97213913138ddf",
+      "file": "polygon-single-1x.png"
+    },
+    {
+      "name": "polygon-duplicate-red",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "80142ca961221e6de5a0388e602d07ad8ff6f6eb1d73d1780f97213913138ddf",
+      "file": "polygon-duplicate-red-1x.png"
+    },
+    {
+      "name": "polygon-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "80142ca961221e6de5a0388e602d07ad8ff6f6eb1d73d1780f97213913138ddf",
+      "file": "polygon-covered-blue-1x.png"
+    },
+    {
+      "name": "polygon-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "4d14bf0ec057d459218d648d77fe6702af4f7bd39ca303a9f4a61121ad19e4e7",
+      "file": "polygon-single-2x.png"
+    },
+    {
+      "name": "polygon-duplicate-red",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "4d14bf0ec057d459218d648d77fe6702af4f7bd39ca303a9f4a61121ad19e4e7",
+      "file": "polygon-duplicate-red-2x.png"
+    },
+    {
+      "name": "polygon-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "4d14bf0ec057d459218d648d77fe6702af4f7bd39ca303a9f4a61121ad19e4e7",
+      "file": "polygon-covered-blue-2x.png"
+    },
+    {
+      "name": "rounded-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "61f456c6c363e412dffd55554d90c9247439fd5cfd531109c6157af2c18c4e10",
+      "file": "rounded-single-1x.png"
+    },
+    {
+      "name": "rounded-duplicate-red",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "fd0cbf1d465c50fb9ce06eabe2ccd2f185b817b79e9bb4b9b1554900fe69fd06",
+      "file": "rounded-duplicate-red-1x.png"
+    },
+    {
+      "name": "inset-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "97de4bc7a4f035ed4d5d359083fdd305272c66702ba2e40a5f156f0819fbffce",
+      "file": "inset-single-1x.png"
+    },
+    {
+      "name": "inset-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "ffed385a04da9fbcb1dde6ef62e7cc4d25796df3c9690e19f55fc7b48335334b",
+      "file": "inset-covered-blue-1x.png"
+    },
+    {
+      "name": "opacity-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "c80a8c1621a420a2eea27fe0501d0c42dc9d1f199f9a25f2009dc70bc6e6bf21",
+      "file": "opacity-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "opacity-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "c80a8c1621a420a2eea27fe0501d0c42dc9d1f199f9a25f2009dc70bc6e6bf21",
+      "file": "opacity-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "nested-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "a28f7059e68df260c753b10a5e6dd3681b9d12ea0e6db1f901c00bb8dab44f34",
+      "file": "nested-single-1x.png"
+    },
+    {
+      "name": "nested-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "a28f7059e68df260c753b10a5e6dd3681b9d12ea0e6db1f901c00bb8dab44f34",
+      "file": "nested-covered-blue-1x.png"
+    },
+    {
+      "name": "rounded-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "a61c191d60903e0cb854cc944d41ba067fc73a8455e7fd8c9ff8f872c011f0cf",
+      "file": "rounded-single-2x.png"
+    },
+    {
+      "name": "rounded-duplicate-red",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "de23a92eeebc6644751250f262c17ed8ba69bd8c65fdf63cc34f458737211d79",
+      "file": "rounded-duplicate-red-2x.png"
+    },
+    {
+      "name": "rounded-opacity-single",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "351790cff4408551fcda5088a59d6d05e8d7fb7f9ccaf13b56823368dea19ed2",
+      "file": "rounded-opacity-single-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rounded-opacity-covered-blue",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "351790cff4408551fcda5088a59d6d05e8d7fb7f9ccaf13b56823368dea19ed2",
+      "file": "rounded-opacity-covered-blue-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rounded-opacity-single",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "0b15507859e9d4aa0325beb9d9c73b07836bf52ac863a0d6b3cca0244ab0d36d",
+      "file": "rounded-opacity-single-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "rounded-opacity-covered-blue",
+      "scale": 2,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "middle": {
+          "x": 48.375,
+          "y": 40.25,
+          "width": 240,
+          "height": 160,
+          "top": 40.25,
+          "right": 288.375,
+          "bottom": 200.25,
+          "left": 48.375
+        },
+        "subject": {
+          "x": 32.375,
+          "y": 24.25,
+          "width": 272,
+          "height": 192,
+          "top": 24.25,
+          "right": 304.375,
+          "bottom": 216.25,
+          "left": 32.375
+        }
+      },
+      "pixelSha256": "b045c08623271e14315b2ea566935805eda6caf1aeefda792891a4e3b5331bbc",
+      "file": "rounded-opacity-covered-blue-2x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    },
+    {
+      "name": "polygon-restored",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "80142ca961221e6de5a0388e602d07ad8ff6f6eb1d73d1780f97213913138ddf",
+      "file": "polygon-restored-1x.png"
+    },
+    {
+      "name": "opacity-restored",
+      "scale": 1,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 48,
+          "y": 40,
+          "width": 256,
+          "height": 176,
+          "top": 40,
+          "right": 304,
+          "bottom": 216,
+          "left": 48
+        },
+        "middle": {
+          "x": 48,
+          "y": 40,
+          "width": 240,
+          "height": 160,
+          "top": 40,
+          "right": 288,
+          "bottom": 200,
+          "left": 48
+        },
+        "subject": {
+          "x": 32,
+          "y": 24,
+          "width": 272,
+          "height": 192,
+          "top": 24,
+          "right": 304,
+          "bottom": 216,
+          "left": 32
+        }
+      },
+      "pixelSha256": "c80a8c1621a420a2eea27fe0501d0c42dc9d1f199f9a25f2009dc70bc6e6bf21",
+      "file": "opacity-restored-1x.png",
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ]
+    }
+  ]
+}

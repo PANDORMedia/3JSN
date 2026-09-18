@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "runs": [
+    {
+      "first": "browser",
+      "repeat": "browser-repeat",
+      "caseCount": 22,
+      "allCasePayloadsIdentical": true,
+      "firstReportSha256": "77e56c98e2ee205286ad54e17864c31ccf61805a7af4ba649baad7f29f96089a",
+      "repeatReportSha256": "06f3d246fae17ac748ee040b936b5cfa8f7319495dafc5c0426cd4e8ba2f4093",
+      "allInvariantGroupResultsRepeated": true,
+      "firstInvariantReportSha256": "cfa41ff3123ef9a2f38ee1a3e35f4c3808d9346a1691baf56dad6b205e800600",
+      "repeatInvariantReportSha256": "0744adb25c26684c03d237e040156e3b958be1dda577c3293914e5b5de06ce06"
+    },
+    {
+      "first": "ownership-baseline",
+      "repeat": "ownership-repeat",
+      "caseCount": 22,
+      "allCasePayloadsIdentical": true,
+      "firstReportSha256": "c45a9aa47d7f7f1f9e55742ef2d62a8bcf6db4334cb2b59a3efd7b0aec1e4a4f",
+      "repeatReportSha256": "c45a9aa47d7f7f1f9e55742ef2d62a8bcf6db4334cb2b59a3efd7b0aec1e4a4f",
+      "allInvariantGroupResultsRepeated": true,
+      "firstInvariantReportSha256": "6765f007844e0f75f72bb37dcce501c11b8b384dd894c5018195116025e671d5",
+      "repeatInvariantReportSha256": "6765f007844e0f75f72bb37dcce501c11b8b384dd894c5018195116025e671d5"
+    }
+  ]
+}

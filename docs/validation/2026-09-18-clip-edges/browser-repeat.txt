@@ -1,0 +1,1 @@
+PASS: 22 browser paint references. Report: /Users/sean/dev/3JSN/artifacts/clip-edges/browser-repeat/report.json

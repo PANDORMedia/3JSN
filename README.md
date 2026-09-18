@@ -130,6 +130,12 @@ interior pixels in 142/142 cases and geometry plus pixels in 136/142. The legacy
 path is preserved; text, clip-edge fidelity, input, scrolling and backend adoption
 remain open.
 
+The [clip-edge diagnostic](docs/validation/2026-09-18-clip-edges.md) now exposes
+covered-underlay color changes at native polygon and opacity-group boundaries
+despite 22/22 additional geometry/interior matches. Repeated complete-image
+captures distinguish this compositing gap from browser-specific edge behavior;
+the renderer remains experimental and the repair is pending.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

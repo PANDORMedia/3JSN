@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sourceCheckPassed": true,
+  "sourceFilesChecked": 408,
+  "nodeTests": {
+    "passed": 36,
+    "failed": 0,
+    "sandboxFirstAttempt": {
+      "passed": 33,
+      "failed": 3,
+      "reason": "Existing loopback server tests: listen EPERM; all passed on full rerun with loopback access."
+    }
+  },
+  "rustRebuilt": false,
+  "preparedCandidateIdentityCheckPassed": true,
+  "previousCommitCI": {
+    "commit": "0ba4dee23eec0eb778e1355df99a08e8a27b2cb5",
+    "runId": 35310040237,
+    "conclusion": "success",
+    "platforms": [
+      "macos-latest",
+      "ubuntu-latest",
+      "windows-latest"
+    ],
+    "scope": "Source CI, not cross-platform GPU evidence"
+  },
+  "receiptNormalization": "Only trailing whitespace trimmed from sandbox-denied text receipt; raw output retained in artifacts/clip-edges/node-tests-sandbox-denied.log."
+}

@@ -9,8 +9,8 @@ import { subjectColor } from './paint-colors.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const [executable, outputArgument, fixture = 'overflow-paint'] = process.argv.slice(2);
-if (!executable || !outputArgument || process.argv.length > 5 || !['overflow-paint', 'positioned-layout', 'initial-containing-block', 'paint-order', 'auto-paint', 'paint-ownership', 'paint-budget', 'effect-clip-routing', 'ownership-render'].includes(fixture)) {
-  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir> [overflow-paint|positioned-layout|initial-containing-block|paint-order|auto-paint|paint-ownership|paint-budget|effect-clip-routing|ownership-render]');
+if (!executable || !outputArgument || process.argv.length > 5 || !['overflow-paint', 'positioned-layout', 'initial-containing-block', 'paint-order', 'auto-paint', 'paint-ownership', 'paint-budget', 'effect-clip-routing', 'ownership-render', 'clip-edges'].includes(fixture)) {
+  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir> [overflow-paint|positioned-layout|initial-containing-block|paint-order|auto-paint|paint-ownership|paint-budget|effect-clip-routing|ownership-render|clip-edges]');
   process.exit(2);
 }
 const output = resolve(outputArgument);

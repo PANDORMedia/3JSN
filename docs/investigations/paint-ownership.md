@@ -117,8 +117,10 @@ fragments and nested documents, rather than estimated DOM complexity.
 Replacing `draw_children` alone is insufficient: the current element traversal
 draws its own image, canvas or text before visiting negative-z children. Split
 decoration, negative contexts, ordinary content, and zero/positive phases while
-reusing existing paint primitives. Apply opacity once around a group's content;
-apply each contribution's eligible clips inside that group. Retain separate
+reusing existing paint primitives. Apply opacity once around a group's content.
+The first implementation applies each contribution's eligible clips inside that
+group; the [clip-edge controls](../validation/2026-09-18-clip-edges.md) show why
+eligible common output clips need a distinct composition boundary. Retain separate
 normal, absolute and fixed clip references with explicit shape coordinate spaces.
 Never change DOM or layout parents to obtain paint order.
 
@@ -147,3 +149,27 @@ The [auto-paint fixture](../../fixtures/auto-paint/README.md) records initial
 discriminating cases. Its 17 captures are not sufficient for all gates above.
 Issues [#54](https://github.com/PANDORMedia/3JSN/issues/54) and
 [#52](https://github.com/PANDORMedia/3JSN/issues/52) remain separate adoption gates.
+
+## Next clip-composition experiment
+
+The complete-image controls distinguish polygon, inset and ordinary rounded
+overflow behavior in the tested Chrome revision. Do not infer that every
+`clip-path` needs the same isolated group. The first proposed repair is narrower:
+at an existing effect with `0 < opacity < 1`, compute the longest shared clip prefix of
+its decoration route and every contribution owned by that group. Compare clip
+identity and order, not equal geometry. Capping the prefix at the group's own
+decoration route prevents promoting a descendant's clip or the owner's later
+content overflow. An escaping fixed descendant can shorten that prefix to empty.
+
+Apply the proven prefix to the composed opacity output, and remove only that
+prefix from contribution routes. Retain the existing viewport opacity group when
+there is no common prefix. Preserve one opacity operation, unchanged paint order,
+CheckedScene budgets and explicit errors; no new DOM/layout ownership or texture
+transport is needed. This is a proposal, not implemented behavior.
+
+Validate contained and escaping descendants, nested effects, geometry-equal but
+distinct clips, empty clips, hidden/zero-opacity nodes, root backgrounds, offsets,
+DPR, own/ancestor inset with opacity, same-owner rounded overflow with opacity,
+mutation restoration and layer-budget failure. Ordinary alpha-one polygon
+grouping is a separate follow-up with its own evidence. Plain inset/rounded
+controls must remain recorded, including Chrome's nonidentical pairs.

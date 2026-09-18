@@ -73,8 +73,12 @@ also requires reassessing the eleven-patch maintenance burden.
 - Root/propagated background images and transformed widgets with nonzero content
   offsets are rejected. Broader media and image behavior is not certified by the
   recorded command tests.
-- Independently replayed clip edges still need overlapping fractional-edge
-  coverage tests. Uniform interior comparisons do not establish antialias parity.
+- Independently replayed clip edges fail the
+  [covered-underlay controls](../../docs/validation/2026-09-18-clip-edges.md):
+  native polygon and opacity-group edges change where Chrome preserves the image.
+  All 22 new interior/geometry checks pass, so those checks alone miss this defect.
+  Plain inset and rounded clips also vary in Chrome; a blanket grouping rewrite
+  is not justified by this evidence.
 - Hit testing still consumes the older lists and lacks these clip routes. DOM
   geometry, scrolling, native presentation, other GPU backends and performance
   remain separate adoption gates.

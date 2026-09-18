@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "backgroundColor": [255, 255, 255, 255],
+  "groups": [
+    {
+      "name": "fractional-polygon-1x",
+      "scale": 1,
+      "cases": ["polygon-single", "polygon-duplicate-red", "polygon-covered-blue", "polygon-restored"],
+      "rationale": "The later opaque red subject completely covers a hidden, identical-red or blue underlay before the unchanged polygon clip. Complete RGBA equality within one renderer is the proposed edge-invariance gate; the restored state also checks mutation recovery. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "fractional-polygon-2x",
+      "scale": 2,
+      "cases": ["polygon-single", "polygon-duplicate-red", "polygon-covered-blue"],
+      "rationale": "Repeat the polygon overlap control at DPR 2 with unchanged CSS geometry and fractional device edges. Compare these three complete RGBA images only with one another, never with DPR 1. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "rounded-overflow-1x",
+      "scale": 1,
+      "cases": ["rounded-single", "rounded-duplicate-red"],
+      "rationale": "An identical opaque underlay is fully covered before the same rounded overflow boundary. Complete RGBA equality tests multiplicity-dependent edge coverage; overflow corner clipping alone does not specify an exact raster kernel. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "rounded-overflow-2x",
+      "scale": 2,
+      "cases": ["rounded-single", "rounded-duplicate-red"],
+      "rationale": "Repeat rounded overflow with fractional translation and radii at DPR 2. Only equal-scale complete RGBA images form this proposed invariance gate. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "fractional-inset-1x",
+      "scale": 1,
+      "cases": ["inset-single", "inset-covered-blue"],
+      "rationale": "A blue underlay fully covered by opaque red should not affect the final group clipped by an unchanged fractional unrounded inset. This isolates axis-aligned clip coverage from sloped polygon coverage. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "opacity-group-1x",
+      "scale": 1,
+      "cases": ["opacity-single", "opacity-covered-blue", "opacity-restored"],
+      "rationale": "The same polygon-clipped red result receives one group opacity of 0.5. Covered blue content must not become visible through per-contribution clip or opacity application. Complete RGBA equality and restored output are proposed within-renderer gates. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "nested-polygon-1x",
+      "scale": 1,
+      "cases": ["nested-single", "nested-covered-blue"],
+      "rationale": "Two intersecting ancestor polygons stay unchanged while fully covered blue content is toggled. The comparison holds the complete clip chain constant; it does not equate one clip with two clips or prescribe a rasterization algorithm. Record browser and native observations separately; equality is a hypothesis, not a required browser result."
+    },
+    {
+      "name": "rounded-inner-opacity-1x",
+      "scale": 1,
+      "cases": ["rounded-opacity-single", "rounded-opacity-covered-blue"],
+      "rationale": "Outer rounded overflow contains one inner opacity 0.5 group and all of its coincident opaque fills. No descendant escapes the overflow owner. The unchanged clip can bound the composed group; fully covered blue should not alter it. Complete RGBA equality is a within-renderer hypothesis until browser and native capture verify it."
+    },
+    {
+      "name": "rounded-inner-opacity-2x",
+      "scale": 2,
+      "cases": ["rounded-opacity-single", "rounded-opacity-covered-blue"],
+      "rationale": "Repeat the contained inner-opacity control at DPR 2, retaining fractional translation and rounded edges. Compare only these complete equal-scale RGBA images. Exact equality remains a measured hypothesis, not an assumed browser result."
+    }
+  ]
+}

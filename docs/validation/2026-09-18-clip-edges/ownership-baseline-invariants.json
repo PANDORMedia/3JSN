@@ -1,0 +1,523 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 0,
+  "total": 9,
+  "criteria": {
+    "completeRgbaEquality": true,
+    "crossRendererComparison": false,
+    "excludedPixels": 0,
+    "channelTolerance": 0,
+    "secondaryDifferenceCountThreshold": 2,
+    "backgroundColor": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  "inputs": {
+    "captureReportSha256": "c45a9aa47d7f7f1f9e55742ef2d62a8bcf6db4334cb2b59a3efd7b0aec1e4a4f",
+    "invariantsSha256": "b14955ed29a3a961848f940590127e8c85626f114e1435430aaa03277095096b",
+    "comparatorSha256": "f999a1b1f744cb6c558fe215d4622649e418860116d779a81b3576f9fb2d54bc",
+    "subjectColorMatcherSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "limits": [
+    "These are proposed within-renderer image invariants, not a general browser-conformance result.",
+    "The intermediate-color guard assumes these monochrome controls over their declared flat background; it is not a general edge detector.",
+    "A nonidentical group is an observed classification, not automatically a standards violation.",
+    "The secondary difference count never changes the exact-equality result.",
+    "Cross-renderer antialias fidelity requires separate evidence."
+  ],
+  "groups": [
+    {
+      "name": "fractional-polygon-1x",
+      "scale": 1,
+      "cases": [
+        "polygon-single",
+        "polygon-duplicate-red",
+        "polygon-covered-blue",
+        "polygon-restored"
+      ],
+      "rationale": "The later opaque red subject completely covers a hidden, identical-red or blue underlay before the unchanged polygon clip. Complete RGBA equality within one renderer is the proposed edge-invariance gate; the restored state also checks mutation recovery. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "83cf3c83bdc66ff8e11003a5160801cac79d87311fe72752c2827fc97f9c66fe",
+      "referenceIntermediatePixels": 669,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-duplicate-red",
+          "identical": false,
+          "differingPixels": 669,
+          "differingPixelsOverTwo": 648,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 61,
+            "top": 51,
+            "right": 272,
+            "bottom": 183
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 51,
+            "reference": [
+              241,
+              151,
+              159,
+              255
+            ],
+            "actual": [
+              233,
+              96,
+              107,
+              255
+            ]
+          },
+          "pixelSha256": "21674c79dd523928bbd39de4e740c247f4678cec95aeeb7f562209c6bbcac0e4",
+          "subjectPixels": 25296
+        },
+        {
+          "name": "polygon-covered-blue",
+          "identical": false,
+          "differingPixels": 669,
+          "differingPixelsOverTwo": 645,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 61,
+            "top": 51,
+            "right": 272,
+            "bottom": 183
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 51,
+            "reference": [
+              241,
+              151,
+              159,
+              255
+            ],
+            "actual": [
+              185,
+              112,
+              151,
+              255
+            ]
+          },
+          "pixelSha256": "9841d4bd8bf4f0b6841df824562c912ff98d4f0534bfb49d0b525c19b6590ae8",
+          "subjectPixels": 25259
+        },
+        {
+          "name": "polygon-restored",
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "pixelSha256": "83cf3c83bdc66ff8e11003a5160801cac79d87311fe72752c2827fc97f9c66fe",
+          "subjectPixels": 25259
+        }
+      ]
+    },
+    {
+      "name": "fractional-polygon-2x",
+      "scale": 2,
+      "cases": [
+        "polygon-single",
+        "polygon-duplicate-red",
+        "polygon-covered-blue"
+      ],
+      "rationale": "Repeat the polygon overlap control at DPR 2 with unchanged CSS geometry and fractional device edges. Compare these three complete RGBA images only with one another, never with DPR 1. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "577c474af6ff0356f69e9224a16f0ff82362af5864e73f5b691d02e2d1f323b1",
+      "referenceIntermediatePixels": 1339,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "polygon-duplicate-red",
+          "identical": false,
+          "differingPixels": 1338,
+          "differingPixelsOverTwo": 1296,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 122,
+            "top": 102,
+            "right": 545,
+            "bottom": 367
+          },
+          "firstDifference": {
+            "x": 130,
+            "y": 102,
+            "reference": [
+              251,
+              228,
+              230,
+              255
+            ],
+            "actual": [
+              248,
+              204,
+              208,
+              255
+            ]
+          },
+          "pixelSha256": "908c0deaa3284e44029219e386cc02fb87d4a072a1c45a814eefb6adf0b6db5b",
+          "subjectPixels": 101773
+        },
+        {
+          "name": "polygon-covered-blue",
+          "identical": false,
+          "differingPixels": 1339,
+          "differingPixelsOverTwo": 1292,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 122,
+            "top": 102,
+            "right": 545,
+            "bottom": 367
+          },
+          "firstDifference": {
+            "x": 130,
+            "y": 102,
+            "reference": [
+              251,
+              228,
+              230,
+              255
+            ],
+            "actual": [
+              228,
+              211,
+              226,
+              255
+            ]
+          },
+          "pixelSha256": "a003a2ca3ef548e681f40cebc8cd4255ff2229be41d2c327cabe91a1ca4adf93",
+          "subjectPixels": 101702
+        }
+      ]
+    },
+    {
+      "name": "rounded-overflow-1x",
+      "scale": 1,
+      "cases": [
+        "rounded-single",
+        "rounded-duplicate-red"
+      ],
+      "rationale": "An identical opaque underlay is fully covered before the same rounded overflow boundary. Complete RGBA equality tests multiplicity-dependent edge coverage; overflow corner clipping alone does not specify an exact raster kernel. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "06e7ebbc4cdaf458c290c6f8e8d05db4a8a88449e9a662f746207f5afba301b1",
+      "referenceIntermediatePixels": 224,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rounded-duplicate-red",
+          "identical": false,
+          "differingPixels": 224,
+          "differingPixelsOverTwo": 208,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 48,
+            "top": 40,
+            "right": 287,
+            "bottom": 199
+          },
+          "firstDifference": {
+            "x": 71,
+            "y": 40,
+            "reference": [
+              252,
+              231,
+              233,
+              255
+            ],
+            "actual": [
+              249,
+              210,
+              213,
+              255
+            ]
+          },
+          "pixelSha256": "aac1f1a8d80a68156f727fe95166838910c1b73e35ca66400bd6f5dfebd33963",
+          "subjectPixels": 37548
+        }
+      ]
+    },
+    {
+      "name": "rounded-overflow-2x",
+      "scale": 2,
+      "cases": [
+        "rounded-single",
+        "rounded-duplicate-red"
+      ],
+      "rationale": "Repeat rounded overflow with fractional translation and radii at DPR 2. Only equal-scale complete RGBA images form this proposed invariance gate. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "69c4b7ba2d9203c31b2cae33bfcd5a4cab9b90f5d64383a5f9232b72426aff5d",
+      "referenceIntermediatePixels": 456,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rounded-duplicate-red",
+          "identical": false,
+          "differingPixels": 456,
+          "differingPixelsOverTwo": 424,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 96,
+            "top": 80,
+            "right": 575,
+            "bottom": 399
+          },
+          "firstDifference": {
+            "x": 147,
+            "y": 80,
+            "reference": [
+              253,
+              243,
+              244,
+              255
+            ],
+            "actual": [
+              251,
+              232,
+              234,
+              255
+            ]
+          },
+          "pixelSha256": "1e2c2a718da1455b33773ea949927e33c8d00e7a40336f760a2b794b29a1b06d",
+          "subjectPixels": 150404
+        }
+      ]
+    },
+    {
+      "name": "fractional-inset-1x",
+      "scale": 1,
+      "cases": [
+        "inset-single",
+        "inset-covered-blue"
+      ],
+      "rationale": "A blue underlay fully covered by opaque red should not affect the final group clipped by an unchanged fractional unrounded inset. This isolates axis-aligned clip coverage from sloped polygon coverage. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "7eebe2bc91b928a445c1420db31ec17354aaf44b50d0834ea74fed46526808e3",
+      "referenceIntermediatePixels": 696,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "inset-covered-blue",
+          "identical": false,
+          "differingPixels": 696,
+          "differingPixelsOverTwo": 696,
+          "maxChannelDifference": 55,
+          "differenceBounds": {
+            "left": 65,
+            "top": 49,
+            "right": 274,
+            "bottom": 188
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 49,
+            "reference": [
+              238,
+              133,
+              142,
+              255
+            ],
+            "actual": [
+              183,
+              94,
+              134,
+              255
+            ]
+          },
+          "pixelSha256": "e938efa69dbd073548aed9b5dacb3bfc10f92a94ca880bec55aeac426da91ece",
+          "subjectPixels": 28704
+        }
+      ]
+    },
+    {
+      "name": "opacity-group-1x",
+      "scale": 1,
+      "cases": [
+        "opacity-single",
+        "opacity-covered-blue",
+        "opacity-restored"
+      ],
+      "rationale": "The same polygon-clipped red result receives one group opacity of 0.5. Covered blue content must not become visible through per-contribution clip or opacity application. Complete RGBA equality and restored output are proposed within-renderer gates. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "52211ac81f6c081f4fea4640054574c3cb488e5cb8f0d6594460133bc7058450",
+      "referenceIntermediatePixels": 642,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "opacity-covered-blue",
+          "identical": false,
+          "differingPixels": 677,
+          "differingPixelsOverTwo": 632,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 61,
+            "top": 51,
+            "right": 272,
+            "bottom": 183
+          },
+          "firstDifference": {
+            "x": 65,
+            "y": 51,
+            "reference": [
+              248,
+              203,
+              207,
+              255
+            ],
+            "actual": [
+              220,
+              183,
+              203,
+              255
+            ]
+          },
+          "pixelSha256": "06420a2ddb1b577ee5cb2f972527fd904eb99e34fe574b621845037602cfc370",
+          "subjectPixels": 25277
+        },
+        {
+          "name": "opacity-restored",
+          "identical": true,
+          "differingPixels": 0,
+          "differingPixelsOverTwo": 0,
+          "maxChannelDifference": 0,
+          "pixelSha256": "52211ac81f6c081f4fea4640054574c3cb488e5cb8f0d6594460133bc7058450",
+          "subjectPixels": 25282
+        }
+      ]
+    },
+    {
+      "name": "nested-polygon-1x",
+      "scale": 1,
+      "cases": [
+        "nested-single",
+        "nested-covered-blue"
+      ],
+      "rationale": "Two intersecting ancestor polygons stay unchanged while fully covered blue content is toggled. The comparison holds the complete clip chain constant; it does not equate one clip with two clips or prescribe a rasterization algorithm. Record browser and native observations separately; equality is a hypothesis, not a required browser result.",
+      "referencePixelSha256": "1c2660d8fd6ef538f9916294ef20f89c5b5320cd5eb0d2dc5cfd764cb0cf3ec9",
+      "referenceIntermediatePixels": 650,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "nested-covered-blue",
+          "identical": false,
+          "differingPixels": 650,
+          "differingPixelsOverTwo": 617,
+          "maxChannelDifference": 56,
+          "differenceBounds": {
+            "left": 62,
+            "top": 51,
+            "right": 272,
+            "bottom": 182
+          },
+          "firstDifference": {
+            "x": 80,
+            "y": 51,
+            "reference": [
+              254,
+              248,
+              248,
+              255
+            ],
+            "actual": [
+              247,
+              243,
+              248,
+              255
+            ]
+          },
+          "pixelSha256": "9103b16543d9d0b1e7298a618475b4e4503a38eddb59b2123c5b1fc82821260a",
+          "subjectPixels": 22309
+        }
+      ]
+    },
+    {
+      "name": "rounded-inner-opacity-1x",
+      "scale": 1,
+      "cases": [
+        "rounded-opacity-single",
+        "rounded-opacity-covered-blue"
+      ],
+      "rationale": "Outer rounded overflow contains one inner opacity 0.5 group and all of its coincident opaque fills. No descendant escapes the overflow owner. The unchanged clip can bound the composed group; fully covered blue should not alter it. Complete RGBA equality is a within-renderer hypothesis until browser and native capture verify it.",
+      "referencePixelSha256": "7d1c792f595ffd6b9baddaa1647712bd555f88d4faf8aa8badb4e92304e75b47",
+      "referenceIntermediatePixels": 200,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rounded-opacity-covered-blue",
+          "identical": false,
+          "differingPixels": 228,
+          "differingPixelsOverTwo": 204,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 48,
+            "top": 40,
+            "right": 287,
+            "bottom": 199
+          },
+          "firstDifference": {
+            "x": 71,
+            "y": 40,
+            "reference": [
+              253,
+              243,
+              244,
+              255
+            ],
+            "actual": [
+              243,
+              235,
+              243,
+              255
+            ]
+          },
+          "pixelSha256": "895229b1d50722ecc4d22bbd660c80f0d6c005e591f486960aed96346b992334",
+          "subjectPixels": 37528
+        }
+      ]
+    },
+    {
+      "name": "rounded-inner-opacity-2x",
+      "scale": 2,
+      "cases": [
+        "rounded-opacity-single",
+        "rounded-opacity-covered-blue"
+      ],
+      "rationale": "Repeat the contained inner-opacity control at DPR 2, retaining fractional translation and rounded edges. Compare only these complete equal-scale RGBA images. Exact equality remains a measured hypothesis, not an assumed browser result.",
+      "referencePixelSha256": "3fd1f22170e90d7303e0f3d56a4f72af19a93958f2ef73f9a52e0725e3b97396",
+      "referenceIntermediatePixels": 408,
+      "identical": false,
+      "comparisons": [
+        {
+          "name": "rounded-opacity-covered-blue",
+          "identical": false,
+          "differingPixels": 456,
+          "differingPixelsOverTwo": 396,
+          "maxChannelDifference": 28,
+          "differenceBounds": {
+            "left": 96,
+            "top": 80,
+            "right": 575,
+            "bottom": 399
+          },
+          "firstDifference": {
+            "x": 147,
+            "y": 80,
+            "reference": [
+              254,
+              249,
+              250,
+              255
+            ],
+            "actual": [
+              249,
+              245,
+              249,
+              255
+            ]
+          },
+          "pixelSha256": "74d0f79c581941a03a87d479e56cc63d3bdee8d82deec56a6cdfe6e88af1a16a",
+          "subjectPixels": 150380
+        }
+      ]
+    }
+  ]
+}
