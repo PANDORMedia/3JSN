@@ -12,15 +12,15 @@ required work, not optional migrations for the application.
 | WebGPU renderer | Pinned Three.js 0.186.0, external device/context | First shipping renderer candidate |
 | Rust native GPU device | Independent wgpu diagnostic | Integrate with JS-owned device/surface |
 | Rust-hosted JavaScript/WebGPU | V8 module/event/error tests and Metal triangle pixels pass | Native surface/presentation and broader WebGPU fixtures remain |
-| Window, swapchain, resize, DPI | Not implemented | M1 |
+| Window, swapchain, resize, DPI | Native-window adapter implemented; presentation/hardware lifecycle gates open | M1; see [window contract](native-window.md) |
 | TSL custom materials, compute, instancing | Not yet tested here | Add dedicated fixtures |
 | WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | Not implemented | Required WebGL/GLSL binding and native translation track; preserve source |
 | glTF, animation, textures | Not yet tested here | Native asset I/O and decoding; regression scenes |
 | Draco, KTX2/Basis, other Wasm decoders | Not implemented | Worker/Wasm and binary asset integration |
-| requestAnimationFrame | Manual scheduler in offscreen probe only | Native redraw scheduling |
+| requestAnimationFrame | Host-driven scheduler and bounded lifecycle checks | Validate native presentation/input timing |
 | Keyboard, pointer, gamepad | Not implemented | winit events; explicit gamepad service |
-| DOM-based controls | Not implemented | Compatible event, focus, geometry and pointer semantics |
-| HTML/CSS UI, CSS2D/3DRenderer | Not implemented | Required DOM/layout/text/paint/compositor research and implementation |
+| DOM-based controls | Bounded V8/Blitz DOM identity, mutations, geometry and programmatic events | Complete compatible event, focus and physical input semantics |
+| HTML/CSS UI, CSS2D/3DRenderer | Live HTML GPU paint and [DOM canvas probe](validation/2026-09-18-dom-canvas.md); clipping/stacking failures remain | Shipping integration, full paint/DOM behavior; CSS2D/3DRenderer still untested |
 | Web Audio / Three.js Audio | Not implemented | Evaluate native mixer/binding |
 | WebRTC, microphone capture, MediaRecorder | Not implemented | Required CtF voice track; permissions, device and connection lifecycle |
 | fetch, local files, saves | Host implementation not present | Explicit asset/save services and selected web APIs |

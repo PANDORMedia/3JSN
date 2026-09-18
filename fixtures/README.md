@@ -15,7 +15,7 @@ serves fixture files, the pinned Three.js build and original test network servic
 It waits for completed
 assertions and prints a JSON report, returning nonzero on failed assertions or
 timeout. It does not override the selected GPU backend or enable software fallback.
-The final argument selects `webgl-dom`, `workers-wasm`, `audio-worklet`, `network`,
+The final argument selects `webgl-dom`, `webgpu-canvas`, `workers-wasm`, `audio-worklet`, `network`,
 or `all`; omitting it retains the original `webgl-dom` behavior. Single-fixture
 output is one report; `all` emits a suite containing a `reports` array.
 
@@ -36,6 +36,12 @@ keyboard, controller and accessibility validation.
 structured cloning, transferred ArrayBuffer ownership, request identity and worker
 termination. SharedArrayBuffer/Atomics and application-specific decoders are not
 covered by this fixture.
+
+`webgpu-canvas` checks genuine canvas/context identity, bitmap versus CSS sizing,
+two independent canvases, clear/readback pixels, texture expiry after resize and
+reconfiguration, DOM removal/reinsertion, and GPU usage validation. It is shared
+with the [native DOM canvas experiment](../experiments/dom-canvas/README.md).
+It does not test general HTML paint order, presentation timing or canvas GC.
 
 `audio-worklet` renders Web Audio offline at a fixed sample rate. It checks exact
 source start/stop frames, gain automation, completion, and a module AudioWorklet's
@@ -63,6 +69,7 @@ Committed macOS arm64 browser references from Chrome 153 on 2026-09-17:
 | Workers/Wasm | 8 | [Report](workers-wasm/reference-macos-arm64.json) |
 | Offline audio/worklet | 8 | [Report](audio-worklet/reference-macos-arm64.json) |
 | Fetch/WebSocket reconnect | 15 | [Report](network/reference-macos-arm64.json) |
+| WebGPU canvas | 30 | [Report](webgpu-canvas/reference-macos-arm64.json); 27 shared contract assertions plus 3 browser checks |
 
 Reports include fixture/service/lockfile hashes and raw observations. These are
 browser baseline results only; no native compatibility is implied. The audio

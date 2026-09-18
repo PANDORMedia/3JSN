@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-reference",
+  "capturedAt": "2026-09-17T23:31:46.989Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "fixtureInputs": [
+    {
+      "path": "fixtures/harness.mjs",
+      "sha256": "89e0001c6cfe44275f8a69807e61fc052cbb779f1871bd2a50012e802ef3c0a2"
+    },
+    {
+      "path": "fixtures/webgpu-canvas/contract.mjs",
+      "sha256": "b30cfb1d465afc02b71b1c70a9b977262504272659654a1b5eeddb8581dfba27"
+    },
+    {
+      "path": "fixtures/webgpu-canvas/fixture.mjs",
+      "sha256": "55e21e9bfe978af4d80899bfcd9c3fbf0bc2286e5527d248629cb3888755911c"
+    },
+    {
+      "path": "fixtures/webgpu-canvas/index.html",
+      "sha256": "a1250ae92130ce1d63d9bf3e67224a356cb48a99e4f85f5c267a888ea3b63beb"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+    },
+    {
+      "path": "scripts/compatibility/fixture-server.mjs",
+      "sha256": "cbd18e4bdcc9ff9a77f332d5d57c703b07e9b19aaf43bd0a200078521537720c"
+    }
+  ],
+  "result": {
+    "schemaVersion": 1,
+    "fixture": "webgpu-canvas",
+    "status": "passed",
+    "environment": {
+      "adapter": "",
+      "bitmap": [
+        80,
+        48
+      ],
+      "contextCount": 2,
+      "scope": "Programmatic DOM/WebGPU canvas contract; no native input or screenshot parity."
+    },
+    "checks": [
+      {
+        "name": "WebGPU is available",
+        "passed": true
+      },
+      {
+        "name": "hardware adapter",
+        "passed": true,
+        "observed": ""
+      },
+      {
+        "name": "canvas DOM brand",
+        "passed": true
+      },
+      {
+        "name": "default bitmap dimensions",
+        "passed": true,
+        "observed": [
+          300,
+          150
+        ]
+      },
+      {
+        "name": "absent dimensions stay absent attributes",
+        "passed": true
+      },
+      {
+        "name": "IDL dimension reflection",
+        "passed": true
+      },
+      {
+        "name": "invalid attribute defaults",
+        "passed": true,
+        "observed": 300
+      },
+      {
+        "name": "HTML integer parsing",
+        "passed": true,
+        "observed": 40
+      },
+      {
+        "name": "CSS size differs from bitmap size",
+        "passed": true,
+        "observed": {
+          "bitmap": [
+            64,
+            32
+          ],
+          "css": [
+            128,
+            96
+          ]
+        }
+      },
+      {
+        "name": "unknown context is null",
+        "passed": true
+      },
+      {
+        "name": "native context brand and identity",
+        "passed": true
+      },
+      {
+        "name": "incompatible context mode is null",
+        "passed": true
+      },
+      {
+        "name": "initial configuration is null",
+        "passed": true
+      },
+      {
+        "name": "unconfigured texture throws InvalidStateError",
+        "passed": true,
+        "observed": "InvalidStateError"
+      },
+      {
+        "name": "current texture identity and metadata",
+        "passed": true
+      },
+      {
+        "name": "rendered canvas texture is readable",
+        "passed": true,
+        "observed": [
+          255,
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "name": "invalid format throws and preserves current texture",
+        "passed": true,
+        "observed": "TypeError"
+      },
+      {
+        "name": "valid reconfigure replaces current texture",
+        "passed": true
+      },
+      {
+        "name": "reconfigured texture expires",
+        "passed": true
+      },
+      {
+        "name": "bitmap resize preserves context and changes texture",
+        "passed": true
+      },
+      {
+        "name": "resized texture expires",
+        "passed": true
+      },
+      {
+        "name": "redundant width assignment replaces WebGPU texture",
+        "passed": true
+      },
+      {
+        "name": "attribute resize reaches context",
+        "passed": true
+      },
+      {
+        "name": "independent canvas context and pixels",
+        "passed": true,
+        "observed": [
+          0,
+          255,
+          0,
+          255
+        ]
+      },
+      {
+        "name": "detach and reinsert preserve context",
+        "passed": true
+      },
+      {
+        "name": "unconfigure clears state and expires texture",
+        "passed": true
+      },
+      {
+        "name": "unconfigure does not reset context mode",
+        "passed": true
+      },
+      {
+        "name": "default usage is only render attachment",
+        "passed": true,
+        "observed": 16
+      },
+      {
+        "name": "host cannot silently grant COPY_SRC usage",
+        "passed": true
+      },
+      {
+        "name": "no unexpected GPU errors",
+        "passed": true,
+        "observed": []
+      }
+    ]
+  }
+}

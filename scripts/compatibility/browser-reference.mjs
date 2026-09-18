@@ -7,10 +7,10 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { createFixtureServer } from './fixture-server.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
-const availableFixtures = ['webgl-dom', 'workers-wasm', 'audio-worklet', 'network'];
+const availableFixtures = ['webgl-dom', 'workers-wasm', 'audio-worklet', 'network', 'webgpu-canvas'];
 const [browserExecutable, selection = 'webgl-dom'] = process.argv.slice(2);
 if (!browserExecutable || process.argv.length > 4 || (selection !== 'all' && !availableFixtures.includes(selection))) {
-  console.error('Usage: node scripts/compatibility/browser-reference.mjs <chrome-or-chromium-executable> [webgl-dom|workers-wasm|audio-worklet|network|all]');
+  console.error('Usage: node scripts/compatibility/browser-reference.mjs <chrome-or-chromium-executable> [webgl-dom|workers-wasm|audio-worklet|network|webgpu-canvas|all]');
   process.exit(2);
 }
 const fixtures = selection === 'all' ? availableFixtures : [selection];

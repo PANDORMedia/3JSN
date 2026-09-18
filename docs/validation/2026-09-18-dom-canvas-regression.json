@@ -1,0 +1,56 @@
+{
+  "status": "pass",
+  "frames": 32,
+  "generations": 4,
+  "allEightCapturesMatchPriorEvidence": true,
+  "rgbaSha256": [
+    "4038193d66b2f83532e90b0b600003239c64826566f6977a2a2c7035976e122f",
+    "7f881447efa29a94a6d63d0de53328911fed32487b52812664e1713ad5c9fef7",
+    "d3bde63888afdb9a13ebba8314c54f9d756f316b9f5823277d6c7e90317f7468",
+    "fae8bb640ef6390825001a385b854b3adf81080c010c658af465d5a5df1c0269",
+    "4038193d66b2f83532e90b0b600003239c64826566f6977a2a2c7035976e122f",
+    "7f881447efa29a94a6d63d0de53328911fed32487b52812664e1713ad5c9fef7",
+    "f1cf5ca11ffccdf50375f08dc89ce4013eb5eb2e0d1954eb17a1367714e142ff",
+    "5ddee237a191a67684a3b18eafc4179fafbbd26c45ba65e107a0cfb43a82582b"
+  ],
+  "validationErrors": [],
+  "failureInjection": {
+    "afterSubmittedFrames": 2,
+    "exitCode": 1,
+    "sharedGpuCleanupCompleted": true,
+    "metalValidationObserved": true
+  },
+  "execution": {
+    "startedAt": "2026-09-17T23:59:56.906Z",
+    "finishedAt": "2026-09-18T00:00:04.678Z",
+    "exitCode": 0,
+    "timeoutSeconds": 120,
+    "metalValidationObserved": true,
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "sourceSha256": {
+    "Cargo.toml": "628f586b190ccefdf19c34f3fd826e7a8b3ec9665d3e4bb17ad1722eb824e5b7",
+    "Cargo.lock": "031be0eae1314cc68fc84f9f19267a241163c24e5d56853ce51534c759f831d4",
+    "app.mjs": "3cbd53b54d2b3f4beb715409b9ad58370e9c4757d0fbb199970c30a25288ac4e",
+    "events.js": "e44b71d098f9fbebbeff79c800521079711b11b3e1f74bdfd6b2a1fcc87ef5ff",
+    "fixture.html": "30164ffb1844cacd565bd37b70cda36f534de20b34cb781c316583c52e6b3a51",
+    "bundle.mjs": "6eb5717c5c37d667c823f5cc244811661b9673e5e0980f0a0cae67099bc9d935",
+    "run.mjs": "e96fba13e6a2affcf1c615ccc1d1253c4715753dc32213fb2ae976c32171a1fb",
+    "src/main.rs": "7974291a0e0a79607e8326e90e1c50ca711aa4f62801178c773c62ebaf34eeb8",
+    "src/host.rs": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732",
+    "src/painter.rs": "c5dde072615f44c8b4be04898635ab6658f899dd2823e6bd7ab8bcac4596eef3",
+    "src/metal.rs": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26",
+    "src/evidence.rs": "d4dcca66c03db8b54b58e2471ac41071a5bd53c650d4b3389c496c8095a5e2cd",
+    "src/dom_bridge.rs": "6ac54b3fdb5c0ca29dae834b16b22336190d2f33b7f18a099f39ada021c22643",
+    "src/bindings.js": "2520bdcb843387d18c98f8d4fc257c78feebde210d0a5d5204b6ec3a7bcebefd"
+  },
+  "sharedSourceSha256": {
+    "crates/runtime/src/web-globals.js": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "docs/investigations/html-dom/fixture.js": "7de64b2921a95edc72a2b46c0fa8edde68d1b747c5b944ef324a73fffab203ed",
+    "examples/spinning-scene/scene.mjs": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980"
+  },
+  "executableSha256": "b631363dcb03447edb6ed478ede54a2aa2c3bcee1695fad4d055e61c83d848bc"
+}

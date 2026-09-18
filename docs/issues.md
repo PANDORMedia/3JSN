@@ -2,10 +2,12 @@
 
 [Repository](https://github.com/PANDORMedia/3JSN) · [Project board](https://github.com/orgs/PANDORMedia/projects/4) · [Milestones](https://github.com/PANDORMedia/3JSN/milestones)
 
-The roadmap contains eight epics and 43 work items. GitHub holds current status,
+The roadmap contains eight epics and 45 work items. GitHub holds current status,
 priorities and dependencies. Each work item has acceptance criteria and a native
 parent link; blocking relationships are recorded in GitHub as well as issue bodies.
-Only the initial research foundation is complete at repository creation.
+The additional paint defects are children of the HTML painting work item and
+block native composition. Verified research increments do not close the wider
+shipping integration gates.
 
 ## M0 — Contract and architecture
 
@@ -44,6 +46,8 @@ Only the initial research foundation is complete at repository creation.
 - [#24 Integrate CSS layout, fonts, text shaping and GPU painting](https://github.com/PANDORMedia/3JSN/issues/24)
 - [#25 Connect native input, focus, forms, IME and accessibility to the DOM](https://github.com/PANDORMedia/3JSN/issues/25)
 - [#26 Compose HTML, WebGL, WebGPU and Canvas surfaces on the native GPU](https://github.com/PANDORMedia/3JSN/issues/26)
+- [#52 Preserve ancestor overflow clips for hoisted canvas paint nodes](https://github.com/PANDORMedia/3JSN/issues/52)
+- [#53 Clear stale paint lists when an HTML stacking context is removed](https://github.com/PANDORMedia/3JSN/issues/53)
 
 ## M4 — Web services and CtF
 

@@ -1,0 +1,104 @@
+--- a/canvas.rs
++++ b/canvas.rs
+@@ -1,4 +1,5 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
++use std::cell::Cell;
+ use std::cell::RefCell;
+ use std::rc::Rc;
+ 
+@@ -26,6 +27,8 @@
+ 
+ pub enum ContextData {
+   Canvas(Rc<RefCell<DynamicImage>>),
++  /// GPU-only offscreen canvas; the host owns bitmap dimensions and presentation.
++  Texture(Rc<Cell<(u32, u32)>>),
+   Surface(Rc<RefCell<SurfaceData>>),
+ }
+ 
+@@ -121,6 +124,9 @@
+       }
+     }
+ 
++    if matches!(&self.data, ContextData::Texture(_)) {
++      self.expire_drawing_buffer(scope);
++    }
+     self.configuration.replace(Some(configuration));
+     self.configuration_obj.replace(Some(configuration_obj));
+     self.texture_descriptor.replace(Some(descriptor));
+@@ -153,7 +159,14 @@
+   ) -> Result<v8::Global<v8::Object>, JsErrorBox> {
+     let configuration = self.configuration.borrow();
+     let configuration = configuration.as_ref().ok_or_else(|| {
+-      JsErrorBox::type_error("GPUCanvasContext has not been configured")
++      if matches!(&self.data, ContextData::Texture(_)) {
++        JsErrorBox::new(
++          "DOMExceptionInvalidStateError",
++          "GPUCanvasContext has not been configured",
++        )
++      } else {
++        JsErrorBox::type_error("GPUCanvasContext has not been configured")
++      }
+     })?;
+     let texture_descriptor = self.texture_descriptor.borrow();
+     let texture_descriptor = texture_descriptor.as_ref().unwrap();
+@@ -253,8 +266,15 @@
+       .collect();
+ 
+     match &self.data {
+-      ContextData::Canvas(image) => {
+-        let (width, height) = image.borrow().dimensions();
++      ContextData::Canvas(_) | ContextData::Texture(_) => {
++        let ((width, height), usage) = match &self.data {
++          ContextData::Canvas(image) => (
++            image.borrow().dimensions(),
++            usage | wgpu_types::TextureUsages::COPY_SRC,
++          ),
++          ContextData::Texture(size) => (size.get(), usage),
++          ContextData::Surface(_) => unreachable!(),
++        };
+ 
+         Ok(Descriptor::Texture(TextureDescriptor {
+           label: Some("GPUCanvasContext".into()),
+@@ -267,7 +287,7 @@
+           sample_count: 1,
+           dimension: wgpu_types::TextureDimension::D2,
+           format: configuration.format.clone().into(),
+-          usage: usage | wgpu_types::TextureUsages::COPY_SRC,
++          usage,
+           view_formats,
+         }))
+       }
+@@ -296,6 +316,11 @@
+     &self,
+     scope: &mut v8::PinScope<'_, '_>,
+   ) -> Result<(), JsErrorBox> {
++    if matches!(&self.data, ContextData::Texture(_)) {
++      return Err(JsErrorBox::type_error(
++        "GPU-only canvas has no CPU image backing",
++      ));
++    }
+     let ContextData::Canvas(image) = &self.data else {
+       unreachable!()
+     };
+@@ -386,7 +411,7 @@
+       ));
+ 
+       match &self.data {
+-        ContextData::Canvas(_) => {}
++        ContextData::Canvas(_) | ContextData::Texture(_) => {}
+         ContextData::Surface(surface_data) => {
+           let texture_descriptor = self.texture_descriptor.borrow();
+ 
+@@ -406,6 +431,12 @@
+         }
+       }
+     }
++  }
++
++  /// End script access after the host has submitted GPU presentation work.
++  /// This destroys the current texture and performs no CPU image transfer.
++  pub fn expire_drawing_buffer(&self, scope: &mut v8::PinScope<'_, '_>) {
++    self.replace_drawing_buffer(scope);
+   }
+ 
+   pub fn bitmap_read_hook(

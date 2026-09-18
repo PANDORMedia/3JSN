@@ -1,0 +1,11 @@
+<!doctype html>
+<html><head><style>
+  html, body { margin: 0; background: white; }
+  #stage { position: absolute; left: 0; top: 0; width: 384px; height: 224px; overflow: hidden; background: rgb(12, 16, 24); }
+  #scene { position: absolute; left: 24px; top: 24px; width: 256px; height: 160px; padding: 0; border: 0; z-index: 2; }
+  #cover { position: absolute; left: 40px; top: 40px; width: 48px; height: 48px; background: rgb(255, 128, 0); z-index: 3; }
+  #caption { position: absolute; left: 24px; top: 192px; color: white; font: 20px sans-serif; }
+</style></head><body>
+  <div id="canvases"></div>
+  <div id="stage"><canvas id="scene" width="320" height="200"></canvas><div id="cover"></div><div id="caption">DOM canvas</div></div>
+</body></html>

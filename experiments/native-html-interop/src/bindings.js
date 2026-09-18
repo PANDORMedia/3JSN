@@ -7,6 +7,12 @@ const classLists = new WeakMap();
 const styles = new WeakMap();
 const constructionKey = Symbol('native-node');
 const nativeEventTarget = EventTarget.prototype;
+const elementClasses = new Map();
+const attributeObservers = new WeakMap();
+
+export function registerElementClass(tag, Type) { elementClasses.set(tag, Type); }
+export function observeAttributes(node, callback) { attributeObservers.set(node, callback); }
+export { HTMLElement, Document, idOf };
 
 function idOf(node) {
   const id = ids.get(node);
@@ -17,7 +23,7 @@ function wrap(id) {
   if (id === null) return null;
   if (wrappers.has(id)) return wrappers.get(id);
   const { tag } = read({ kind: 'describe', id });
-  const Type = tag === '#document' ? Document : tag === 'input' ? HTMLInputElement : HTMLElement;
+  const Type = elementClasses.get(tag) ?? (tag === '#document' ? Document : tag === 'input' ? HTMLInputElement : HTMLElement);
   const node = new Type(constructionKey, id);
   wrappers.set(id, node);
   return node;
@@ -64,7 +70,11 @@ class Element extends Node {
   get id() { return this.getAttribute('id') ?? ''; }
   set id(value) { this.setAttribute('id', value); }
   getAttribute(name) { return read({ kind: 'attribute', id: idOf(this), name: String(name) }); }
-  setAttribute(name, value) { mutate({ kind: 'attribute', id: idOf(this), name: String(name), value: String(value) }); }
+  setAttribute(name, value) {
+    name = String(name);
+    mutate({ kind: 'attribute', id: idOf(this), name, value: String(value) });
+    attributeObservers.get(this)?.(name);
+  }
   querySelector(selector) { return wrap(read({ kind: 'query', id: idOf(this), selector: String(selector), all: false })); }
   querySelectorAll(selector) { return read({ kind: 'query', id: idOf(this), selector: String(selector), all: true }).map(wrap); }
   set innerHTML(value) { mutate({ kind: 'html', id: idOf(this), value: String(value) }); }
