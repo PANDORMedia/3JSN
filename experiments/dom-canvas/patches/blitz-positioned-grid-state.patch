@@ -1,0 +1,29 @@
+--- a/packages/blitz-dom/src/layout/mod.rs
++++ b/packages/blitz-dom/src/layout/mod.rs
+@@ -12,6 +12,7 @@
+ use style::Atom;
+ use style::values::computed::CSSPixelLength;
+ use style::values::computed::length_percentage::CalcLengthPercentage;
++use style::values::specified::box_::DisplayInside;
+ use stylo_taffy::TaffyStyloStyle;
+ use taffy::{
+     BlockContext, CoreStyle as _, DetailedLayoutInfo, FlexDirection, LayoutContainingBlock,
+@@ -479,8 +480,16 @@
+     }
+ 
+     fn get_detailed_layout_info(&self, node_id: NodeId) -> &DetailedLayoutInfo<Atom> {
+-        self.node_from_id(node_id)
+-            .element_data()
++        let node = self.node_from_id(node_id);
++        // Stored tracks can outlive a display change. Only a current CSS grid
++        // may use them to resolve an out-of-flow containing-block area.
++        if !node
++            .display_style()
++            .is_some_and(|display| display.inside() == DisplayInside::Grid)
++        {
++            return &DetailedLayoutInfo::None;
++        }
++        node.element_data()
+             .map(|element| &element.detailed_layout_info)
+             .unwrap_or(&DetailedLayoutInfo::None)
+     }

@@ -1,0 +1,81 @@
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.28s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/positioned_tests.rs (target/debug/deps/positioned_layout-e6eeada9d58d9512)
+
+running 6 tests
+test initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations ... FAILED
+test initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed ... FAILED
+test initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry ... FAILED
+test initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative ... FAILED
+test initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed ... FAILED
+test initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child ... FAILED
+
+failures:
+
+---- initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations stdout ----
+
+thread 'initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations' (4581163) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:157:13:
+assertion `left == right` failed
+  left: [112.0, 15.0, 112.0, 15.0]
+ right: [112.0, 64.0, 112.0, 64.0]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed stdout ----
+
+thread 'initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed' (4581164) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:81:5:
+assertion `left == right` failed
+  left: [0.0, 0.0, 332.0, 176.0]
+ right: [12.0, 12.0, 332.0, 176.0]
+
+---- initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry stdout ----
+
+thread 'initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry' (4581167) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:58:5:
+assertion `left == right` failed
+  left: [24.0, 36.0, 96.0, 24.0]
+ right: [24.0, 232.0, 96.0, 24.0]
+
+---- initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative stdout ----
+
+thread 'initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative' (4581162) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:179:9:
+assertion `left == right` failed
+  left: [40.0, 52.0, 80.0, 24.0]
+ right: [52.0, 64.0, 112.0, 24.0]
+
+---- initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed stdout ----
+
+thread 'initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed' (4581166) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:209:5:
+assertion `left == right` failed
+  left: [106.0, 57.0, 100.0, 51.0]
+ right: [160.0, 96.0, 160.0, 96.0]
+
+---- initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child stdout ----
+
+thread 'initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child' (4581165) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/initial_containing_block_tests.rs:138:13:
+assertion `left == right` failed
+  left: [86.0, 47.0, 80.0, 41.0]
+ right: [112.0, 64.0, 112.0, 64.0]
+
+
+failures:
+    initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative
+    initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations
+    initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed
+    initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child
+    initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed
+    initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `--test positioned-layout`

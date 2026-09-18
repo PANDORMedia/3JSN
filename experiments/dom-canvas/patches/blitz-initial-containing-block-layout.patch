@@ -1,0 +1,236 @@
+diff --git a/packages/blitz-dom/src/layout/mod.rs b/packages/blitz-dom/src/layout/mod.rs
+--- a/packages/blitz-dom/src/layout/mod.rs
++++ b/packages/blitz-dom/src/layout/mod.rs
+@@ -22,6 +22,7 @@
+ 
+ pub(crate) mod construct;
+ pub(crate) mod damage;
++pub(crate) mod initial_containing_block;
+ pub(crate) mod inline;
+ pub(crate) mod list;
+ pub(crate) mod replaced;
+diff --git a/packages/blitz-dom/src/layout/initial_containing_block.rs b/packages/blitz-dom/src/layout/initial_containing_block.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-dom/src/layout/initial_containing_block.rs
+@@ -0,0 +1,170 @@
++//! The viewport is the document element's containing block, not its CSS box.
++//! Only this synthetic container uses the adapter; element layout and its caches
++//! remain owned by `BaseDocument` and Taffy's existing algorithms.
++
++use style::Atom;
++use taffy::{
++    AvailableSpace, BlockContainerStyle, CacheTree, ContainingBlockClaims, CoreStyle,
++    DetailedLayoutInfo, Dimension, Direction, Layout, LayoutBlockContainer, LayoutContainingBlock,
++    LayoutInput, LayoutOutput, LayoutPartialTree, NodeId, RunMode, Size, TraversePartialTree,
++    compute_block_layout, compute_oof_layout, compute_root_layout,
++};
++
++use crate::{BaseDocument, taffy_node_id};
++
++pub(crate) fn compute_layout(document: &mut BaseDocument, viewport: Size<f32>) {
++    let node_id = taffy_node_id(document.root_node().id);
++    let direction = document.root_element().layout_style().direction();
++    let mut tree = InitialContainingBlockTree {
++        document,
++        node_id,
++        style: InitialContainingBlockStyle {
++            viewport,
++            direction,
++        },
++    };
++    compute_root_layout(&mut tree, node_id, viewport.map(AvailableSpace::Definite));
++}
++
++#[derive(Clone, Copy)]
++struct InitialContainingBlockStyle {
++    viewport: Size<f32>,
++    direction: Direction,
++}
++
++impl CoreStyle for InitialContainingBlockStyle {
++    type CustomIdent = Atom;
++
++    fn is_block(&self) -> bool {
++        true
++    }
++
++    fn size(&self) -> Size<Dimension> {
++        self.viewport.map(Dimension::length)
++    }
++
++    fn direction(&self) -> Direction {
++        self.direction
++    }
++
++    fn is_containing_block(&self) -> ContainingBlockClaims {
++        ContainingBlockClaims::ALL
++    }
++}
++
++impl BlockContainerStyle for InitialContainingBlockStyle {}
++
++struct InitialContainingBlockTree<'a> {
++    document: &'a mut BaseDocument,
++    node_id: NodeId,
++    style: InitialContainingBlockStyle,
++}
++
++impl TraversePartialTree for InitialContainingBlockTree<'_> {
++    type ChildIter<'a>
++        = <BaseDocument as TraversePartialTree>::ChildIter<'a>
++    where
++        Self: 'a;
++
++    fn child_ids(&self, node_id: NodeId) -> Self::ChildIter<'_> {
++        self.document.child_ids(node_id)
++    }
++
++    fn child_count(&self, node_id: NodeId) -> usize {
++        self.document.child_count(node_id)
++    }
++
++    fn get_child_id(&self, node_id: NodeId, index: usize) -> NodeId {
++        self.document.get_child_id(node_id, index)
++    }
++}
++
++impl LayoutPartialTree for InitialContainingBlockTree<'_> {
++    type CoreContainerStyle<'a>
++        = InitialContainingBlockStyle
++    where
++        Self: 'a;
++    type CustomIdent = Atom;
++
++    fn get_core_container_style(&self, node_id: NodeId) -> Self::CoreContainerStyle<'_> {
++        assert_eq!(node_id, self.node_id);
++        self.style
++    }
++
++    fn resolve_calc_value(&self, value: *const (), basis: f32) -> f32 {
++        self.document.resolve_calc_value(value, basis)
++    }
++
++    fn set_unrounded_layout(&mut self, node_id: NodeId, layout: &Layout) {
++        self.document.set_unrounded_layout(node_id, layout);
++    }
++
++    fn compute_child_layout(&mut self, node_id: NodeId, inputs: LayoutInput) -> LayoutOutput {
++        if node_id != self.node_id {
++            // The document element starts its own formatting context, rather than
++            // inheriting float state from the synthetic viewport container.
++            return self.document.compute_child_layout(node_id, inputs);
++        }
++
++        let mut output = compute_block_layout(self, node_id, inputs, None);
++        if inputs.run_mode == RunMode::PerformLayout {
++            compute_oof_layout(self, node_id, &mut output);
++        }
++        output
++    }
++}
++
++impl LayoutBlockContainer for InitialContainingBlockTree<'_> {
++    type BlockContainerStyle<'a>
++        = InitialContainingBlockStyle
++    where
++        Self: 'a;
++    type BlockItemStyle<'a>
++        = <BaseDocument as LayoutBlockContainer>::BlockItemStyle<'a>
++    where
++        Self: 'a;
++
++    fn get_block_container_style(&self, node_id: NodeId) -> Self::BlockContainerStyle<'_> {
++        self.get_core_container_style(node_id)
++    }
++
++    fn get_block_child_style(&self, node_id: NodeId) -> Self::BlockItemStyle<'_> {
++        self.document.get_block_child_style(node_id)
++    }
++}
++
++impl LayoutContainingBlock for InitialContainingBlockTree<'_> {
++    type OofItemStyle<'a>
++        = <BaseDocument as LayoutContainingBlock>::OofItemStyle<'a>
++    where
++        Self: 'a;
++
++    fn get_oof_item_style(&self, node_id: NodeId) -> Self::OofItemStyle<'_> {
++        self.document.get_oof_item_style(node_id)
++    }
++
++    fn clear_hoisted_children(&mut self, node_id: NodeId) {
++        self.document.clear_hoisted_children(node_id);
++    }
++
++    fn add_hoisted_children(&mut self, node_id: NodeId, children: &[NodeId]) {
++        self.document.add_hoisted_children(node_id, children);
++    }
++
++    fn get_detailed_layout_info(&self, node_id: NodeId) -> &DetailedLayoutInfo<Atom> {
++        assert_eq!(node_id, self.node_id);
++        &DetailedLayoutInfo::None
++    }
++}
++
++// Rebuild the single synthetic container each pass. Its viewport and owner list
++// must not outlive their inputs; element dispatch still uses the document's cache.
++impl CacheTree for InitialContainingBlockTree<'_> {
++    fn cache_get(&mut self, _node_id: NodeId, _inputs: &LayoutInput) -> Option<LayoutOutput> {
++        None
++    }
++
++    fn cache_store(&mut self, _node_id: NodeId, _inputs: &LayoutInput, _output: LayoutOutput) {}
++
++    fn cache_clear(&mut self, _node_id: NodeId) {}
++}
+diff --git a/packages/blitz-dom/src/resolve.rs b/packages/blitz-dom/src/resolve.rs
+--- a/packages/blitz-dom/src/resolve.rs
++++ b/packages/blitz-dom/src/resolve.rs
+@@ -19,7 +19,6 @@
+ }
+ 
+ use style::selector_parser::RestyleDamage;
+-use taffy::AvailableSpace;
+ 
+ use crate::{
+     BaseDocument,
+@@ -113,7 +112,7 @@
+         self.attach_hoisted_children();
+ 
+         // Resolve transforms
+-        self.resolve_transforms(root_node_id);
++        self.resolve_transforms(self.root_node().id);
+         timer.record_time("transform");
+ 
+         // Clear all damage and dirty flags, walking only subtrees which are
+@@ -615,19 +614,16 @@
+     pub fn resolve_layout(&mut self) {
+         let size = self.stylist.device().au_viewport_size();
+ 
+-        let available_space = taffy::Size {
+-            width: AvailableSpace::Definite(size.width.to_f32_px()),
+-            height: AvailableSpace::Definite(size.height.to_f32_px()),
++        let viewport = taffy::Size {
++            width: size.width.to_f32_px(),
++            height: size.height.to_f32_px(),
+         };
+-
+-        let root_element_id = crate::taffy_node_id(self.root_element().id);
+-
+-        // println!("\n\nRESOLVE LAYOUT\n===========\n");
+-
+-        taffy::compute_root_layout(self, root_element_id, available_space);
+-        taffy::round_layout(self, root_element_id);
+-
+-        // println!("\n\n");
+-        // taffy::print_tree(self, root_node_id)
++        let document_id = self.root_node().id;
++        crate::layout::initial_containing_block::compute_layout(self, viewport);
++        taffy::round_layout(self, crate::taffy_node_id(document_id));
++
++        // The synthetic container is uncached and may own boxes outside the
++        // document element. Refresh its overflow even when that element is cached.
++        self.nodes[document_id].insert_damage(RestyleDamage::RECALCULATE_OVERFLOW);
+     }
+ }

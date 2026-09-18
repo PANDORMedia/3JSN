@@ -1,0 +1,207 @@
+--- a/packages/blitz-dom/src/node/node.rs
++++ b/packages/blitz-dom/src/node/node.rs
+@@ -1437,7 +1437,12 @@
+             && y >= (overflow.y0 / scale) as f32
+             && y <= (overflow.y1 / scale) as f32;
+ 
+-        if !matches_self && !matches_content && !matches_hoisted_content && !matches_overflow {
++        if !self.is_document_element()
++            && !matches_self
++            && !matches_content
++            && !matches_hoisted_content
++            && !matches_overflow
++        {
+             return None;
+         }
+ 
+@@ -1493,10 +1498,13 @@
+                     child_x += content_box_offset.x;
+                     child_y += content_box_offset.y;
+                 }
+-                // Fixed-position children do not scroll with their containing block
+-                if child_position == taffy::Position::Fixed {
+-                    child_x -= self.scroll_offset().x as f32 + viewport_scroll.x;
+-                    child_y -= self.scroll_offset().y as f32 + viewport_scroll.y;
++                if child.is_initial_containing_block_child() && self.is_document_element() {
++                    child_x += self.final_layout().location.x - self.scroll_offset().x as f32;
++                    child_y += self.final_layout().location.y - self.scroll_offset().y as f32;
++                }
++                if child.is_viewport_fixed() {
++                    child_x -= viewport_scroll.x;
++                    child_y -= viewport_scroll.y;
+                 }
+             }
+             if let Some(hit) =
+@@ -1627,6 +1635,27 @@
+             .or_else(|| self.layout_parent.get())
+     }
+ 
++    /// Whether layout assigns this out-of-flow box to the viewport-sized Document owner.
++    pub fn is_initial_containing_block_child(&self) -> bool {
++        self.oof_containing_block
++            .get()
++            .is_some_and(|id| matches!(&self.with(id).data, NodeData::Document(_)))
++    }
++
++    /// Fixed boxes owned by a transformed element scroll with that element;
++    /// only Document-owned fixed boxes remain attached to the viewport.
++    pub fn is_viewport_fixed(&self) -> bool {
++        self.taffy_position() == taffy::Position::Fixed && self.is_initial_containing_block_child()
++    }
++
++    /// The element that supplies the root paint context, distinct from Document geometry.
++    pub fn is_document_element(&self) -> bool {
++        self.is_element()
++            && self
++                .parent
++                .is_some_and(|id| matches!(&self.with(id).data, NodeData::Document(_)))
++    }
++
+     /// Computes the Document-relative coordinates of the `Node`
+     pub fn absolute_position(&self, x: f32, y: f32) -> crate::util::Point<f32> {
+         let x = x + self.final_layout().location.x - self.scroll_offset().x as f32;
+--- a/packages/blitz-dom/src/resolve.rs
++++ b/packages/blitz-dom/src/resolve.rs
+@@ -307,10 +307,17 @@
+         }
+ 
+         for (cb_id, hoisted) in pairs {
++            // The Document owns viewport coordinates; html still owns the root
++            // paint context and its effects. Keep those responsibilities separate.
++            let paint_owner = if cb_id == self.root_node().id {
++                self.root_element().id
++            } else {
++                cb_id
++            };
+             // Nodes can be removed from the slab between layout passes; drop stale ids
+             let mut valid: Vec<NodeId> = hoisted
+                 .into_iter()
+-                .filter(|id| self.nodes.contains_key(*id))
++                .filter(|id| self.nodes.contains_key(*id) && *id != paint_owner)
+                 .collect();
+             // Sort by z-index (stable sort preserves document order within a z-index)
+             valid.sort_by_key(|id| self.nodes[*id].z_index());
+@@ -333,7 +340,7 @@
+             let mut z_indexed: Vec<NodeId> = Vec::new();
+             let mut effect_attached: Vec<(NodeId, NodeId)> = Vec::new();
+             {
+-                let mut paint_children = self.nodes[cb_id].paint_children.borrow_mut();
++                let mut paint_children = self.nodes[paint_owner].paint_children.borrow_mut();
+                 let paint_children = paint_children.get_or_insert_with(thin_vec::ThinVec::new);
+                 for &child_id in &valid {
+                     if self.nodes[child_id].z_index() != 0 {
+@@ -350,6 +357,7 @@
+                     // block.
+                     if let Some(effect_ancestor) =
+                         self.innermost_paint_effect_ancestor(child_id, cb_id)
++                        && effect_ancestor != paint_owner
+                     {
+                         effect_attached.push((child_id, effect_ancestor));
+                         continue;
+@@ -415,7 +423,12 @@
+             // recorded relative to the stacking context root.
+             for child_id in z_indexed {
+                 let mut position = taffy::Point::<f32>::ZERO;
+-                let mut sc_root = cb_id;
++                let mut sc_root = paint_owner;
++                if paint_owner != cb_id {
++                    let location = self.nodes[paint_owner].absolute_position(0.0, 0.0);
++                    position.x = -location.x;
++                    position.y = -location.y;
++                }
+                 while self.nodes[sc_root].stacking_context.is_none() {
+                     let node = &self.nodes[sc_root];
+                     let location = node.final_layout().location;
+@@ -425,7 +438,14 @@
+                     let Some(parent) = node.containing_block() else {
+                         break;
+                     };
+-                    sc_root = parent;
++                    if parent == self.root_node().id {
++                        sc_root = self.root_element().id;
++                        let location = self.nodes[sc_root].absolute_position(0.0, 0.0);
++                        position.x -= location.x;
++                        position.y -= location.y;
++                    } else {
++                        sc_root = parent;
++                    }
+                 }
+ 
+                 let z_index = self.nodes[child_id].z_index();
+--- a/packages/blitz-dom/src/layout/damage.rs
++++ b/packages/blitz-dom/src/layout/damage.rs
+@@ -621,13 +621,9 @@
+                 // `attach_hoisted_children`), not via its DOM parent.
+                 if matches!(position, Position::Absolute | Position::Fixed) {
+                     let parent = &self.nodes[node_id];
+-                    // The root element is the initial containing block: it claims
+-                    // every candidate not claimed by a closer containing block.
+-                    let is_root = self.try_root_element().is_some_and(|el| el.id == node_id);
+-                    let parent_claims = is_root
+-                        || parent
+-                            .containing_block_claims()
+-                            .for_position(stylo_taffy::convert::position(position));
++                    let parent_claims = parent
++                        .containing_block_claims()
++                        .for_position(stylo_taffy::convert::position(position));
+                     if !parent_claims {
+                         continue;
+                     }
+--- a/packages/blitz-paint/src/render.rs
++++ b/packages/blitz-paint/src/render.rs
+@@ -393,10 +393,11 @@
+         // Cull elements that fall entirely outside the current clip rectangle. In addition to
+         // the viewport, `clip_rect` is narrowed by any ancestor scrollport (see below), so this
+         // also culls elements scrolled out of view inside a clipping/scrolling container.
+-        if screen_bbox.x1 < clip_rect.x0
+-            || screen_bbox.x0 > clip_rect.x1
+-            || screen_bbox.y1 < clip_rect.y0
+-            || screen_bbox.y0 > clip_rect.y1
++        if !is_root_element
++            && (screen_bbox.x1 < clip_rect.x0
++                || screen_bbox.x0 > clip_rect.x1
++                || screen_bbox.y1 < clip_rect.y0
++                || screen_bbox.y0 > clip_rect.y1)
+         {
+             return;
+         }
+@@ -1007,25 +1008,23 @@
+         // Regular children
+         if let Some(children) = &*self.node.paint_children.borrow() {
+             for child_id in children {
+-                // Fixed-position children do not scroll with their containing block
+-                // (their layout location is relative to its unscrolled border box),
+-                // so cancel out the scroll offset applied to the transform above.
+                 let child = &self.context.dom.as_ref().tree()[*child_id];
+-                let child_transform = if child.taffy_position() == taffy::Position::Fixed {
+-                    // The root element's scroll is the viewport scroll (applied in
+-                    // `paint_scene`), not the node's own scroll offset.
+-                    let scroll = if Some(self.node.id) == self.context.root_element_id {
+-                        self.context.dom.as_ref().viewport_scroll()
+-                    } else {
+-                        *self.node.scroll_offset()
+-                    };
+-                    parent_style_transform.pre_translate(kurbo::Vec2 {
++                let mut child_transform = parent_style_transform;
++                if child.is_initial_containing_block_child() && self.node.is_document_element() {
++                    let location = self.node.final_layout().location;
++                    let scroll = self.node.scroll_offset();
++                    child_transform = child_transform.pre_translate(Vec2 {
++                        x: (scroll.x - f64::from(location.x)) * self.scale,
++                        y: (scroll.y - f64::from(location.y)) * self.scale,
++                    });
++                }
++                if child.is_viewport_fixed() {
++                    let scroll = self.context.dom.as_ref().viewport_scroll();
++                    child_transform = child_transform.pre_translate(Vec2 {
+                         x: scroll.x * self.scale,
+                         y: scroll.y * self.scale,
+-                    })
+-                } else {
+-                    parent_style_transform
+-                };
++                    });
++                }
+                 self.render_node(scene, *child_id, child_transform, clip_rect);
+             }
+         }

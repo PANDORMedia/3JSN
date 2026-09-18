@@ -1,0 +1,36 @@
+{
+  "binarySha256BeforeAndAfter": {
+    "target/debug/threejs-positioned-overflow-paint-probe": "65b5298905a020c24b2308b0f8ae07ac0fb097293f263b24c807dc13f9dbd18f",
+    "target/debug/threejs-positioned-dom-canvas-probe": "fe91e1dfc93dbe03e318ea1d75f86a4b6b436f5f6feeea03c4979ed27a02c664"
+  },
+  "runs": [
+    {
+      "fixture": "initial-containing-block",
+      "passed": 17,
+      "total": 21,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true
+    },
+    {
+      "fixture": "positioned-layout",
+      "passed": 13,
+      "total": 14,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true
+    },
+    {
+      "fixture": "overflow-paint",
+      "passed": 6,
+      "total": 22,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true
+    }
+  ],
+  "canvasExitCodes": [
+    1,
+    1
+  ]
+}

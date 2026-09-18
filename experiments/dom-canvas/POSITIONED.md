@@ -1,33 +1,58 @@
 # Positioned layout candidate
 
-This is an **unadopted research candidate** for containing-block ownership.
-It uses upstream [Blitz PR #805](https://github.com/DioxusLabs/blitz/pull/805) at
-`c032f63418097bb82c26077a85c24896c0a96e9d`, whose manifest pins merged Taffy
-`dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c`. Only the existing stacking-demotion
-patch is applied. The overflow prototype and no-box geometry patch are excluded.
-Normal `prepare.mjs`, its prepared Blitz copy and the supplied Git checkout are
-not changed.
+This is an **unadopted research candidate**, separate from the default renderer.
+It pins [Blitz PR #805](https://github.com/DioxusLabs/blitz/pull/805) at
+`c032f63418097bb82c26077a85c24896c0a96e9d` and its Taffy dependency at
+`dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c`. Compilation does not establish support.
 
-Initial Metal comparison of the [positioned fixture](../../fixtures/positioned-layout/README.md)
-matches 10 of 14 captures. The remaining differences concern short-document
-initial-containing-block size, transformed fixed geometry and grid geometry
-after changing the containing block's layout mode. The grid failure also
-reproduces entirely at scale 1, so it must not be labeled a DPI-only failure.
-This does not establish full absolute/fixed,
-clipping, scrolling or HTML/CSS compatibility. The candidate remains separate
-from the default renderer; upstream compilation or CI cannot substitute for the
-browser/native comparison.
+The initial-owner candidate matches 17/21
+[initial-containing-block captures](../../fixtures/initial-containing-block/README.md),
+13/14 [positioned captures](../../fixtures/positioned-layout/README.md), and 6/22
+[overflow captures](../../fixtures/overflow-paint/README.md). It regresses both
+new equal-z overlap controls relative to the upstream baseline. These paint-order
+failures, transformed DOM geometry, ancestor clipping and scrolling prevent adoption.
+See the [recorded evidence](../../docs/validation/2026-09-18-initial-owner.md).
 
-## Prepare from existing local sources
+## Ownership and patch boundaries
 
-Prerequisites are Node.js 24+, Git, tar and the dependencies already cached for
-the normal DOM-canvas experiment. Supply a local Blitz Git repository containing
-the exact candidate commit. Preparation never fetches, checks out, installs,
-resolves dependencies or builds. A missing commit or source cache is an error.
-The supplied repository may have a different HEAD or local changes: preparation
-archives the pinned Git objects, not its working tree.
+The viewport-sized Document owns the initial containing block. HTML remains a
+normal authored CSS box and the root paint context. A small adapter implements
+public Taffy traits only for Document, delegates real elements to `BaseDocument`,
+and uses the existing block and out-of-flow algorithms. It does not rewrite
+HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
+each resolve; descendant layout caches remain in use.
 
-From the 3JSN repository root, after normal dependency preparation:
+Four ordered patches define this candidate:
+
+| Patch | Responsibility |
+| --- | --- |
+| `blitz-stacking-demotion.patch` | Existing stale stacking-list repair. |
+| `blitz-positioned-grid-state.patch` | Expose cached grid tracks only while the element remains a CSS grid. |
+| `blitz-initial-containing-block-layout.patch` | Separate Document viewport geometry from HTML layout through public Taffy APIs. |
+| `blitz-initial-containing-block-paint.patch` | Route Document-owned boxes through HTML's paint context, compensate root offsets and preserve the root entry through containing-block traversal. |
+
+The last patch is incomplete: joining geometry owners does not yet produce a
+correct shared paint order. Equal-z ordering must preserve CSS order for flex/grid,
+formatting ancestry, pseudo-elements and tree order; a blanket DOM sort is not an
+acceptable fix. Root effects also expose an existing z:auto ordering failure.
+The current hit/paint scroll handling has no complete shared coordinate-space
+contract. Root-fixed, nested effect and hoisted positive/negative-z paths remain
+gates; no scrolling support is claimed from these no-scroll captures.
+
+The rejected overflow prototype and maintained default's no-box geometry patch
+are excluded. Hidden-node failures in the overflow suite therefore remain visible.
+Neither normal `prepare.mjs` nor its prepared source is changed by this candidate.
+
+## Reproduce both profiles
+
+Prerequisites: Node.js 24+, Git, tar, the normal experiment's cached dependencies,
+and a local Blitz Git repository containing the exact candidate commit.
+Preparation never fetches, checks out or resolves dependencies. It archives
+immutable Git objects, checks every tracked source file and the explicit added
+file, verifies patch hashes and resulting contents, and rejects extra files or
+symlinks. Do not prepare while building or capturing the same profile.
+
+From the repository root:
 
 ```sh
 export CARGO_HOME="$PWD/.cache/cargo"
@@ -35,78 +60,49 @@ export CARGO_TARGET_DIR="$PWD/target"
 node experiments/dom-canvas/prepare.mjs --check
 node experiments/dom-canvas/prepare-positioned.mjs /path/to/local/blitz
 node experiments/dom-canvas/prepare-positioned.mjs /path/to/local/blitz --check
+node experiments/dom-canvas/prepare-positioned.mjs /path/to/local/blitz --baseline
+node experiments/dom-canvas/prepare-positioned.mjs /path/to/local/blitz --baseline --check
 ```
 
-The new script generates `.cache/positioned-candidate/blitz` and
-`.cache/positioned-candidate/probe/{Cargo.toml,Cargo.lock}`. Only these dedicated
-generated sources/manifests are replaced on preparation. Do not prepare again
-while compiling or capturing this candidate. `--check` verifies existing output
-without writing it. Its JSON output records source, patch and manifest/lock
-identities; save it alongside captures when collecting evidence.
+Default candidate output is `.cache/positioned-candidate/{blitz,probe}`. The
+`--baseline` profile uses `.cache/positioned-candidate-baseline/{blitz,probe}` and
+applies only the existing stacking-demotion patch. It reproduces the upstream
+candidate evaluated previously. The supplied source checkout stays unchanged.
 
-Every tracked Blitz file is checked against the immutable commit, except the
-one patched file, which has a pinned resulting SHA256. Additional files or
-symlinks in the prepared Blitz directory fail verification. The shared prepared
-Deno source is checked by the normal preparation's read-only verification.
-
-The candidate manifest derives from the tracked `experiments/dom-canvas/Cargo.toml`:
-Blitz revisions change to the candidate, source/patch paths become absolute, and
-package/binary names gain `positioned-` to avoid overwriting default binaries in
-a shared target directory. The generated manifest contains local paths and stays
-ignored. The tracked lock is copied with exactly two changes: its Taffy source
-identity and the probe package name. No fresh dependency resolution is performed;
-the checks below use `--locked --offline`. If canonical inputs evolve beyond
-these substitutions, review the generation rather than updating a lock ad hoc.
-
-## Build and compare separately
-
-These commands require the complete cached dependency graph. Native capture also
-requires macOS hardware Metal access. Preparation itself does not run them.
+Generated manifests derive from the tracked experiment manifest. Paths become
+absolute, Blitz revisions change, and package/binary names are distinct. The
+tracked lock changes only the Taffy source and probe package name. Only the
+initial-owner profile adds the `positioned-layout` integration test target.
+Generated paths stay ignored. Save preparation JSON and executable hashes with
+captures; do not attribute an old executable to newly prepared source.
 
 ```sh
-cargo build --locked --offline -j2 \
+cargo test --locked --offline -j2 \
   --manifest-path .cache/positioned-candidate/probe/Cargo.toml \
-  --bin threejs-positioned-overflow-paint-probe
+  --test positioned-layout
+cargo build --locked --offline -j2 \
+  --manifest-path .cache/positioned-candidate/probe/Cargo.toml --bins
+cargo build --locked --offline -j2 \
+  --manifest-path .cache/positioned-candidate-baseline/probe/Cargo.toml \
+  --bin threejs-positioned-baseline-overflow-paint-probe
 node scripts/compatibility/paint-reference.mjs \
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' \
-  artifacts/positioned-layout/browser positioned-layout
+  artifacts/initial-containing-block/browser initial-containing-block
 MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
-  fixtures/positioned-layout/index.html fixtures/positioned-layout/fixture.js \
-  fixtures/positioned-layout/cases.json artifacts/positioned-layout/candidate
+  fixtures/initial-containing-block/index.html fixtures/initial-containing-block/fixture.js \
+  fixtures/initial-containing-block/cases.json artifacts/initial-containing-block/candidate
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-baseline-overflow-paint-probe \
+  fixtures/initial-containing-block/index.html fixtures/initial-containing-block/fixture.js \
+  fixtures/initial-containing-block/cases.json artifacts/initial-containing-block/baseline
 node experiments/dom-canvas/compare-clips.mjs \
-  artifacts/positioned-layout/browser artifacts/positioned-layout/candidate \
-  artifacts/positioned-layout/candidate-comparison.json
+  artifacts/initial-containing-block/browser artifacts/initial-containing-block/candidate \
+  artifacts/initial-containing-block/candidate-comparison.json
 ```
 
-The native capture process reports successful capture/cleanup independently of
-parity. The comparator exits nonzero when geometry or uniform interior pixels
-differ. Retain failures; do not rewrite fixture CSS to make the candidate pass.
-Use the same executable with `fixtures/overflow-paint/{index.html,fixture.js,cases.json}`
-and its browser reference to recheck the original clipping matrix. Run the
-separately named canvas/geometry binaries when evaluating those regression gates.
-Record the candidate's preparation identity and executable hash with each run;
-do not attribute old binaries or captures to newly prepared source.
-
-For a smaller native grid-transition diagnostic, keep the HTML/JS unchanged and
-supply a separate ordered case file to the native capture executable:
-
-```sh
-mkdir -p artifacts/positioned-layout/grid-transition
-cat > artifacts/positioned-layout/grid-transition/cases.json <<'JSON'
-[
-  { "name": "grid-static-anchor" },
-  { "name": "grid-owner-area" },
-  { "name": "grid-static-anchor" }
-]
-JSON
-MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
-  fixtures/positioned-layout/index.html fixtures/positioned-layout/fixture.js \
-  artifacts/positioned-layout/grid-transition/cases.json \
-  artifacts/positioned-layout/grid-transition/native
-```
-
-The final static-grid case should restore the first case's geometry. The current
-candidate instead retains a different width after the intervening grid-owner
-case. This command is a native diagnostic, not a browser parity comparison:
-the 14-case browser report has a different case hash and order. A comparison
-needs a browser reference executing this exact three-case input sequence.
+Capture requires macOS Metal access; it records one paint per case and stored
+geometry afterward. Comparison exits nonzero for partial parity, independently
+of successful capture/cleanup. Repeat comparison against the baseline directory.
+Use the same executable with the positioned-layout and overflow-paint fixtures
+to check their separate matrices, and the candidate canvas binary for lifecycle
+and initialization regressions. The candidate's full geometry test target is
+not expected to pass because its no-box patch is deliberately excluded.

@@ -1,0 +1,12 @@
+<!doctype html>
+<html id="root" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Initial containing block ownership reference</title>
+  <style>html, body { margin: 0; padding: 0; background: white; }</style>
+</head>
+<body id="body">
+  <div id="outer"><div id="middle"><div id="spacer"></div><div id="subject"></div></div></div>
+  <script src="fixture.js"></script>
+</body>
+</html>

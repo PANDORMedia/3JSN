@@ -1,0 +1,1020 @@
+{
+  "status": "captured",
+  "fixture": "ordinary-html-clipping",
+  "backend": "Metal",
+  "offscreen": true,
+  "device": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "v8": "15.0.245.2-rusty",
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "cases": [
+    {
+      "name": "short-absolute-bottom",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 24.0,
+          "y": 36.0,
+          "width": 96.0,
+          "height": 24.0,
+          "top": 36.0,
+          "left": 24.0,
+          "right": 120.0,
+          "bottom": 60.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "e89582cfee35449f7c453b7234e9009021022f3f267c40b4f156d775dca12cf4",
+      "file": "000-case.png"
+    },
+    {
+      "name": "tall-absolute-bottom",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 384.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 384.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 24.0,
+          "y": 360.0,
+          "width": 96.0,
+          "height": 24.0,
+          "top": 360.0,
+          "left": 24.0,
+          "right": 120.0,
+          "bottom": 384.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "51d6efd2194637a5a14e110d4881960c035bce0daf34359a57d0f532ab341aea",
+      "file": "001-case.png"
+    },
+    {
+      "name": "tall-fixed-stretch",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 384.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 384.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 240.0,
+          "y": 16.0,
+          "width": 48.0,
+          "height": 352.0,
+          "top": 16.0,
+          "left": 240.0,
+          "right": 288.0,
+          "bottom": 368.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "76ccc48de86d068b4166b8f760a4a481e535d15b2b22ecaa32d1bf971bc428ef",
+      "file": "002-case.png"
+    },
+    {
+      "name": "short-viewport-percent",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 112.0,
+          "y": 15.0,
+          "width": 112.0,
+          "height": 15.0,
+          "top": 15.0,
+          "left": 112.0,
+          "right": 224.0,
+          "bottom": 30.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "454fd99dbcd5e609450ff66a593f6e66714039b36ae000057f887a42a555c8b4",
+      "file": "003-case.png"
+    },
+    {
+      "name": "root-box-absolute-percent",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 16.0,
+          "y": 16.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 16.0,
+          "right": 336.0,
+          "bottom": 76.0
+        },
+        "middle": {
+          "x": 40.0,
+          "y": 16.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 40.0,
+          "right": 240.0,
+          "bottom": 76.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b",
+      "file": "004-case.png"
+    },
+    {
+      "name": "root-box-fixed-percent",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c",
+      "file": "005-case.png"
+    },
+    {
+      "name": "relative-root-absolute",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 16.0,
+          "y": 16.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 16.0,
+          "right": 336.0,
+          "bottom": 76.0
+        },
+        "middle": {
+          "x": 40.0,
+          "y": 16.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 40.0,
+          "right": 240.0,
+          "bottom": 76.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b",
+      "file": "006-case.png"
+    },
+    {
+      "name": "absolute-root-absolute",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 16.0,
+          "y": 16.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 16.0,
+          "right": 336.0,
+          "bottom": 76.0
+        },
+        "middle": {
+          "x": 40.0,
+          "y": 16.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 40.0,
+          "right": 240.0,
+          "bottom": 76.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b",
+      "file": "007-case.png"
+    },
+    {
+      "name": "relative-root-fixed",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c",
+      "file": "008-case.png"
+    },
+    {
+      "name": "fixed-root-fixed",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c",
+      "file": "009-case.png"
+    },
+    {
+      "name": "transformed-root-fixed",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "d884c947b70d95bfdcaca90f343e7d56367df92f9c2ad6a9165b76dced370536",
+      "file": "010-case.png"
+    },
+    {
+      "name": "root-fixed-restored",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c",
+      "file": "011-case.png"
+    },
+    {
+      "name": "viewport-absolute-restored",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 112.0,
+          "y": 15.0,
+          "width": 112.0,
+          "height": 15.0,
+          "top": 15.0,
+          "left": 112.0,
+          "right": 224.0,
+          "bottom": 30.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "454fd99dbcd5e609450ff66a593f6e66714039b36ae000057f887a42a555c8b4",
+      "file": "012-case.png"
+    },
+    {
+      "name": "short-auto-anchor",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 24.0,
+          "y": 36.0,
+          "width": 112.0,
+          "height": 24.0,
+          "top": 36.0,
+          "left": 24.0,
+          "right": 136.0,
+          "bottom": 60.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7",
+      "file": "013-case.png"
+    },
+    {
+      "name": "root-box-auto-anchor",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 16.0,
+          "y": 16.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 16.0,
+          "right": 336.0,
+          "bottom": 76.0
+        },
+        "middle": {
+          "x": 40.0,
+          "y": 16.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 16.0,
+          "left": 40.0,
+          "right": 240.0,
+          "bottom": 76.0
+        },
+        "subject": {
+          "x": 40.0,
+          "y": 52.0,
+          "width": 80.0,
+          "height": 24.0,
+          "top": 52.0,
+          "left": 40.0,
+          "right": 120.0,
+          "bottom": 76.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "1570a85f41b2880f6d2df0bb12bb4edc2818063f9175ac61441e00bbed55fa71",
+      "file": "014-case.png"
+    },
+    {
+      "name": "auto-anchor-restored",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 24.0,
+          "y": 36.0,
+          "width": 112.0,
+          "height": 24.0,
+          "top": 36.0,
+          "left": 24.0,
+          "right": 136.0,
+          "bottom": 60.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7",
+      "file": "015-case.png"
+    },
+    {
+      "name": "root-effect-fixed-auto-order",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 160.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 160.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 48.0,
+          "y": 40.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 40.0,
+          "left": 48.0,
+          "right": 176.0,
+          "bottom": 104.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "b3c3a7abf7056e03b7e389a14c452214c4fbeb3562d79cb918a6f78f4ef05b7d",
+      "file": "016-case.png"
+    },
+    {
+      "name": "root-positive-z-merge-order",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 160.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 160.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 48.0,
+          "y": 40.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 40.0,
+          "left": 48.0,
+          "right": 176.0,
+          "bottom": 104.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965",
+      "file": "017-case.png"
+    },
+    {
+      "name": "root-negative-z-merge-order",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 160.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 160.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 48.0,
+          "y": 40.0,
+          "width": 128.0,
+          "height": 64.0,
+          "top": 40.0,
+          "left": 48.0,
+          "right": 176.0,
+          "bottom": 104.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965",
+      "file": "018-case.png"
+    },
+    {
+      "name": "root-box-fixed-percent",
+      "scale": 2.0,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 24.0,
+          "y": 22.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 22.0,
+          "left": 24.0,
+          "right": 344.0,
+          "bottom": 82.0
+        },
+        "middle": {
+          "x": 60.0,
+          "y": 32.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 32.0,
+          "left": 60.0,
+          "right": 260.0,
+          "bottom": 92.0
+        },
+        "subject": {
+          "x": 86.0,
+          "y": 47.0,
+          "width": 80.0,
+          "height": 41.0,
+          "top": 47.0,
+          "left": 86.0,
+          "right": 166.0,
+          "bottom": 88.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 2.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "52c7b5a211734b294e8f6b30346d4038f1ef66606ec6966fc0d646747b7a4e7b",
+      "file": "019-case.png"
+    },
+    {
+      "name": "short-absolute-bottom",
+      "scale": 2.0,
+      "width": 896,
+      "height": 512,
+      "layout": {
+        "outer": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 320.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 0.0,
+          "right": 320.0,
+          "bottom": 60.0
+        },
+        "middle": {
+          "x": 24.0,
+          "y": 0.0,
+          "width": 200.0,
+          "height": 60.0,
+          "top": 0.0,
+          "left": 24.0,
+          "right": 224.0,
+          "bottom": 60.0
+        },
+        "subject": {
+          "x": 24.0,
+          "y": 36.0,
+          "width": 96.0,
+          "height": 24.0,
+          "top": 36.0,
+          "left": 24.0,
+          "right": 120.0,
+          "bottom": 60.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 2.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "ca8dc549f2d0d79c2140c8e8913772140692d6ace5011060d6a963c6fb8c61e4",
+      "file": "020-case.png"
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "8a2f52248e3d158ab26ef0236c35b1dc89ab8ea75a2c9f6415c1a719b5fa066e",
+    "scriptSha256": "e4ffc2e45c8078921e38603b28ba84779c59dec4b0c652076111ca7401917504",
+    "casesSha256": "a2fcc8acf7404948e4321aec30c8ec60312cb55f8443b3a9c430c54db92815b3"
+  },
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "cpuReadbackPurpose": "verification PNGs only",
+  "limits": [
+    "Metal-only offscreen captures; no visible presentation or performance claim.",
+    "Browser comparison is a separate step; capture completion is not a compatibility pass.",
+    "Ordinary box fixtures with no font or text requirements; bounded existing DOM adapter."
+  ]
+}

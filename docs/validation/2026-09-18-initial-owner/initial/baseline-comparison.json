@@ -1,0 +1,1189 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "passed": 4,
+  "total": 21,
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "nativeDevice": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "criteria": {
+    "maxChannelDifference": 2,
+    "maxGeometryDifferenceCssPixels": 0.1,
+    "rasterEdgeExclusion": "Non-uniform browser 3x3 neighborhoods and outermost image pixels",
+    "nativePaintCallsPerCase": 1
+  },
+  "limits": [
+    "Edges are counted separately; interior parity does not prove identical antialiasing.",
+    "Only the recorded ordered cases, viewport and device scales were compared."
+  ],
+  "inputs": {
+    "browserReportSha256": "85cdf0c09fe22b3c60ff005a84be5118770b1f4f17d1819b639af2f13e0bfd5e",
+    "nativeReportSha256": "9a68a2646348edf2cb612155e11960e8fb5f7932c93c03eb82ddb3595ff3d542",
+    "comparatorSha256": "f442c9df609f8175b1ce562b7e48e09a141d0fe9459b3fcd4b9f9cfa066de992"
+  },
+  "cases": [
+    {
+      "name": "short-absolute-bottom",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 4608,
+      "interiorPixels": 111936,
+      "differingInteriorPixels": 4245,
+      "subjectReferencePixels": 2304,
+      "firstInteriorDifference": {
+        "x": 33,
+        "y": 36,
+        "browser": [
+          187,
+          204,
+          238,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 232,
+          "native": 36
+        }
+      ],
+      "browser": {
+        "file": "short-absolute-bottom-1x.png",
+        "pixelSha256": "d1cc33e5fd240517842672f3a7cd73adb04e12b9e425b7fb60365db5dc2e0833"
+      },
+      "native": {
+        "file": "000-case.png",
+        "pixelSha256": "e89582cfee35449f7c453b7234e9009021022f3f267c40b4f156d775dca12cf4"
+      }
+    },
+    {
+      "name": "tall-absolute-bottom",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 2304,
+      "interiorPixels": 111780,
+      "differingInteriorPixels": 2068,
+      "subjectReferencePixels": 2304,
+      "firstInteriorDifference": {
+        "x": 25,
+        "y": 233,
+        "browser": [
+          224,
+          32,
+          48,
+          255
+        ],
+        "native": [
+          221,
+          221,
+          221,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 232,
+          "native": 360
+        }
+      ],
+      "browser": {
+        "file": "tall-absolute-bottom-1x.png",
+        "pixelSha256": "6ad3ebd8ba8b98d6eb07a6959f2d314c92c8a8618ecb999c39f014e83e877f1f"
+      },
+      "native": {
+        "file": "001-case.png",
+        "pixelSha256": "51d6efd2194637a5a14e110d4881960c035bce0daf34359a57d0f532ab341aea"
+      }
+    },
+    {
+      "name": "tall-fixed-stretch",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 768,
+      "interiorPixels": 110976,
+      "differingInteriorPixels": 672,
+      "subjectReferencePixels": 10752,
+      "firstInteriorDifference": {
+        "x": 240,
+        "y": 241,
+        "browser": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 224,
+          "native": 352
+        }
+      ],
+      "browser": {
+        "file": "tall-fixed-stretch-1x.png",
+        "pixelSha256": "57ec8700647297b7b7e2db100187c9229e1800b4abb32a404f7b5b5dbf1a93ca"
+      },
+      "native": {
+        "file": "002-case.png",
+        "pixelSha256": "76ccc48de86d068b4166b8f760a4a481e535d15b2b22ecaa32d1bf971bc428ef"
+      }
+    },
+    {
+      "name": "short-viewport-percent",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 8848,
+      "interiorPixels": 111516,
+      "differingInteriorPixels": 8485,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 112,
+        "y": 15,
+        "browser": [
+          187,
+          204,
+          238,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 15
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 15
+        }
+      ],
+      "browser": {
+        "file": "short-viewport-percent-1x.png",
+        "pixelSha256": "edd100c4d474868355fae796c5fa6a8aaecb61e12b31ad3b4644fe64fec07889"
+      },
+      "native": {
+        "file": "003-case.png",
+        "pixelSha256": "454fd99dbcd5e609450ff66a593f6e66714039b36ae000057f887a42a555c8b4"
+      }
+    },
+    {
+      "name": "root-box-absolute-percent",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 26612,
+      "interiorPixels": 107260,
+      "differingInteriorPixels": 22624,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 52,
+          "native": 40
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "root-box-absolute-percent-1x.png",
+        "pixelSha256": "81ea844863c48e49f4883e70caeef2cb046652391065a50af1a34f2d82e1f20b"
+      },
+      "native": {
+        "file": "004-case.png",
+        "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b"
+      }
+    },
+    {
+      "name": "root-box-fixed-percent",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 29464,
+      "interiorPixels": 106856,
+      "differingInteriorPixels": 25466,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 36,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 34,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 72,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 44,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "root-box-fixed-percent-1x.png",
+        "pixelSha256": "05152b9136f6f6e9ddcedd9671abd00ae8babb4d081b3a09bf76436856ee695d"
+      },
+      "native": {
+        "file": "005-case.png",
+        "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c"
+      }
+    },
+    {
+      "name": "relative-root-absolute",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 25988,
+      "interiorPixels": 107416,
+      "differingInteriorPixels": 21677,
+      "subjectReferencePixels": 3280,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 36,
+          "native": 16
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 34,
+          "native": 16
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 60,
+          "native": 40
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 34,
+          "native": 16
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 106,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 65,
+          "native": 47
+        }
+      ],
+      "browser": {
+        "file": "relative-root-absolute-1x.png",
+        "pixelSha256": "c6a1bb0d21951969514eb32b755bebf0d4833c3445c4506f4213181422f974d9"
+      },
+      "native": {
+        "file": "006-case.png",
+        "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b"
+      }
+    },
+    {
+      "name": "absolute-root-absolute",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 33476,
+      "interiorPixels": 107416,
+      "differingInteriorPixels": 29114,
+      "subjectReferencePixels": 3280,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 48,
+          "native": 16
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 44,
+          "native": 16
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 72,
+          "native": 40
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 44,
+          "native": 16
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 118,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 75,
+          "native": 47
+        }
+      ],
+      "browser": {
+        "file": "absolute-root-absolute-1x.png",
+        "pixelSha256": "de8e0168f6908c22a08bdecf2c3ce05a99bf0326acbc782df96b3c747bc8cc75"
+      },
+      "native": {
+        "file": "007-case.png",
+        "pixelSha256": "6e8fceecaf811ae9504c410eefebfab6f3184ee7e784296219cb4d26af0d0f3b"
+      }
+    },
+    {
+      "name": "relative-root-fixed",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 32624,
+      "interiorPixels": 106856,
+      "differingInteriorPixels": 28122,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 44,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 40,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 80,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 50,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "relative-root-fixed-1x.png",
+        "pixelSha256": "1b27d505af3ae13af9dea773a1b4b7161a4a54d2c32ac45bdf33e23b8976e697"
+      },
+      "native": {
+        "file": "008-case.png",
+        "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c"
+      }
+    },
+    {
+      "name": "fixed-root-fixed",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 36024,
+      "interiorPixels": 106856,
+      "differingInteriorPixels": 31130,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 56,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 50,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 92,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 60,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "fixed-root-fixed-1x.png",
+        "pixelSha256": "ac342f89c5c4f0c44a2b2acffba268e248cd480939cf1b143eac50c4f36d2fff"
+      },
+      "native": {
+        "file": "009-case.png",
+        "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c"
+      }
+    },
+    {
+      "name": "transformed-root-fixed",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 24928,
+      "interiorPixels": 106848,
+      "differingInteriorPixels": 21359,
+      "subjectReferencePixels": 3280,
+      "firstInteriorDifference": {
+        "x": 12,
+        "y": 8,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 48,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 42,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 84,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 52,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 110,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 67,
+          "native": 47
+        }
+      ],
+      "browser": {
+        "file": "transformed-root-fixed-1x.png",
+        "pixelSha256": "b4f13fe80ae5c684ddf99370834ece54db7bf4e69e9b44b824c45236ce905885"
+      },
+      "native": {
+        "file": "010-case.png",
+        "pixelSha256": "d884c947b70d95bfdcaca90f343e7d56367df92f9c2ad6a9165b76dced370536"
+      }
+    },
+    {
+      "name": "root-fixed-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 32624,
+      "interiorPixels": 106856,
+      "differingInteriorPixels": 28122,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 44,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 40,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 80,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 50,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "root-fixed-restored-1x.png",
+        "pixelSha256": "1b27d505af3ae13af9dea773a1b4b7161a4a54d2c32ac45bdf33e23b8976e697"
+      },
+      "native": {
+        "file": "011-case.png",
+        "pixelSha256": "b92a9dead938078ddfc9887397c748efad7decde16ac11f876a30d22f29fe80c"
+      }
+    },
+    {
+      "name": "viewport-absolute-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 8848,
+      "interiorPixels": 111516,
+      "differingInteriorPixels": 8485,
+      "subjectReferencePixels": 7168,
+      "firstInteriorDifference": {
+        "x": 112,
+        "y": 15,
+        "browser": [
+          187,
+          204,
+          238,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 15
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 15
+        }
+      ],
+      "browser": {
+        "file": "viewport-absolute-restored-1x.png",
+        "pixelSha256": "edd100c4d474868355fae796c5fa6a8aaecb61e12b31ad3b4644fe64fec07889"
+      },
+      "native": {
+        "file": "012-case.png",
+        "pixelSha256": "454fd99dbcd5e609450ff66a593f6e66714039b36ae000057f887a42a555c8b4"
+      }
+    },
+    {
+      "name": "short-auto-anchor",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 111968,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 2688,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "short-auto-anchor-1x.png",
+        "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7"
+      },
+      "native": {
+        "file": "013-case.png",
+        "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7"
+      }
+    },
+    {
+      "name": "root-box-auto-anchor",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 21660,
+      "interiorPixels": 107484,
+      "differingInteriorPixels": 17772,
+      "subjectReferencePixels": 2688,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 52,
+          "native": 40
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 28,
+          "native": 16
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 52,
+          "native": 40
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 52
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        }
+      ],
+      "browser": {
+        "file": "root-box-auto-anchor-1x.png",
+        "pixelSha256": "29fea76b14bf8bc7c35d9d0de592bd053b98a937335ff9778d631d8fe6fc4965"
+      },
+      "native": {
+        "file": "014-case.png",
+        "pixelSha256": "1570a85f41b2880f6d2df0bb12bb4edc2818063f9175ac61441e00bbed55fa71"
+      }
+    },
+    {
+      "name": "auto-anchor-restored",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 111968,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 2688,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "auto-anchor-restored-1x.png",
+        "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7"
+      },
+      "native": {
+        "file": "015-case.png",
+        "pixelSha256": "738b5bf8b12959529b01a2ac718933b4feaf72dd62af2d645e9bbfcc16bebbe7"
+      }
+    },
+    {
+      "name": "root-effect-fixed-auto-order",
+      "scale": 1,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 4800,
+      "interiorPixels": 110772,
+      "differingInteriorPixels": 4602,
+      "subjectReferencePixels": 3392,
+      "firstInteriorDifference": {
+        "x": 73,
+        "y": 45,
+        "browser": [
+          32,
+          96,
+          224,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [],
+      "browser": {
+        "file": "root-effect-fixed-auto-order-1x.png",
+        "pixelSha256": "44238b120f06d0a7f747e940f7491f9ae2c85a1a79092c29b9589e0ae55bc55e"
+      },
+      "native": {
+        "file": "016-case.png",
+        "pixelSha256": "b3c3a7abf7056e03b7e389a14c452214c4fbeb3562d79cb918a6f78f4ef05b7d"
+      }
+    },
+    {
+      "name": "root-positive-z-merge-order",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112344,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "root-positive-z-merge-order-1x.png",
+        "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965"
+      },
+      "native": {
+        "file": "017-case.png",
+        "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965"
+      }
+    },
+    {
+      "name": "root-negative-z-merge-order",
+      "scale": 1,
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112344,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "root-negative-z-merge-order-1x.png",
+        "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965"
+      },
+      "native": {
+        "file": "018-case.png",
+        "pixelSha256": "f01ee4a7878b3023edd454e47b65986d209603e2b51ab868372422672283c965"
+      }
+    },
+    {
+      "name": "root-box-fixed-percent",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 117856,
+      "interiorPixels": 443064,
+      "differingInteriorPixels": 109840,
+      "subjectReferencePixels": 28672,
+      "firstInteriorDifference": {
+        "x": 1,
+        "y": 1,
+        "browser": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "native": [
+          51,
+          51,
+          51,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "outer",
+          "field": "x",
+          "browser": 36,
+          "native": 24
+        },
+        {
+          "node": "outer",
+          "field": "y",
+          "browser": 34,
+          "native": 22
+        },
+        {
+          "node": "middle",
+          "field": "x",
+          "browser": 72,
+          "native": 60
+        },
+        {
+          "node": "middle",
+          "field": "y",
+          "browser": 44,
+          "native": 32
+        },
+        {
+          "node": "subject",
+          "field": "x",
+          "browser": 112,
+          "native": 86
+        },
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 64,
+          "native": 47
+        },
+        {
+          "node": "subject",
+          "field": "width",
+          "browser": 112,
+          "native": 80
+        },
+        {
+          "node": "subject",
+          "field": "height",
+          "browser": 64,
+          "native": 41
+        }
+      ],
+      "browser": {
+        "file": "root-box-fixed-percent-2x.png",
+        "pixelSha256": "08eb21b2bef4fcc56d34384bd7c8c7742832e1440976968dbca515a57f03138b"
+      },
+      "native": {
+        "file": "019-case.png",
+        "pixelSha256": "52c7b5a211734b294e8f6b30346d4038f1ef66606ec6966fc0d646747b7a4e7b"
+      }
+    },
+    {
+      "name": "short-absolute-bottom",
+      "scale": 2,
+      "interiorAndGeometryMatch": false,
+      "differingPixels": 18432,
+      "interiorPixels": 453224,
+      "differingInteriorPixels": 17701,
+      "subjectReferencePixels": 9216,
+      "firstInteriorDifference": {
+        "x": 65,
+        "y": 72,
+        "browser": [
+          187,
+          204,
+          238,
+          255
+        ],
+        "native": [
+          224,
+          32,
+          48,
+          255
+        ]
+      },
+      "geometryDifferences": [
+        {
+          "node": "subject",
+          "field": "y",
+          "browser": 232,
+          "native": 36
+        }
+      ],
+      "browser": {
+        "file": "short-absolute-bottom-2x.png",
+        "pixelSha256": "41b48f7e6970a73ba02581cceb06c591f87a13c5fbd636b013386f6ea6000b62"
+      },
+      "native": {
+        "file": "020-case.png",
+        "pixelSha256": "ca8dc549f2d0d79c2140c8e8913772140692d6ace5011060d6a963c6fb8c61e4"
+      }
+    }
+  ]
+}

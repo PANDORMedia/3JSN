@@ -9,7 +9,8 @@ The [overflow comparison](OVERFLOW.md) now separates stale paint positions,
 missing clips and containing-block layout errors in 22 browser/native cases.
 Its prototype patch is deliberately excluded from normal preparation.
 The [positioned-layout candidate](POSITIONED.md) evaluates maintained upstream
-ownership APIs separately. The [geometry fixture](../../fixtures/dom-geometry/README.md)
+ownership APIs separately. Its [initial-owner evidence](../../docs/validation/2026-09-18-initial-owner.md)
+records layout improvements and paint-order adoption failures. The [geometry fixture](../../fixtures/dom-geometry/README.md)
 verifies the maintained no-box query repair against Chrome.
 
 [Current hardware evidence](../../docs/validation/2026-09-18-canvas-handoff.md) includes

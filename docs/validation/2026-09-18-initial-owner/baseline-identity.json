@@ -1,0 +1,72 @@
+{
+  "adopted": false,
+  "preparation": {
+    "status": "prepared-research-candidate",
+    "adopted": false,
+    "directory": ".cache/positioned-candidate-baseline",
+    "revision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+    "taffyRevision": "dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c",
+    "profile": "upstream-baseline",
+    "changedFiles": {
+      "packages/blitz-dom/src/layout/damage.rs": "47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85"
+    },
+    "addedFiles": [],
+    "patches": [
+      {
+        "name": "blitz-stacking-demotion.patch",
+        "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+      }
+    ],
+    "verifiedTrackedFiles": 416,
+    "verifiedAddedFiles": 0,
+    "manifestInputSha256": "dc6fb82e70ef65b3fd38038a9cfca81b2b452adebad6d3b77c0227eb225ebba8",
+    "lockInputSha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+    "generatedManifestSha256": "b8daf7516e8f148edee45aa05c6259147ca55eb0946d3fd650498ca37b678067",
+    "generatedLockSha256": "7f37bde177171638101d2ef4b8767b393b470feeaa2110273e39ee1574165992",
+    "deno": {
+      "package": "deno_webgpu",
+      "version": "0.226.0",
+      "directory": ".cache/dom-canvas/deno_webgpu",
+      "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+      "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+      "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+      "verifiedPackagedFiles": 32
+    }
+  },
+  "executable": "target/debug/threejs-positioned-baseline-overflow-paint-probe",
+  "executableSha256": "ad23e18900e47a5f55754deafd090f103ad9f750c6ba584cc0c4698472d059bc",
+  "sourceSha256": {
+    "artifacts/dom-canvas/app.mjs": "6675554a3eea7bf72aa46e272f1fb3ea65abd94e6140ce1303df42bfb1cb0009",
+    "crates/runtime/src/web-globals.js": "11f36bf51e5786a0514c13f7795f840095f5e4fa78168ce2088b22ac3b5b86fa",
+    "experiments/dom-canvas/Cargo.lock": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+    "experiments/dom-canvas/Cargo.toml": "dc6fb82e70ef65b3fd38038a9cfca81b2b452adebad6d3b77c0227eb225ebba8",
+    "experiments/dom-canvas/app.mjs": "c5cf801659ab5490787eb94184e8cf2be69b9bde4682c930b8835e577748e12b",
+    "experiments/dom-canvas/compare-clips.mjs": "f442c9df609f8175b1ce562b7e48e09a141d0fe9459b3fcd4b9f9cfa066de992",
+    "experiments/dom-canvas/prepare-positioned.mjs": "060214f3e0457b1b03949018f2b2562f84e080c234159aee6fc477c75bee7127",
+    "experiments/dom-canvas/src/canvas.js": "f5bda273f0aaac8e5c71953c2c888a7cba74a7f2e28c5c5fbcc23b5df9cbbe26",
+    "experiments/dom-canvas/src/canvas_init.rs": "a9088eca951b1c17bb980a12ccf25ebc5132633021aebf3a2602783359c6073d",
+    "experiments/dom-canvas/src/canvas_texture.rs": "96324cddf147357f11817d2eb84c7395727b41ea2fc4f2fa11ab36fc03129411",
+    "experiments/dom-canvas/src/clip_probe.rs": "1581d48f00a7a0c099c6ac0cf5a684e9ad3942dfc263580328d005b563adb1e8",
+    "experiments/dom-canvas/src/dom_bridge.rs": "30d218ec44a8b23c0748d2c297b02ab7b81ea32c1ede6f48e18e7fd30a732e89",
+    "experiments/dom-canvas/src/evidence.rs": "05c35b919bd3d00b9f267b68f5606bd7f991e0d0fe9a0248dc5b0bf6797df6ae",
+    "experiments/dom-canvas/src/geometry_probe.rs": "ead2064366a4790380f8a5fe17641b423be882107dd0b0a66facc77beeb40e6e",
+    "experiments/dom-canvas/src/geometry_tests.rs": "8d4998562859147795be24f61156f9f708ca9a7c74078f3312b3de0698eab6df",
+    "experiments/dom-canvas/src/initial_containing_block_tests.rs": "961fcdc991bc1b8aa167ed382d69c381aea775fd57acb96770f3d3648b0c23fe",
+    "experiments/dom-canvas/src/initialization_tests.rs": "4469aec57a8c79d77ba216941659da633575bdfc3746acecea952b672834eb69",
+    "experiments/dom-canvas/src/main.rs": "2e85a1cddbd820b447ed40c45028bebdef81d1cf9576bfdfaf5e1f561f869fd6",
+    "experiments/dom-canvas/src/painter.rs": "696a4947d75433701f6488ae60796c475da6e345db1ceed72402687fb999296f",
+    "experiments/dom-canvas/src/positioned_grid_tests.rs": "bf42b7578dcbdd208ebace75094356fa7a17a0808fecc8c32ccfe9bdc9705286",
+    "experiments/dom-canvas/src/positioned_tests.rs": "d70c83dd69067fad6b7bd33d77a2b90e6c779209ba58211b5e93c8dd4030c85b",
+    "experiments/dom-canvas/src/scenario.rs": "08cfa017aac844a464969ff08b9ef3ea9ed27f78b72234a020c5a8d908494659",
+    "experiments/dom-canvas/src/stacking_tests.rs": "16031535920d12eaa423a44daf414a744af53cd1e6106b229582b100c11dd457",
+    "experiments/html-v8/src/bindings.js": "1d38425d73c62479d07312028c7799f77f84b1f0c280d989d3aa6e3eea779eb3",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "experiments/native-html-interop/src/bindings.js": "2520bdcb843387d18c98f8d4fc257c78feebde210d0a5d5204b6ec3a7bcebefd",
+    "experiments/native-html-interop/src/host.rs": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732",
+    "experiments/native-html-interop/src/metal.rs": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26",
+    "package-lock.json": "0b4ddf66c255c1654470ae7c87cf63749aaa399b2e0cd8edc50be28a51507980",
+    "scripts/compatibility/paint-reference.mjs": "8888afe062e8895cf75e38ddae1f177847b954cad13ad098164fb817c5daa7f0"
+  },
+  "captureBackend": "Metal",
+  "metalValidationObserved": true
+}

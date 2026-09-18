@@ -1,0 +1,23 @@
+[
+  { "name": "short-absolute-bottom" },
+  { "name": "tall-absolute-bottom" },
+  { "name": "tall-fixed-stretch" },
+  { "name": "short-viewport-percent" },
+  { "name": "root-box-absolute-percent" },
+  { "name": "root-box-fixed-percent" },
+  { "name": "relative-root-absolute" },
+  { "name": "absolute-root-absolute" },
+  { "name": "relative-root-fixed" },
+  { "name": "fixed-root-fixed" },
+  { "name": "transformed-root-fixed" },
+  { "name": "root-fixed-restored" },
+  { "name": "viewport-absolute-restored" },
+  { "name": "short-auto-anchor" },
+  { "name": "root-box-auto-anchor" },
+  { "name": "auto-anchor-restored" },
+  { "name": "root-effect-fixed-auto-order" },
+  { "name": "root-positive-z-merge-order" },
+  { "name": "root-negative-z-merge-order" },
+  { "name": "root-box-fixed-percent", "scale": 2 },
+  { "name": "short-absolute-bottom", "scale": 2 }
+]
