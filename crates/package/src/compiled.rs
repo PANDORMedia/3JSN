@@ -83,16 +83,6 @@ pub(super) fn validate(manifest: &Manifest, mode: HtmlParserMode) -> Result<(), 
             "compiled DOM package requires .json and .woff2 paths",
         ));
     }
-    let roles = [&manifest.entry, &ui.path, font];
-    let mut paths = std::collections::HashSet::new();
-    if roles
-        .into_iter()
-        .any(|path| !paths.insert(path.to_lowercase()))
-    {
-        return Err(invalid(
-            "compiled DOM entry, UI and font paths must be distinct",
-        ));
-    }
     let file = manifest
         .files
         .iter()
