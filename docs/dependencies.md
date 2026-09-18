@@ -92,3 +92,14 @@ and a regression fixture. Reassess an adapter whose patch burden grows; do not
 quietly accumulate a permanent browser/Three.js fork. Record footprint and startup
 changes with comparable release builds. No size or performance target is claimed
 until representative game/UI workloads establish a baseline.
+
+The isolated HTML candidate now has eleven ordered patches, including a new
+[ownership paint consumer](../experiments/dom-canvas/OWNERSHIP.md). This is a
+substantial experimental integration, not a narrow shipping fix. Its shared
+geometry, layout and primitive hooks reduce duplication, but do not eliminate
+upgrade cost. Before adoption under #22/#54, decide which boundaries can be
+upstreamed or exposed through maintained APIs, identify the remaining owned
+adapter surface, and replay the pinned geometry, paint, error and lifecycle
+corpus on an upgrade. The new renderer patch can be removed when an upstream or
+replacement consumer passes those same controls. Default preparation remains
+separate so this decision is not forced by a research checkpoint.

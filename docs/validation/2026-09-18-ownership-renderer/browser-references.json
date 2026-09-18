@@ -1,0 +1,34 @@
+{
+  "paint-ownership": {
+    "directory": "docs/validation/2026-09-18-paint-ownership/browser",
+    "reportSha256": "920de9c3fff2bdbeac60cc9290706d2158178c960493a112240ef7cc16e870a8"
+  },
+  "effect-clip-routing": {
+    "directory": "docs/validation/2026-09-18-paint-budget/effect-clips/browser",
+    "reportSha256": "6bd4c81f9df1656d2a347431660deb595e01d9fb17ce7e2e90e4cb28f6415722"
+  },
+  "auto-paint": {
+    "directory": "docs/validation/2026-09-18-transform-context/browser",
+    "reportSha256": "8510bb02ebd8e18ba90cb0c8b4709c78dba4a3936a1b276b4135fe610a5fefda"
+  },
+  "paint-order": {
+    "directory": "docs/validation/2026-09-18-paint-order/browser",
+    "reportSha256": "8a8f59c200e42e2c8beb23e9dd888b41d299d6e002ad7c89d2a10c8a8682fcb5"
+  },
+  "initial-containing-block": {
+    "directory": "docs/validation/2026-09-18-initial-owner/initial/browser",
+    "reportSha256": "85cdf0c09fe22b3c60ff005a84be5118770b1f4f17d1819b639af2f13e0bfd5e"
+  },
+  "positioned-layout": {
+    "directory": "docs/validation/2026-09-18-geometry-positioning/positioned/browser",
+    "reportSha256": "21698ac1764a01c1e5857fea92fc7cb4f390023f35ab21166a3ee2cd61cb5c9e"
+  },
+  "overflow-paint": {
+    "directory": "docs/validation/2026-09-18-overflow/browser",
+    "reportSha256": "aa40d0b94590cbbd8cf93374acb8ed626b0582ddb8a3ee3a1d3a5529c747a7f1"
+  },
+  "ownership-render": {
+    "directory": "docs/validation/2026-09-18-ownership-renderer/browser",
+    "reportSha256": "404101da6184d4dd34ad92773f49109cb85bdd1c8e40a500c1d0e843cb893192"
+  }
+}

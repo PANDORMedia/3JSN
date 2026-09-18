@@ -17,6 +17,30 @@ use crate::metal::MetalBridge;
 
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
+pub(crate) type PaintDocument =
+    fn(&mut vello::Scene, &mut BaseDocument, f64, u32, u32, blitz_paint::PaintLimits) -> Result<()>;
+
+pub(crate) fn paint_legacy_scene(
+    scene: &mut vello::Scene,
+    doc: &mut BaseDocument,
+    scale: f64,
+    width: u32,
+    height: u32,
+    limits: blitz_paint::PaintLimits,
+) -> Result<()> {
+    blitz_paint::paint_scene(
+        &mut VelloScenePainter::new(scene),
+        doc,
+        scale,
+        width,
+        height,
+        0,
+        0,
+        limits,
+    )?;
+    Ok(())
+}
+
 struct CanvasImage {
     handle: ImageData,
     active: Cell<bool>,
@@ -185,13 +209,23 @@ impl Painter {
         self.paint_with_limits(doc, output, blitz_paint::PaintLimits::default())
     }
 
-    /// A failed scene is discarded before submission. Widget resource updates
-    /// still belong to the existing registration and drain lifecycle.
     pub fn paint_with_limits(
         &mut self,
         doc: &mut BaseDocument,
         output: &wgpu::Texture,
         limits: blitz_paint::PaintLimits,
+    ) -> Result<Value> {
+        self.paint_with(doc, output, limits, paint_legacy_scene)
+    }
+
+    /// A failed scene is discarded before submission. Widget resource updates
+    /// still belong to the existing registration and drain lifecycle.
+    pub(crate) fn paint_with(
+        &mut self,
+        doc: &mut BaseDocument,
+        output: &wgpu::Texture,
+        limits: blitz_paint::PaintLimits,
+        paint_document: PaintDocument,
     ) -> Result<Value> {
         check_texture(output, wgpu::TextureUsages::STORAGE_BINDING)?;
         let (width, height) = (output.width(), output.height());
@@ -252,16 +286,7 @@ impl Painter {
         }
 
         let mut scene = vello::Scene::new();
-        blitz_paint::paint_scene(
-            &mut VelloScenePainter::new(&mut scene),
-            doc,
-            scale,
-            width,
-            height,
-            0,
-            0,
-            limits,
-        )?;
+        paint_document(&mut scene, doc, scale, width, height, limits)?;
         let glyphs = scene.encoding().resources.glyphs.len();
         self.renderer.render_to_texture(
             &self.bridge.device,

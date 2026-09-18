@@ -1,0 +1,84 @@
+[
+  {
+    "profile": "candidate",
+    "control": "canvas",
+    "binarySha256": "ee2ad7c9c0389f36837335b7e4de5de8b9af9cd3f95f66d8e2d6505a68b0c469",
+    "exitCode": 1,
+    "cleanupCompleted": true,
+    "previousReport": "docs/validation/2026-09-18-paint-budget/regression/canvas/report.json",
+    "previousReportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+    "casePayloadsUnchanged": true
+  },
+  {
+    "profile": "candidate",
+    "control": "injected-failure",
+    "binarySha256": "ee2ad7c9c0389f36837335b7e4de5de8b9af9cd3f95f66d8e2d6505a68b0c469",
+    "exitCode": 1,
+    "cleanupCompleted": true,
+    "previousReport": "docs/validation/2026-09-18-paint-budget/regression/canvas/report.json",
+    "previousReportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+    "casePayloadsUnchanged": false
+  },
+  {
+    "profile": "default",
+    "control": "canvas",
+    "binarySha256": "e997a180554385e0ba3858ff9057a75ccc2600c7590ed5d22bf782bbc4510497",
+    "exitCode": 1,
+    "cleanupCompleted": true,
+    "previousReport": "docs/validation/2026-09-18-paint-budget/default-canvas/report.json",
+    "previousReportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+    "casePayloadsUnchanged": true
+  },
+  {
+    "profile": "default",
+    "control": "injected-failure",
+    "binarySha256": "e997a180554385e0ba3858ff9057a75ccc2600c7590ed5d22bf782bbc4510497",
+    "exitCode": 1,
+    "cleanupCompleted": true,
+    "previousReport": "docs/validation/2026-09-18-paint-budget/default-canvas/report.json",
+    "previousReportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+    "casePayloadsUnchanged": false
+  },
+  {
+    "traversal": "legacy",
+    "control": "budget-rejected",
+    "binarySha256": "fefdb6c7f4d1d1b169aba28e2fcd123abed89f6bdc47ca5e155c7b212314dc38",
+    "exitCode": 1,
+    "verified": true
+  },
+  {
+    "traversal": "legacy",
+    "control": "budget-raised",
+    "binarySha256": "fefdb6c7f4d1d1b169aba28e2fcd123abed89f6bdc47ca5e155c7b212314dc38",
+    "exitCode": 0,
+    "verified": true
+  },
+  {
+    "traversal": "ownership",
+    "control": "budget-rejected",
+    "binarySha256": "f64b8d3b81412243831095c5e10bdfbebf9b21d1ea02bb67c9a247baf11809ed",
+    "exitCode": 1,
+    "verified": true
+  },
+  {
+    "traversal": "ownership",
+    "control": "budget-raised",
+    "binarySha256": "f64b8d3b81412243831095c5e10bdfbebf9b21d1ea02bb67c9a247baf11809ed",
+    "exitCode": 0,
+    "verified": true
+  },
+  {
+    "traversal": "default",
+    "control": "budget-rejected",
+    "binarySha256": "2e9799894afc51feb18afb1167298e71d053d1eaf0d7ca2235f2f0bb21c1eba2",
+    "exitCode": 1,
+    "verified": true
+  },
+  {
+    "traversal": "default",
+    "control": "budget-raised",
+    "binarySha256": "2e9799894afc51feb18afb1167298e71d053d1eaf0d7ca2235f2f0bb21c1eba2",
+    "exitCode": 0,
+    "verified": true
+  }
+]

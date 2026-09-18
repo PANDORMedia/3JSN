@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "profiles": {
+    "default": {
+      "freshPreparationsIdentical": true,
+      "readOnlyCheckIdentical": true,
+      "readOnlyPreparedFileMetadataUnchanged": true,
+      "checkedSceneTamper": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected added file"
+      },
+      "extraFile": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "exactly the pinned"
+      },
+      "symlink": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected non-file"
+      },
+      "removedFileResurrection": null,
+      "restoredSourceVerified": true,
+      "verifiedTrackedFiles": 414,
+      "verifiedAddedFiles": 1,
+      "verifiedRemovedFiles": 0,
+      "preparedTreeSha256": "67be2fb45a39874bf5626d22af2273f23876e8787e6bcc95bffac8b0a9de3c7f"
+    },
+    "candidate": {
+      "freshPreparationsIdentical": true,
+      "readOnlyCheckIdentical": true,
+      "readOnlyPreparedFileMetadataUnchanged": true,
+      "checkedSceneTamper": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected added file"
+      },
+      "extraFile": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "exactly the pinned"
+      },
+      "symlink": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected non-file"
+      },
+      "removedFileResurrection": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "exactly the pinned"
+      },
+      "restoredSourceVerified": true,
+      "verifiedTrackedFiles": 413,
+      "verifiedAddedFiles": 9,
+      "verifiedRemovedFiles": 3,
+      "preparedTreeSha256": "1897f666be6e4a0c5d036f854dfeefcd8b68bbc9c12d73cac54e6fc3f90f40d0"
+    },
+    "baseline": {
+      "freshPreparationsIdentical": true,
+      "readOnlyCheckIdentical": true,
+      "readOnlyPreparedFileMetadataUnchanged": true,
+      "checkedSceneTamper": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected added file"
+      },
+      "extraFile": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "exactly the pinned"
+      },
+      "symlink": {
+        "rejected": true,
+        "exitCode": 1,
+        "diagnostic": "Unexpected non-file"
+      },
+      "removedFileResurrection": null,
+      "restoredSourceVerified": true,
+      "verifiedTrackedFiles": 416,
+      "verifiedAddedFiles": 1,
+      "verifiedRemovedFiles": 0,
+      "preparedTreeSha256": "a5c4344d45e4ae3cad37ab4e9ab7ffd75509a87aeb32ec99648d9bc224534f4e"
+    }
+  },
+  "allProfilesRestoredAndVerified": true,
+  "sharedDenoIdentityUnchanged": true,
+  "inputs": {
+    ".cache/ownership-render-preparation-check.py": "347d6e14ff72f76934804f87519b4f70168dc77dea8cf04f1ba311c58b688751",
+    "experiments/dom-canvas/prepare.mjs": "30ee89eebd420080dc5796788d5d12c9efd21909f8f306347b284bdd8cb1b96a",
+    "experiments/dom-canvas/prepare-blitz.mjs": "0590aad326c87c7b2c85d5831bdb34cfd983dad8e6325a12be7e518167df7aed",
+    "experiments/dom-canvas/prepare-positioned.mjs": "4a173ecc1b42f6f984b809cfd63e2d14f1ff158ad47652bd49ffa7a4705b6556",
+    "experiments/dom-canvas/patches/blitz-ownership-renderer.patch": "e60d81b21cb08515f3da429e42368d8cc91a9cc974132a92f1ff491ddf02e6e9",
+    "experiments/dom-canvas/Cargo.toml": "a4369822408791fdba7b541bf2d48c808589c52c7ed3397362547f4197e5fdd2",
+    "experiments/dom-canvas/Cargo.lock": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b"
+  },
+  "limits": [
+    "Preparation integrity only; no compilation, browser or GPU execution."
+  ]
+}

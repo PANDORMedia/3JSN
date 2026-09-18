@@ -1,0 +1,4 @@
+default: fresh twice, read-only, tamper and restoration checks passed
+candidate: fresh twice, read-only, tamper and restoration checks passed
+baseline: fresh twice, read-only, tamper and restoration checks passed
+All three profiles passed preparation repeatability and tamper rejection.

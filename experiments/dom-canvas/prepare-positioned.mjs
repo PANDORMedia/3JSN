@@ -27,10 +27,10 @@ const changedFiles = baseline ? {
   'packages/blitz-paint/src/lib.rs': '7650e6b40569585ef308da42ac51192a072815fe7130a51909410b53ce5c0859',
   'packages/blitz-paint/src/render.rs': '266c97a17e3af65db6e7a9334eda3dc30b3fe5aea9d0a04abac5520b5a1317c1',
 } : {
-  'packages/blitz-dom/src/node/node.rs': '9dbd04f8d48ba3b9933af0ea92b6625d1cf745ad518ce326c2fc63745e64a93d',
+  'packages/blitz-dom/src/node/node.rs': 'b8cbc392c663aa4f431013a29d0d2d7e92d853cbc86ee3be800dc45d737f1d24',
   'packages/blitz-dom/src/resolve.rs': '6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
-  'packages/blitz-paint/src/render.rs': '5d53084a7f7ae6a60577219f3bcdbf3f4f6442822786bc2569cbfa51ea3dde81',
+  'packages/blitz-paint/src/render.rs': 'e18f773798fd56632c2f4a6b5b838fefa83825523662ac73dc96d1cc5518b967',
   'packages/blitz-dom/src/layout/mod.rs': '2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1',
   'packages/blitz-dom/src/layout/initial_containing_block.rs': '3296c5ad5d474bf4d5ed1d8f301aa7f2d79abdbf644e9328b110ef685fcd4099',
   'packages/blitz-dom/src/layout/paint_order.rs': '0ebba71e5608324b9ba622a4f936d35c3fbf8c0bd6c3132e4910b81d750ef0a7',
@@ -39,10 +39,13 @@ const changedFiles = baseline ? {
   'packages/blitz-dom/src/geometry/mod.rs': '7f8c3e3912f7c0ae5be4706b9312c82d1238af7f6edf07b1d9db1a5d3bddf9cb',
   'packages/blitz-dom/src/geometry/non_uniform_radii.rs': '26c389367e1bb2717e796760098d241e54c00f842537ecd75260f3fea60ea73a',
   'packages/blitz-dom/src/lib.rs': 'f8d1acc43dc86d94090e0e091b6f1d934d20ca8168ff1033b7f8dd3234626f8a',
-  'packages/blitz-paint/src/lib.rs': '2e1e42a601006bb7b1887a1ae6da17b7d5c08411b453a68574fc7dc2906b5d57',
+  'packages/blitz-paint/src/lib.rs': '9d0f391a00c4539c59e14508bc356ca7e8e6923b194947442a66141e862c8760',
   'packages/blitz-paint/src/render/border.rs': '420e6bd5c30186a76aca4a0a33e83b344480371c4ca409a6376f6e43b96cf07d',
   'packages/blitz-paint/src/checked_scene.rs': '398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925',
   'packages/blitz-paint/src/layers.rs': '65bc4da97aef8c456be403eb10330ae85b42b5f2484e93f79de9f258642b4ec2',
+  'packages/blitz-paint/src/render/ownership.rs': 'c358d5e5240e6ec6ea947b250579b84bfe0e44fb93bb2d64947fd00d5b7ab459',
+  'packages/blitz-paint/src/render/clip_path.rs': '659d27be9a16c433140cddd887c9dbb2838089df5298767b14486d1639dff8c4',
+  'packages/blitz-paint/src/render/ownership_clips.rs': '0ddf5b2f3fdb9d23320cf91f289b56194bf06998d4ac3f2091670aaf8414115b',
 };
 const addedFiles = baseline ? ['packages/blitz-paint/src/checked_scene.rs'] : [
   'packages/blitz-paint/src/checked_scene.rs',
@@ -52,6 +55,8 @@ const addedFiles = baseline ? ['packages/blitz-paint/src/checked_scene.rs'] : [
   'packages/blitz-dom/src/geometry/css_box.rs',
   'packages/blitz-dom/src/geometry/mod.rs',
   'packages/blitz-dom/src/geometry/non_uniform_radii.rs',
+  'packages/blitz-paint/src/render/ownership.rs',
+  'packages/blitz-paint/src/render/ownership_clips.rs',
 ];
 const removedFiles = baseline ? [] : [
   'packages/blitz-paint/src/kurbo_css/css_box.rs',
@@ -98,6 +103,10 @@ const patchInputs = [
   {
     'name': 'blitz-layer-budget.patch',
     'sha256': 'ad167742d4464c70b16c817b68995a808e108dce7ba507f7868d162be2041f7a'
+  },
+  {
+    'name': 'blitz-ownership-renderer.patch',
+    'sha256': 'e60d81b21cb08515f3da429e42368d8cc91a9cc974132a92f1ff491ddf02e6e9'
   }
 ];
 const selectedPatches = baseline
@@ -157,6 +166,8 @@ manifest = manifest.replace(/path = "\.\.\/\.\.\/\.cache\/dom-canvas\/([^\"]+)"/
 assert(!manifest.includes('path = "src/') && !manifest.includes('path = "tests/') && !manifest.includes('path = "../../'), 'Unexpected relative path remains in candidate manifest.');
 if (!baseline) manifest += `\n[[test]]\nname = "positioned-layout"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/positioned_tests.rs'))}\n`;
 if (!baseline) manifest += `\n[[bin]]\nname = "threejs-positioned-paint-owner-probe"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/paint_owner_probe.rs'))}\n`;
+if (!baseline) manifest += `\n[[bin]]\nname = "threejs-positioned-ownership-paint-probe"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/ownership_clip_probe.rs'))}\n`;
+if (!baseline) manifest += `\n[[test]]\nname = "ownership-render"\npath = ${JSON.stringify(resolve(import.meta.dirname, 'src/ownership_render_tests.rs'))}\n`;
 let lock = replaceExactly(lockInput,
   `git+https://github.com/DioxusLabs/taffy?rev=${baseTaffyRevision}#${baseTaffyRevision}`, taffySource, 1);
 lock = replaceExactly(lock, 'name = "threejs-dom-canvas-probe"', `name = "${namePrefix}dom-canvas-probe"`, 1);

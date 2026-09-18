@@ -1,0 +1,145 @@
+[
+  {
+    "name": "candidate-build",
+    "command": [
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--bins"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "candidate-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--test",
+      "positioned-layout",
+      "--test",
+      "layer-budget",
+      "--test",
+      "ownership-render"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "library-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "-p",
+      "blitz-paint",
+      "--lib"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "candidate-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "default-build",
+    "command": [
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--bins"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "default-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--all-targets"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "default-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "-j2",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "candidate-format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      ".cache/positioned-candidate/probe/Cargo.toml",
+      "--all",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "default-format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "experiments/dom-canvas/Cargo.toml",
+      "--all",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "node-tests",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exitCode": 0
+  }
+]

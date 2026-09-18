@@ -1,7 +1,10 @@
 # Paint ownership in the HTML candidate
 
-Status: an isolated, read-only ownership plan and shared clip geometry. The plan
-does not replace rendering or hit traversal and is not a claim of HTML compatibility.
+Status: a read-only ownership plan, shared clip geometry, and an explicit
+[experimental paint consumer](../../experiments/dom-canvas/OWNERSHIP.md). Legacy
+rendering and hit traversal remain available. The bounded renderer is not adopted
+as the default backend; [validation](../validation/2026-09-18-ownership-renderer.md)
+separates interior pixels, geometry and remaining fidelity gates.
 The [positioned candidate](../../experiments/dom-canvas/POSITIONED.md)
 already has correct geometry for the public auto-paint fixture, but its recursive
 paint lists cannot express the required order across containing blocks.

@@ -1,0 +1,1744 @@
+diff --git a/packages/blitz-dom/src/node/node.rs b/packages/blitz-dom/src/node/node.rs
+--- a/packages/blitz-dom/src/node/node.rs
++++ b/packages/blitz-dom/src/node/node.rs
+@@ -1361,7 +1361,7 @@
+ 
+     /// Which out-of-flow positions this node's styles establish a containing block for
+     /// (see [`stylo_taffy::convert::containing_block_claims`]). Nodes without styles claim nothing.
+-    pub(crate) fn containing_block_claims(&self) -> taffy::ContainingBlockClaims {
++    pub fn containing_block_claims(&self) -> taffy::ContainingBlockClaims {
+         self.primary_styles()
+             .map(|style| stylo_taffy::convert::containing_block_claims(&style))
+             .unwrap_or(taffy::ContainingBlockClaims::NONE)
+diff --git a/packages/blitz-paint/src/lib.rs b/packages/blitz-paint/src/lib.rs
+--- a/packages/blitz-paint/src/lib.rs
++++ b/packages/blitz-paint/src/lib.rs
+@@ -22,6 +22,7 @@
+     PaintError, PaintErrorKind, PaintLayerKind, PaintLimits, PaintLocation, PaintStats,
+ };
+ use render::BlitzDomPainter;
++pub use render::{ClipRouteError, ClipRouteIssue, OwnershipPaintError, OwnershipPaintIssue};
+ 
+ const FONT_EMBOLDEN_ENABLED: bool = cfg!(any(
+     feature = "font-embolden",
+@@ -64,6 +65,61 @@
+     y_offset: u32,
+     limits: PaintLimits,
+ ) -> Result<PaintStats, PaintError> {
++    paint_with(
++        scene,
++        doc,
++        scale,
++        width,
++        height,
++        x_offset,
++        y_offset,
++        limits,
++        |painter, scene| {
++            painter.paint_scene(scene);
++            Ok(())
++        },
++    )
++}
++
++/// Experimental unscrolled ownership renderer. Eligibility and clip routes are
++/// checked before scene commands; unsupported features never use legacy painting.
++/// As with [`paint_scene`], the caller must discard the fresh scene on any error.
++#[allow(clippy::too_many_arguments)]
++pub fn paint_scene_with_ownership(
++    scene: &mut impl PaintScene,
++    doc: &mut BaseDocument,
++    scale: f64,
++    width: u32,
++    height: u32,
++    x_offset: u32,
++    y_offset: u32,
++    limits: PaintLimits,
++) -> Result<PaintStats, OwnershipPaintError> {
++    paint_with(
++        scene,
++        doc,
++        scale,
++        width,
++        height,
++        x_offset,
++        y_offset,
++        limits,
++        |painter, scene| painter.paint_scene_with_ownership(scene),
++    )
++}
++
++#[allow(clippy::too_many_arguments)]
++fn paint_with<S: PaintScene, E: From<PaintError>>(
++    scene: &mut S,
++    doc: &mut BaseDocument,
++    scale: f64,
++    width: u32,
++    height: u32,
++    x_offset: u32,
++    y_offset: u32,
++    limits: PaintLimits,
++    paint: impl FnOnce(&BlitzDomPainter<'_, '_>, &mut CheckedScene<'_, S>) -> Result<(), E>,
++) -> Result<PaintStats, E> {
+     // Run `.paint()` on every custom widget in the document (and all subdocuments) ahead of time.
+     // This helps us avoid borrow-checker issues as we recurse down the tree (`.paint()` require `&mut self`).
+     //
+@@ -85,9 +141,10 @@
+         &custom_widget_scenes,
+         context,
+     );
+-    generator.paint_scene(&mut checked);
+-
+-    checked.finish()
++    let result = paint(&generator, &mut checked);
++    let budget = checked.finish().map_err(E::from);
++    result?;
++    budget
+ }
+ 
+ #[cfg(feature = "custom-widget")]
+diff --git a/packages/blitz-paint/src/render/clip_path.rs b/packages/blitz-paint/src/render/clip_path.rs
+--- a/packages/blitz-paint/src/render/clip_path.rs
++++ b/packages/blitz-paint/src/render/clip_path.rs
+@@ -1,5 +1,7 @@
+ use super::ElementCx;
++use blitz_dom::geometry::CssBox;
+ use kurbo::{BezPath, Circle, Ellipse, Point, Rect, Shape, SvgArc, Vec2};
++use style::properties::ComputedValues;
+ use style::values::computed::basic_shape::{BasicShape, ClipPath};
+ use style::values::computed::{Angle, CSSPixelLength, LengthPercentage};
+ use style::values::generics::basic_shape::{
+@@ -10,6 +12,30 @@
+ use style::values::generics::position::{GenericPosition, GenericPositionOrAuto};
+ 
+ impl ElementCx<'_, '_> {
++    pub(super) fn css_clip_rect(&self) -> Option<Rect> {
++        ClipPathGeometry::new(&self.style, &self.frame, self.scale).css_clip_rect()
++    }
++
++    pub(super) fn clip_path_shape(&self) -> Option<BezPath> {
++        ClipPathGeometry::new(&self.style, &self.frame, self.scale).clip_path_shape()
++    }
++}
++
++pub(super) struct ClipPathGeometry<'a> {
++    style: &'a ComputedValues,
++    frame: &'a CssBox,
++    scale: f64,
++}
++
++impl<'a> ClipPathGeometry<'a> {
++    pub(super) fn new(style: &'a ComputedValues, frame: &'a CssBox, scale: f64) -> Self {
++        Self {
++            style,
++            frame,
++            scale,
++        }
++    }
++
+     /// Compute the rectangle (in scaled pixels, relative to the border box origin) described by
+     /// the CSS 2 `clip` property, if it applies. `clip` only applies to absolutely positioned
+     /// elements; `auto` components resolve to the corresponding border box edge.
+@@ -62,7 +88,7 @@
+         }
+     }
+ 
+-    /// Resolve a ShapeGeometryBox to a concrete rectangle (x, y, width, height) in scaled pixels
++    /// Resolve a ShapeGeometryBox to a concrete rectangle in CSS pixels
+     ///
+     /// For SVG elements without associated CSS layout box, the used value for content-box and padding-box is fill-box and for border-box and margin-box is stroke-box.
+     /// For elements with associated CSS layout box, the used value for fill-box is content-box and for stroke-box and view-box is border-box.
+@@ -201,7 +227,7 @@
+     }
+ }
+ 
+-/// A resolved reference box in scaled pixel coordinates
++/// A resolved reference box in CSS pixel coordinates
+ #[derive(Clone, Copy)]
+ struct ReferenceBox {
+     x: f64,
+diff --git a/packages/blitz-paint/src/render/ownership.rs b/packages/blitz-paint/src/render/ownership.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-paint/src/render/ownership.rs
+@@ -0,0 +1,633 @@
++use std::{collections::HashMap, error::Error, fmt};
++
++use anyrender::PaintScene;
++use blitz_dom::{
++    NodeId,
++    paint_ownership::{PaintOwnershipError, PaintOwnershipPlan, PaintPhase},
++};
++use kurbo::{Affine, Point, Rect};
++use peniko::{Fill, Mix};
++use style::{
++    computed_values::visibility::T as Visibility,
++    values::{
++        computed::{BorderStyle, OutlineStyle},
++        generics::image::GenericImage,
++        specified::box_::{DisplayInside, DisplayOutside},
++    },
++};
++
++use super::{
++    BlitzDomPainter,
++    ownership_clips::{ClipRouteError, ClipRoutes},
++};
++use crate::{
++    PaintError,
++    color::{Color, ToColorColor},
++};
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum OwnershipPaintIssue {
++    PendingResources,
++    InvalidViewport,
++    MissingPreparedNode,
++    UnsupportedFormatting,
++    UnsupportedContent,
++    UnsupportedInline,
++    UnsupportedFormControl,
++    UnsupportedSubdocument,
++    UnsupportedEffect,
++    UnsupportedDecoration,
++    UnsupportedRootEffect,
++    UnsupportedCanvasBackground,
++    UnsupportedWidgetTransform,
++    UnsupportedOverlay,
++    InvalidGeometry,
++}
++
++#[derive(Debug)]
++pub enum OwnershipPaintError {
++    Plan(PaintOwnershipError),
++    Clip(ClipRouteError),
++    Unsupported {
++        node: NodeId,
++        issue: OwnershipPaintIssue,
++    },
++    Budget(PaintError),
++}
++
++impl fmt::Display for OwnershipPaintError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        match self {
++            Self::Plan(error) => write!(f, "{error}"),
++            Self::Clip(error) => write!(f, "{error}"),
++            Self::Budget(error) => write!(f, "{error}"),
++            Self::Unsupported { node, issue } => {
++                write!(f, "ownership painting {issue:?} at {node:?}")
++            }
++        }
++    }
++}
++
++impl Error for OwnershipPaintError {
++    fn source(&self) -> Option<&(dyn Error + 'static)> {
++        match self {
++            Self::Plan(error) => Some(error),
++            Self::Clip(error) => Some(error),
++            Self::Budget(error) => Some(error),
++            Self::Unsupported { .. } => None,
++        }
++    }
++}
++
++impl From<PaintError> for OwnershipPaintError {
++    fn from(error: PaintError) -> Self {
++        Self::Budget(error)
++    }
++}
++impl From<PaintOwnershipError> for OwnershipPaintError {
++    fn from(error: PaintOwnershipError) -> Self {
++        Self::Plan(error)
++    }
++}
++impl From<ClipRouteError> for OwnershipPaintError {
++    fn from(error: ClipRouteError) -> Self {
++        Self::Clip(error)
++    }
++}
++
++type Result<T> = std::result::Result<T, OwnershipPaintError>;
++
++fn unsupported(node: NodeId, issue: OwnershipPaintIssue) -> OwnershipPaintError {
++    OwnershipPaintError::Unsupported { node, issue }
++}
++
++#[derive(Clone, Copy)]
++enum InFlowKind {
++    Block,
++    Atomic,
++}
++
++/// Frame-local ownership, transforms and routes are all derived from one resolved
++/// document. No legacy paint-child or geometry-overflow list participates.
++struct PreparedFrame<'document> {
++    plan: PaintOwnershipPlan<'document>,
++    transforms: HashMap<NodeId, Affine>,
++    flow_kind: HashMap<NodeId, InFlowKind>,
++    clips: ClipRoutes,
++    root: NodeId,
++    viewport: Rect,
++    canvas_background: (NodeId, Color),
++}
++
++impl<'document> PreparedFrame<'document> {
++    fn build(painter: &BlitzDomPainter<'document, '_>) -> Result<Self> {
++        let doc = painter.dom;
++        let document_node = doc.root_node().id;
++        if doc.has_pending_critical_resources() {
++            return Err(unsupported(
++                document_node,
++                OwnershipPaintIssue::PendingResources,
++            ));
++        }
++        if !painter.scale.is_finite()
++            || painter.scale <= 0.0
++            || !painter.initial_x.is_finite()
++            || !painter.initial_y.is_finite()
++            || painter.width == 0
++            || painter.height == 0
++        {
++            return Err(unsupported(
++                document_node,
++                OwnershipPaintIssue::InvalidViewport,
++            ));
++        }
++        let devtools = doc.devtools();
++        if devtools.show_layout || devtools.highlight_hover || devtools.highlight_node.is_some() {
++            return Err(unsupported(
++                document_node,
++                OwnershipPaintIssue::UnsupportedOverlay,
++            ));
++        }
++        let plan = PaintOwnershipPlan::build(doc)?;
++        let root = plan
++            .entries()
++            .iter()
++            .find(|entry| entry.phase == PaintPhase::Root)
++            .map(|entry| entry.node)
++            .ok_or_else(|| unsupported(document_node, OwnershipPaintIssue::MissingPreparedNode))?;
++        let canvas_background = canvas_background(painter, root)?;
++        let mut transforms: HashMap<NodeId, Affine> = HashMap::new();
++        let mut flow_kind = HashMap::new();
++        for entry in plan.entries() {
++            let node = doc
++                .get_node(entry.node)
++                .ok_or_else(|| unsupported(entry.node, OwnershipPaintIssue::MissingPreparedNode))?;
++            let element = node.element_data().ok_or_else(|| {
++                unsupported(entry.node, OwnershipPaintIssue::UnsupportedFormatting)
++            })?;
++            if element.name.ns.as_ref() != "http://www.w3.org/1999/xhtml"
++                || matches!(
++                    element.name.local.as_ref(),
++                    "video" | "embed" | "object" | "iframe"
++                )
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedContent,
++                ));
++            }
++            let styles = node.primary_styles().ok_or_else(|| {
++                unsupported(entry.node, OwnershipPaintIssue::UnsupportedFormatting)
++            })?;
++            let display = styles.clone_display();
++            if !matches!(
++                display.inside(),
++                DisplayInside::Flow
++                    | DisplayInside::FlowRoot
++                    | DisplayInside::Flex
++                    | DisplayInside::Grid
++            ) || element.list_item_data.is_some()
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedFormatting,
++                ));
++            }
++            if node.flags.is_inline_root() {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedInline,
++                ));
++            }
++            if matches!(
++                element.name.local.as_ref(),
++                "input" | "textarea" | "button" | "select" | "option"
++            ) || element.text_input_data().is_some()
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedFormControl,
++                ));
++            }
++            if element.sub_doc_data().is_some() {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedSubdocument,
++                ));
++            }
++            let effects = styles.get_effects();
++            if !effects.filter.0.is_empty()
++                || !effects.backdrop_filter.0.is_empty()
++                || styles
++                    .get_svg()
++                    .mask_image
++                    .0
++                    .iter()
++                    .any(|image| !matches!(image, GenericImage::None))
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedEffect,
++                ));
++            }
++            if !effects.box_shadow.0.is_empty()
++                || !matches!(
++                    styles.get_outline().outline_style,
++                    OutlineStyle::BorderStyle(BorderStyle::None | BorderStyle::Hidden)
++                )
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedDecoration,
++                ));
++            }
++            if entry.node == root
++                && (effects.opacity != 1.0
++                    || styles.get_inherited_box().visibility != Visibility::Visible)
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedRootEffect,
++                ));
++            }
++            #[cfg(feature = "scrollbars")]
++            if node.wants_scrollbar(taffy::AbsoluteAxis::Horizontal)
++                || node.wants_scrollbar(taffy::AbsoluteAxis::Vertical)
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::UnsupportedOverlay,
++                ));
++            }
++            let layout = node.final_layout();
++            if ![
++                layout.location.x,
++                layout.location.y,
++                layout.size.width,
++                layout.size.height,
++                layout.padding.left,
++                layout.padding.right,
++                layout.padding.top,
++                layout.padding.bottom,
++                layout.border.left,
++                layout.border.right,
++                layout.border.top,
++                layout.border.bottom,
++                effects.opacity,
++            ]
++            .iter()
++            .all(|value| value.is_finite())
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::InvalidGeometry,
++                ));
++            }
++            let owner_transform = match entry.paint_owner {
++                Some(owner) => *transforms.get(&owner).ok_or_else(|| {
++                    unsupported(entry.node, OwnershipPaintIssue::MissingPreparedNode)
++                })?,
++                None => Affine::translate((painter.initial_x, painter.initial_y)),
++            };
++            let transform = owner_transform
++                * Affine::translate((
++                    f64::from(entry.prefix.x) * painter.scale,
++                    f64::from(entry.prefix.y) * painter.scale,
++                ))
++                * Affine::translate((
++                    f64::from(layout.location.x) * painter.scale,
++                    f64::from(layout.location.y) * painter.scale,
++                ))
++                * node
++                    .transform()
++                    .as_deref()
++                    .copied()
++                    .unwrap_or(Affine::IDENTITY);
++            if !transform.as_coeffs().iter().all(|value| value.is_finite())
++                || transform.determinant() == 0.0
++            {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::InvalidGeometry,
++                ));
++            }
++            #[cfg(feature = "custom-widget")]
++            if element.custom_widget_data().is_some() {
++                let [a, b, c, d, _, _] = transform.as_coeffs();
++                let has_local_offset = layout.border.left + layout.padding.left != 0.0
++                    || layout.border.top + layout.padding.top != 0.0;
++                if has_local_offset && [a, b, c, d] != [1.0, 0.0, 0.0, 1.0] {
++                    return Err(unsupported(
++                        entry.node,
++                        OwnershipPaintIssue::UnsupportedWidgetTransform,
++                    ));
++                }
++            }
++            transforms.insert(entry.node, transform);
++            let flex_or_grid_item = node
++                .layout_parent
++                .get()
++                .and_then(|parent| doc.get_node(parent))
++                .and_then(|parent| parent.primary_styles().map(|style| style.clone_display()))
++                .is_some_and(|display| {
++                    matches!(display.inside(), DisplayInside::Flex | DisplayInside::Grid)
++                });
++            let atomic = flex_or_grid_item || display.outside() == DisplayOutside::Inline;
++            flow_kind.insert(
++                entry.node,
++                if atomic {
++                    InFlowKind::Atomic
++                } else {
++                    InFlowKind::Block
++                },
++            );
++        }
++        let clips = ClipRoutes::build(doc, &plan, &transforms, painter.scale)?;
++        for entry in plan.entries() {
++            if clips.decoration(entry.node).is_none() || clips.content(entry.node).is_none() {
++                return Err(unsupported(
++                    entry.node,
++                    OwnershipPaintIssue::MissingPreparedNode,
++                ));
++            }
++        }
++        Ok(Self {
++            plan,
++            transforms,
++            flow_kind,
++            clips,
++            root,
++            canvas_background,
++            viewport: Rect::from_origin_size(
++                (painter.initial_x, painter.initial_y),
++                (f64::from(painter.width), f64::from(painter.height)),
++            ),
++        })
++    }
++}
++
++fn canvas_background(painter: &BlitzDomPainter<'_, '_>, root: NodeId) -> Result<(NodeId, Color)> {
++    let node = painter
++        .dom
++        .get_node(root)
++        .ok_or_else(|| unsupported(root, OwnershipPaintIssue::MissingPreparedNode))?;
++    let root_style = node
++        .primary_styles()
++        .ok_or_else(|| unsupported(root, OwnershipPaintIssue::MissingPreparedNode))?;
++    let root_color = root_style
++        .clone_background_color()
++        .resolve_to_absolute(&root_style.clone_color())
++        .as_srgb_color();
++    if root_style
++        .get_background()
++        .background_image
++        .0
++        .iter()
++        .any(|image| !matches!(image, GenericImage::None))
++    {
++        return Err(unsupported(
++            root,
++            OwnershipPaintIssue::UnsupportedCanvasBackground,
++        ));
++    }
++    if root_color.components[3] != 0.0 {
++        return Ok((root, root_color));
++    }
++    let body = node
++        .children
++        .iter()
++        .filter_map(|id| painter.dom.get_node(*id))
++        .find(|node| {
++            node.data
++                .is_element_with_tag_name(&blitz_dom::local_name!("body"))
++        });
++    let Some(body) = body else {
++        return Ok((root, root_color));
++    };
++    let body_style = body
++        .primary_styles()
++        .ok_or_else(|| unsupported(body.id, OwnershipPaintIssue::UnsupportedCanvasBackground))?;
++    if !body.has_boxes() {
++        if body_style.clone_display().is_none() {
++            return Ok((root, root_color));
++        }
++        return Err(unsupported(
++            body.id,
++            OwnershipPaintIssue::UnsupportedCanvasBackground,
++        ));
++    }
++    if body_style
++        .get_background()
++        .background_image
++        .0
++        .iter()
++        .any(|image| !matches!(image, GenericImage::None))
++    {
++        return Err(unsupported(
++            body.id,
++            OwnershipPaintIssue::UnsupportedCanvasBackground,
++        ));
++    }
++    Ok((
++        body.id,
++        body_style
++            .clone_background_color()
++            .resolve_to_absolute(&body_style.clone_color())
++            .as_srgb_color(),
++    ))
++}
++
++impl BlitzDomPainter<'_, '_> {
++    pub(crate) fn paint_scene_with_ownership(&self, scene: &mut impl PaintScene) -> Result<()> {
++        let prepared = PreparedFrame::build(self)?;
++        let _location = self.paint_context.enter(self.dom.id(), Some(prepared.root));
++        // The propagated canvas background has no element box. Root clips apply
++        // to the root's border/content and descendants, not this viewport fill.
++        scene.fill(
++            Fill::NonZero,
++            Affine::IDENTITY,
++            prepared.canvas_background.1,
++            None,
++            &prepared.viewport,
++        );
++        self.paint_owned_group(scene, &prepared, prepared.root)
++    }
++
++    fn paint_owned_group(
++        &self,
++        scene: &mut impl PaintScene,
++        prepared: &PreparedFrame<'_>,
++        id: NodeId,
++    ) -> Result<()> {
++        let node = self
++            .dom
++            .get_node(id)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let styles = node
++            .primary_styles()
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let opacity = styles.get_effects().opacity;
++        if opacity == 0.0 {
++            return Ok(());
++        }
++        let _location = self.paint_context.enter(self.dom.id(), Some(id));
++        let grouped = opacity < 1.0;
++        if grouped {
++            // Geometry-overflow bounds omit escaping descendants. The viewport is
++            // conservative for every contribution that can reach this surface.
++            scene.push_layer(
++                Mix::Normal,
++                opacity,
++                Affine::IDENTITY,
++                &prepared.viewport,
++                None,
++                None,
++            );
++        }
++        let result = self.paint_owned_group_contents(scene, prepared, id);
++        if grouped {
++            scene.pop_layer();
++        }
++        result
++    }
++
++    fn paint_owned_group_contents(
++        &self,
++        scene: &mut impl PaintScene,
++        prepared: &PreparedFrame<'_>,
++        id: NodeId,
++    ) -> Result<()> {
++        self.paint_owned_contribution(scene, prepared, id, true)?;
++        for child in prepared
++            .plan
++            .children(id)
++            .filter(|entry| matches!(entry.phase, PaintPhase::Negative(_)))
++        {
++            self.paint_owned_group(scene, prepared, child.node)?;
++        }
++        self.paint_inflow_decorations(scene, prepared, id)?;
++        self.paint_owned_contribution(scene, prepared, id, false)?;
++        self.paint_inflow_contents(scene, prepared, id)?;
++        for child in prepared
++            .plan
++            .children(id)
++            .filter(|entry| matches!(entry.phase, PaintPhase::Zero | PaintPhase::Positive(_)))
++        {
++            self.paint_owned_group(scene, prepared, child.node)?;
++        }
++        Ok(())
++    }
++
++    fn paint_inflow_decorations(
++        &self,
++        scene: &mut impl PaintScene,
++        prepared: &PreparedFrame<'_>,
++        owner: NodeId,
++    ) -> Result<()> {
++        for child in prepared
++            .plan
++            .children(owner)
++            .filter(|entry| entry.phase == PaintPhase::InFlow)
++        {
++            if matches!(prepared.flow_kind.get(&child.node), Some(InFlowKind::Block)) {
++                self.paint_owned_contribution(scene, prepared, child.node, true)?;
++                self.paint_inflow_decorations(scene, prepared, child.node)?;
++            }
++        }
++        Ok(())
++    }
++
++    fn paint_inflow_contents(
++        &self,
++        scene: &mut impl PaintScene,
++        prepared: &PreparedFrame<'_>,
++        owner: NodeId,
++    ) -> Result<()> {
++        for child in prepared
++            .plan
++            .children(owner)
++            .filter(|entry| entry.phase == PaintPhase::InFlow)
++        {
++            match prepared.flow_kind.get(&child.node) {
++                Some(InFlowKind::Block) => {
++                    self.paint_owned_contribution(scene, prepared, child.node, false)?;
++                    self.paint_inflow_contents(scene, prepared, child.node)?;
++                }
++                Some(InFlowKind::Atomic) => self.paint_owned_group(scene, prepared, child.node)?,
++                None => {
++                    return Err(unsupported(
++                        child.node,
++                        OwnershipPaintIssue::MissingPreparedNode,
++                    ));
++                }
++            }
++        }
++        Ok(())
++    }
++
++    fn paint_owned_contribution(
++        &self,
++        scene: &mut impl PaintScene,
++        prepared: &PreparedFrame<'_>,
++        id: NodeId,
++        decoration: bool,
++    ) -> Result<()> {
++        let node = self
++            .dom
++            .get_node(id)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let styles = node
++            .primary_styles()
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        // Visibility suppresses this contribution, not independently visible descendants.
++        if styles.get_inherited_box().visibility != Visibility::Visible {
++            return Ok(());
++        }
++        let custom_widget = self.custom_widget_scenes.get(&(self.dom.id(), id));
++        if !decoration
++            && node
++                .element_data()
++                .and_then(|element| element.raster_image_data())
++                .is_none()
++            && custom_widget.is_none_or(|scene| scene.commands.is_empty())
++        {
++            return Ok(());
++        }
++        let route = if decoration {
++            prepared.clips.decoration(id)
++        } else {
++            prepared.clips.content(id)
++        }
++        .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        if route.is_empty() {
++            return Ok(());
++        }
++        let transform = *prepared
++            .transforms
++            .get(&id)
++            .ok_or_else(|| unsupported(id, OwnershipPaintIssue::MissingPreparedNode))?;
++        let cx = self.element_cx(node, *node.final_layout(), transform, custom_widget);
++        let _location = self.paint_context.enter(self.dom.id(), Some(id));
++        let mut layers = 0usize;
++        for clip in route.clips() {
++            scene.push_clip_layer(clip.transform, &clip.shape);
++            layers += 1;
++        }
++        if decoration {
++            cx.draw_own_decoration(scene, id != prepared.canvas_background.0);
++        } else {
++            let layout = node.final_layout();
++            cx.draw_own_content(
++                scene,
++                Point::new(
++                    f64::from(layout.border.left + layout.padding.left),
++                    f64::from(layout.border.top + layout.padding.top),
++                ),
++            );
++        }
++        for _ in 0..layers {
++            scene.pop_layer();
++        }
++        Ok(())
++    }
++}
+diff --git a/packages/blitz-paint/src/render/ownership_clips.rs b/packages/blitz-paint/src/render/ownership_clips.rs
+new file mode 100644
+--- /dev/null
++++ b/packages/blitz-paint/src/render/ownership_clips.rs
+@@ -0,0 +1,753 @@
++//! Contribution clips for the experimental ownership renderer. Overflow follows
++//! resolved containing blocks; CSS rect is reparented for escaping descendants.
++//! Clip-path captures the incoming chain, matching the recorded Chrome controls.
++
++use std::collections::{HashMap, HashSet};
++use std::fmt;
++use std::sync::Arc;
++
++use blitz_dom::geometry::CssBox;
++use blitz_dom::paint_ownership::PaintOwnershipPlan;
++use blitz_dom::{BaseDocument, NodeId};
++use kurbo::{Affine, BezPath, Shape};
++use style::Zero;
++use style::computed_values::position::T as Position;
++use style::dom::TElement;
++use style::properties::ComputedValues;
++use style::values::computed::Overflow;
++use style::values::computed::basic_shape::ClipPath;
++use style::values::generics::basic_shape::{
++    FillRule, GenericBasicShape, ShapeBox, ShapeGeometryBox,
++};
++use taffy::ContainingBlockClaims;
++
++use super::clip_path::ClipPathGeometry;
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum ClipRouteIssue {
++    InvalidDocument,
++    InvalidFormattingTree,
++    UnpreparedFormattingParent,
++    MissingStyle,
++    MissingTransform,
++    GeometryOwnerMismatch,
++    InvalidScale,
++    NonFiniteGeometry,
++    UnsupportedClipPathUrl,
++    UnsupportedClipPathShape,
++    UnsupportedClipPathBox,
++    UnsupportedInsetRadius,
++    UnsupportedEvenOdd,
++    UnsupportedOverflowAxes,
++    UnsupportedOverflowClip,
++    UnsupportedViewportOverflow,
++}
++
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct ClipRouteError {
++    pub node: NodeId,
++    pub issue: ClipRouteIssue,
++}
++
++impl fmt::Display for ClipRouteError {
++    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(formatter, "paint clip {:?} at {:?}", self.issue, self.node)
++    }
++}
++
++impl std::error::Error for ClipRouteError {}
++
++type Result<T> = std::result::Result<T, ClipRouteError>;
++type PreparedClip = (Arc<ResolvedClip>, bool);
++
++#[derive(Debug)]
++pub(super) struct ResolvedClip {
++    /// Local device-pixel shape; this affine does not apply the DPR again.
++    pub shape: BezPath,
++    pub transform: Affine,
++}
++
++#[derive(Clone, Debug, Default)]
++pub(super) struct ClipRoute {
++    clips: Vec<Arc<ResolvedClip>>,
++    empty: bool,
++}
++
++impl ClipRoute {
++    pub(super) fn is_empty(&self) -> bool {
++        self.empty
++    }
++
++    pub(super) fn clips(&self) -> impl Iterator<Item = &ResolvedClip> {
++        self.clips.iter().map(Arc::as_ref)
++    }
++
++    fn append(&self, shape: &Arc<ResolvedClip>, empty: bool) -> Self {
++        let mut route = self.clone();
++        route.clips.push(Arc::clone(shape));
++        route.empty |= empty;
++        route
++    }
++}
++
++#[derive(Clone)]
++struct PositionedContext {
++    owner: NodeId,
++    route: ClipRoute,
++}
++
++#[derive(Clone)]
++struct Context {
++    normal: ClipRoute,
++    absolute: PositionedContext,
++    fixed: PositionedContext,
++}
++
++struct Contributions {
++    decoration: ClipRoute,
++    content: ClipRoute,
++}
++
++pub(super) struct ClipRoutes {
++    nodes: HashMap<NodeId, Contributions>,
++}
++
++impl ClipRoutes {
++    pub(super) fn build(
++        document: &BaseDocument,
++        plan: &PaintOwnershipPlan<'_>,
++        transforms: &HashMap<NodeId, Affine>,
++        scale: f64,
++    ) -> Result<Self> {
++        let document_id = document.root_node().id;
++        if !std::ptr::eq(document, plan.document()) {
++            return Err(error(document_id, ClipRouteIssue::InvalidDocument));
++        }
++        if !scale.is_finite() || scale <= 0.0 {
++            return Err(error(document_id, ClipRouteIssue::InvalidScale));
++        }
++        let root = document
++            .try_root_element()
++            .ok_or_else(|| error(document_id, ClipRouteIssue::InvalidDocument))?;
++        let root_style = root
++            .primary_styles()
++            .ok_or_else(|| error(root.id, ClipRouteIssue::MissingStyle))?;
++        let root_overflow_visible = root_style.get_box().overflow_x == Overflow::Visible
++            && root_style.get_box().overflow_y == Overflow::Visible;
++        let initial = PositionedContext {
++            owner: document_id,
++            route: ClipRoute::default(),
++        };
++        let mut inherited = HashMap::from([(
++            document_id,
++            Context {
++                normal: ClipRoute::default(),
++                absolute: initial.clone(),
++                fixed: initial,
++            },
++        )]);
++        let mut routes = Self {
++            nodes: HashMap::with_capacity(plan.entries().len()),
++        };
++        for entry in plan.entries() {
++            let id = entry.node;
++            let node = document
++                .get_node(id)
++                .ok_or_else(|| error(id, ClipRouteIssue::InvalidDocument))?;
++            let context = parent_context(document, plan, &inherited, id)?;
++            let style = node
++                .primary_styles()
++                .ok_or_else(|| error(id, ClipRouteIssue::MissingStyle))?;
++            let transform = *transforms
++                .get(&id)
++                .ok_or_else(|| error(id, ClipRouteIssue::MissingTransform))?;
++            if !transform.as_coeffs().iter().all(|value| value.is_finite()) {
++                return Err(error(id, ClipRouteIssue::NonFiniteGeometry));
++            }
++            let frame = CssBox::from_layout(&style, node.final_layout(), scale);
++            let path = clip_path(id, &style, &frame, scale, transform)?;
++            let css_rect = ClipPathGeometry::new(&style, &frame, scale).css_clip_rect();
++            let css_rect = css_rect
++                .map(|rect| resolved(id, rect.into_path(0.1), transform))
++                .transpose()?;
++            let box_style = style.get_box();
++            let x = box_style.overflow_x;
++            let y = box_style.overflow_y;
++            if matches!(x, Overflow::Clip) || matches!(y, Overflow::Clip) {
++                return Err(error(id, ClipRouteIssue::UnsupportedOverflowClip));
++            }
++            let clip_x = x != Overflow::Visible;
++            let clip_y = y != Overflow::Visible;
++            if clip_x != clip_y {
++                return Err(error(id, ClipRouteIssue::UnsupportedOverflowAxes));
++            }
++            let overflow = if clip_x && id != root.id {
++                // Root overflow is applied by the viewport surface. Body
++                // propagation needs an explicit viewport policy, not its box.
++                if node.local_name() == "body" && root_overflow_visible {
++                    return Err(error(id, ClipRouteIssue::UnsupportedViewportOverflow));
++                }
++                Some(resolved(id, frame.padding_box_path(), transform)?)
++            } else {
++                None
++            };
++            let (context, mut contributions) = route_box(
++                context,
++                id,
++                style.clone_position(),
++                entry.geometry_owner,
++                node.containing_block_claims(),
++                OwnClips {
++                    path,
++                    css_rect,
++                    overflow,
++                },
++            )?;
++            let element = node
++                .element_data()
++                .expect("the plan validated element boxes");
++            let replaced_content = element.raster_image_data().is_some();
++            #[cfg(feature = "custom-widget")]
++            let replaced_content = replaced_content || element.custom_widget_data().is_some();
++            if replaced_content {
++                // Replaced pixels belong to the curved content edge. This clip
++                // must not become a containing-block clip for DOM descendants.
++                let (shape, empty) = resolved(id, frame.content_box_path(), transform)?;
++                contributions.content = contributions.content.append(&shape, empty);
++            }
++            inherited.insert(id, context);
++            routes.nodes.insert(id, contributions);
++        }
++        Ok(routes)
++    }
++
++    pub(super) fn decoration(&self, node: NodeId) -> Option<&ClipRoute> {
++        self.nodes.get(&node).map(|routes| &routes.decoration)
++    }
++
++    pub(super) fn content(&self, node: NodeId) -> Option<&ClipRoute> {
++        self.nodes.get(&node).map(|routes| &routes.content)
++    }
++}
++
++struct OwnClips {
++    path: Option<PreparedClip>,
++    css_rect: Option<PreparedClip>,
++    overflow: Option<PreparedClip>,
++}
++
++fn route_box(
++    mut context: Context,
++    node: NodeId,
++    position: Position,
++    geometry_owner: NodeId,
++    claims: ContainingBlockClaims,
++    own: OwnClips,
++) -> Result<(Context, Contributions)> {
++    context.normal = match position {
++        Position::Absolute => select_positioned(&context.absolute, geometry_owner, node)?,
++        Position::Fixed => select_positioned(&context.fixed, geometry_owner, node)?,
++        _ => context.normal,
++    };
++    if let Some((shape, empty)) = &own.path {
++        context.normal = context.normal.append(shape, *empty);
++        context.absolute.route = context.normal.clone();
++        context.fixed.route = context.normal.clone();
++    }
++    if let Some((shape, empty)) = &own.css_rect {
++        context.normal = context.normal.append(shape, *empty);
++    }
++    let decoration = context.normal.clone();
++    if let Some((shape, empty)) = &own.overflow {
++        context.normal = context.normal.append(shape, *empty);
++    }
++    let content = context.normal.clone();
++    if claims.absolute {
++        context.absolute = PositionedContext {
++            owner: node,
++            route: content.clone(),
++        };
++    } else if let Some((shape, empty)) = &own.css_rect {
++        context.absolute.route = context.absolute.route.append(shape, *empty);
++    }
++    if claims.fixed {
++        context.fixed = PositionedContext {
++            owner: node,
++            route: content.clone(),
++        };
++    } else if let Some((shape, empty)) = &own.css_rect {
++        // Preserve the CSS rect without importing overflow from a containing
++        // block that an escaping fixed descendant does not use.
++        context.fixed.route = context.fixed.route.append(shape, *empty);
++    }
++    Ok((
++        context,
++        Contributions {
++            decoration,
++            content,
++        },
++    ))
++}
++
++fn parent_context(
++    document: &BaseDocument,
++    plan: &PaintOwnershipPlan<'_>,
++    inherited: &HashMap<NodeId, Context>,
++    id: NodeId,
++) -> Result<Context> {
++    let mut cursor = id;
++    let mut visited = HashSet::new();
++    loop {
++        if !visited.insert(cursor) {
++            return Err(error(id, ClipRouteIssue::InvalidFormattingTree));
++        }
++        let parent = document
++            .get_node(cursor)
++            .and_then(|node| node.layout_parent.get())
++            .ok_or_else(|| error(id, ClipRouteIssue::InvalidFormattingTree))?;
++        if let Some(context) = inherited.get(&parent) {
++            return Ok(context.clone());
++        }
++        if plan.entry(parent).is_some() {
++            return Err(error(id, ClipRouteIssue::UnpreparedFormattingParent));
++        }
++        // The plan already rejects positioned/effected non-atomic inline
++        // fragments. Structural boxless parents contribute no box clip.
++        cursor = parent;
++    }
++}
++
++fn select_positioned(
++    context: &PositionedContext,
++    owner: NodeId,
++    node: NodeId,
++) -> Result<ClipRoute> {
++    if context.owner != owner {
++        return Err(error(node, ClipRouteIssue::GeometryOwnerMismatch));
++    }
++    Ok(context.route.clone())
++}
++
++fn clip_path(
++    id: NodeId,
++    style: &ComputedValues,
++    frame: &CssBox,
++    scale: f64,
++    transform: Affine,
++) -> Result<Option<PreparedClip>> {
++    let value = style.clone_clip_path();
++    let path = match &value {
++        ClipPath::None => return Ok(None),
++        ClipPath::Url(_) => return Err(error(id, ClipRouteIssue::UnsupportedClipPathUrl)),
++        ClipPath::Box(reference) => match reference {
++            ShapeGeometryBox::ElementDependent
++            | ShapeGeometryBox::StrokeBox
++            | ShapeGeometryBox::ViewBox
++            | ShapeGeometryBox::ShapeBox(ShapeBox::BorderBox) => frame.border_box_path(),
++            ShapeGeometryBox::ShapeBox(ShapeBox::PaddingBox) => frame.padding_box_path(),
++            ShapeGeometryBox::FillBox | ShapeGeometryBox::ShapeBox(ShapeBox::ContentBox) => {
++                frame.content_box_path()
++            }
++            ShapeGeometryBox::ShapeBox(ShapeBox::MarginBox) => {
++                return Err(error(id, ClipRouteIssue::UnsupportedClipPathBox));
++            }
++        },
++        ClipPath::Shape(shape, reference) => {
++            if matches!(reference, ShapeGeometryBox::ShapeBox(ShapeBox::MarginBox)) {
++                return Err(error(id, ClipRouteIssue::UnsupportedClipPathBox));
++            }
++            match shape.as_ref() {
++                GenericBasicShape::Rect(inset) => {
++                    if !inset.round.is_zero() {
++                        return Err(error(id, ClipRouteIssue::UnsupportedInsetRadius));
++                    }
++                }
++                GenericBasicShape::Polygon(polygon) => {
++                    if polygon.fill != FillRule::Nonzero {
++                        return Err(error(id, ClipRouteIssue::UnsupportedEvenOdd));
++                    }
++                }
++                _ => return Err(error(id, ClipRouteIssue::UnsupportedClipPathShape)),
++            }
++            // For these validated variants, None means a valid empty inset or
++            // polygon. Other legacy None cases were rejected above.
++            let mut path = ClipPathGeometry::new(style, frame, scale)
++                .clip_path_shape()
++                .unwrap_or_default();
++            path.apply_affine(Affine::scale(scale));
++            path
++        }
++    };
++    resolved(id, path, transform).map(Some)
++}
++
++fn resolved(id: NodeId, shape: BezPath, transform: Affine) -> Result<PreparedClip> {
++    if !shape.is_finite() {
++        return Err(error(id, ClipRouteIssue::NonFiniteGeometry));
++    }
++    let bounds = shape.bounding_box();
++    let empty = shape.elements().is_empty() || bounds.width() <= 0.0 || bounds.height() <= 0.0;
++    Ok((Arc::new(ResolvedClip { shape, transform }), empty))
++}
++
++fn error(node: NodeId, issue: ClipRouteIssue) -> ClipRouteError {
++    ClipRouteError { node, issue }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use kurbo::Rect;
++
++    fn id(value: u64) -> NodeId {
++        NodeId::from_u64(value)
++    }
++
++    fn initial() -> Context {
++        let positioned = PositionedContext {
++            owner: id(0),
++            route: ClipRoute::default(),
++        };
++        Context {
++            normal: ClipRoute::default(),
++            absolute: positioned.clone(),
++            fixed: positioned,
++        }
++    }
++
++    fn shape(marker: f64) -> PreparedClip {
++        resolved(
++            id(0),
++            Rect::new(marker, 0.0, marker + 10.0, 10.0).into_path(0.1),
++            Affine::IDENTITY,
++        )
++        .unwrap()
++    }
++
++    fn own() -> OwnClips {
++        OwnClips {
++            path: None,
++            css_rect: None,
++            overflow: None,
++        }
++    }
++
++    fn markers(route: &ClipRoute) -> Vec<f64> {
++        route
++            .clips()
++            .map(|clip| clip.shape.bounding_box().x0)
++            .collect()
++    }
++
++    fn ancestor() -> Context {
++        route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                overflow: Some(shape(1.0)),
++                ..own()
++            },
++        )
++        .unwrap()
++        .0
++    }
++
++    #[test]
++    fn overflow_is_content_only_and_fixed_escape_survives_an_ordinary_effect_group() {
++        let (ancestor, contributions) = route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                overflow: Some(shape(1.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert!(markers(&contributions.decoration).is_empty());
++        assert_eq!(markers(&contributions.content), [1.0]);
++        let (effect, _) = route_box(
++            ancestor,
++            id(2),
++            Position::Static,
++            id(1),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        let (_, fixed) = route_box(
++            effect.clone(),
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            own(),
++        )
++        .unwrap();
++        let (_, relative) = route_box(
++            effect,
++            id(3),
++            Position::Relative,
++            id(2),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            own(),
++        )
++        .unwrap();
++        assert!(markers(&fixed.decoration).is_empty());
++        assert_eq!(markers(&relative.decoration), [1.0]);
++    }
++
++    #[test]
++    fn clip_path_captures_incoming_chain_but_not_its_own_later_overflow() {
++        let (middle, contribution) = route_box(
++            ancestor(),
++            id(2),
++            Position::Static,
++            id(1),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                path: Some(shape(2.0)),
++                overflow: Some(shape(3.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert_eq!(markers(&contribution.decoration), [1.0, 2.0]);
++        assert_eq!(markers(&contribution.content), [1.0, 2.0, 3.0]);
++        let (_, fixed) = route_box(
++            middle.clone(),
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        let (_, absolute) = route_box(
++            middle,
++            id(3),
++            Position::Absolute,
++            id(1),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert_eq!(markers(&fixed.decoration), [1.0, 2.0]);
++        assert_eq!(markers(&absolute.decoration), [1.0, 2.0]);
++    }
++
++    #[test]
++    fn positioned_context_is_selected_before_creating_its_clip_path() {
++        let (middle, _) = route_box(
++            ancestor(),
++            id(2),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                path: Some(shape(2.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        let (_, fixed) = route_box(
++            middle,
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert_eq!(markers(&fixed.decoration), [2.0]);
++    }
++
++    #[test]
++    fn css_rect_is_reparented_without_importing_ineligible_overflow() {
++        let (middle, contribution) = route_box(
++            ancestor(),
++            id(2),
++            Position::Absolute,
++            id(1),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                css_rect: Some(shape(2.0)),
++                overflow: Some(shape(3.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert_eq!(markers(&contribution.content), [1.0, 2.0, 3.0]);
++        let (_, fixed) = route_box(
++            middle.clone(),
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        let (_, absolute) = route_box(
++            middle,
++            id(3),
++            Position::Absolute,
++            id(2),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert_eq!(markers(&fixed.decoration), [2.0]);
++        assert_eq!(markers(&absolute.decoration), [1.0, 2.0, 3.0]);
++    }
++
++    #[test]
++    fn relative_content_in_an_escaping_absolute_carrier_keeps_the_selected_route() {
++        let (middle, _) = route_box(
++            ancestor(),
++            id(2),
++            Position::Static,
++            id(1),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                overflow: Some(shape(2.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        let (carrier, _) = route_box(
++            middle,
++            id(3),
++            Position::Absolute,
++            id(1),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            own(),
++        )
++        .unwrap();
++        let (_, relative) = route_box(
++            carrier,
++            id(4),
++            Position::Relative,
++            id(3),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            own(),
++        )
++        .unwrap();
++        assert_eq!(markers(&relative.decoration), [1.0]);
++    }
++
++    #[test]
++    fn an_empty_clip_is_not_absent_and_can_be_escaped_only_by_the_correct_route() {
++        let empty = resolved(id(1), BezPath::new(), Affine::IDENTITY).unwrap();
++        let (ancestor, contribution) = route_box(
++            initial(),
++            id(1),
++            Position::Absolute,
++            id(0),
++            ContainingBlockClaims {
++                absolute: true,
++                fixed: false,
++            },
++            OwnClips {
++                overflow: Some(empty),
++                ..own()
++            },
++        )
++        .unwrap();
++        assert!(!contribution.decoration.is_empty());
++        assert!(contribution.content.is_empty());
++        let (_, fixed) = route_box(
++            ancestor.clone(),
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert!(!fixed.decoration.is_empty());
++        let (middle, _) = route_box(
++            ancestor,
++            id(2),
++            Position::Static,
++            id(1),
++            ContainingBlockClaims::NONE,
++            OwnClips {
++                path: Some(shape(2.0)),
++                ..own()
++            },
++        )
++        .unwrap();
++        let (_, captured) = route_box(
++            middle,
++            id(3),
++            Position::Fixed,
++            id(0),
++            ContainingBlockClaims::NONE,
++            own(),
++        )
++        .unwrap();
++        assert!(captured.decoration.is_empty());
++    }
++
++    #[test]
++    fn a_resolved_owner_disagreement_is_an_error() {
++        let result = route_box(
++            ancestor(),
++            id(2),
++            Position::Fixed,
++            id(1),
++            ContainingBlockClaims::NONE,
++            own(),
++        );
++        assert!(
++            matches!(result, Err(ClipRouteError { node, issue: ClipRouteIssue::GeometryOwnerMismatch }) if node == id(2))
++        );
++    }
++
++    #[test]
++    fn device_space_shapes_keep_the_supplied_transform_without_double_scaling() {
++        let transform = Affine::translate((32.0, 24.0)) * Affine::rotate(0.25);
++        let path = Rect::new(16.0, 8.0, 96.0, 72.0).into_path(0.1);
++        let (clip, empty) = resolved(id(1), path.clone(), transform).unwrap();
++        assert!(!empty);
++        assert_eq!(clip.shape, path);
++        assert_eq!(clip.transform, transform);
++        assert!(
++            resolved(
++                id(1),
++                Rect::new(0.0, 0.0, f64::NAN, 1.0).into_path(0.1),
++                Affine::IDENTITY
++            )
++            .is_err()
++        );
++    }
++}
+diff --git a/packages/blitz-paint/src/render.rs b/packages/blitz-paint/src/render.rs
+--- a/packages/blitz-paint/src/render.rs
++++ b/packages/blitz-paint/src/render.rs
+@@ -4,6 +4,10 @@
+ mod clip_path;
+ mod form_controls;
+ mod mask;
++mod ownership;
++mod ownership_clips;
++pub use ownership::{OwnershipPaintError, OwnershipPaintIssue};
++pub use ownership_clips::{ClipRouteError, ClipRouteIssue};
+ 
+ use std::cell::RefCell;
+ use std::collections::HashMap;
+@@ -192,6 +196,57 @@
+             return;
+         };
+         let root_id = root_element.id;
++        self.draw_canvas_background(scene, root_element);
++
++        // The root clip rectangle is the viewport (in screen coordinates, with the
++        // initial offset already subtracted). Elements outside of this are culled, and
++        // scrollports narrow this rectangle further for their descendants.
++        let viewport_clip_rect = Rect::new(0.0, 0.0, self.width as f64, self.height as f64);
++
++        self.render_element(
++            scene,
++            root_id,
++            Affine::translate(Vec2 {
++                x: self.initial_x - (viewport_scroll.x * self.scale),
++                y: self.initial_y - (viewport_scroll.y * self.scale),
++            }),
++            viewport_clip_rect,
++        );
++
++        // Render debug overlay
++        if self.dom.devtools().highlight_hover {
++            if let Some(node_id) = self.dom.as_ref().get_hover_node_id() {
++                render_debug_overlay(
++                    scene,
++                    self.dom,
++                    node_id,
++                    self.scale,
++                    self.initial_x,
++                    self.initial_y,
++                );
++            }
++        }
++        if let Some(node_id) = self.dom.devtools().highlight_node {
++            // Only nodes with element data have a layout to visualise
++            if self
++                .dom
++                .as_ref()
++                .get_node(node_id)
++                .is_some_and(|node| node.element_data().is_some())
++            {
++                render_debug_overlay(
++                    scene,
++                    self.dom,
++                    node_id,
++                    self.scale,
++                    self.initial_x,
++                    self.initial_y,
++                );
++            }
++        }
++    }
++
++    fn draw_canvas_background(&self, scene: &mut impl PaintScene, root_element: &Node) {
+         let bg_width = (self.width as f32).max(root_element.final_layout().size.width);
+         let bg_height = (self.height as f32).max(root_element.final_layout().size.height);
+ 
+@@ -230,53 +285,6 @@
+                 (bg_width as f64, bg_height as f64),
+             );
+             scene.fill(Fill::NonZero, Affine::IDENTITY, bg_color, None, &rect);
+-        }
+-
+-        // The root clip rectangle is the viewport (in screen coordinates, with the
+-        // initial offset already subtracted). Elements outside of this are culled, and
+-        // scrollports narrow this rectangle further for their descendants.
+-        let viewport_clip_rect = Rect::new(0.0, 0.0, self.width as f64, self.height as f64);
+-
+-        self.render_element(
+-            scene,
+-            root_id,
+-            Affine::translate(Vec2 {
+-                x: self.initial_x - (viewport_scroll.x * self.scale),
+-                y: self.initial_y - (viewport_scroll.y * self.scale),
+-            }),
+-            viewport_clip_rect,
+-        );
+-
+-        // Render debug overlay
+-        if self.dom.devtools().highlight_hover {
+-            if let Some(node_id) = self.dom.as_ref().get_hover_node_id() {
+-                render_debug_overlay(
+-                    scene,
+-                    self.dom,
+-                    node_id,
+-                    self.scale,
+-                    self.initial_x,
+-                    self.initial_y,
+-                );
+-            }
+-        }
+-        if let Some(node_id) = self.dom.devtools().highlight_node {
+-            // Only nodes with element data have a layout to visualise
+-            if self
+-                .dom
+-                .as_ref()
+-                .get_node(node_id)
+-                .is_some_and(|node| node.element_data().is_some())
+-            {
+-                render_debug_overlay(
+-                    scene,
+-                    self.dom,
+-                    node_id,
+-                    self.scale,
+-                    self.initial_x,
+-                    self.initial_y,
+-                );
+-            }
+         }
+     }
+ 
+@@ -516,12 +524,7 @@
+                     filter,
+                     backdrop_filter,
+                     |scene| {
+-                        cx.draw_background(scene);
+-                        cx.draw_inset_box_shadow(scene);
+-                        cx.draw_table_row_backgrounds(scene);
+-                        cx.draw_table_borders(scene);
+-                        cx.draw_border(scene);
+-                        cx.stroke_devtools(scene);
++                        cx.draw_own_decoration(scene, true);
+ 
+                         // TODO: allow layers with opacity to be unclipped (overflow: visible)
+                         let clip = if is_text_input {
+@@ -550,16 +553,7 @@
+                                     x: -node.scroll_offset().x * self.scale,
+                                     y: -node.scroll_offset().y * self.scale,
+                                 });
+-                                cx.draw_image(scene);
+-                                #[cfg(feature = "svg")]
+-                                cx.draw_svg(scene);
+-                                #[cfg(feature = "custom-widget")]
+-                                cx.draw_custom_widget(scene);
+-                                cx.draw_sub_document(scene);
+-                                cx.draw_input(scene);
+-                                cx.draw_text_input_text(scene, content_position);
+-                                cx.draw_inline_layout(scene, content_position);
+-                                cx.draw_marker(scene, content_position);
++                                cx.draw_own_content(scene, content_position);
+                                 cx.draw_children(scene, cx.transform, child_clip_rect);
+                             },
+                         );
+@@ -988,6 +982,30 @@
+         }
+     }
+ 
++    fn draw_own_decoration(&self, scene: &mut impl PaintScene, paint_background: bool) {
++        if paint_background {
++            self.draw_background(scene);
++        }
++        self.draw_inset_box_shadow(scene);
++        self.draw_table_row_backgrounds(scene);
++        self.draw_table_borders(scene);
++        self.draw_border(scene);
++        self.stroke_devtools(scene);
++    }
++
++    fn draw_own_content(&self, scene: &mut impl PaintScene, content_position: Point) {
++        self.draw_image(scene);
++        #[cfg(feature = "svg")]
++        self.draw_svg(scene);
++        #[cfg(feature = "custom-widget")]
++        self.draw_custom_widget(scene);
++        self.draw_sub_document(scene);
++        self.draw_input(scene);
++        self.draw_text_input_text(scene, content_position);
++        self.draw_inline_layout(scene, content_position);
++        self.draw_marker(scene, content_position);
++    }
++
+     fn draw_children(
+         &self,
+         scene: &mut impl PaintScene,

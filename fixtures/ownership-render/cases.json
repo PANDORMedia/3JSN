@@ -1,0 +1,18 @@
+[
+  { "name": "negative-before-inflow" },
+  { "name": "zero-after-inflow" },
+  { "name": "negative-restored" },
+  { "name": "hidden-ancestor-visible-child" },
+  { "name": "visibility-restored" },
+  { "name": "opacity-fixed-escape", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-relative-clipped", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-fixed-restored", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-owner-offscreen", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-owner-zero-size", "subjectColor": [240, 144, 152, 255] },
+  { "name": "opacity-owner-restored", "subjectColor": [240, 144, 152, 255] },
+  { "name": "nested-opacity-fixed", "subjectColor": [247, 199, 203, 255] },
+  { "name": "offset-root-fixed" },
+  { "name": "offset-root-fixed", "scale": 2 },
+  { "name": "transformed-fixed" },
+  { "name": "all-styles-restored" }
+]

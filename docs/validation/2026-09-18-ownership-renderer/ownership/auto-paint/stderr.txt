@@ -1,0 +1,1 @@
+2026-09-18 07:03:20.981 threejs-positioned-ownership-paint-probe[55452:4838689] Metal API Validation Enabled

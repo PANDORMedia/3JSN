@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "passed": 3,
+  "total": 3,
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/153.0.8010.50",
+    "revision": "@583c5b4655acea7450a3b5224ea5121ae8caca9b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "jsVersion": "15.3.76.12"
+  },
+  "nativeDevice": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "criteria": {
+    "maxChannelDifference": 2,
+    "maxGeometryDifferenceCssPixels": 0.1,
+    "rasterEdgeExclusion": "Non-uniform browser 3x3 neighborhoods and outermost image pixels",
+    "nativePaintCallsPerCase": 1
+  },
+  "limits": [
+    "Edges are counted separately; interior parity does not prove identical antialiasing.",
+    "Only the recorded ordered cases, viewport and device scales were compared."
+  ],
+  "inputs": {
+    "browserReportSha256": "07b5d90ca1d66de3dedb240f770235299fd3c5424c0a4cedd688b0abffbc9027",
+    "nativeReportSha256": "dd7a724634cac0c298f3957ed81a7dba27d42484c89a5391b1e13f586d88b043",
+    "comparatorSha256": "7bdaec74946c8dd094158eb624072bbde513fd19107d1fd3b3c94fc8be28605b",
+    "subjectColorHelperSha256": "e9222441a292a2012f46acea18fe42e106fb984e23f79a318f5b132331016258"
+  },
+  "cases": [
+    {
+      "name": "small",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 112416,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "small-1x.png",
+        "pixelSha256": "ed837d186953e39becc72c4a2f3fbc1199868f3b95a2681d19fb60b8bdb04aba"
+      },
+      "native": {
+        "file": "000-case.png",
+        "pixelSha256": "0fbaa6c1ba7444a3a89f128a3628d45a29521a429873aae4f838febb501394b2"
+      }
+    },
+    {
+      "name": "wide",
+      "scale": 1,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 102411,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 8192,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "wide-1x.png",
+        "pixelSha256": "d4318d71ce1db91d65c6ed6cef6978a6af9b1c642251acf020cb33b71b95093e"
+      },
+      "native": {
+        "file": "001-case.png",
+        "pixelSha256": "c24c3e1c823b1c6a209a56badb8a6b5c2ad03b9e49703cfab5a35560253d1ba1"
+      }
+    },
+    {
+      "name": "small",
+      "scale": 2,
+      "subjectColor": [
+        240,
+        144,
+        152,
+        255
+      ],
+      "interiorAndGeometryMatch": true,
+      "differingPixels": 0,
+      "interiorPixels": 454148,
+      "differingInteriorPixels": 0,
+      "subjectReferencePixels": 32768,
+      "geometryDifferences": [],
+      "browser": {
+        "file": "small-2x.png",
+        "pixelSha256": "23afaee520f5dc100e195cdd6c276e63030ba734e0d1e99770efcda3737fb7fb"
+      },
+      "native": {
+        "file": "002-case.png",
+        "pixelSha256": "4e1a8c7c988c634373692691e8e327f6056b7ea4d00f5abe24846dce61206678"
+      }
+    }
+  ]
+}

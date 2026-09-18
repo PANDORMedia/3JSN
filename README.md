@@ -123,6 +123,13 @@ Metal captures match Chrome in 3/3 controls; all 112 existing paint case records
 remain unchanged. Fourteen new clip-routing controls explain Chrome's distinct
 opacity and clip-path behavior, while native parity remains partial at 8/14.
 
+An explicit [ownership renderer](experiments/dom-canvas/OWNERSHIP.md) now fixes
+paint phases, escaped clips and opacity bounds in the box fixtures. Its
+[Metal checkpoint](docs/validation/2026-09-18-ownership-renderer.md) matches uniform
+interior pixels in 142/142 cases and geometry plus pixels in 136/142. The legacy
+path is preserved; text, clip-edge fidelity, input, scrolling and backend adoption
+remain open.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

@@ -1,0 +1,45 @@
+{
+  "status": "prepared-research-candidate",
+  "adopted": false,
+  "directory": ".cache/positioned-candidate-baseline",
+  "revision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+  "taffyRevision": "dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c",
+  "profile": "upstream-baseline",
+  "changedFiles": {
+    "packages/blitz-dom/src/layout/damage.rs": "47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85",
+    "packages/blitz-paint/src/checked_scene.rs": "398ec60b1ebc491711ba53ea7711198ba58650009c59ed492d95b3ab20926925",
+    "packages/blitz-paint/src/layers.rs": "65bc4da97aef8c456be403eb10330ae85b42b5f2484e93f79de9f258642b4ec2",
+    "packages/blitz-paint/src/lib.rs": "7650e6b40569585ef308da42ac51192a072815fe7130a51909410b53ce5c0859",
+    "packages/blitz-paint/src/render.rs": "266c97a17e3af65db6e7a9334eda3dc30b3fe5aea9d0a04abac5520b5a1317c1"
+  },
+  "addedFiles": [
+    "packages/blitz-paint/src/checked_scene.rs"
+  ],
+  "removedFiles": [],
+  "patches": [
+    {
+      "name": "blitz-stacking-demotion.patch",
+      "sha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f"
+    },
+    {
+      "name": "blitz-layer-budget.patch",
+      "sha256": "ad167742d4464c70b16c817b68995a808e108dce7ba507f7868d162be2041f7a"
+    }
+  ],
+  "verifiedTrackedFiles": 416,
+  "verifiedAddedFiles": 1,
+  "verifiedRemovedFiles": 0,
+  "manifestInputSha256": "a4369822408791fdba7b541bf2d48c808589c52c7ed3397362547f4197e5fdd2",
+  "lockInputSha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+  "generatedManifestSha256": "f755a4d094a9ae91b2a5e86d36ebd007cf194534883f269ac8c591fb8194d721",
+  "generatedLockSha256": "7f37bde177171638101d2ef4b8767b393b470feeaa2110273e39ee1574165992",
+  "deno": {
+    "package": "deno_webgpu",
+    "version": "0.226.0",
+    "directory": ".cache/dom-canvas/deno_webgpu",
+    "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+    "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+    "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+    "verifiedPackagedFiles": 32
+  }
+}

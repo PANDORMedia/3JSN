@@ -113,3 +113,9 @@ including on error; persistent V8 context roots are cleared before isolate dispo
 
 The shared scene source is unchanged. Its fixture bootstrap deliberately uses
 Three.js WebGPURenderer; this does not establish unchanged WebGL game support.
+
+The separately prepared candidate now has an explicit
+[ownership renderer](OWNERSHIP.md). It shares this host's scene submission and
+cleanup through a concrete paint callback, with no default-path switch. Read the
+[bounded validation](../../docs/validation/2026-09-18-ownership-renderer.md) before
+using its pixel results as a compatibility claim.

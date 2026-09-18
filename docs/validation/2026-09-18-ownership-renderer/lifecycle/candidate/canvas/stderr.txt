@@ -1,0 +1,2 @@
+2026-09-18 07:04:56.708 threejs-positioned-dom-canvas-probe[55603:4840474] Metal API Validation Enabled
+Error: "DOM_PAINT_GATES_FAILED; report saved; shared GPU cleanup completed"

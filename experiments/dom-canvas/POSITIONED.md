@@ -5,22 +5,13 @@ It pins [Blitz PR #805](https://github.com/DioxusLabs/blitz/pull/805) at
 `c032f63418097bb82c26077a85c24896c0a96e9d` and its Taffy dependency at
 `dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c`. Compilation does not establish support.
 
-The candidate matches 19/20 [paint-order captures](../../fixtures/paint-order/README.md),
-19/21
-[initial-containing-block captures](../../fixtures/initial-containing-block/README.md),
-13/14 [positioned captures](../../fixtures/positioned-layout/README.md), 5/17
-[auto-paint captures](../../fixtures/auto-paint/README.md), and 5/22
-[overflow captures](../../fixtures/overflow-paint/README.md). Both equal-z
-owner-merge regressions from the initial-owner checkpoint are repaired.
-The new [ownership/effect fixture](../../fixtures/paint-ownership/README.md)
-matches 10/18. Shared geometry and a read-only ownership plan preserve all 112
-native paint case records; see the [current checkpoint](../../docs/validation/2026-09-18-paint-ownership.md).
-Effect/z:auto ordering, transformed DOM geometry, ancestor clipping and input/
-scrolling gaps prevent adoption. See the
-[recorded evidence](../../docs/validation/2026-09-18-transform-context.md).
-Overflow previously scored 6/22: fresh transform removal exposes an ancestor-clip
-failure that the old classifier hid for one frame. Repeating that state also fails
-on the old candidate. This remains an unadopted candidate with known regressions.
+Two explicit paint paths now share this layout candidate. Legacy traversal retains
+all 142 case records from its preserved baseline. The opt-in
+[ownership renderer](OWNERSHIP.md) matches browser geometry and uniform interior
+pixels in 136/142 cases, and uniform interior pixels in all 142. Six DOM geometry
+mismatches remain. See the [current validation](../../docs/validation/2026-09-18-ownership-renderer.md).
+These box fixtures do not establish text, antialias-edge, input, scrolling or
+complete HTML support. The default renderer remains unchanged.
 
 ## Ownership and patch boundaries
 
@@ -31,7 +22,7 @@ and uses the existing block and out-of-flow algorithms. It does not rewrite
 HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
 each resolve; descendant layout caches remain in use.
 
-Ten ordered patches define this candidate:
+Eleven ordered patches define this candidate:
 
 | Patch | Responsibility |
 | --- | --- |
@@ -45,6 +36,7 @@ Ten ordered patches define this candidate:
 | `blitz-shared-clip-geometry.patch` | Move the existing rounded-box geometry into DOM for painting and future clip predicates, removing its old paint-side copy. |
 | `blitz-paint-ownership.patch` | Build a read-only post-layout ownership plan with explicit unsupported errors; does not replace legacy rendering or hit lists. |
 | `blitz-layer-budget.patch` | Return explicit whole-paint layer errors before GPU submission, covering direct clips/effects, widgets and subdocuments. Also applied to the default and upstream baseline profiles. |
+| `blitz-ownership-renderer.patch` | Add an explicit ownership traversal, per-contribution clip routes and typed eligibility errors while sharing checked lifecycle and primitives with legacy paint. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
@@ -59,9 +51,10 @@ frames without out-of-flow changes or equal-z ties; its cost is not benchmarked.
 It refreshes the existing untransformed border bounds, not general transformed
 or overflowing subtree bounds.
 
-Root effects still expose a z:auto ordering failure that cannot be fixed by
-sorting existing lists. Collecting those entries must preserve applicable clip
-ancestors and reverse hit traversal as well as coordinates. The existing hit
+Legacy root effects expose a z:auto ordering failure that cannot be fixed by
+sorting existing lists. The new traversal consumes the read-only ownership plan
+and retains contribution clips inside effects. Reverse hit traversal remains
+a separate consumer to implement. The existing hit
 path also lacks complete no-box rejection; preserving hidden entries' slots
 avoids promoting them but does not certify general hidden-content input behavior.
 The current hit/paint scroll handling has no complete shared coordinate-space
@@ -78,7 +71,7 @@ independent layer-budget correction is shared by all three prepared profiles.
 Prerequisites: Node.js 24+, Git, tar, the normal experiment's cached dependencies,
 and a local Blitz Git repository containing the exact candidate commit.
 Preparation never fetches, checks out or resolves dependencies. It archives
-immutable Git objects, checks 413 retained tracked files and seven added modules,
+immutable Git objects, checks 413 retained tracked files and nine added modules,
 verifies three removed files stay absent, checks patch hashes and resulting
 contents, and rejects extra files or symlinks. Do not prepare while building or capturing the same profile.
 
@@ -113,8 +106,9 @@ Generated manifests derive from the tracked experiment manifest. Paths become
 absolute, Blitz revisions change, and package/binary names are distinct. The
 tracked lock changes only the Taffy source and probe package name. All profiles
 include the five public `layer-budget` tests. Only the
-initial-owner profile adds the `positioned-layout` integration test target and
-`threejs-positioned-paint-owner-probe` diagnostic executable.
+initial-owner profile adds the `positioned-layout` and `ownership-render` test
+targets, `threejs-positioned-paint-owner-probe` diagnostic, and
+`threejs-positioned-ownership-paint-probe` renderer executable.
 Generated paths stay ignored. Save preparation JSON and executable hashes with
 captures; do not attribute an old executable to newly prepared source.
 
@@ -166,14 +160,14 @@ node experiments/dom-canvas/compare-clips.mjs \
   artifacts/paint-order/candidate-comparison.json
 ```
 
-The `positioned-layout` CPU target now contains 28 regressions. They include the
+The `positioned-layout` CPU target now contains 42 regressions. They include the
 native expectations for the shared hit fixture, anonymous-wrapper hide/show,
 retained hidden entries, repeated DOM/CSS-order mutations, current transform
 contexts and post-layout hit bounds. Hardware paint and
 canvas lifecycle evidence remains a separate requirement.
 
 The [paint-ownership investigation](../../docs/investigations/paint-ownership.md)
-defines the next collection boundary and its effect/clip constraints. The
+defines the collection boundary and its effect/clip constraints. The
 [transform hit fixture](../../fixtures/transform-context/README.md) and
 [auto-paint matrix](../../fixtures/auto-paint/README.md) exercise the prerequisite
 repairs without changing the fixture's positioning to fit the native result.
@@ -199,8 +193,9 @@ The normal matrix comparison intentionally exits 1 while parity is partial.
 
 The ninth patch exposes a post-layout `PaintOwnershipPlan` that keeps formatting
 ancestry, geometry owners and real stacking contexts separate. It only describes
-box contributions. The old paint and hit lists remain authoritative until clips,
-effect groups, bounds and reverse traversal can be preserved together.
+box contributions. Legacy painting and hit testing still use the old lists;
+the explicit ownership renderer consumes this plan without modifying them.
+Reverse hit traversal remains an adoption gate.
 
 ```sh
 target/debug/threejs-positioned-paint-owner-probe \
@@ -261,4 +256,21 @@ profile. The optional fifth argument is strict JSON containing the independent
 The [checkpoint](../../docs/validation/2026-09-18-paint-budget.md) also preserves
 14 [clip-routing controls](../../fixtures/effect-clip-routing/README.md). Run the
 same browser/native commands with `effect-clip-routing` and its fixture paths.
-Their partial 8/14 parity is separate from the budget fixture's 3/3 result.
+Legacy parity remains 8/14, separate from the budget fixture's 3/3 result.
+The ownership renderer matches all 14 clip-routing controls.
+
+## Opt-in ownership capture
+
+After preparing and building the candidate:
+
+```sh
+cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml --test ownership-render
+cargo test --locked --offline -j2 --manifest-path .cache/positioned-candidate/probe/Cargo.toml -p blitz-paint --lib
+node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/ownership-render/browser ownership-render
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-ownership-paint-probe fixtures/ownership-render/index.html fixtures/ownership-render/fixture.js fixtures/ownership-render/cases.json artifacts/ownership-render/native
+node experiments/dom-canvas/compare-clips.mjs artifacts/ownership-render/browser artifacts/ownership-render/native artifacts/ownership-render/comparison.json
+```
+
+Keep unsupported errors and geometry mismatches visible. The ordinary overflow
+probe still selects legacy traversal. Do not replace it silently in existing
+benchmarks or interpret the new box-only paint path as backend adoption.

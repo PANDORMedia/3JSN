@@ -1,0 +1,12 @@
+{
+  "status": "preexisting-failures-reproduced",
+  "failingTests": [
+    "geometry_tests::contents_are_boxless_without_suppressing_nested_descendants",
+    "geometry_tests::hidden_ancestor_suppresses_retained_descendant_geometry_and_restore_recovers_it",
+    "geometry_tests::inline_fragments_survive_hide_restore_and_empty_lists_have_zero_bounds",
+    "geometry_tests::retained_detached_subtree_has_zero_geometry_until_reattached"
+  ],
+  "priorLogSha256": "29582429f40134c6b55d962123c594ae1f9229ad326111120926bea02a5df168",
+  "candidateLogSha256": "744baad7aac89d8f87110e6dc0f97688410746aec8ec02a3022a40bfa04d959b",
+  "defaultProfilePassed": true
+}

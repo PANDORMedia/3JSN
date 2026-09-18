@@ -1,0 +1,1107 @@
+{
+  "status": "partial",
+  "fixture": "dom-canvas-native-metal",
+  "device": {
+    "adapter": "Apple M1 Pro",
+    "three": "186"
+  },
+  "contract": [
+    {
+      "name": "canvas DOM brand",
+      "passed": true
+    },
+    {
+      "name": "default bitmap dimensions",
+      "passed": true,
+      "observed": [
+        300,
+        150
+      ]
+    },
+    {
+      "name": "absent dimensions stay absent attributes",
+      "passed": true
+    },
+    {
+      "name": "IDL dimension reflection",
+      "passed": true
+    },
+    {
+      "name": "invalid attribute defaults",
+      "passed": true,
+      "observed": 300
+    },
+    {
+      "name": "HTML integer parsing",
+      "passed": true,
+      "observed": 40
+    },
+    {
+      "name": "CSS size differs from bitmap size",
+      "passed": true,
+      "observed": {
+        "bitmap": [
+          64,
+          32
+        ],
+        "css": [
+          128,
+          96
+        ]
+      }
+    },
+    {
+      "name": "unknown context is null",
+      "passed": true
+    },
+    {
+      "name": "native context brand and identity",
+      "passed": true
+    },
+    {
+      "name": "incompatible context mode is null",
+      "passed": true
+    },
+    {
+      "name": "initial configuration is null",
+      "passed": true
+    },
+    {
+      "name": "unconfigured texture throws InvalidStateError",
+      "passed": true,
+      "observed": "InvalidStateError"
+    },
+    {
+      "name": "current texture identity and metadata",
+      "passed": true
+    },
+    {
+      "name": "rendered canvas texture is readable",
+      "passed": true,
+      "observed": [
+        255,
+        0,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "invalid format throws and preserves current texture",
+      "passed": true,
+      "observed": "TypeError"
+    },
+    {
+      "name": "valid reconfigure replaces current texture",
+      "passed": true
+    },
+    {
+      "name": "reconfigured texture expires",
+      "passed": true
+    },
+    {
+      "name": "bitmap resize preserves context and changes texture",
+      "passed": true
+    },
+    {
+      "name": "resized texture expires",
+      "passed": true
+    },
+    {
+      "name": "redundant width assignment replaces WebGPU texture",
+      "passed": true
+    },
+    {
+      "name": "attribute resize reaches context",
+      "passed": true
+    },
+    {
+      "name": "independent canvas context and pixels",
+      "passed": true,
+      "observed": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "name": "detach and reinsert preserve context",
+      "passed": true
+    },
+    {
+      "name": "unconfigure clears state and expires texture",
+      "passed": true
+    },
+    {
+      "name": "unconfigure does not reset context mode",
+      "passed": true
+    },
+    {
+      "name": "default usage is only render attachment",
+      "passed": true,
+      "observed": 16
+    },
+    {
+      "name": "host cannot silently grant COPY_SRC usage",
+      "passed": true
+    }
+  ],
+  "paint": {
+    "captures": [
+      {
+        "name": "html-above",
+        "file": "html-above.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "fea57da86ec8342f4c3b68fe9fd62a569e8389479731cd041bf681703087c2ce",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "animated",
+        "file": "animated.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "8037407892d6164613fdaaac4fcfe3605e9ca4ac7edf1ef7e3527429481c57a2",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "html-below",
+        "file": "html-below.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 320,
+                "height": 200
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "eb72fed7db30eb9dd4630552343b52cc4544849a6a8d47bdd8e2634fe8c04d77",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "bitmap-resized",
+        "file": "bitmap-resized.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "0efbd4635835920519c71f91e040b97e679e53380618bf6b1e07c093661b9b09",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "detached",
+        "file": "detached.png",
+        "layout": {
+          "canvases": [],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "2dea8d6a3a641b7b7ac9782fd1d0b16bc32bf37c9dbbd74c729e82fd4835ca30",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "reattached",
+        "file": "reattached.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "0efbd4635835920519c71f91e040b97e679e53380618bf6b1e07c093661b9b09",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "css-resized",
+        "file": "css-resized.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 200.0,
+                "height": 100.0
+              },
+              "contentSize": {
+                "width": 200.0,
+                "height": 100.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "9325d3e3cd2ff000c5c483ba098011184808a1bbc2348872d360df50b0af755f",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "premultiplied",
+        "file": "premultiplied.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 200.0,
+                "height": 100.0
+              },
+              "contentSize": {
+                "width": 200.0,
+                "height": 100.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "f69f8e8de084a75eb386ffce320144f834b0e62aa6db7e11612a384aa418ba20",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "opaque",
+        "file": "opaque.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 200.0,
+                "height": 100.0
+              },
+              "contentSize": {
+                "width": 200.0,
+                "height": 100.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "7f816494b85d310b85f0e0b56d2327afab1a31fdb08ff997ae9ada0a5c38ceb6",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "clipped-hoisted",
+        "file": "clipped-hoisted.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 340.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "6f11f58fb58c7110142f65cf58814111a5b50a9e29b5f9ee8261c9be49196bf2",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "clipped-stacking-context",
+        "file": "clipped-stacking-context.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 340.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "ac563742fe9e80167efc40bff87243b6f629fd9546d5629fc722f38bdb34bdb9",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "alpha-stacking-context",
+        "file": "alpha-stacking-context.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "0100d596c2447dd9affb8971f6d98d489a7c1c5ca100e6fd1094af3c9abb533b",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "alpha-after-demotion",
+        "file": "alpha-after-demotion.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "0100d596c2447dd9affb8971f6d98d489a7c1c5ca100e6fd1094af3c9abb533b",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-0-0",
+        "file": "stacking-cycle-0-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-0-auto",
+        "file": "stacking-cycle-0-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-1-0",
+        "file": "stacking-cycle-1-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-1-auto",
+        "file": "stacking-cycle-1-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-2-0",
+        "file": "stacking-cycle-2-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-2-auto",
+        "file": "stacking-cycle-2-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-3-0",
+        "file": "stacking-cycle-3-0.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      },
+      {
+        "name": "stacking-cycle-3-auto",
+        "file": "stacking-cycle-3-auto.png",
+        "layout": {
+          "canvases": [
+            {
+              "node": "NodeId(11v1)",
+              "rect": {
+                "x": 24.0,
+                "y": 24.0,
+                "width": 256.0,
+                "height": 160.0
+              },
+              "contentSize": {
+                "width": 256.0,
+                "height": 160.0
+              },
+              "imageSize": {
+                "width": 400,
+                "height": 240
+              }
+            }
+          ],
+          "glyphs": 10,
+          "scale": 1.0
+        },
+        "pixels": {
+          "rgbaSha256": "de2c4cb607e1ac8ae8d770c2eff53c56d73ae72910c35f61f1fa581460507a51",
+          "whiteCaptionPixels": 344,
+          "pixelsChecked": 114688
+        }
+      }
+    ],
+    "clipping": {
+      "name": "ancestor overflow clips hoisted canvas",
+      "passed": false,
+      "sample": [
+        400,
+        100
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "actual": [
+        16,
+        21,
+        34,
+        255
+      ]
+    },
+    "stackingMutation": {
+      "name": "stacking context demotion paints canvas once",
+      "passed": true,
+      "sample": [
+        100,
+        100
+      ],
+      "expected": [
+        6,
+        136,
+        12,
+        255
+      ],
+      "actual": [
+        6,
+        136,
+        12,
+        255
+      ]
+    },
+    "stackingTransitions": [
+      {
+        "cycle": 0,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 0,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 1,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 1,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 2,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 2,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 3,
+        "zIndex": "0",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      },
+      {
+        "cycle": 3,
+        "zIndex": "auto",
+        "canvasRgba": [
+          6,
+          136,
+          12,
+          255
+        ],
+        "boxRgba": [
+          6,
+          136,
+          12,
+          255
+        ]
+      }
+    ],
+    "initialization": {
+      "method": "original-registry-load-store-pass",
+      "cases": [
+        {
+          "name": "untouched",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        },
+        {
+          "name": "partial",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 18
+          },
+          "rgbaSha256": "74537730b19ab0d71ceb804819db4339a521288d5726d41e6eb4f238097e67fb"
+        },
+        {
+          "name": "preserved",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "2b1946f26de538071699a52d253498440ecc5cbd419e17fa6aa74a5ef5be092f"
+        },
+        {
+          "name": "discarded",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        },
+        {
+          "name": "discard-then-partial",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 18
+          },
+          "rgbaSha256": "74537730b19ab0d71ceb804819db4339a521288d5726d41e6eb4f238097e67fb"
+        },
+        {
+          "name": "unsupported-usage",
+          "rejected": true,
+          "reason": "canvas export initialization requires RENDER_ATTACHMENT usage"
+        },
+        {
+          "name": "destroyed",
+          "rejected": true,
+          "reason": "canvas initialization view failed: Texture with 'GPUCanvasContext' label has been destroyed"
+        },
+        {
+          "name": "untouched-after-errors",
+          "passed": true,
+          "pixelsChecked": 96000,
+          "metadata": {
+            "width": 400,
+            "height": 240,
+            "usage": 16
+          },
+          "rgbaSha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b"
+        }
+      ],
+      "snapshotCopyBytes": 2304000,
+      "cpuImageTransport": false,
+      "jsUsageUnchanged": true
+    },
+    "alphaConversions": [
+      {
+        "mode": "premultiplied",
+        "straightRgba": [
+          0,
+          255,
+          0,
+          128
+        ]
+      },
+      {
+        "mode": "opaque",
+        "straightRgba": [
+          0,
+          128,
+          0,
+          255
+        ]
+      }
+    ],
+    "configuration": {
+      "format": "bgra8unorm",
+      "usage": 17,
+      "alphaMode": "premultiplied",
+      "width": 320,
+      "height": 200
+    },
+    "changedAnimationPixels": 3358,
+    "submittedCanvasFrames": 17,
+    "snapshotCopyBytes": 5504000,
+    "descriptorMismatchRejected": true,
+    "hostExpiryRejectedByJsValidation": true,
+    "reinsertedPixelsIdentical": true,
+    "validationErrors": []
+  },
+  "v8": "15.0.245.2-rusty",
+  "fontSha256": "a75044e4dab293c1ac7f8eba9f20df03f183f41b9319054f43b955959981632a",
+  "cpuImageTransport": false,
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "limits": [
+    "Metal-only offscreen experiment; no native presentation or performance claim.",
+    "Pinned Deno canvas patch and bounded DOM adapter; not full browser conformance.",
+    "Native export initializes Deno-created render-attachment canvases; other configured usages and imported producer textures remain unsupported.",
+    "Each changed frame uses a GPU snapshot copy, alpha conversion and Vello atlas copy; not zero-copy.",
+    "Canvas borders, padding, transforms, generic frame scheduling and color-space conversion are outside this test."
+  ]
+}
