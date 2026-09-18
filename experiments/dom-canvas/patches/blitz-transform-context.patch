@@ -1,0 +1,28 @@
+--- a/packages/blitz-dom/src/node/node.rs
++++ b/packages/blitz-dom/src/node/node.rs
+@@ -1294,6 +1294,24 @@
+             return true;
+         }
+ 
+-        if self.transform().is_some() {
++        let box_style = style.get_box();
++        let display = box_style.display;
++        let is_atomic_inline = self.element_data().is_some_and(|element| {
++            let name = &element.name.local;
++            crate::layout::replaced::is_replaced_element(name)
++                || *name == local_name!("input")
++                || *name == local_name!("textarea")
++                || *name == local_name!("button")
++        });
++        let is_transformable = !matches!(
++            display.inside(),
++            DisplayInside::None
++                | DisplayInside::Contents
++                | DisplayInside::TableColumn
++                | DisplayInside::TableColumnGroup
++        ) && (!display.is_inline_flow() || is_atomic_inline);
++        // Ownership is resolved before transform matrices, and a declared
++        // identity transform still establishes a stacking context.
++        if is_transformable && box_style.has_transform_or_perspective() {
+             return true;
+         }

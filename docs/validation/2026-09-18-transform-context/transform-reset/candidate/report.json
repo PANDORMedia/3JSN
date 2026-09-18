@@ -1,0 +1,221 @@
+{
+  "status": "captured",
+  "fixture": "ordinary-html-clipping",
+  "backend": "Metal",
+  "offscreen": true,
+  "device": {
+    "vendor": "0",
+    "architecture": "",
+    "device": "0",
+    "description": "Apple M1 Pro",
+    "isFallbackAdapter": false
+  },
+  "v8": "15.0.245.2-rusty",
+  "cssViewport": {
+    "width": 448,
+    "height": 256
+  },
+  "cases": [
+    {
+      "name": "transformed-clip",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 32.0,
+          "y": 24.0,
+          "width": 240.0,
+          "height": 176.0,
+          "top": 24.0,
+          "left": 32.0,
+          "right": 272.0,
+          "bottom": 200.0
+        },
+        "middle": {
+          "x": 56.0,
+          "y": 40.0,
+          "width": 160.0,
+          "height": 128.0,
+          "top": 40.0,
+          "left": 56.0,
+          "right": 216.0,
+          "bottom": 168.0
+        },
+        "subject": {
+          "x": 176.0,
+          "y": 120.0,
+          "width": 100.0,
+          "height": 90.0,
+          "top": 120.0,
+          "left": 176.0,
+          "right": 276.0,
+          "bottom": 210.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "10a2bca0875d04667cb8f724f0be4a3ecb777e29e3399eb9b8bb394e4aaff5f1",
+      "file": "000-case.png"
+    },
+    {
+      "name": "moved-clip",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 72.0,
+          "y": 40.0,
+          "width": 240.0,
+          "height": 176.0,
+          "top": 40.0,
+          "left": 72.0,
+          "right": 312.0,
+          "bottom": 216.0
+        },
+        "middle": {
+          "x": 96.0,
+          "y": 56.0,
+          "width": 112.0,
+          "height": 88.0,
+          "top": 56.0,
+          "left": 96.0,
+          "right": 208.0,
+          "bottom": 144.0
+        },
+        "subject": {
+          "x": 172.0,
+          "y": 100.0,
+          "width": 100.0,
+          "height": 90.0,
+          "top": 100.0,
+          "left": 172.0,
+          "right": 272.0,
+          "bottom": 190.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "9dc35fc4a7046b633357183358c9ae4cfc759644de0ae19a05bfa53d24ff4c81",
+      "file": "001-case.png"
+    },
+    {
+      "name": "moved-clip",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 72.0,
+          "y": 40.0,
+          "width": 240.0,
+          "height": 176.0,
+          "top": 40.0,
+          "left": 72.0,
+          "right": 312.0,
+          "bottom": 216.0
+        },
+        "middle": {
+          "x": 96.0,
+          "y": 56.0,
+          "width": 112.0,
+          "height": 88.0,
+          "top": 56.0,
+          "left": 96.0,
+          "right": 208.0,
+          "bottom": 144.0
+        },
+        "subject": {
+          "x": 172.0,
+          "y": 100.0,
+          "width": 100.0,
+          "height": 90.0,
+          "top": 100.0,
+          "left": 172.0,
+          "right": 272.0,
+          "bottom": 190.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "9dc35fc4a7046b633357183358c9ae4cfc759644de0ae19a05bfa53d24ff4c81",
+      "file": "002-case.png"
+    },
+    {
+      "name": "moved-clip",
+      "scale": 1.0,
+      "width": 448,
+      "height": 256,
+      "layout": {
+        "outer": {
+          "x": 72.0,
+          "y": 40.0,
+          "width": 240.0,
+          "height": 176.0,
+          "top": 40.0,
+          "left": 72.0,
+          "right": 312.0,
+          "bottom": 216.0
+        },
+        "middle": {
+          "x": 96.0,
+          "y": 56.0,
+          "width": 112.0,
+          "height": 88.0,
+          "top": 56.0,
+          "left": 96.0,
+          "right": 208.0,
+          "bottom": 144.0
+        },
+        "subject": {
+          "x": 172.0,
+          "y": 100.0,
+          "width": 100.0,
+          "height": 90.0,
+          "top": 100.0,
+          "left": 172.0,
+          "right": 272.0,
+          "bottom": 190.0
+        }
+      },
+      "paint": {
+        "canvases": [],
+        "glyphs": 0,
+        "scale": 1.0
+      },
+      "paintCalls": 1,
+      "gpuErrors": [],
+      "pixelSha256": "9dc35fc4a7046b633357183358c9ae4cfc759644de0ae19a05bfa53d24ff4c81",
+      "file": "003-case.png"
+    }
+  ],
+  "inputs": {
+    "htmlSha256": "149583b2c5a485a450c23190793d499dbcb4767d513852ffb5baa34ee1839a32",
+    "scriptSha256": "189237fd169805afedbd46997da03418904be46d2755724d56b1043400f8ff36",
+    "casesSha256": "f65b85928b20e7ba40224369a4491086ab0e69428d56d0255952568c7fda0b13"
+  },
+  "nativeDeviceIdentityChecked": true,
+  "nativeQueueIdentityChecked": true,
+  "cpuReadbackPurpose": "verification PNGs only",
+  "limits": [
+    "Metal-only offscreen captures; no visible presentation or performance claim.",
+    "Browser comparison is a separate step; capture completion is not a compatibility pass.",
+    "Ordinary box fixtures with no font or text requirements; bounded existing DOM adapter."
+  ]
+}

@@ -1,0 +1,19 @@
+[
+  { "name": "root-fixed-auto" },
+  { "name": "root-effect-fixed-auto" },
+  { "name": "positioned-branches-auto" },
+  { "name": "auto-branch-positive-child" },
+  { "name": "zero-branch-positive-child" },
+  { "name": "static-opacity-branch" },
+  { "name": "static-transform-branch" },
+  { "name": "static-effect-removed" },
+  { "name": "relative-auto-clip" },
+  { "name": "absolute-contained-clip" },
+  { "name": "absolute-escape-clip" },
+  { "name": "fixed-escape-clip" },
+  { "name": "fixed-transform-clip" },
+  { "name": "absolute-clip-removed" },
+  { "name": "absolute-clip-restored" },
+  { "name": "root-fixed-restored" },
+  { "name": "fixed-transform-clip", "scale": 2 }
+]

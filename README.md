@@ -107,6 +107,12 @@ candidate repairs viewport ownership, dynamic grid state and
 [equal-z painting across geometry owners](docs/validation/2026-09-18-paint-order.md).
 It matches 19/20 paint-order cases and 19/21 initial-owner cases; effect ordering,
 transformed geometry, clipping and input/scrolling gaps still prevent adoption.
+The next [transform-context checkpoint](docs/validation/2026-09-18-transform-context.md)
+repairs current style ownership and first-frame hit bounds. Its new auto-paint
+matrix improves to 5/17, while correct transform removal exposes a prior one-frame
+clip pass as unstable. The candidate remains unadopted; the
+[paint-ownership investigation](docs/investigations/paint-ownership.md) records the
+shared paint/input/clip boundary needed next.
 
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an

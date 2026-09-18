@@ -1,0 +1,21 @@
+{
+  "status": "partial",
+  "previousPassingPaintCasesPreserved": false,
+  "lostPriorMatch": {
+    "fixture": "overflow-paint",
+    "case": "moved-clip",
+    "scale": 1,
+    "cause": "Fresh transform demotion exposes the existing ancestor clipping failure; the baseline pass lasts one frame only."
+  },
+  "transformResetControl": "transform-reset/summary.json",
+  "canvasReference": "docs/validation/2026-09-18-paint-order/canvas-report.json",
+  "canvasReferenceSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a",
+  "canvasPaintReportUnchanged": true,
+  "canvasCapturedFramesUnchanged": 21,
+  "canvasInitializationUnchanged": true,
+  "browserCanvasContractMatches": 27,
+  "browserHitAssertions": 228,
+  "validationErrors": [],
+  "injectedFailureCleanupPassed": true,
+  "canvasReportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a"
+}

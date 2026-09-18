@@ -62,8 +62,8 @@ or general browser DOM behavior.
 
 The separate paint runner captures the [overflow](overflow-paint/README.md),
 [positioned layout](positioned-layout/README.md),
-[initial containing block](initial-containing-block/README.md), and
-[paint order](paint-order/README.md) matrices:
+[initial containing block](initial-containing-block/README.md),
+[paint order](paint-order/README.md), and [auto paint](auto-paint/README.md) matrices:
 
 ```sh
 node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/paint-order/browser paint-order
@@ -73,6 +73,8 @@ node scripts/compatibility/paint-hit-reference.mjs /path/to/chrome artifacts/pai
 Paint comparisons require matching source identities, viewport and ordered
 mutations, plus geometry and visible pixels. The hit reference uses the same
 HTML and point expectations as the native paint-order tests.
+The separate [transform-context hit fixture](transform-context/README.md) checks
+identity transforms, first-resolve context changes and repeated restoration.
 
 The fixture uses the repository's Three.js r186 baseline, not CtF's pinned r168
 dependency. Broader version compatibility, post-processing, media/voice,

@@ -3,3 +3,5 @@ mod paint_order_hidden_tests;
 mod paint_order_hit_tests;
 mod paint_order_tests;
 mod positioned_grid_tests;
+mod stacking_bounds_tests;
+mod transform_context_tests;

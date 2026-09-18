@@ -23,8 +23,8 @@ const namePrefix = baseline ? 'threejs-positioned-baseline-' : 'threejs-position
 const changedFiles = baseline ? {
   'packages/blitz-dom/src/layout/damage.rs': '47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85',
 } : {
-  'packages/blitz-dom/src/node/node.rs': 'b4373fb4266c3d503ba63bb360258c86bd6c8daa66ea94c0ddc1d848176be56f',
-  'packages/blitz-dom/src/resolve.rs': 'd7c19ad6b3914c71d356b58d7cd0f12f1a6b8e68a7dbe6a0bd7f3fa1f7dcaf13',
+  'packages/blitz-dom/src/node/node.rs': '9dbd04f8d48ba3b9933af0ea92b6625d1cf745ad518ce326c2fc63745e64a93d',
+  'packages/blitz-dom/src/resolve.rs': '6dacf0348fa880294de9c9e36a4af1e04af504f4d76e6d84d2302282c18f8556',
   'packages/blitz-dom/src/layout/damage.rs': '6548ac0c8f49634e9fbc4771fbd2d05787a79715be7ec77a78d87312527c6603',
   'packages/blitz-paint/src/render.rs': 'f0c5ae546a9c79c7045f30ee8c34fd6afd6cd3000d8692b9842caf2054e66c26',
   'packages/blitz-dom/src/layout/mod.rs': '2924febe36c4a91002cf36f09f41edbf083021a2cb4da4f713bc40f33eeef6a1',
@@ -55,6 +55,14 @@ const patchInputs = [
   {
     'name': 'blitz-positioned-paint-order.patch',
     'sha256': '29e0a1c4b14a1655391c74d0e353255bfd128a9f1e667bf15ecb02affcba43de'
+  },
+  {
+    'name': 'blitz-transform-context.patch',
+    'sha256': '48c0837e2a24e2c0a7254cc56944fe700837909e2775e730793f153b619a80ab'
+  },
+  {
+    'name': 'blitz-stacking-bounds.patch',
+    'sha256': '570a97b110f5bf90c66464dbff7afcb24364bf3718395e98b4f33962010360d7'
   }
 ];
 const selectedPatches = baseline ? patchInputs.slice(0, 1) : patchInputs;

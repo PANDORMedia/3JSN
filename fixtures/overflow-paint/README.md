@@ -28,3 +28,10 @@ background so that its subject remains observable.
 
 See the [run instructions](../../experiments/dom-canvas/OVERFLOW.md) and
 [recorded results](../../docs/validation/2026-09-18-overflow.md).
+
+`transform-reset-cases.json` is a separate four-frame replay of the existing
+script: transformed clip, followed by the same moved clip three times. It detects
+the old classifier's one-frame retention of a removed transform context. The
+[transform-context evidence](../../docs/validation/2026-09-18-transform-context.md)
+records the baseline's first-frame pass and subsequent ancestor-clipping failures;
+the original 22-case matrix remains unchanged.

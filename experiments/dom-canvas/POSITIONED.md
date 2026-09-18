@@ -8,12 +8,16 @@ It pins [Blitz PR #805](https://github.com/DioxusLabs/blitz/pull/805) at
 The candidate matches 19/20 [paint-order captures](../../fixtures/paint-order/README.md),
 19/21
 [initial-containing-block captures](../../fixtures/initial-containing-block/README.md),
-13/14 [positioned captures](../../fixtures/positioned-layout/README.md), and 6/22
+13/14 [positioned captures](../../fixtures/positioned-layout/README.md), 5/17
+[auto-paint captures](../../fixtures/auto-paint/README.md), and 5/22
 [overflow captures](../../fixtures/overflow-paint/README.md). Both equal-z
 owner-merge regressions from the initial-owner checkpoint are repaired.
 Effect/z:auto ordering, transformed DOM geometry, ancestor clipping and input/
 scrolling gaps prevent adoption. See the
-[recorded evidence](../../docs/validation/2026-09-18-paint-order.md).
+[recorded evidence](../../docs/validation/2026-09-18-transform-context.md).
+Overflow previously scored 6/22: fresh transform removal exposes an ancestor-clip
+failure that the old classifier hid for one frame. Repeating that state also fails
+on the old candidate. This remains an unadopted candidate with known regressions.
 
 ## Ownership and patch boundaries
 
@@ -24,7 +28,7 @@ and uses the existing block and out-of-flow algorithms. It does not rewrite
 HTML styles or copy a positioning algorithm. The synthetic container is rebuilt
 each resolve; descendant layout caches remain in use.
 
-Five ordered patches define this candidate:
+Seven ordered patches define this candidate:
 
 | Patch | Responsibility |
 | --- | --- |
@@ -33,12 +37,21 @@ Five ordered patches define this candidate:
 | `blitz-initial-containing-block-layout.patch` | Separate Document viewport geometry from HTML layout through public Taffy APIs. |
 | `blitz-initial-containing-block-paint.patch` | Route Document-owned boxes through HTML's paint context, compensate root offsets and preserve the root entry through containing-block traversal. |
 | `blitz-positioned-paint-order.patch` | Merge equal nonzero z-index entries in current formatting-tree order, preserving CSS order, generated boxes, source ties and retained nonparticipant slots. |
+| `blitz-transform-context.patch` | Classify transform contexts from current computed style, including identity transforms, with CSS-box applicability controls. |
+| `blitz-stacking-bounds.patch` | Refresh active stacking-list hit bounds after layout, including contexts without out-of-flow attachments. |
 
 Paint ranks follow formatting ancestry, including flex/grid order, pseudo-elements,
 anonymous wrappers and flattened `display:contents` descendants. Hidden subtrees
 cannot contribute stale layout-parent links. Active entries require a rooted rank;
 known nonparticipants keep their original slots. The module uses transient ranks
 and changes no geometry coordinates or zero-level ownership.
+
+Transform classification uses Stylo's maintained predicate, since cached affine
+presence cannot describe current ownership. Bounds refresh reuses the existing
+post-layout pass and rooted rank guard. This now visits live contexts even on
+frames without out-of-flow changes or equal-z ties; its cost is not benchmarked.
+It refreshes the existing untransformed border bounds, not general transformed
+or overflowing subtree bounds.
 
 Root effects still expose a z:auto ordering failure that cannot be fixed by
 sorting existing lists. Collecting those entries must preserve applicable clip
@@ -83,6 +96,9 @@ uses all four patches from repository commit `de0658b`. Reproducing that baselin
 requires that commit's preparation/build in a separate checkout, with the current
 paint-order fixture inputs; retain its executable and preparation identity before
 building the fifth-patch candidate.
+The transform-context report instead uses the five-patch `de902ac` baseline;
+its preserved binary is compared to this seven-patch candidate with identical
+auto-paint inputs and the separate overflow transform-reset sequence.
 
 Generated manifests derive from the tracked experiment manifest. Paths become
 absolute, Blitz revisions change, and package/binary names are distinct. The
@@ -139,7 +155,31 @@ node experiments/dom-canvas/compare-clips.mjs \
   artifacts/paint-order/candidate-comparison.json
 ```
 
-The `positioned-layout` CPU target now contains 21 regressions. They include the
+The `positioned-layout` CPU target now contains 28 regressions. They include the
 native expectations for the shared hit fixture, anonymous-wrapper hide/show,
-retained hidden entries and repeated DOM/CSS-order mutations. Hardware paint and
+retained hidden entries, repeated DOM/CSS-order mutations, current transform
+contexts and post-layout hit bounds. Hardware paint and
 canvas lifecycle evidence remains a separate requirement.
+
+The [paint-ownership investigation](../../docs/investigations/paint-ownership.md)
+defines the next collection boundary and its effect/clip constraints. The
+[transform hit fixture](../../fixtures/transform-context/README.md) and
+[auto-paint matrix](../../fixtures/auto-paint/README.md) exercise the prerequisite
+repairs without changing the fixture's positioning to fit the native result.
+
+```sh
+node scripts/compatibility/paint-reference.mjs /path/to/chrome artifacts/auto-paint/browser auto-paint
+node scripts/compatibility/transform-hit-reference.mjs /path/to/chrome artifacts/auto-paint/browser-hit-reference.json
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
+  fixtures/auto-paint/index.html fixtures/auto-paint/fixture.js \
+  fixtures/auto-paint/cases.json artifacts/auto-paint/candidate
+node experiments/dom-canvas/compare-clips.mjs artifacts/auto-paint/browser \
+  artifacts/auto-paint/candidate artifacts/auto-paint/candidate-comparison.json
+MTL_DEBUG_LAYER=1 target/debug/threejs-positioned-overflow-paint-probe \
+  fixtures/overflow-paint/index.html fixtures/overflow-paint/fixture.js \
+  fixtures/overflow-paint/transform-reset-cases.json artifacts/auto-paint/transform-reset/candidate
+```
+
+Repeat the last command with the preserved `de902ac` binary and a separate output
+directory to observe the baseline's one-frame clip pass followed by failure.
+The normal matrix comparison intentionally exits 1 while parity is partial.

@@ -1,0 +1,98 @@
+{
+  "binarySha256BeforeAndAfter": {
+    "target/debug/threejs-positioned-overflow-paint-probe": "f9aa79fcc4576406061ccbd84caf6d6099a424a04bae5d1081e41cb1becbe4e7",
+    "target/debug/threejs-positioned-dom-canvas-probe": "f906290a5233453e95eeded379a01e2b8f695d315adcee22474da07833d472b2"
+  },
+  "runs": [
+    {
+      "fixture": "auto-paint",
+      "passed": 5,
+      "total": 17,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true,
+      "previousPassingRegressions": [],
+      "changedCases": [
+        {
+          "name": "static-transform-branch",
+          "scale": 1,
+          "oldInteriorDifferences": 4720,
+          "newInteriorDifferences": 0,
+          "oldGeometryDifferences": 0,
+          "newGeometryDifferences": 0
+        }
+      ]
+    },
+    {
+      "fixture": "paint-order",
+      "passed": 19,
+      "total": 20,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true,
+      "previousPassingRegressions": [],
+      "changedCases": []
+    },
+    {
+      "fixture": "initial-containing-block",
+      "passed": 19,
+      "total": 21,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true,
+      "previousPassingRegressions": [],
+      "changedCases": []
+    },
+    {
+      "fixture": "positioned-layout",
+      "passed": 13,
+      "total": 14,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true,
+      "previousPassingRegressions": [],
+      "changedCases": []
+    },
+    {
+      "fixture": "overflow-paint",
+      "passed": 5,
+      "total": 22,
+      "captureExitCode": 0,
+      "comparisonExitCode": 1,
+      "metalValidationObserved": true,
+      "previousPassingRegressions": [
+        "moved-clip"
+      ],
+      "changedCases": [
+        {
+          "name": "transformed-clip",
+          "scale": 1,
+          "oldInteriorDifferences": 8716,
+          "newInteriorDifferences": 0,
+          "oldGeometryDifferences": 7,
+          "newGeometryDifferences": 7
+        },
+        {
+          "name": "moved-clip",
+          "scale": 1,
+          "oldInteriorDifferences": 0,
+          "newInteriorDifferences": 7335,
+          "oldGeometryDifferences": 0,
+          "newGeometryDifferences": 0
+        },
+        {
+          "name": "transformed-fixed",
+          "scale": 1,
+          "oldInteriorDifferences": 6488,
+          "newInteriorDifferences": 0,
+          "oldGeometryDifferences": 4,
+          "newGeometryDifferences": 4
+        }
+      ]
+    }
+  ],
+  "canvasExitCodes": [
+    1,
+    1
+  ]
+}

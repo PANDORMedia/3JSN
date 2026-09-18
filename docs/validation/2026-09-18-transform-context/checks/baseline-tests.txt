@@ -1,0 +1,111 @@
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/positioned-candidate/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-positioned-dom-canvas-probe v0.0.0 (/Users/sean/dev/3JSN/.cache/positioned-candidate/probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.15s
+     Running /Users/sean/dev/3JSN/experiments/dom-canvas/src/positioned_tests.rs (target/debug/deps/positioned_layout-e6eeada9d58d9512)
+
+running 28 tests
+test initial_containing_block_tests::viewport_owner_does_not_replace_short_or_tall_document_geometry ... ok
+test initial_containing_block_tests::auto_anchor_moves_with_flow_while_percentage_size_stays_viewport_relative ... ok
+test initial_containing_block_tests::out_of_flow_root_has_an_external_owner_and_never_paints_itself_as_a_child ... ok
+test initial_containing_block_tests::cached_viewport_owner_tracks_resize_scale_and_content_mutations ... ok
+test initial_containing_block_tests::decorated_root_owns_absolute_only_when_positioned_and_does_not_own_fixed ... ok
+test paint_order_hidden_tests::retained_hidden_nonzero_z_entry_does_not_mask_active_order_or_break_reshow ... ok
+test paint_order_hidden_tests::hidden_entry_keeps_its_slot_and_does_not_gain_origin_hit_priority ... ok
+test initial_containing_block_tests::transformed_root_fixed_sizes_follow_root_until_transform_is_removed ... ok
+test paint_order_hit_tests::negative_z_hit_targets_follow_order_across_geometry_owners ... ok
+test paint_order_hit_tests::positive_z_hit_targets_follow_order_across_geometry_owners ... ok
+test paint_order_tests::detached_stacking_subtree_is_excluded_then_rejoins_resolved_paint_order ... ok
+test paint_order_tests::empty_before_and_after_boxes_preserve_ties_then_follow_css_order ... ok
+test paint_order_tests::flattened_contents_children_use_their_own_order_not_the_wrappers ... ok
+test paint_order_tests::equal_z_cross_owner_boxes_follow_dom_reordering_for_both_signs ... ok
+test paint_order_tests::out_of_flow_order_values_do_not_reorder_flex_or_grid_paint_children ... ok
+test positioned_grid_tests::grid_owner_to_block_does_not_reuse_old_grid_area ... ok
+test paint_order_tests::hiding_mixed_content_releases_anonymous_wrappers_without_breaking_other_paint_lists ... ok
+test positioned_grid_tests::block_after_grid_keeps_css_geometry_through_repeats_and_dpi_changes ... ok
+test stacking_bounds_tests::relative_stacking_child_move_and_resize_refresh_bounds_in_the_same_resolve ... FAILED
+test stacking_bounds_tests::first_resolve_relative_stacking_children_have_current_hit_bounds ... FAILED
+test transform_context_tests::positive_descendant_stops_escaping_on_first_resolve_and_resets ... FAILED
+test positioned_grid_tests::restored_grid_keeps_tracks_across_repeats_and_updates_them_on_mutation ... ok
+test paint_order_tests::flex_and_grid_equal_z_lists_follow_css_order_and_reset ... ok
+test transform_context_tests::initially_authored_transforms_own_descendants_without_a_warm_resolve ... FAILED
+test transform_context_tests::negative_descendant_stays_in_its_transform_context_on_first_resolve_and_resets ... FAILED
+test paint_order_tests::relative_descendants_through_anonymous_wrappers_follow_reordered_items ... ok
+test transform_context_tests::preserve_3d_keeps_context_when_overflow_forces_flattening ... FAILED
+test transform_context_tests::transform_context_classification_respects_supported_css_box_applicability ... FAILED
+
+failures:
+
+---- stacking_bounds_tests::relative_stacking_child_move_and_resize_refresh_bounds_in_the_same_resolve stdout ----
+
+thread 'stacking_bounds_tests::relative_stacking_child_move_and_resize_refresh_bounds_in_the_same_resolve' (4676838) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/stacking_bounds_tests.rs:76:17:
+assertion `left == right` failed: location=0,0; size=40,30; sample=0
+  left: [0.0, 0.0, 0.0, 0.0]
+ right: [0.0, 0.0, 40.0, 30.0]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- stacking_bounds_tests::first_resolve_relative_stacking_children_have_current_hit_bounds stdout ----
+
+thread 'stacking_bounds_tests::first_resolve_relative_stacking_children_have_current_hit_bounds' (4676837) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/stacking_bounds_tests.rs:39:9:
+assertion `left == right` failed: first layout must replace initial zero bounds
+  left: [0.0, 0.0, 0.0, 0.0]
+ right: [0.0, 0.0, 128.0, 80.0]
+
+---- transform_context_tests::positive_descendant_stops_escaping_on_first_resolve_and_resets stdout ----
+
+thread 'transform_context_tests::positive_descendant_stops_escaping_on_first_resolve_and_resets' (4676841) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/transform_context_tests.rs:89:5:
+assertion `left == right` failed: observable hit order: transform:none; cycle=0, sample=0
+  left: Some(NodeId(2v1))
+ right: Some(NodeId(16v1))
+
+---- transform_context_tests::initially_authored_transforms_own_descendants_without_a_warm_resolve stdout ----
+
+thread 'transform_context_tests::initially_authored_transforms_own_descendants_without_a_warm_resolve' (4676839) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/transform_context_tests.rs:89:5:
+assertion `left == right` failed: observable hit order: transform:none
+  left: Some(NodeId(2v1))
+ right: Some(NodeId(16v1))
+
+---- transform_context_tests::negative_descendant_stays_in_its_transform_context_on_first_resolve_and_resets stdout ----
+
+thread 'transform_context_tests::negative_descendant_stays_in_its_transform_context_on_first_resolve_and_resets' (4676840) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/transform_context_tests.rs:89:5:
+assertion `left == right` failed: observable hit order: transform:none; cycle=0, sample=0
+  left: Some(NodeId(2v1))
+ right: Some(NodeId(17v1))
+
+---- transform_context_tests::preserve_3d_keeps_context_when_overflow_forces_flattening stdout ----
+
+thread 'transform_context_tests::preserve_3d_keeps_context_when_overflow_forces_flattening' (4676843) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/transform_context_tests.rs:66:5:
+assertion `left == right` failed: host ownership: transform-style:preserve-3d;overflow:hidden
+  left: false
+ right: true
+
+---- transform_context_tests::transform_context_classification_respects_supported_css_box_applicability stdout ----
+
+thread 'transform_context_tests::transform_context_classification_respects_supported_css_box_applicability' (4676844) panicked at /Users/sean/dev/3JSN/experiments/dom-canvas/src/transform_context_tests.rs:190:21:
+assertion `left == right` failed: block, transform:translate(0px), sample=0
+  left: false
+ right: true
+
+
+failures:
+    stacking_bounds_tests::first_resolve_relative_stacking_children_have_current_hit_bounds
+    stacking_bounds_tests::relative_stacking_child_move_and_resize_refresh_bounds_in_the_same_resolve
+    transform_context_tests::initially_authored_transforms_own_descendants_without_a_warm_resolve
+    transform_context_tests::negative_descendant_stays_in_its_transform_context_on_first_resolve_and_resets
+    transform_context_tests::positive_descendant_stops_escaping_on_first_resolve_and_resets
+    transform_context_tests::preserve_3d_keeps_context_when_overflow_forces_flattening
+    transform_context_tests::transform_context_classification_respects_supported_css_box_applicability
+
+test result: FAILED. 21 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+error: test failed, to rerun pass `--test positioned-layout`

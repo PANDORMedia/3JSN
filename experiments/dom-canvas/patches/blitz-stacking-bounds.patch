@@ -1,0 +1,57 @@
+--- a/packages/blitz-dom/src/resolve.rs
++++ b/packages/blitz-dom/src/resolve.rs
+@@ -464,33 +464,33 @@
+ 
+         modified_stacking_roots.sort_unstable();
+         modified_stacking_roots.dedup();
+-        let mut ordering_roots = modified_stacking_roots.clone();
+-        // Unmodified contexts are already z-sorted by the style flush. Include
+-        // their nonzero ties too: flex/grid order can change without OOF boxes.
+-        ordering_roots.extend(self.nodes.iter().filter_map(|(id, node)| {
+-            let sc = node.stacking_context.as_ref()?;
+-            sc.children
+-                .windows(2)
+-                .any(|pair| pair[0].z_index != 0 && pair[0].z_index == pair[1].z_index)
+-                .then_some(id)
+-        }));
+-        ordering_roots.sort_unstable();
+-        ordering_roots.dedup();
+-        if ordering_roots.is_empty() {
++        // Every live context needs current bounds, including contexts with no
++        // OOF attachments: the style flush ran before this frame's layout.
++        let stacking_roots: Vec<_> = self
++            .nodes
++            .iter()
++            .filter_map(|(id, node)| {
++                (node.stacking_context.is_some() && node.has_boxes()).then_some(id)
++            })
++            .collect();
++        if stacking_roots.is_empty() {
+             return;
+         }
+         let paint_order = crate::layout::paint_order::PaintOrder::new(self);
+-        for sc_root in ordering_roots {
++        for sc_root in stacking_roots {
++            // Suppressed descendants and retained detached contexts may still
++            // carry stale formatting links; only visit rooted active contexts.
++            if !paint_order.contains_node(sc_root) {
++                continue;
++            }
+             let mut sc = self.nodes[sc_root].stacking_context.take();
+             if let Some(sc) = sc.as_mut() {
+-                sc.sort();
+-                // Detached retained nodes may still have old stacking lists.
+-                if paint_order.contains_node(sc_root) {
+-                    paint_order.sort_nonzero_ties(sc);
+-                }
+                 if modified_stacking_roots.binary_search(&sc_root).is_ok() {
+-                    sc.compute_content_size(self);
+-                }
++                    sc.sort();
++                }
++                // Unmodified contexts were z-sorted by the style flush.
++                paint_order.sort_nonzero_ties(sc);
++                sc.compute_content_size(self);
+             }
+             self.nodes[sc_root].stacking_context = sc;
+         }

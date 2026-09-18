@@ -1,0 +1,59 @@
+{
+  "kind": "transform-removal-repeat-control",
+  "sourceSequence": "fixtures/overflow-paint/transform-reset-cases.json",
+  "sequenceSha256": "f65b85928b20e7ba40224369a4491086ab0e69428d56d0255952568c7fda0b13",
+  "browserReference": "docs/validation/2026-09-18-overflow/browser/moved-clip-1x.png",
+  "browserReferencePngSha256": "bcfdd37237eb0937d4d438efefca4e35e3364ff1a9955f28846c64d2c154ba09",
+  "baselineBinarySha256": "bc7f0d36b61774a11a1d513937b30dbc79774595ab05d813c952741e761c142b",
+  "candidateBinarySha256": "f9aa79fcc4576406061ccbd84caf6d6099a424a04bae5d1081e41cb1becbe4e7",
+  "samples": [
+    {
+      "profile": "baseline",
+      "index": 1,
+      "differingPixels": 0,
+      "redPixels": 1584,
+      "pngSha256": "489d6fbe0501ea2d4663ca951aa9f17d63adf79a9518988f8616d4f7c8a90fed",
+      "file": "artifacts/auto-paint/transform-reset/baseline/001-case.png"
+    },
+    {
+      "profile": "baseline",
+      "index": 2,
+      "differingPixels": 7416,
+      "redPixels": 9000,
+      "pngSha256": "f84d609f89114d8733f388862413175dee591b15a53d2246801b66bb9513366f",
+      "file": "artifacts/auto-paint/transform-reset/baseline/002-case.png"
+    },
+    {
+      "profile": "baseline",
+      "index": 3,
+      "differingPixels": 7416,
+      "redPixels": 9000,
+      "pngSha256": "f84d609f89114d8733f388862413175dee591b15a53d2246801b66bb9513366f",
+      "file": "artifacts/auto-paint/transform-reset/baseline/003-case.png"
+    },
+    {
+      "profile": "candidate",
+      "index": 1,
+      "differingPixels": 7416,
+      "redPixels": 9000,
+      "pngSha256": "f84d609f89114d8733f388862413175dee591b15a53d2246801b66bb9513366f",
+      "file": "artifacts/auto-paint/transform-reset/candidate/001-case.png"
+    },
+    {
+      "profile": "candidate",
+      "index": 2,
+      "differingPixels": 7416,
+      "redPixels": 9000,
+      "pngSha256": "f84d609f89114d8733f388862413175dee591b15a53d2246801b66bb9513366f",
+      "file": "artifacts/auto-paint/transform-reset/candidate/002-case.png"
+    },
+    {
+      "profile": "candidate",
+      "index": 3,
+      "differingPixels": 7416,
+      "redPixels": 9000,
+      "pngSha256": "f84d609f89114d8733f388862413175dee591b15a53d2246801b66bb9513366f",
+      "file": "artifacts/auto-paint/transform-reset/candidate/003-case.png"
+    }
+  ]
+}
