@@ -91,3 +91,13 @@ hardware certification or full input support. Focus/forms/IME, pointer capture,
 accessibility, transformed/clipped hit testing, resize/input ordering and arbitrary
 forced cancellation remain open. Discrete-event overload can still exhaust the
 128/1,024-record bounds and terminate with an explicit diagnostic.
+
+## Review qualification
+
+The delivery fixture checkpoints microtasks after each complete native record.
+It does not prove browser-equivalent checkpoints between individual listeners.
+Its adapter mirrors production dispatch, and the worker's 64-record drain is not
+covered directly; those remain integration gates. The DOM-host tests are local
+CPU/V8 evidence, while the root workspace queue tests run in source CI. The
+[daily review](https://github.com/PANDORMedia/3JSN/pull/61#pullrequestreview-5249906254)
+found no required coalescing algorithm correction.

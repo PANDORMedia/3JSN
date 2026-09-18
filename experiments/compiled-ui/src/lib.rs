@@ -154,18 +154,19 @@ fn load_validated(
     let mut document = BaseDocument::new(config);
     let mut node_ids = vec![None; input.nodes.len()];
     let mut omitted_doctype_nodes = Vec::new();
-    node_ids[0] = Some(document.root_node().id);
+    let root_id = document.root_node().id;
+    node_ids[0] = Some(root_id);
     {
         let mut mutator = document.mutate();
         for &child in input.nodes[0].children() {
             append(
                 input,
                 child,
-                node_ids[0].unwrap(),
+                root_id,
                 &mut mutator,
                 &mut node_ids,
                 &mut omitted_doctype_nodes,
-            );
+            )?;
         }
     }
     let report = LoadReport {
@@ -189,7 +190,7 @@ fn append(
     mutator: &mut DocumentMutator<'_>,
     node_ids: &mut [Option<NodeId>],
     omitted: &mut Vec<usize>,
-) {
+) -> Result<(), LoadError> {
     let node = &input.nodes[index];
     let id = match node {
         CompiledNode::Element {
@@ -221,10 +222,12 @@ fn append(
         CompiledNode::Comment { value, .. } => mutator.create_comment_node(value),
         CompiledNode::Doctype { .. } => {
             omitted.push(index);
-            return;
+            return Ok(());
         }
         CompiledNode::Document { .. } | CompiledNode::Fragment { .. } => {
-            unreachable!("validated ownership")
+            return Err(LoadError::Invalid(
+                "unexpected document or fragment during construction",
+            ));
         }
     };
     node_ids[index] = Some(id);
@@ -237,12 +240,13 @@ fn append(
         let contents = mutator.template_contents(id);
         node_ids[*fragment] = Some(contents);
         for &child in input.nodes[*fragment].children() {
-            append(input, child, contents, mutator, node_ids, omitted);
+            append(input, child, contents, mutator, node_ids, omitted)?;
         }
     }
     for &child in node.children() {
-        append(input, child, id, mutator, node_ids, omitted);
+        append(input, child, id, mutator, node_ids, omitted)?;
     }
+    Ok(())
 }
 
 #[cfg(all(test, feature = "dynamic-html"))]

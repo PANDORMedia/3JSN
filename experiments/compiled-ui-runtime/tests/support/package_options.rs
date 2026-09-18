@@ -248,6 +248,47 @@ fn verified_ui_bytes_are_not_reopened_and_measure_app_does_not_select_entry_modu
 
 #[test]
 #[cfg(target_os = "macos")]
+fn window_options_keep_verified_fallback_after_its_file_is_deleted_or_replaced() {
+    for replace in [false, true] {
+        let fixture = Fixture::new();
+        let manifest = fixture.write(&ui(), parser_mode(), false);
+        let expected = fs::read(fixture.0.join("app/font.woff2")).unwrap();
+        let app = load_for(&manifest, Profile::CompiledDomWindow(parser_mode())).unwrap();
+        fs::remove_file(fixture.0.join("app/font.woff2")).unwrap();
+        if replace {
+            fs::write(fixture.0.join("app/font.woff2"), b"replacement").unwrap();
+        }
+        let options = from_application(app, None).unwrap();
+        assert_eq!(options.font, expected);
+    }
+}
+
+#[test]
+fn direct_window_and_measurement_commands_reject_oversized_fallback_fonts() {
+    let fixture = Fixture::new();
+    fixture.write(&ui(), parser_mode(), false);
+    fs::File::create(fixture.0.join("app/font.woff2"))
+        .unwrap()
+        .set_len(threejs_native_package::MAX_FONT_BYTES + 1)
+        .unwrap();
+    for flag in ["--compiled-ui", "--measure-layout"] {
+        let args = vec![
+            flag.into(),
+            fixture.0.join("app/ui.json").into(),
+            fixture.0.join("app/font.woff2").into(),
+            fixture.0.join("app/main.mjs").into(),
+        ];
+        let error = parse(&args, &fixture.executable()).err().unwrap();
+        assert!(
+            matches!(error.downcast_ref::<threejs_native_package::PackageError>(),
+            Some(threejs_native_package::PackageError::Manifest(message))
+                if message == "fallback font exceeds 16 MiB")
+        );
+    }
+}
+
+#[test]
+#[cfg(target_os = "macos")]
 fn package_preflight_rejects_format_version_mode_and_invalid_verified_ir() {
     let fixture = Fixture::new();
     let manifest = fixture.write(&ui(), parser_mode(), false);

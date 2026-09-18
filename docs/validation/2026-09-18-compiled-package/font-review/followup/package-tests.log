@@ -1,0 +1,16 @@
+   Compiling threejs-native-package v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr59/crates/package)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.69s
+     Running unittests src/lib.rs (/Users/sean/dev/3JSN/target/debug/deps/threejs_native_package-d7e4e85fcd18a25c)
+
+running 8 tests
+test compiled_tests::compiled_transport_metadata_is_bounded_but_not_runtime_format_validation ... ok
+test compiled_tests::compiled_descriptor_rejects_null_unknown_missing_and_mistyped_fields ... ok
+test compiled_tests::compiled_payload_and_parent_symlinks_are_rejected ... ok
+test compiled_tests::compiled_payload_requires_hash_size_and_existence ... ok
+test compiled_tests::parser_modes_are_exact_requirements_and_resources_reuse_existing_capability ... ok
+test compiled_tests::compiled_ui_and_web_font_bytes_survive_relocation_and_later_disk_changes ... ok
+test compiled_tests::compiled_profile_rejects_cross_profiles_and_invalid_descriptors_with_specific_errors ... ok
+test compiled_tests::compiled_payload_limit_applies_to_declared_and_actual_bytes_inclusively ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 1.57s
+

@@ -77,9 +77,13 @@ The separate [window report](2026-09-18-compiled-ui/window.json) records 120
 presentations for each construction path, shared native device/queue identity
 checks and no CPU image transport between Three.js and UI composition. Both paths
 produce identical tested DOM observations, including button dispatch, identity,
-style changes and runtime markup. A sandbox denies networking, development-tree
-reads and, for the compiled path, reads of the original HTML. A denied-read control
-verifies that restriction. The fixture source remains unchanged.
+style changes and runtime markup. Sandbox policies configure networking and
+development-tree read denial and, for the compiled path, original-HTML read
+denial. A denied-read control verifies only the original-HTML restriction; no
+network attempt is measured by this harness. Historical raw reports retain the
+original `nativeNetworkingDenied` field; new reports use
+`nativeNetworkingDenyConfigured` to distinguish configuration from measurement.
+The fixture source remains unchanged.
 
 The direct compiled invocation rejects unknown data versions and undeclared
 external stylesheets. Its explicit fallback font and inline CSS are sufficient
@@ -115,3 +119,13 @@ script discovery, compiled resource packaging, framework workloads, pixel parity
 parser-omitted link graphs and size/startup/memory measurements remain open.
 No Windows/Linux native support is inferred from this Mac checkpoint. Reproduce
 with the commands in the [experiment README](../../experiments/compiled-ui/README.md#reproduce).
+
+## Daily-review loader checks
+
+The [review](https://github.com/PANDORMedia/3JSN/pull/57#pullrequestreview-5249905142)
+prompted four additional Rust boundary tests covering node count, tree depth,
+UTF-8 string size and metadata depth/diagnostic limits at and beyond their limits.
+All 13 loader library tests and strict library/test Clippy pass. Construction now
+returns an error for unexpected document/fragment nodes rather than relying on an
+unreachable panic, and uses the known root ID directly. [Logs and source identities](2026-09-18-compiled-ui/review-corrections/source-identities.json)
+record this CPU-only correction; no new GPU or sandbox control was run.

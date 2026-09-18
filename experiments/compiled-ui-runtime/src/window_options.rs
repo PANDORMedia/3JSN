@@ -8,7 +8,7 @@ use threejs_compiled_ui_experiment::{
     contract::{CompiledUi, FORMAT, MAX_IR_BYTES, VERSION},
     preflight_json,
 };
-use threejs_native_package::{Application, HtmlParserMode, Profile, Resource, load_for};
+use threejs_native_package::{Application, HtmlParserMode, Profile, Resource, load_for, read_font};
 
 use crate::Result;
 
@@ -129,7 +129,7 @@ fn from_application(app: Application, frames: Option<u64>) -> Result<Options> {
     let document = DocumentInput::from_bytes(&ui.bytes)?;
     let font = app.font.ok_or("compiled DOM package has no font")?;
     Ok(Options {
-        font: std::fs::read(font)?,
+        font,
         document,
         module: app.entry,
         frames,
@@ -152,7 +152,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
             let frames = frame_option(rest)?;
             let document = input(Path::new(ui))?;
             Ok(Command::Run(Options {
-                font: std::fs::read(font)?,
+                font: read_font(Path::new(font))?,
                 document,
                 module: PathBuf::from(module).canonicalize()?,
                 frames,
@@ -163,7 +163,7 @@ pub fn parse(args: &[OsString], executable: &Path) -> Result<Command> {
             let verify = verification_option(rest)?;
             let document = input(Path::new(ui))?;
             Ok(Command::Measure(MeasurementOptions {
-                font: std::fs::read(font)?,
+                font: read_font(Path::new(font))?,
                 document,
                 resources: Vec::new(),
                 behavior: behavior.into(),
