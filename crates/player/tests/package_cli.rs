@@ -7,7 +7,26 @@ struct Fixture(PathBuf);
 
 impl Drop for Fixture {
     fn drop(&mut self) {
-        fs::remove_dir_all(&self.0).unwrap();
+        let mut retries = 0;
+        loop {
+            match fs::remove_dir_all(&self.0) {
+                Ok(()) => break,
+                Err(error)
+                    if cfg!(windows)
+                        && matches!(error.raw_os_error(), Some(32 | 33))
+                        && retries < 20 =>
+                {
+                    // Windows can briefly retain an executable mapping after the
+                    // child has exited. Retry only sharing/lock violations.
+                    retries += 1;
+                    std::thread::sleep(std::time::Duration::from_millis(100));
+                }
+                Err(error) => panic!(
+                    "failed to remove package fixture {}: {error}",
+                    self.0.display()
+                ),
+            }
+        }
     }
 }
 
