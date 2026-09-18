@@ -1,0 +1,2 @@
+    Checking threejs-native-player v0.0.0 (/Users/sean/dev/3JSN/crates/player)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.50s

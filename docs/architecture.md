@@ -123,7 +123,7 @@ crates/player/           native executable and application options
 crates/webgl/            explicit native WebGL compatibility adapter
 crates/dom/              selected HTML stack and JS DOM integration
 crates/compositor/       native composition of canvas and UI surfaces
-crates/cli/              project analysis and target-build orchestration
+packages/cli/            project build tooling and target orchestration (Node on developer machine)
 packages/runtime/        documented JavaScript surface and types
 examples/                portable Three.js scenes and reference game
 benchmarks/              identical workloads for browser and native hosts

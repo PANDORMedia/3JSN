@@ -42,5 +42,6 @@ const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 const lock = JSON.parse(await readFile(join(root, 'package-lock.json'), 'utf8'));
 assert.deepEqual(manifest.dependencies, lock.packages[''].dependencies);
 assert.deepEqual(manifest.devDependencies, lock.packages[''].devDependencies);
+assert.deepEqual(manifest.bin, lock.packages[''].bin);
 assert.equal(manifest.private, true, 'Research package should not be accidentally published.');
 console.log(`PASS: ${checked} source/config/document files checked. No GPU tests were run.`);

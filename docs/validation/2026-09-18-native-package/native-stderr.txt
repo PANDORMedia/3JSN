@@ -1,0 +1,1 @@
+2026-09-18 09:50:38.423 3jsn-demo[81180:5061488] Metal API Validation Enabled

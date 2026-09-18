@@ -1,0 +1,2 @@
+{"nativeThree":true,"three":"186","sameJavaScriptDevice":true,"adapter":{"vendor":"0","architecture":"","device":"0","description":"Apple M1 Pro","isFallbackAdapter":false},"controls":"Drag to orbit; wheel to zoom; arrows to orbit; Space to pause; R to reset"}
+{"nativeWindow":true,"backend":"metal","presentedFrames":120}

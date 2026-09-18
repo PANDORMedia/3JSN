@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "profile": "native-window-v1",
+  "target": "macos-arm64",
+  "compatibility": {
+    "certified": false,
+    "unresolvedDynamicBehavior": true,
+    "limitations": [
+      "Experimental artifact creation is not a compatibility, performance or platform certification.",
+      "Only the supplied current-host native-window-v1 player is packaged; no runtime is built or downloaded.",
+      "No HTML/CSS integration, frontend command, custom plugin, inherited tsconfig, or runtime asset-copy workflow is provided.",
+      "Computed imports, URLs, fetches, workers and other dynamic browser behavior remain unresolved; bundling cannot establish API support.",
+      "The source snapshot excludes root .git and node_modules. Loaded dependency bytes are checked separately, not the entire dependency installation or all resolver configuration.",
+      "Inputs and output parents must remain quiescent. Publication reserves a new directory and installs app.json last; process termination can leave an incomplete directory.",
+      "Graceful cancellation waits for the current bundling/filesystem operation, then cleans staging and records source preservation; forced termination cannot guarantee cleanup.",
+      "Source maps embed bundled source text. Review generated artifacts before distributing private projects.",
+      "Input source-map chains that refer to originals outside measured bundler inputs are explicitly unsupported.",
+      "Source maps are retained but the player does not yet remap generated stack locations.",
+      "These unsigned local artifacts are not a release distribution; third-party notices, SBOM, signing and release verification remain open."
+    ]
+  },
+  "config": {
+    "schemaVersion": 1,
+    "profile": "native-window-v1",
+    "name": "3jsn-demo",
+    "entry": "native.mjs"
+  },
+  "runtime": {
+    "executable": "3jsn-demo",
+    "bytes": 75007072,
+    "sha256": "9dad9c6869a53439d4239621c2e68108892ebd015830531165d7e8b601edbe7e",
+    "description": {
+      "schemaVersion": 1,
+      "playerVersion": "0.0.0",
+      "packageVersions": [
+        1
+      ],
+      "profiles": [
+        "native-window-v1"
+      ],
+      "target": "macos-arm64",
+      "backend": "metal",
+      "v8": "15.0.245.2-rusty"
+    }
+  },
+  "source": {
+    "before": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 106,
+          "sha256": "d61acdab48fb3cf68055e0690cd8abd00e5f955753f2d0d57540d353984b983f"
+        },
+        {
+          "path": "controls.mjs",
+          "kind": "file",
+          "bytes": 2977,
+          "sha256": "257c8c40e318d71f4414b59207b1b6242d8a91b13833400c1fd0d06b43ab4f3f"
+        },
+        {
+          "path": "native.mjs",
+          "kind": "file",
+          "bytes": 2012,
+          "sha256": "aa962695969f2890ab8cfa0a9d5784b7104d0294afc9a66ac5f5f9ae76399b15"
+        },
+        {
+          "path": "scene.mjs",
+          "kind": "file",
+          "bytes": 1462,
+          "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+        }
+      ],
+      "digest": "c7bdf675e687d0a4cd44e7731ea834ddf1279fbc5ecb5c2e1fdec64ab20b8040"
+    },
+    "after": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "exclusions": [
+        ".git",
+        "node_modules"
+      ],
+      "entries": [
+        {
+          "path": "3jsn.json",
+          "kind": "file",
+          "bytes": 106,
+          "sha256": "d61acdab48fb3cf68055e0690cd8abd00e5f955753f2d0d57540d353984b983f"
+        },
+        {
+          "path": "controls.mjs",
+          "kind": "file",
+          "bytes": 2977,
+          "sha256": "257c8c40e318d71f4414b59207b1b6242d8a91b13833400c1fd0d06b43ab4f3f"
+        },
+        {
+          "path": "native.mjs",
+          "kind": "file",
+          "bytes": 2012,
+          "sha256": "aa962695969f2890ab8cfa0a9d5784b7104d0294afc9a66ac5f5f9ae76399b15"
+        },
+        {
+          "path": "scene.mjs",
+          "kind": "file",
+          "bytes": 1462,
+          "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+        }
+      ],
+      "digest": "c7bdf675e687d0a4cd44e7731ea834ddf1279fbc5ecb5c2e1fdec64ab20b8040"
+    },
+    "preservation": {
+      "preserved": true,
+      "before": "c7bdf675e687d0a4cd44e7731ea834ddf1279fbc5ecb5c2e1fdec64ab20b8040",
+      "after": "c7bdf675e687d0a4cd44e7731ea834ddf1279fbc5ecb5c2e1fdec64ab20b8040",
+      "changes": []
+    }
+  },
+  "esbuild": {
+    "version": "0.28.2",
+    "options": {
+      "platform": "browser",
+      "format": "esm",
+      "target": "esnext",
+      "sourcemap": "linked",
+      "tsconfigRaw": {}
+    },
+    "inputs": [
+      {
+        "path": "dependencies/9edde002b066a9a0/three/build/three.core.js",
+        "bytes": 1458113,
+        "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6"
+      },
+      {
+        "path": "dependencies/a78400fa1d359e81/three/build/three.webgpu.js",
+        "bytes": 2284823,
+        "sha256": "a78400fa1d359e81fcc12b84ed0a89a7fbecb4b8373e28ae8f9d2b11f6ea13bc"
+      },
+      {
+        "path": "project/controls.mjs",
+        "bytes": 2977,
+        "sha256": "257c8c40e318d71f4414b59207b1b6242d8a91b13833400c1fd0d06b43ab4f3f"
+      },
+      {
+        "path": "project/native.mjs",
+        "bytes": 2012,
+        "sha256": "aa962695969f2890ab8cfa0a9d5784b7104d0294afc9a66ac5f5f9ae76399b15"
+      },
+      {
+        "path": "project/scene.mjs",
+        "bytes": 1462,
+        "sha256": "1439cb92ce913e479f1dd80825b3e3fe48af2582687cfe9a8a8a8a51e5438c6c"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "app/main.mjs.map",
+        "bytes": 5207918,
+        "sha256": "0626357c7d4c3eac3460d2ed3d95076d46da15ba4253a487f883f0a697b6834f",
+        "esbuildSha256": "a5885d1a70edfa7724a9e802de8466b0f4d15a7ea0593ea408fb49a5f03b466c"
+      },
+      {
+        "path": "app/main.mjs",
+        "bytes": 2173594,
+        "sha256": "ede2d2cdac2343156f2bed27630fef89af68514b212d211fb65799a621f534fc",
+        "esbuildSha256": "ede2d2cdac2343156f2bed27630fef89af68514b212d211fb65799a621f534fc"
+      }
+    ],
+    "metafile": {
+      "inputs": {
+        "../../../../node_modules/three/build/three.core.js": {
+          "bytes": 1458113,
+          "imports": [],
+          "format": "esm"
+        },
+        "../../../../node_modules/three/build/three.webgpu.js": {
+          "bytes": 2284823,
+          "imports": [
+            {
+              "path": "../../../../node_modules/three/build/three.core.js",
+              "kind": "import-statement",
+              "original": "./three.core.js"
+            },
+            {
+              "path": "../../../../node_modules/three/build/three.core.js",
+              "kind": "import-statement",
+              "original": "./three.core.js"
+            }
+          ],
+          "format": "esm"
+        },
+        "scene.mjs": {
+          "bytes": 1462,
+          "imports": [
+            {
+              "path": "../../../../node_modules/three/build/three.webgpu.js",
+              "kind": "import-statement",
+              "original": "three/webgpu"
+            }
+          ],
+          "format": "esm"
+        },
+        "controls.mjs": {
+          "bytes": 2977,
+          "imports": [],
+          "format": "esm"
+        },
+        "native.mjs": {
+          "bytes": 2012,
+          "imports": [
+            {
+              "path": "../../../../node_modules/three/build/three.webgpu.js",
+              "kind": "import-statement",
+              "original": "three/webgpu"
+            },
+            {
+              "path": "scene.mjs",
+              "kind": "import-statement",
+              "original": "./scene.mjs"
+            },
+            {
+              "path": "controls.mjs",
+              "kind": "import-statement",
+              "original": "./controls.mjs"
+            }
+          ],
+          "format": "esm"
+        }
+      },
+      "outputs": {
+        "../.3jsn-build-IFmmB1/app/main.mjs.map": {
+          "imports": [],
+          "exports": [],
+          "inputs": {},
+          "bytes": 5208479
+        },
+        "../.3jsn-build-IFmmB1/app/main.mjs": {
+          "imports": [],
+          "exports": [],
+          "entryPoint": "native.mjs",
+          "inputs": {
+            "../../../../node_modules/three/build/three.core.js": {
+              "bytesInOutput": 608177
+            },
+            "../../../../node_modules/three/build/three.webgpu.js": {
+              "bytesInOutput": 1558689
+            },
+            "scene.mjs": {
+              "bytesInOutput": 1273
+            },
+            "controls.mjs": {
+              "bytesInOutput": 3163
+            },
+            "native.mjs": {
+              "bytesInOutput": 1906
+            }
+          },
+          "bytes": 2173594
+        }
+      }
+    },
+    "metafileScope": "Original esbuild provenance includes build-location paths and pre-source-label-rewrite output sizes; it is not a complete or hermetic resolution inventory."
+  },
+  "manifest": {
+    "bytes": 456,
+    "sha256": "2be8d98284e68696e7189368ce11464a2c766171ffa57128e996b591d130a831"
+  }
+}

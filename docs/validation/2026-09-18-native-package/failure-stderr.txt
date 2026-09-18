@@ -1,0 +1,7 @@
+2026-09-18 09:50:41.764 failure-fixture[81240:5061837] Metal API Validation Enabled
+JavaScript event loop failed: Error: packaged asynchronous failure
+    at file:///Users/sean/dev/3JSN/artifacts/native-package/checkpoint/failure-package/app/main.mjs:3:9
+    at Object.wrappedCallback [as _onTimeout] (ext:deno_web/02_timers.js:57:7)
+    at listOnTimeout (ext:core/02_timers.js:307:17)
+    at Object.processTimers (ext:core/02_timers.js:250:7)
+    at __processTimers (ext:core/01_core.js:448:21)

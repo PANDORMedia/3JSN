@@ -17,11 +17,18 @@ The resolved source graph is pinned by `Cargo.lock`. The public interface remain
 | wgpu-hal / naga | 29.0.4 / 29.0.4 | Resolved native backends and shader processing |
 | tokio | 1.49.0 | Current-thread async execution |
 | winit / raw-window-handle | 0.30.13 / 0.6.2 | OS event loop and native surface handles |
+| serde / serde_json | 1.0.229 / 1.0.151 | Strict versioned application-manifest parsing |
+| sha2 | 0.10.9 | Streaming SHA-256 checks of packaged application files |
 
 The integration was compiled and run using Rust 1.93.0 on macOS arm64. See the
 [dated runtime evidence](validation/2026-09-17-rust-runtime.md) for executable
 versions, binary footprint and hardware results. The workspace requires Rust 1.93;
 CI uses 1.93.0.
+
+The experimental build CLI reuses the repository's pinned esbuild 0.28.2 and
+Node.js development environment. Its maintained bundler handles JavaScript,
+TypeScript and module resolution; the Rust player has no build-tool dependency.
+Package checksums detect accidental corruption, not authenticity or hostile code.
 
 The original standalone GPU diagnostic retains wgpu 28. It is a different
 executable and never supplies resources to the embedded host. Do not solve version

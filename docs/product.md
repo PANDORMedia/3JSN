@@ -2,13 +2,17 @@
 
 ## Intended user experience
 
-Proposed commands; they are not implemented yet:
+Intended complete workflow (not implemented yet):
 
 ```sh
 3jsn check ./my-game
 3jsn run ./my-game
 3jsn build ./my-game --targets windows-x64,linux-x64,macos-arm64
 ```
+
+The first [experimental build path](build.md) now packages an explicit
+`native-window-v1` fixture and a supplied host player. Project analysis, `run`,
+existing frontend build integration and multiple target workers remain open.
 
 `check` identifies entry points, the existing build system, renderer, browser APIs,
 assets and services. Static analysis reports uncertainty; it cannot prove dynamic

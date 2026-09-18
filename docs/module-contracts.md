@@ -38,6 +38,13 @@ service locator to bypass these directions.
 | Service operation | Named service owns a bounded queue and a cancellation handle | Complete once with a value, typed failure or cancellation; never call a disposed realm |
 | Frame dispatch | Player requests one frame; runtime dispatches callbacks with one monotonic timestamp | Snapshot callbacks, allow cancellation during dispatch, defer new callbacks until another frame; report exceptions without losing later callbacks |
 
+The [initial package protocol](build.md) now has a consumer: `packages/cli`
+emits an experimental manifest and source/asset identities, while
+`crates/player/src/package.rs` validates the local package before GPU startup.
+Node/esbuild remain developer tools and are not launched by the shipping player.
+This bounded profile does not implement the full application-manifest contract
+for HTML entry pages, service permissions or unchanged-game capabilities.
+
 The offscreen player drains referenced async work. The interactive adapter now
 uses one current-thread reactor on a dedicated worker, a coalescing OS-state
 channel, and thread-safe V8 cancellation. Its surface and window ownership is

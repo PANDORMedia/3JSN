@@ -6,7 +6,8 @@ An open-source native runtime and build tool for existing Three.js web games.
 The goal is **unchanged game source → `3jsn build` → native desktop applications**.
 
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
-and compatibility experiments. The build CLI is not implemented.
+and compatibility experiments. An experimental host-only build CLI packages the
+native-window fixture; existing web-project builds are not integrated.
 No platform or unchanged-project compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
@@ -80,6 +81,15 @@ scroll to zoom, Space to pause and R to reset. The
 input reaching V8, visible camera changes, window resizing and clean shutdown.
 These events currently target the standalone canvas/global fixture; DOM input,
 IME, pointer capture and controllers remain open.
+
+The [experimental build command](docs/build.md) packages that fixture and a local
+player into a portable application directory. It records source preservation and
+file identities; the executable validates its manifest before startup and finds
+its entry independently of the working directory. This is an initial packaging
+path, not unchanged WebGL/HTML project support or a signed distribution workflow.
+The [relocation checkpoint](docs/validation/2026-09-18-native-package.md) verifies
+120 Metal frames after removing the disposable build input, with Node absent
+from the native process's PATH, plus corruption and packaged-error diagnostics.
 
 The original Rust diagnostic independently opens a `wgpu` adapter and device.
 It does not execute JS. The Node/Dawn scene remains a separate reference.

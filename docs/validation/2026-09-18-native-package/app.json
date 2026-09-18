@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "profile": "native-window-v1",
+  "name": "3jsn-demo",
+  "target": "macos-arm64",
+  "entry": "app/main.mjs",
+  "files": [
+    {
+      "path": "app/main.mjs",
+      "bytes": 2173594,
+      "sha256": "ede2d2cdac2343156f2bed27630fef89af68514b212d211fb65799a621f534fc"
+    },
+    {
+      "path": "app/main.mjs.map",
+      "bytes": 5207918,
+      "sha256": "0626357c7d4c3eac3460d2ed3d95076d46da15ba4253a487f883f0a697b6834f"
+    }
+  ]
+}
