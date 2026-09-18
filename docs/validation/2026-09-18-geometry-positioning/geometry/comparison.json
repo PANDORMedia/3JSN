@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "baseline": {
+    "passed": 14,
+    "total": 23,
+    "nativeUnitTestsPassed": 1,
+    "nativeUnitTestsFailed": 4
+  },
+  "patched": {
+    "passed": 23,
+    "total": 23,
+    "nativeUnitTestsPassed": 5,
+    "nativeUnitTestsFailed": 0,
+    "allRawObservationsExactlyEqualBrowser": true,
+    "fixtureHashesEqual": true
+  },
+  "sha256": {
+    "target/debug/threejs-dom-geometry-probe": "10d24a21ebe2c8112fe6a2171f60b3c1db65bf3a3f77a990804e5872fb30fcde",
+    "experiments/dom-canvas/src/geometry_probe.rs": "ead2064366a4790380f8a5fe17641b423be882107dd0b0a66facc77beeb40e6e",
+    "experiments/dom-canvas/src/geometry_tests.rs": "8d4998562859147795be24f61156f9f708ca9a7c74078f3312b3de0698eab6df",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "experiments/html-v8/src/bindings.js": "1d38425d73c62479d07312028c7799f77f84b1f0c280d989d3aa6e3eea779eb3",
+    "experiments/dom-canvas/Cargo.toml": "dc6fb82e70ef65b3fd38038a9cfca81b2b452adebad6d3b77c0227eb225ebba8",
+    "experiments/dom-canvas/Cargo.lock": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+    "experiments/dom-canvas/prepare-blitz.mjs": "534485fbdf317d64ed3bcec798aa353d1a853123739cc63bc022a87b12196ac6",
+    "experiments/dom-canvas/patches/blitz-boxless-geometry.patch": "33306bd8349601fab49a65ce6ce58a36278717c40fac019ef021cebe090d99e0"
+  },
+  "referenceSha256": "80639012ac925b7370c0500a1a86faeee9301c39d27a48ea5418c2374823b5c6",
+  "nativeReportSha256": "ee9d93a8520581a35ae7fbd33ec352358d165d25d6cb04a5bfb9ab2c9c738173",
+  "browserSuite": {
+    "fixtures": 6,
+    "passingChecks": 100
+  },
+  "limits": [
+    "CPU DOM query test; no GPU requested.",
+    "Does not certify transforms, containing blocks, all inline fragment generation or JavaScript DOMRect/getClientRects IDL."
+  ]
+}

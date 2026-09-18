@@ -62,7 +62,7 @@ for (const name of ['wgpu-core', 'wgpu-types']) assert.equal(versions.filter(ite
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const sources = {};
 for (const name of ['Cargo.toml', 'Cargo.lock', 'app.mjs', 'fixture.html', 'bundle.mjs', 'run.mjs', 'prepare.mjs', 'prepare-blitz.mjs',
-  'patches/deno-webgpu-canvas.patch', 'patches/blitz-stacking-demotion.patch', 'src/main.rs', 'src/painter.rs', 'src/canvas_texture.rs', 'src/evidence.rs',
+  'patches/deno-webgpu-canvas.patch', 'patches/blitz-stacking-demotion.patch', 'patches/blitz-boxless-geometry.patch', 'src/main.rs', 'src/painter.rs', 'src/canvas_texture.rs', 'src/evidence.rs',
   'src/scenario.rs', 'src/dom_bridge.rs', 'src/canvas.js', 'src/stacking_tests.rs', 'src/canvas_init.rs', 'src/initialization_tests.rs']) {
   sources[name] = hash(await readFile(resolve(import.meta.dirname, name)));
 }

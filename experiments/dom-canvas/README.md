@@ -8,6 +8,9 @@ this is not an adopted shipping DOM or compositor.
 The [overflow comparison](OVERFLOW.md) now separates stale paint positions,
 missing clips and containing-block layout errors in 22 browser/native cases.
 Its prototype patch is deliberately excluded from normal preparation.
+The [positioned-layout candidate](POSITIONED.md) evaluates maintained upstream
+ownership APIs separately. The [geometry fixture](../../fixtures/dom-geometry/README.md)
+verifies the maintained no-box query repair against Chrome.
 
 [Current hardware evidence](../../docs/validation/2026-09-18-canvas-handoff.md) includes
 21 captures, 576,000 initialization pixel checks, repeated stacking transitions
@@ -38,7 +41,7 @@ changing it. The patch introduces a metadata-only offscreen canvas, explicit
 texture expiry and bounded configuration/error fixes. The upstream CPU-image
 canvas and native surface paths retain their previous behavior.
 The same preparation step archives the pinned Blitz commit into an ignored copy,
-applies the one-line stacking-list fix, and verifies all 414 tracked files. The
+applies the stacking-list and no-box geometry fixes, and verifies all 414 tracked files. The
 related workspace crates are patched together so their public types share one
 source identity. No Cargo registry or original Git checkout is edited.
 

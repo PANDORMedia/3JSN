@@ -12,6 +12,10 @@ The [22-case overflow comparison](validation/2026-09-18-overflow.md) also expose
 stale hoisted positions and missing containing-block ownership. A paint-only
 prototype was not adopted because its fallbacks and effect handling remain unsafe
 to treat as supported behavior.
+The [geometry and positioning follow-up](validation/2026-09-18-geometry-positioning.md)
+repairs no-box queries and evaluates upstream ownership APIs. The new candidate
+remains isolated until viewport sizing, transformed coordinates and grid
+invalidation pass the recorded comparisons.
 
 ## The complete pipeline
 

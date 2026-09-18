@@ -1,0 +1,16 @@
+[
+  { "name": "short-root-absolute-bottom" },
+  { "name": "short-root-fixed-stretch" },
+  { "name": "absolute-percent-escape" },
+  { "name": "block-auto-anchor" },
+  { "name": "flex-auto-anchor" },
+  { "name": "grid-static-anchor" },
+  { "name": "grid-owner-area" },
+  { "name": "viewport-fixed" },
+  { "name": "transformed-fixed" },
+  { "name": "viewport-fixed-restored" },
+  { "name": "relative-descendant-escape" },
+  { "name": "absolute-percent-restored" },
+  { "name": "block-auto-anchor", "scale": 2 },
+  { "name": "grid-static-anchor", "scale": 2 }
+]

@@ -1,0 +1,13 @@
+{
+  "status": "partial",
+  "capturedFramesUnchanged": 21,
+  "canvasContractMatches": 27,
+  "initializationResultsUnchanged": true,
+  "clippingPassed": false,
+  "stackingMutationPassed": true,
+  "validationErrors": [],
+  "failureInjectionCleanupPassed": true,
+  "metalValidationObserved": true,
+  "executableSha256": "4ea43ea9698ad57b06fcdcfe1e3909be5fb8413099ecf104ba1e8d1fb49d0457",
+  "reportSha256": "d03087d6713c1a5ef1646740c1f6268780788880300be5a602709f5e686f205a"
+}

@@ -1,0 +1,8 @@
+{
+  "exitCode": 1,
+  "sha256": {
+    "target/debug/threejs-dom-geometry-probe": "82930f9e069480bf3c4608704bcb27c580ed549cd79b489d811a51be35c5feff",
+    "experiments/dom-canvas/src/geometry_probe.rs": "ead2064366a4790380f8a5fe17641b423be882107dd0b0a66facc77beeb40e6e",
+    "experiments/dom-canvas/src/geometry_tests.rs": "8d4998562859147795be24f61156f9f708ca9a7c74078f3312b3de0698eab6df"
+  }
+}

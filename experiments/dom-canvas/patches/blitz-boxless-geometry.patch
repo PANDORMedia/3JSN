@@ -1,0 +1,84 @@
+--- a/packages/blitz-dom/src/node/node.rs
++++ b/packages/blitz-dom/src/node/node.rs
+@@ -1635,14 +1635,27 @@
+     /// list for boxless nodes, such as `display: none`, `display: contents`, or
+     /// detached elements)
+     pub fn has_boxes(&self) -> bool {
+-        self.flags.is_in_document()
+-            && !self.display_style().is_some_and(|display| {
+-                matches!(
+-                    display.inside(),
+-                    style::values::specified::box_::DisplayInside::None
+-                        | style::values::specified::box_::DisplayInside::Contents
+-                )
+-            })
++        if !self.flags.is_in_document()
++            || self
++                .display_style()
++                .is_some_and(|display| display.is_none() || display.is_contents())
++        {
++            return false;
++        }
++        // DOM ancestry matters: display:contents is absent from the layout
++        // tree, while display:none suppresses every descendant's boxes.
++        let mut parent = self.parent;
++        while let Some(id) = parent {
++            let node = self.with(id);
++            if node
++                .display_style()
++                .is_some_and(|display| display.is_none())
++            {
++                return false;
++            }
++            parent = node.parent;
++        }
++        true
+     }
+ 
+     /// Creates a synthetic click event
+--- a/packages/blitz-dom/src/document.rs
++++ b/packages/blitz-dom/src/document.rs
+@@ -2217,6 +2217,16 @@
+ 
+     /// Computes the size and position of the `Node` relative to the viewport
+     pub fn get_client_bounding_rect(&self, node_id: NodeId) -> Option<BoundingRect> {
++        let node = self.get_node(node_id)?;
++        let zero = BoundingRect {
++            x: 0.0,
++            y: 0.0,
++            width: 0.0,
++            height: 0.0,
++        };
++        if !node.has_boxes() {
++            return Some(zero);
++        }
+         // Non-atomic inline elements have no layout box of their own: return
+         // the union of their per-line-box fragment rects.
+         if let Some(rects) = self.inline_fragment_rects(node_id) {
+@@ -2231,7 +2241,7 @@
+                 .map(|r| r.y + r.height)
+                 .fold(f64::NEG_INFINITY, f64::max);
+             return match rects.is_empty() {
+-                true => None,
++                true => Some(zero),
+                 false => Some(BoundingRect {
+                     x: x0,
+                     y: y0,
+@@ -2241,7 +2251,6 @@
+             };
+         }
+ 
+-        let node = self.get_node(node_id)?;
+         let pos = node.unrounded_absolute_position(0.0, 0.0);
+ 
+         Some(BoundingRect {
+@@ -2257,6 +2266,9 @@
+     /// return a single rect. Non-atomic inline elements (which are laid out as style
+     /// spans within an inline root's text layout) return one rect per line box.
+     pub fn node_client_rects(&self, node_id: NodeId) -> Vec<BoundingRect> {
++        if self.get_node(node_id).is_none_or(|node| !node.has_boxes()) {
++            return Vec::new();
++        }
+         match self.inline_fragment_rects(node_id) {
+             Some(rects) => rects,
+             None => self.get_client_bounding_rect(node_id).into_iter().collect(),

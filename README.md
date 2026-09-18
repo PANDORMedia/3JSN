@@ -101,6 +101,11 @@ change, and [initialized handoff](docs/validation/2026-09-18-canvas-handoff.md) 
 untouched, partially written and discarded render-attachment canvases. Ancestor
 clipping still fails, so the integration result remains explicitly partial.
 
+A [native DOM geometry repair](docs/validation/2026-09-18-geometry-positioning.md)
+now matches Chrome on 23 shared checks. A separately pinned upstream layout
+candidate improves containing-block ownership, but viewport, transformed geometry
+and dynamic grid failures keep it outside the default experiment.
+
 The probes select Metal on macOS, Vulkan on Linux, and D3D12 on Windows. Drivers
 and hardware must support the selected backend. For the JS experiment, an
 explicit `THREEJS_NATIVE_BACKEND` environment variable can select one of those

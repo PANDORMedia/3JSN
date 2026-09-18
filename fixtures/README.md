@@ -15,7 +15,7 @@ serves fixture files, the pinned Three.js build and original test network servic
 It waits for completed
 assertions and prints a JSON report, returning nonzero on failed assertions or
 timeout. It does not override the selected GPU backend or enable software fallback.
-The final argument selects `webgl-dom`, `webgpu-canvas`, `workers-wasm`, `audio-worklet`, `network`,
+The final argument selects `webgl-dom`, `webgpu-canvas`, `workers-wasm`, `audio-worklet`, `network`, `dom-geometry`,
 or `all`; omitting it retains the original `webgl-dom` behavior. Single-fixture
 output is one report; `all` emits a suite containing a `reports` array.
 
@@ -55,6 +55,11 @@ The service uses the pinned `ws` development dependency; browser code uses nativ
 web APIs. It contacts no game service and tests no TLS, credentials or WebRTC.
 Static-only servers cannot run this fixture's service-dependent assertions.
 
+[`dom-geometry`](dom-geometry/README.md) compares box geometry across hide/show,
+`display:contents`, detach/reattach and zero dimensions. Its 23 shared checks
+match the patched native DOM query. This does not certify transformed geometry
+or general browser DOM behavior.
+
 The fixture uses the repository's Three.js r186 baseline, not CtF's pinned r168
 dependency. Broader version compatibility, post-processing, media/voice,
 full lifecycle/failure behavior and physical input fixtures remain required.
@@ -70,6 +75,7 @@ Committed macOS arm64 browser references from Chrome 153 on 2026-09-17:
 | Offline audio/worklet | 8 | [Report](audio-worklet/reference-macos-arm64.json) |
 | Fetch/WebSocket reconnect | 15 | [Report](network/reference-macos-arm64.json) |
 | WebGPU canvas | 30 | [Report](webgpu-canvas/reference-macos-arm64.json); 27 shared contract assertions plus 3 browser checks |
+| DOM geometry (2026-09-18) | 23 | [Report](dom-geometry/reference-macos-arm64.json); also compared to the native query |
 
 Reports include fixture/service/lockfile hashes and raw observations. These are
 browser baseline results only; no native compatibility is implied. The audio

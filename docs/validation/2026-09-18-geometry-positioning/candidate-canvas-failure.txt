@@ -1,0 +1,2 @@
+2026-09-18 03:22:15.487 threejs-positioned-dom-canvas-probe[19071:4553902] Metal API Validation Enabled
+Error: "EXPECTED_FAILURE_AFTER_SUBMIT; shared GPU cleanup completed"

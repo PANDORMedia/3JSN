@@ -1,0 +1,67 @@
+{
+  "runs": [
+    {
+      "fixture": "positioned-layout",
+      "exitCode": 0,
+      "metalValidationObserved": true,
+      "matchesEarlierCandidateCapture": true
+    },
+    {
+      "fixture": "overflow-paint",
+      "exitCode": 0,
+      "metalValidationObserved": true,
+      "matchesEarlierCandidateCapture": true
+    },
+    {
+      "fixture": "grid-transition",
+      "exitCode": 0,
+      "metalValidationObserved": true,
+      "matchesEarlierCandidateCapture": true
+    },
+    {
+      "fixture": "cache-sequence",
+      "exitCode": 0,
+      "metalValidationObserved": true,
+      "matchesEarlierCandidateCapture": true
+    }
+  ],
+  "preparation": {
+    "status": "prepared-research-candidate",
+    "adopted": false,
+    "directory": ".cache/positioned-candidate",
+    "revision": "c032f63418097bb82c26077a85c24896c0a96e9d",
+    "taffyRevision": "dc2fe8bd1ad93e93f0494bdeca2561a420c8f28c",
+    "changedFile": "packages/blitz-dom/src/layout/damage.rs",
+    "patchSha256": "90f0af5cc30fe1fdaba7bd6245b6170fdf42b6c3537a2e8845a8c7bde27c5b5f",
+    "patchedSha256": "47ba61504d6e2dce8a45510dfb1b2339c7b6b21cc9984b41b1cdbc4b9872ff85",
+    "verifiedTrackedFiles": 416,
+    "manifestInputSha256": "dc6fb82e70ef65b3fd38038a9cfca81b2b452adebad6d3b77c0227eb225ebba8",
+    "lockInputSha256": "51dc89ebc55cc4f81d4b800db95cb7bbeec6c4a66a38159df383431598865b6b",
+    "generatedManifestSha256": "728060ca901a0bef80e4934ec427e3866701351d4e9e50fde4e0991a9a2e2c9f",
+    "generatedLockSha256": "0aef17fce6d078514e9536204cbeddb6d80d54ff5bc136dcb569fd0508882e90",
+    "deno": {
+      "package": "deno_webgpu",
+      "version": "0.226.0",
+      "directory": ".cache/dom-canvas/deno_webgpu",
+      "sourceCanvasSha256": "f72afc419f0e701569f4305116e4154c34159194126fc7b2c9f90edb4ad71be2",
+      "patchedCanvasSha256": "f977f90baf198bad641b2215efc9b92832b5e3d2c0606d2a22552dad9efed7e6",
+      "patchSha256": "b408e7e7b8ff7ca87b6c26d2666f566e0e9af538c7d44b611beb396fb84a495b",
+      "verifiedPackagedFiles": 32
+    }
+  },
+  "sha256": {
+    "target/debug/threejs-positioned-overflow-paint-probe": "33ce4bfe77245d1f7e8b0a6ae51d3e60e66ad345e97f6f313fc413a6154e94b3",
+    ".cache/positioned-candidate/probe/Cargo.toml": "728060ca901a0bef80e4934ec427e3866701351d4e9e50fde4e0991a9a2e2c9f",
+    ".cache/positioned-candidate/probe/Cargo.lock": "0aef17fce6d078514e9536204cbeddb6d80d54ff5bc136dcb569fd0508882e90",
+    "experiments/dom-canvas/src/clip_probe.rs": "1581d48f00a7a0c099c6ac0cf5a684e9ad3942dfc263580328d005b563adb1e8",
+    "experiments/dom-canvas/src/painter.rs": "696a4947d75433701f6488ae60796c475da6e345db1ceed72402687fb999296f",
+    "experiments/dom-canvas/src/dom_bridge.rs": "30d218ec44a8b23c0748d2c297b02ab7b81ea32c1ede6f48e18e7fd30a732e89",
+    "experiments/dom-canvas/src/evidence.rs": "05c35b919bd3d00b9f267b68f5606bd7f991e0d0fe9a0248dc5b0bf6797df6ae",
+    "experiments/html-v8/src/main.rs": "8f006a791404e5499f29f2ba905e23b5c9826c77980705f4a2b795d602481edb",
+    "experiments/html-v8/src/bindings.js": "1d38425d73c62479d07312028c7799f77f84b1f0c280d989d3aa6e3eea779eb3",
+    "experiments/native-html-interop/src/host.rs": "e05951e7fb07b5f2ed1d95bbf77f0e3bad1e1551711aa4af251c26b5e07e5732",
+    "experiments/native-html-interop/src/metal.rs": "1462ed119a26952c95bcb3e811f2e634ef71d662416318ec91fcc7ba1fb87e26",
+    "experiments/native-html-interop/src/bindings.js": "2520bdcb843387d18c98f8d4fc257c78feebde210d0a5d5204b6ec3a7bcebefd",
+    "experiments/dom-canvas/prepare-positioned.mjs": "a764a1b989948bbb3b9c71de1aae10aea9e4e2b34a10bef3e31350812750bbaf"
+  }
+}

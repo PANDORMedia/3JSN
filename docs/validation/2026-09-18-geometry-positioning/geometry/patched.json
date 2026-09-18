@@ -1,0 +1,552 @@
+{
+  "kind": "native-dom-geometry",
+  "gpuRequested": false,
+  "v8": "15.0.245.2-rusty",
+  "result": {
+    "fixture": "dom-geometry",
+    "status": "passed",
+    "checks": [
+      {
+        "name": "visible box",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "self display none",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "fixed descendant under hidden parent",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "restore own display",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "absolute descendant under hidden ancestor",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "fixed descendant under hidden grandparent",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "restore ancestor display",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "own display contents",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "boxed child of display contents",
+        "passed": true,
+        "observed": {
+          "x": 152,
+          "y": 104,
+          "width": 100,
+          "height": 90,
+          "top": 104,
+          "right": 252,
+          "bottom": 194,
+          "left": 152
+        },
+        "expected": {
+          "x": 152,
+          "y": 104,
+          "width": 100,
+          "height": 90,
+          "top": 104,
+          "right": 252,
+          "bottom": 194,
+          "left": 152
+        }
+      },
+      {
+        "name": "nested contents outer",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "nested contents middle",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "boxed child of nested contents",
+        "passed": true,
+        "observed": {
+          "x": 120,
+          "y": 80,
+          "width": 100,
+          "height": 90,
+          "top": 80,
+          "right": 220,
+          "bottom": 170,
+          "left": 120
+        },
+        "expected": {
+          "x": 120,
+          "y": 80,
+          "width": 100,
+          "height": 90,
+          "top": 80,
+          "right": 220,
+          "bottom": 170,
+          "left": 120
+        }
+      },
+      {
+        "name": "visibility hidden keeps geometry",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "zero opacity keeps geometry",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "overflow clipping keeps geometry",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "offscreen box keeps geometry",
+        "passed": true,
+        "observed": {
+          "x": -444,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": -344,
+          "bottom": 210,
+          "left": -444
+        },
+        "expected": {
+          "x": -444,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": -344,
+          "bottom": 210,
+          "left": -444
+        }
+      },
+      {
+        "name": "zero width preserves origin",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 0,
+          "height": 90,
+          "top": 120,
+          "right": 176,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 0,
+          "height": 90,
+          "top": 120,
+          "right": 176,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "zero area preserves origin",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 0,
+          "height": 0,
+          "top": 120,
+          "right": 176,
+          "bottom": 120,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 0,
+          "height": 0,
+          "top": 120,
+          "right": 176,
+          "bottom": 120,
+          "left": 176
+        }
+      },
+      {
+        "name": "detached retained element",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "descendant of detached subtree",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "name": "reattachment restores geometry",
+        "passed": true,
+        "observed": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        },
+        "expected": {
+          "x": 176,
+          "y": 120,
+          "width": 100,
+          "height": 90,
+          "top": 120,
+          "right": 276,
+          "bottom": 210,
+          "left": 176
+        }
+      },
+      {
+        "name": "reattachment preserves wrapper identity",
+        "passed": true,
+        "observed": true
+      },
+      {
+        "name": "never attached element",
+        "passed": true,
+        "observed": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "expected": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ]
+  },
+  "inputs": {
+    "htmlSha256": "9ebe485702788d296a1bc23b3a394d723d6f604c073201d7616525d7f10cbe90",
+    "scriptSha256": "d084dece1659fff4667de83e4378116255196c77212e6bff340e6b384a8e2577"
+  },
+  "limits": [
+    "No painting, GPU, window or performance test.",
+    "Existing bounded DOM wrapper; DOMRect prototype and getClientRects JS bindings are not certified."
+  ]
+}

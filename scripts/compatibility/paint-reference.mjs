@@ -7,17 +7,17 @@ import { PNG } from 'pngjs';
 import { withBrowserSession } from './browser-session.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
-const [executable, outputArgument] = process.argv.slice(2);
-if (!executable || !outputArgument || process.argv.length !== 4) {
-  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir>');
+const [executable, outputArgument, fixture = 'overflow-paint'] = process.argv.slice(2);
+if (!executable || !outputArgument || process.argv.length > 5 || !['overflow-paint', 'positioned-layout'].includes(fixture)) {
+  console.error('Usage: node scripts/compatibility/paint-reference.mjs <chrome-executable> <output-dir> [overflow-paint|positioned-layout]');
   process.exit(2);
 }
 const output = resolve(outputArgument);
 const cssViewport = { width: 448, height: 256 };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const sources = [
-  'fixtures/overflow-paint/index.html', 'fixtures/overflow-paint/fixture.js',
-  'fixtures/overflow-paint/cases.json', 'scripts/compatibility/paint-reference.mjs',
+  `fixtures/${fixture}/index.html`, `fixtures/${fixture}/fixture.js`,
+  `fixtures/${fixture}/cases.json`, 'scripts/compatibility/paint-reference.mjs',
   'scripts/compatibility/browser-session.mjs', 'scripts/compatibility/fixture-server.mjs',
   'package-lock.json',
 ];
@@ -42,7 +42,7 @@ try {
     const browser = await command('Browser.getVersion');
     await command('Page.enable');
     await command('Emulation.setDeviceMetricsOverride', { ...cssViewport, deviceScaleFactor: 1, mobile: false });
-    const navigation = await command('Page.navigate', { url: `${origin}/fixtures/overflow-paint/index.html` });
+    const navigation = await command('Page.navigate', { url: `${origin}/fixtures/${fixture}/index.html` });
     if (navigation.errorText) throw new Error(`Paint fixture navigation failed: ${navigation.errorText}`);
 
     async function evaluate(expression, awaitPromise = false) {
@@ -91,7 +91,7 @@ try {
         `Reference input changed during capture: ${input.path}`);
     }
     const report = {
-      schemaVersion: 1, kind: 'overflow-paint-browser-reference', capturedAt: new Date().toISOString(),
+      schemaVersion: 1, kind: `${fixture}-browser-reference`, capturedAt: new Date().toISOString(),
       browser, cssViewport,
       inputs: { htmlSha256: fixtureInputs[0].sha256, scriptSha256: fixtureInputs[1].sha256, casesSha256: fixtureInputs[2].sha256 },
       fixtureInputs, cases,
