@@ -85,12 +85,13 @@ try {
 } finally { await writeFile(ui, compiled); }
 assert.equal(await readFile(sourcePath, 'utf8'), source);
 const report = { status: 'passed', target: 'macos-arm64', backend: 'Metal', loading,
-  initialDocumentHtmlReadsDenied: true, nativeNetworkingDenied: true, sourcePreserved: true,
+  initialDocumentHtmlReadsDenied: true, nativeNetworkingDenyConfigured: true, sourcePreserved: true,
   interpretedCompletion: interpreted.find(record => record.nativeDomWindow),
   compiledCompletion: compiledRun.find(record => record.nativeDomWindow), observations: after,
   invalidVersionRejected: true, undeclaredResourceRejected: true, inputs: { htmlSha256: hash(source), irSha256: hash(compiled),
     playerSha256: hash(await readFile(player)), moduleSha256: hash(await readFile(module)), fontSha256: hash(await readFile(font)) },
-  limits: ['This is an experimental direct player invocation, not a new supported package profile.',
+  limits: ['Networking denial is configured by sandbox policy; this harness does not measure an attempted network connection.',
+    'This is an experimental direct player invocation, not a new supported package profile.',
     'CSS and dynamic HTML parsing remain linked; the fixture deliberately exercises innerHTML after startup.',
     'Presentation and DOM observations do not certify GPU pixel equivalence or performance improvements.'] };
 await writeFile(join(output, 'report.json'), JSON.stringify(report, null, 2));

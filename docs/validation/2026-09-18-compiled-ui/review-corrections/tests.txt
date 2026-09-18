@@ -1,0 +1,31 @@
+    Blocking waiting for file lock on artifact directory
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/review-pr57/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr57/experiments/compiled-ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.02s
+     Running unittests src/lib.rs (/Users/sean/dev/3JSN/target/debug/deps/threejs_compiled_ui_experiment-adb379a0637d2247)
+
+running 13 tests
+test tests::contract_string_limit_counts_utf8_bytes_for_text_and_metadata_keys ... ok
+test tests::contract_tree_depth_accepts_boundary_and_rejects_one_more ... ok
+test tests::contract_metadata_depth_and_diagnostic_count_are_bounded ... ok
+test tests::contract_node_limit_accepts_boundary_and_rejects_one_more ... ok
+test tests::namespaced_attributes_text_and_comments_match_interpreted_tree ... ok
+test tests::invalid_graph_and_unsupported_modes_fail_before_native_construction ... ok
+test tests::initial_tree_never_invokes_retained_dynamic_parser ... ok
+test tests::nested_template_contents_remain_inert_and_can_be_moved_into_live_document ... ok
+test tests::linked_stylesheet_and_import_use_the_same_provider_and_base_url ... ok
+test tests::styles_mutations_queries_and_responsive_layout_match_at_multiple_scales ... ok
+test tests::validates_diagnostic_truncation_and_total_attribute_bound ... ok
+test tests::malformed_foster_parenting_and_style_source_order_match_interpreted ... ok
+test tests::shared_compiled_ui_fixtures_have_identical_native_trees_and_probe_rects ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+

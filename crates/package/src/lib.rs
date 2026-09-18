@@ -13,8 +13,12 @@ use sha2::{Digest, Sha256};
 
 mod compiled;
 pub use compiled::{CompiledUi, HtmlParserMode, MAX_COMPILED_UI_BYTES};
+mod font;
+pub use font::read_font;
 #[cfg(test)]
 mod compiled_tests;
+#[cfg(test)]
+mod font_tests;
 
 const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
@@ -136,7 +140,9 @@ pub struct Application {
     pub entry: PathBuf,
     pub html: Option<PathBuf>,
     pub compiled_ui: Option<CompiledUi>,
-    pub font: Option<PathBuf>,
+    /// Bounded fallback font bytes from the same read used for integrity checks.
+    /// Decoding and usable-family validation remain the runtime's responsibility.
+    pub font: Option<Vec<u8>>,
     pub resources: Option<Vec<Resource>>,
 }
 
@@ -367,6 +373,7 @@ fn validate_manifest(manifest: &Manifest, profile: Profile) -> Result<(), Packag
             ));
         }
     }
+    font::validate(manifest)?;
     validate_resources(manifest, profile)
 }
 
@@ -421,6 +428,7 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
     validate_manifest(&manifest, profile)?;
     let mut resources = manifest.resources.as_ref().map(|_| Vec::new());
     let mut compiled_ui = None;
+    let mut font = None;
     for item in &manifest.files {
         let path = root.join(&item.path);
         let mut file = regular_file(&root, &item.path)?;
@@ -443,6 +451,12 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
                 html_parser: ui.html_parser,
                 bytes,
             });
+            size
+        } else if manifest.font.as_ref() == Some(&item.path) {
+            let bytes = font::read_bytes(file, &path)?;
+            hasher.update(&bytes);
+            let size = bytes.len() as u64;
+            font = Some(bytes);
             size
         } else if let Some(resource) = resource {
             let mut bytes = Vec::new();
@@ -477,7 +491,7 @@ pub fn load_for(manifest_path: &Path, profile: Profile) -> Result<Application, P
         entry: root.join(manifest.entry),
         html: manifest.html.map(|path| root.join(path)),
         compiled_ui,
-        font: manifest.font.map(|path| root.join(path)),
+        font,
         resources,
     })
 }
@@ -629,7 +643,7 @@ mod tests {
         let path = fixture.0.join("app.json");
         let app = load_for(&path, Profile::DomWindow).unwrap();
         assert_eq!(app.html.unwrap(), fixture.0.join("app/index.html"));
-        assert_eq!(app.font.unwrap(), fixture.0.join("app/font.woff2"));
+        assert_eq!(app.font.unwrap(), b"integrity-only fixture");
         for payload in ["app/index.html", "app/font.woff2"] {
             let file = fixture.0.join(payload);
             let original = fs::read(&file).unwrap();

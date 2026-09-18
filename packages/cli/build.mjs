@@ -15,6 +15,7 @@ import { compilePackageUi, htmlParserMode, validateCompiledUiRuntime } from './c
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
 const forward = path => path.split(sep).join('/');
+const comparePaths = (a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0;
 const within = (root, path) => {
   const rel = relative(root, path);
   return !rel || (!isAbsolute(rel) && rel !== '..' && !rel.startsWith(`..${sep}`));
@@ -168,10 +169,10 @@ async function bundle(root, entry, staging) {
     files.push(identity);
     outputIdentities.push({ ...identity, esbuildSha256: digest(output.contents) });
   }
-  files.sort((a, b) => a.path.localeCompare(b.path));
+  files.sort(comparePaths);
   if (new Set(files.map(item => item.path.toLowerCase())).size !== files.length) throw new BuildError('OUTPUT_COLLISION', 'Output paths collide when case folded.');
   return { files, loaded, metadata: { version: esbuild.version, options: { platform: 'browser', format: 'esm', target: 'esnext', sourcemap: 'linked', tsconfigRaw: {} },
-    inputs: [...loaded.values()].sort((a, b) => a.path.localeCompare(b.path)), outputs: outputIdentities,
+    inputs: [...loaded.values()].sort(comparePaths), outputs: outputIdentities,
     metafile: result.metafile, metafileScope: 'Original esbuild provenance includes build-location paths and pre-source-label-rewrite output sizes; it is not a complete or hermetic resolution inventory.' } };
 }
 
@@ -250,7 +251,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
         await writeFile(join(staging, resource.path), resource.payload, { flag: 'wx' });
         built.files.push({ path: resource.path, bytes: resource.bytes, sha256: resource.sha256 });
       }
-      built.files.sort((a, b) => a.path.localeCompare(b.path));
+      built.files.sort(comparePaths);
       checkCancellation(signal);
     }
     const executable = `${config.name}${process.platform === 'win32' ? '.exe' : ''}`;

@@ -207,19 +207,25 @@ Interpreted DOM manifests require distinct, listed `html` and `font` paths endin
 Compiled DOM manifests replace `html` with `compiledUi`, containing `path`,
 `format`, `version` and `htmlParser`; the builder emits `app/ui.json` and retains
 `app/font.woff2`. The UI payload is listed with its size/hash and kept as verified
-bytes for loading. Compiled manifests reject `html`, and interpreted manifests
-reject `compiledUi`. Native-window manifests reject DOM fields. All players use
+bytes for loading. Both DOM players also retain the fallback font bytes from the
+same bounded read used for size/hash verification; startup never reopens that font.
+Its declared and actual size must each be at most 16 MiB. Compiled manifests reject
+`html`, and interpreted manifests reject `compiledUi`. Native-window manifests reject
+DOM fields. All players use
 the shared `threejs-native-package` validator and reject incompatible profiles. DOM
 `--describe`, `--verify-app`, `--app` and adjacent-manifest startup follow the same
 protocol. `--verify-app` checks manifest and payload integrity, not HTML behavior
 or font decoding. The old positional DOM-probe invocation remains available.
+Direct developer font arguments use the same 16 MiB read limit, without manifest
+integrity verification. Font decoding and usable-family checks still happen in
+the runtime before document initialization.
 Webfont builds also declare the `dom-package-fonts-v1` requirement and listed
 font/stylesheet resources; their verified bytes remain owned in memory. See the
 [resource bounds and native contract](web-fonts.md).
 
 These are corruption and configuration checks for trusted local code. The
-manifest is unsigned, module execution reopens verified files, and packages must stay
-quiescent. The existing runtime module loader can resolve dynamic file imports;
+manifest is unsigned, HTML and module loading reopen verified files, and packages
+must stay quiescent. The existing runtime module loader can resolve dynamic file imports;
 this is not a hostile-code sandbox or a guarantee that future reads remain inside
 the package. The build metadata records unresolved dynamic behavior explicitly.
 

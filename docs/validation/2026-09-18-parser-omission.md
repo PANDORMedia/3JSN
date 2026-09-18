@@ -89,8 +89,11 @@ The [CPU/browser report](2026-09-18-parser-omission/cpu-browser.json) records:
   valid. The restricted variant rejects all 17 tested markup/navigation
   operations with unchanged snapshots and retained child identity.
 - HTML and foreign-namespace iframe IR fail explicitly before startup.
-- Original HTML reads, development-source reads and networking are denied in
-  the native subprocesses. Executables and inputs are copied into a directory
+- Original HTML and development-source reads are denied in the native subprocesses.
+  Their sandbox policy also configures network denial, but no attempted-connection
+  control measured it. The historical `networkDenied` receipt field described
+  configuration, not observed network failure; new runs state that distinction.
+  Executables and inputs are copied into a directory
   with spaces and Unicode; source/input hashes remain unchanged.
 - Chrome 153.0.8010.50 matches this fixture's sampled initial and mutated
   behavior, with zero rectangle differences above 0.25 CSS pixels and exact
@@ -205,3 +208,13 @@ constant-fragment semantics, independent framework and string-markup workloads,
 and broader platform/graphics evidence. The existing HTML-entry package profile
 in the tested PR58 artifacts remains interpreted. No production package format
 or unsupported existing application is silently switched to the restricted path.
+
+## Daily-review test wiring
+
+A dedicated `dom_mutations` integration target now compiles the actual shared
+native mutation module despite the player binary's `test = false`. Its three
+mutation/creation tests pass with default features and `--no-default-features`.
+[Logs and identities](2026-09-18-parser-omission/review-corrections/source-identities.json)
+record the CPU-only checks. Both Python evidence collectors' three-test suites
+pass locally and are now explicit jobs within the existing source CI matrix.
+This wiring adds no CI claim about native GPU or window execution.

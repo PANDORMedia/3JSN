@@ -32,4 +32,5 @@ code incorporated into the project.
 
 PRs should explain the resulting behavior, why it is needed, validation performed,
 and remaining gaps. Performance claims need comparable workloads and raw evidence.
-All contributions are under the project's MIT license.
+Original contributions are under the project's MIT license. Incorporated upstream
+source retains the licenses listed in [third-party notices](THIRD_PARTY_NOTICES.md).
