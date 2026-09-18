@@ -1,0 +1,5 @@
+{
+  "experiments/compiled-ui/src/lib.rs": "8141f7e59374a946690cb501047cd16c3e30e76ed524af86428aaf3ccc48a76f",
+  "experiments/compiled-ui/src/tests.rs": "23e559c6047aa3839880a4965c026a2064d5b445ccbb858275c7695e9c282e11",
+  "scripts/probe-compiled-ui-window.mjs": "94e3adebc266c3ebae6d39d37046d95616a93a9217f801eeedba07af98dcf9d5"
+}

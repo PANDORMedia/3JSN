@@ -1,0 +1,24 @@
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/review-pr58/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr58/experiments/compiled-ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.76s
+     Running unittests src/lib.rs (/Users/sean/dev/3JSN/target/debug/deps/threejs_compiled_ui_experiment-a3760eef529646d0)
+
+running 7 tests
+test parser_policy_tests::shared_requirement_tracks_html_and_actual_foreign_iframe_hook ... ok
+test parser_policy_tests::explicit_restricted_loading_rejects_caller_parser_without_invoking_it ... ok
+test parser_policy_tests::restricted_startup_includes_iframes_in_inert_templates ... ok
+test parser_policy_tests::restricted_preflight_rejects_iframes_before_earlier_resource_attachment ... ok
+test parser_policy_tests::restricted_static_construction_keeps_ordinary_nodes_and_reports_absent_parser ... ok
+test parser_policy_tests::missing_default_feature_rejects_automatic_parse_before_any_provider_work ... ok
+test parser_policy_tests::ordinary_api_preserves_explicit_provider_in_both_feature_configurations ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
