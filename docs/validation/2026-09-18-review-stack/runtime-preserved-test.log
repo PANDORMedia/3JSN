@@ -1,0 +1,113 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling v8 v150.4.0
+warning: use of deprecated method `icu_properties::props::BidiClass::to_icu4c_value`: please comment on https://github.com/unicode-org/icu4x/issues/6067 if you need this
+   --> /Users/sean/dev/3JSN/.cache/review-pr62/.cache/web-fonts/parley/src/bidi.rs:893:13
+    |
+893 |     1 << (t.to_icu4c_value() as u32)
+    |             ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: `parley` (lib) generated 1 warning
+   Compiling threejs-compiled-ui-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr62/experiments/compiled-ui)
+   Compiling deno_v8 v0.4.0
+   Compiling serde_v8 v0.321.0
+   Compiling deno_core v0.412.0
+   Compiling deno_image v0.35.0
+   Compiling deno_webidl v0.259.0
+   Compiling deno_web v0.290.0
+   Compiling deno_webgpu v0.226.0 (/Users/sean/dev/3JSN/.cache/review-pr62/.cache/dom-canvas/deno_webgpu)
+   Compiling threejs-native-js-sources v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr62/crates/js-sources)
+   Compiling threejs-native-package v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr62/crates/package)
+warning: variant `Intrinsic` is never constructed
+   --> /Users/sean/dev/3JSN/.cache/review-pr62/.cache/dom-canvas/blitz/packages/blitz-paint/src/render/background.rs:745:5
+    |
+739 | enum BackgroundSizeComputeMode {
+    |      ------------------------- variant in this enum
+...
+745 |     Intrinsic {
+    |     ^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blitz-paint` (lib) generated 1 warning
+   Compiling threejs-compiled-ui-runtime-experiment v0.0.0 (/Users/sean/dev/3JSN/.cache/review-pr62/experiments/compiled-ui-runtime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 58.12s
+     Running tests/dom_mutations.rs (/Users/sean/dev/3JSN/target/debug/deps/dom_mutations-91b687252b9fb399)
+
+running 23 tests
+test dom_ops::dom_focus_tests::dom_focus_subtree_removal_clears_focus_without_invalidating_retained_nodes ... ok
+test dom_ops::dom_focus_tests::dom_focus_candidates_sort_positive_then_natural_in_current_dom_order ... ok
+test dom_ops::dom_focus_tests::dom_focus_navigation_uses_dom_order_from_negative_and_cycles_native_window ... ok
+test dom_ops::dom_focus_tests::dom_focus_resolves_display_inert_and_overridden_visibility ... ok
+test dom_ops::dom_focus_tests::dom_focus_html_attribute_case_does_not_bypass_eligibility ... ok
+test dom_ops::dom_focus_tests::dom_focus_removal_preflight_preserves_state_and_checks_errors_first ... ok
+test dom_ops::dom_tree_tests::attribute_removal_updates_id_lookup_and_leaves_other_attributes_intact ... ok
+test dom_ops::dom_focus_tests::dom_focus_disabled_fieldsets_exempt_only_the_first_legend_subtree ... ok
+test dom_ops::dom_focus_tests::dom_focus_control_and_link_eligibility_rejects_disabled_and_hidden_inputs ... ok
+test dom_ops::dom_tree_tests::character_data_changes_existing_text_and_comment_payloads_only ... ok
+test dom_ops::dom_tree_tests::cssom_writes_reflect_attributes_ignore_invalid_values_and_remove_properties ... ok
+test dom_ops::dom_tree_tests::descriptions_expose_dom_kinds_names_and_namespace_without_layout_boxes ... ok
+test dom_ops::dom_focus_tests::dom_focus_tabindex_parses_html_integer_prefixes_and_reflects_long_defaults ... ok
+test dom_ops::dom_tree_tests::no_op_cssom_mutations_preserve_absent_and_unserialized_style_attributes ... ok
+test dom_ops::dom_focus_tests::dom_focus_uses_native_state_and_invalidates_focus_styles ... ok
+test dom_ops::dom_tree_tests::document_allows_comments_and_moving_its_single_existing_root ... ok
+test dom_ops::dom_tree_tests::invalid_tree_operations_leave_all_existing_relationships_unchanged ... ok
+test dom_ops::dom_tree_tests::reordering_detaching_and_reattaching_preserve_node_identity_and_text ... ok
+test dom_ops::dom_tree_tests::text_content_replaces_element_children_but_keeps_detached_subtrees_alive ... ok
+test dom_ops::tests::absent_parser_rejects_html_before_detaching_children ... ok
+test dom_ops::tests::parserless_creation_rejects_subdocuments_but_keeps_ordinary_elements ... ok
+test dom_ops::tests::supplied_parser_receives_fragment_without_dropping_retained_nodes ... ok
+test dom_ops::tests::non_element_html_rejects_before_parser_or_tree_mutation ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/dom_receivers.rs (/Users/sean/dev/3JSN/target/debug/deps/dom_receivers-88ef9810b31a3e24)
+
+running 24 tests
+test dom_bridge::dom_focus_tests::dom_focus_removal_preflight_preserves_state_and_checks_errors_first ... ok
+test dom_bridge::dom_focus_tests::dom_focus_candidates_sort_positive_then_natural_in_current_dom_order ... ok
+test dom_bridge::dom_focus_tests::dom_focus_disabled_fieldsets_exempt_only_the_first_legend_subtree ... ok
+test dom_bridge::dom_focus_tests::dom_focus_navigation_uses_dom_order_from_negative_and_cycles_native_window ... ok
+test dom_bridge::dom_focus_tests::dom_focus_resolves_display_inert_and_overridden_visibility ... ok
+test dom_bridge::dom_focus_tests::dom_focus_subtree_removal_clears_focus_without_invalidating_retained_nodes ... ok
+test dom_bridge::dom_focus_tests::dom_focus_html_attribute_case_does_not_bypass_eligibility ... ok
+test dom_bridge::dom_focus_tests::dom_focus_control_and_link_eligibility_rejects_disabled_and_hidden_inputs ... ok
+test dom_bridge::dom_tree_tests::attribute_removal_updates_id_lookup_and_leaves_other_attributes_intact ... ok
+test dom_bridge::dom_focus_tests::dom_focus_tabindex_parses_html_integer_prefixes_and_reflects_long_defaults ... ok
+test dom_bridge::dom_tree_tests::character_data_changes_existing_text_and_comment_payloads_only ... ok
+test dom_bridge::dom_tree_tests::descriptions_expose_dom_kinds_names_and_namespace_without_layout_boxes ... ok
+test dom_bridge::dom_tree_tests::cssom_writes_reflect_attributes_ignore_invalid_values_and_remove_properties ... ok
+test dom_bridge::dom_focus_tests::dom_focus_uses_native_state_and_invalidates_focus_styles ... ok
+test dom_bridge::dom_tree_tests::document_allows_comments_and_moving_its_single_existing_root ... ok
+test dom_bridge::dom_tree_tests::reordering_detaching_and_reattaching_preserve_node_identity_and_text ... ok
+test dom_bridge::dom_tree_tests::invalid_tree_operations_leave_all_existing_relationships_unchanged ... ok
+test dom_bridge::dom_tree_tests::no_op_cssom_mutations_preserve_absent_and_unserialized_style_attributes ... ok
+test dom_bridge::dom_tree_tests::text_content_replaces_element_children_but_keeps_detached_subtrees_alive ... ok
+test dom_bridge::tests::absent_parser_rejects_html_before_detaching_children ... ok
+test dom_bridge::tests::supplied_parser_receives_fragment_without_dropping_retained_nodes ... ok
+test dom_bridge::tests::parserless_creation_rejects_subdocuments_but_keeps_ordinary_elements ... ok
+test dom_bridge::tests::non_element_html_rejects_before_parser_or_tree_mutation ... ok
+test invalid_receivers_leave_the_live_document_unchanged ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/package_options.rs (/Users/sean/dev/3JSN/target/debug/deps/package_options-71c54f5bf4d8e119)
+
+running 13 tests
+test interpreted_window_options::tests::diagnostics_are_gpu_independent_and_arguments_are_strict ... ok
+test window_options::tests::malformed_arguments_fail_before_attempting_package_io ... ok
+test window_options::tests::description_advertises_exact_profile_and_compiled_parser_contract ... ok
+test window_options::tests::preflight_checks_schema_and_all_subdocument_hooks_without_construction ... ok
+test interpreted_window_options::tests::interpreted_package_options_use_owned_fallback_bytes ... ok
+test window_options::tests::direct_commands_preflight_ir_before_font_or_module_access ... ok
+test window_options::tests::package_verification_applies_the_actual_runtime_parser_capability ... ok
+test window_options::tests::direct_window_and_measurement_commands_preserve_explicit_inputs ... ok
+test window_options::tests::verified_ui_bytes_are_not_reopened_and_measure_app_does_not_select_entry_module ... ok
+test window_options::tests::verified_packages_select_adjacent_or_explicit_manifest_with_strict_resources ... ok
+test window_options::tests::window_options_keep_verified_fallback_after_its_file_is_deleted_or_replaced ... ok
+test window_options::tests::package_preflight_rejects_format_version_mode_and_invalid_verified_ir ... ok
+test window_options::tests::direct_window_and_measurement_commands_reject_oversized_fallback_fonts ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
