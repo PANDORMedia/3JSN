@@ -25,10 +25,12 @@ The integration was compiled and run using Rust 1.93.0 on macOS arm64. See the
 versions, binary footprint and hardware results. The workspace requires Rust 1.93;
 CI uses 1.93.0.
 
-The experimental build CLI reuses the repository's pinned esbuild 0.28.2 and
-Node.js development environment. Its maintained bundler handles JavaScript,
-TypeScript and module resolution; the Rust player has no build-tool dependency.
-Package checksums detect accidental corruption, not authenticity or hostile code.
+The native package build path reuses the repository's pinned esbuild 0.28.2 and
+Node.js development environment. A separate experimental Vite capture command
+invokes the Vite installation already resolved from the selected project; the
+repository pins Vite 8.3.0 for its cross-platform integration fixture. Neither
+build tool is a Rust player dependency. Package checksums detect accidental
+corruption, not authenticity or hostile code.
 
 The original standalone GPU diagnostic retains wgpu 28. It is a different
 executable and never supplies resources to the embedded host. Do not solve version
