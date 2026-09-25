@@ -45,7 +45,7 @@ const constants = {
   TEXTURE_MIN_FILTER: 0x2801, TEXTURE_MAG_FILTER: 0x2800,
   TEXTURE_WRAP_S: 0x2802, TEXTURE_WRAP_T: 0x2803, TEXTURE_WRAP_R: 0x8072,
   NEAREST: 0x2600, LINEAR: 0x2601, CLAMP_TO_EDGE: 0x812f, REPEAT: 0x2901,
-  RGBA: 0x1908, UNSIGNED_BYTE: 0x1401, DEPTH_TEST: 0xb71, CULL_FACE: 0xb44,
+  RGB: 0x1907, RGBA: 0x1908, UNSIGNED_BYTE: 0x1401, DEPTH_TEST: 0xb71, CULL_FACE: 0xb44,
   BLEND: 0xbe2, SCISSOR_TEST: 0xc11, STENCIL_TEST: 0xb90,
   NEVER: 0x200, LESS: 0x201, EQUAL: 0x202, LEQUAL: 0x203, GREATER: 0x204,
   NOTEQUAL: 0x205, GEQUAL: 0x206, ALWAYS: 0x207,
@@ -185,6 +185,17 @@ export class ExperimentalWebGLContext {
     if (id !== undefined) core.ops.op_gl_bind_framebuffer(state(this).id, target >>> 0, id);
   }
   deleteFramebuffer(framebuffer) { remove(this, framebuffer, 'framebuffer', core.ops.op_gl_delete_framebuffer); }
+  readPixels(x, y, width, height, format, type, destination) {
+    const owner = state(this);
+    if (arguments.length !== 7) throw new TypeError('Only the typed-array readPixels overload is implemented');
+    x |= 0; y |= 0; width |= 0; height |= 0;
+    format >>>= 0; type >>>= 0;
+    if (!(destination instanceof Uint8Array) || !(destination.buffer instanceof ArrayBuffer)) {
+      throw new TypeError('RGBA/UNSIGNED_BYTE readPixels requires a Uint8Array backed by an ArrayBuffer');
+    }
+    const error = core.ops.op_gl_read_pixels(owner.id, x, y, width, height, format, type, destination);
+    if (error) owner.errors.add(error);
+  }
 }
 installPrograms(ExperimentalWebGLContext.prototype, { state, resource, create, remove, objects });
 installGeometry(ExperimentalWebGLContext.prototype, { state, resource, create, remove });

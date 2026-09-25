@@ -44,6 +44,13 @@ GPU allocation quota. Shader probe operations are not yet standard WebGL methods
 Context-loss recovery, zero-sized canvases, DOM resizing, full WebIDL conversion,
 object query reflection and remaining drawing APIs are open work.
 
+The public `readPixels` method supports only the seven-argument RGBA/
+UNSIGNED_BYTE form into a `Uint8Array`, using default pixel-pack state and the
+current read framebuffer. Reads are synchronous and capped at 64 MiB. Other
+formats/types, pixel-pack buffers and offset overloads are not exposed; readback
+is for application-visible WebGL reads and assertions, never compositor frame
+transport.
+
 The first run rejected `EGL_EXT_create_context_robustness`, which the packaged
 Metal backend does not advertise. Reviewing pinned ANGLE source established that
 WebGL mode independently enables ANGLE buffer-bounds validation. The corrected
