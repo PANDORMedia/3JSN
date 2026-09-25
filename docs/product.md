@@ -12,7 +12,9 @@ Intended complete workflow (not implemented yet):
 
 The first [experimental build path](build.md) now packages an explicit
 `native-window-v1` fixture and a supplied host player. Project analysis, `run`,
-existing frontend build integration and multiple target workers remain open.
+native integration of existing frontend builds and multiple target workers remain
+open. An experimental Vite adapter captures emitted web files for inspection;
+it does not create a native application.
 
 `check` identifies entry points, the existing build system, renderer, browser APIs,
 assets and services. Static analysis reports uncertainty; it cannot prove dynamic
