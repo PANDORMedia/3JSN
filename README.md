@@ -8,7 +8,9 @@ The goal is **unchanged game source → `3jsn build` → native desktop applicat
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
 and compatibility experiments. An experimental host-only build CLI packages the
 native-window fixture and a restricted HTML-entry demo; existing web-project builds are not integrated.
-No platform or unchanged-project compatibility is certified.**
+The experimental Vite adapter can capture a project's emitted web artifact graph,
+but it does not create a native package. No platform or unchanged-project
+compatibility is certified.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
 projects and dynamic HTML/CSS interfaces are part of the target, alongside WebGPU.

@@ -4,8 +4,10 @@
 `dom-window-v1` fixtures. It bundles JavaScript/TypeScript and an explicitly supplied native player
 into a portable application directory. The shipped executable runs without Node,
 esbuild or a development server. This is not the unchanged-web-project pipeline:
-general HTML/CSS, WebGL, frontend build commands, assets and full browser services
-still need integration. Do not port a game to these fixtures as a compatibility workaround.
+general HTML/CSS, WebGL, native integration of frontend build outputs, assets and
+full browser services still need integration. The Vite capture path below is an
+inventory step, not a native package path. Do not port a game to these fixtures
+as a compatibility workaround.
 
 | Profile | Entry and payload | Supplied player |
 | --- | --- | --- |
@@ -34,6 +36,41 @@ On Windows, use `target/release/threejs-native-player.exe`. The npm bin entry is
 Output must not already exist, its parent must exist, and it must be outside the
 project directory. No overwrite switch, automatic runtime download, package
 installation or project build-script execution is provided.
+
+## Inspect a Vite build
+
+For an existing Vite application, `vite-build` invokes the Vite installation
+resolved from the selected project/workspace without running an npm script or
+installing dependencies:
+
+```sh
+node packages/cli/cli.mjs vite-build path/to/workspace/packages/game \
+  --out artifacts/vite-game
+```
+
+The selected project directory is Vite's working directory. Its Vite config and
+plugins execute as trusted project code. The adapter preserves Vite's configured
+root/base and plugin/build behavior while directing output to a unique staging
+directory and requesting Vite's manifest and source maps. The destination must
+be a new directory outside the detected npm/pnpm workspace. Output is copied to
+`web/`, with a `build-report.json` beside it; this is captured web output, not a
+native application package. The adapter does not edit application files or run
+package scripts. It hashes the selected project and detected workspace before
+and after success, failure and cancellation; `.git` and `node_modules` trees
+are excluded. These hashes detect changes, not prevent a Vite plugin from
+writing elsewhere.
+
+The report records each Vite manifest entry and its static/dynamic import, CSS
+and asset references, every emitted regular file (including plugin, public,
+worker and Wasm outputs), SHA-256 identities, and source-map source lists.
+Symlink outputs, malformed manifest references, more than 10,000 files, files
+over 128 MiB or output over 2 GiB fail the build. Cancellation terminates the
+Vite process and publishes no output. Vite config/plugin code is arbitrary
+trusted code; the adapter is not a sandbox. Its report labels client/server
+boundaries unclassified because plugin-defined builds can add SSR or other
+environments. Capturing a worker or Wasm file does not establish that the native
+runtime can execute it. The runtime package contract still admits only its
+documented narrow output profiles.
 
 The example has a `3jsn.json` configuration:
 
