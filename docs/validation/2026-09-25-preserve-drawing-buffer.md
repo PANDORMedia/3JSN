@@ -36,3 +36,16 @@ The ignored source checks and GPU integration are in
 and [`webgl_dom_checks.js`](../../experiments/compiled-ui-runtime/tests/webgl_dom_checks.js).
 The pinned ANGLE input and local V8 archive are external build prerequisites;
 the native libraries are not included in the project.
+
+## Native-window attempt — 2026-09-25
+
+The compiled-UI player built successfully with the pinned `gl@9.0.0-rc.10`
+ANGLE package and the native WebGL feature. The unchanged public window fixture
+was then run for 120 frames with the documented probe. The process produced no
+fixture records and timed out after 95 seconds; stderr reported macOS
+LaunchServices scheduling failure and an invalid `com.apple.hiservices`
+connection. The runner verified that the fixture sources stayed unchanged and
+saved the failed-run report under the ignored `.cache/native-webgl/` directory.
+This attempt does not demonstrate visible presentation or identify a rendering
+failure: the macOS window host did not deliver the fixture's first frame. Keep
+the native-window gate open until the probe runs in a usable desktop session.
