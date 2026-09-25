@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, rmdir, writeFile } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { parse as parseHtml } from 'parse5';
@@ -223,6 +223,7 @@ export async function buildViteProject(options) {
   let exclusions;
   let staging;
   let reserved = false;
+  const published = [];
   try {
     before = await sourceSnapshot(measuredRoot);
     exclusions = before.exclusions.filter(path => path !== '.git');
@@ -249,7 +250,8 @@ export async function buildViteProject(options) {
         relativeToSourceRoot: relative(measuredRoot, root).split(sep).join('/'), viteVersion: vite.version },
       executionBoundary: { status: 'unclassified', note: 'Vite configuration and plugins are trusted project code; this report does not identify or certify client/server boundaries.' },
       build: { command: ['vite', 'build', '--outDir', '<staging>/web', '--emptyOutDir', '--manifest', manifestPath, '--sourcemap'], configExecuted: true },
-      source: { before, after, preservation }, manifest: { path: manifestPath, entries: graph }, files, documents: html, sourceMaps: maps };
+      source: { before, after, preservation }, manifest: { path: manifestPath, entries: graph }, files,
+      documents: { urlAttributes: ['src', 'href', 'poster'], files: html }, sourceMaps: maps };
     await writeFile(join(staging, 'build-report.json'), json(report), { flag: 'wx' });
     cancelled(options.signal);
     try { await mkdir(out); reserved = true; } catch (cause) {
@@ -258,13 +260,18 @@ export async function buildViteProject(options) {
     }
     cancelled(options.signal);
     await rename(emitted, join(out, 'web'));
+    published.push('web');
     cancelled(options.signal);
     await rename(join(staging, 'build-report.json'), join(out, 'build-report.json'));
+    published.push('build-report.json');
     await rm(staging, { recursive: true, force: true });
     staging = undefined;
     return { status: 'experimental', output: out, web: join(out, 'web'), report: join(out, 'build-report.json'), sourcePreserved: true };
   } catch (cause) {
-    if (reserved) await rm(out, { recursive: true, force: true }).catch(() => {});
+    if (reserved) {
+      for (const name of published.reverse()) await rm(join(out, name), { recursive: true, force: true }).catch(() => {});
+      await rmdir(out).catch(() => {});
+    }
     if (staging) await rm(staging, { recursive: true, force: true }).catch(() => {});
     let after = null;
     let preservation = null;
