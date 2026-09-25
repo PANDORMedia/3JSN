@@ -21,7 +21,7 @@ const bundle = resolve(output, 'three-image-texture.mjs');
 await build({ absWorkingDir: root, entryPoints: [inputs[0]], outfile: bundle,
   bundle: true, format: 'esm', platform: 'browser', sourcemap: 'inline' });
 run('cargo', ['build', '-p', 'threejs-native-player', '--locked'], 600000);
-const metadata = JSON.parse(run('cargo', ['metadata', '--locked', '--format-version', '1']));
+const metadata = JSON.parse(run('cargo', ['metadata', '--locked', '--no-deps', '--format-version', '1']));
 const binary = resolve(metadata.target_directory, 'debug', `threejs-native-player${process.platform === 'win32' ? '.exe' : ''}`);
 const runtime = run(binary, ['--version']);
 const result = JSON.parse(run(binary, [bundle]));
@@ -43,7 +43,7 @@ const report = { recordedAt: new Date().toISOString(), kind: 'rust-three-image-b
   runtime, versions, inputs: before, binary: { bytes: (await stat(binary)).size,
     sha256: createHash('sha256').update(await readFile(binary)).digest('hex') },
   bundle: { sha256: await hash('artifacts/rust-three-image/three-image-texture.mjs') }, result,
-  limitations: ['Synthetic PNG loaded from a data fixture; packaged-resource fetch is not implemented.',
+  limitations: ['Synthetic PNG loaded from a data fixture; this probe does not exercise packaged-resource fetch.',
     'Only ImageBitmap to rgba8unorm/sRGB straight-alpha copies are implemented.',
     'Decoding and image-byte staging use CPU memory; no native image decode or WebGPU external handle is claimed.',
     'No native window, WebGL, other image source types or platform certification.'] };
