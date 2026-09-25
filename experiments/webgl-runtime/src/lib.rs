@@ -14,8 +14,10 @@ mod shaders;
 pub mod snapshot_consumer;
 mod webgl_geometry;
 mod webgl_programs;
+mod webgl_readback;
 use webgl_geometry::*;
 use webgl_programs::*;
+use webgl_readback::*;
 mod webgl_state;
 mod webgl_textures;
 use shaders::*;
@@ -69,8 +71,12 @@ pub fn observe_frame(
     height: u32,
     output: &mut [u8],
 ) -> Result<(), String> {
-    let required = width.checked_mul(height).and_then(|pixels| pixels.checked_mul(4));
-    if required.is_none_or(|bytes| bytes == 0 || bytes as usize != output.len() || bytes > 16 * 1024 * 1024) {
+    let required = width
+        .checked_mul(height)
+        .and_then(|pixels| pixels.checked_mul(4));
+    if required.is_none_or(|bytes| {
+        bytes == 0 || bytes as usize != output.len() || bytes > 16 * 1024 * 1024
+    }) {
         return Err("RGBA observation exceeds its bounded output".into());
     }
     let state = runtime.op_state();
@@ -322,7 +328,8 @@ deno_core::extension!(
         op_gl_color_mask, op_gl_front_face, op_gl_cull_face, op_gl_viewport, op_gl_scissor,
         op_gl_create_texture, op_gl_bind_texture, op_gl_delete_texture, op_gl_tex_parameteri,
         op_gl_tex_image_2d, op_gl_tex_image_3d,
-        op_gl_create_framebuffer, op_gl_bind_framebuffer, op_gl_delete_framebuffer],
+        op_gl_create_framebuffer, op_gl_bind_framebuffer, op_gl_delete_framebuffer,
+        op_gl_read_pixels],
     esm_entry_point = "ext:angle_probe/probe-bootstrap.js",
     esm = [dir "src", "probe-bootstrap.js", "webgl.js", "webgl-bootstrap.js", "webgl-geometry.js", "webgl-programs.js"],
     options = { native: State },
