@@ -19,6 +19,7 @@ unsafe extern "C" {
     ) -> *mut c_void;
     fn angle_context_destroy(context: *mut c_void);
     fn angle_context_make_current(context: *mut c_void) -> i32;
+    fn angle_context_discard_drawing_buffer(context: *mut c_void) -> i32;
     fn angle_context_resize(context: *mut c_void, width: u32, height: u32) -> i32;
     fn angle_get_proc(display: *mut c_void, name: *const c_char) -> *const c_void;
     fn angle_error() -> *const c_char;
@@ -119,6 +120,14 @@ impl Context {
 
     pub fn make_current(&self) -> Result<(), String> {
         if unsafe { angle_context_make_current(self.native.raw()?) } == 1 {
+            Ok(())
+        } else {
+            Err(error())
+        }
+    }
+
+    pub fn discard_drawing_buffer(&self) -> Result<(), String> {
+        if unsafe { angle_context_discard_drawing_buffer(self.native.raw()?) } == 1 {
             Ok(())
         } else {
             Err(error())

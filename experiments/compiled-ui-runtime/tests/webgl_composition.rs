@@ -155,6 +155,11 @@ fn compose_any(
             .is_some_and(|items| items.len() == 1),
         "painter did not see exactly one connected canvas",
     )?;
+    runtime.execute_script(
+        "composition:discard-state-setup",
+        "if(!globalThis.__discardStateProbed){gl.colorMask(false,false,false,false);gl.depthMask(false);gl.enable(gl.SCISSOR_TEST);gl.scissor(0,0,1,1);gl.enable(0x8c89);gl.enable(0xffffffff);globalThis.__discardStateProbed=true;}",
+    )?;
+    canvas.discard_after_composite(runtime)?;
     Ok(report)
 }
 
@@ -269,6 +274,12 @@ async fn dom_webgl_gpu_composition_and_generations() -> Result<()> {
 
 #[tokio::test(flavor = "current_thread")]
 #[ignore = "Requires macOS Metal, pinned ANGLE and a usable composition font"]
+async fn dom_webgl_preserve_drawing_buffer() -> Result<()> {
+    run_composition_case_with_preservation(true, true, true)
+}
+
+#[tokio::test(flavor = "current_thread")]
+#[ignore = "Requires macOS Metal, pinned ANGLE and a usable composition font"]
 async fn dom_webgl_context_alpha_attributes() -> Result<()> {
     for (alpha, premultiplied) in [(true, false), (false, true), (false, false)] {
         run_composition_case(alpha, premultiplied)?;
@@ -277,6 +288,14 @@ async fn dom_webgl_context_alpha_attributes() -> Result<()> {
 }
 
 fn run_composition_case(alpha: bool, premultiplied: bool) -> Result<()> {
+    run_composition_case_with_preservation(alpha, premultiplied, false)
+}
+
+fn run_composition_case_with_preservation(
+    alpha: bool,
+    premultiplied: bool,
+    preserve: bool,
+) -> Result<()> {
     let package = std::path::PathBuf::from(std::env::var("THREEJS_NATIVE_ANGLE_PACKAGE")?);
     let font_path = std::env::var_os("THREEJS_NATIVE_COMPOSITION_FONT")
         .map(std::path::PathBuf::from)
@@ -295,7 +314,7 @@ fn run_composition_case(alpha: bool, premultiplied: bool) -> Result<()> {
     runtime.execute_script(
         "composition:attributes",
         format!(
-            "globalThis.contextOptions = {{ alpha: {alpha}, premultipliedAlpha: {premultiplied} }};"
+            "globalThis.contextOptions = {{ alpha: {alpha}, premultipliedAlpha: {premultiplied}, preserveDrawingBuffer: {preserve} }};"
         ),
     )?;
     runtime.execute_script("composition:fixture", FIXTURE)?;
@@ -342,6 +361,28 @@ fn run_composition_case(alpha: bool, premultiplied: bool) -> Result<()> {
             &mut generation,
         )?;
         check_composition(&painter, &output, true, alpha, premultiplied)?;
+        runtime.execute_script(
+            "composition:discard-state-assertion",
+            "if(gl.getError()!==gl.INVALID_ENUM || gl.getError()!==gl.NO_ERROR) throw Error('Compositor clear changed the GL error queue'); const mask=Array.from(gl.getParameter(0x0c23)); if(mask.some(Boolean)||gl.getParameter(0x0b72)!==false||!gl.getParameter(gl.SCISSOR_TEST)||Array.from(gl.getParameter(gl.SCISSOR_BOX)).join(',')!=='0,0,1,1'||!gl.getParameter(0x8c89)) throw Error('Compositor clear did not preserve WebGL state'); gl.colorMask(true,true,true,true);gl.depthMask(true);gl.disable(gl.SCISSOR_TEST);gl.disable(0x8c89);",
+        )?;
+        let mut discarded = vec![0; 40 * 40 * 4];
+        threejs_native_webgl_runtime::observe_frame(
+            &mut runtime,
+            canvas.context_id(),
+            40,
+            40,
+            &mut discarded,
+        )?;
+        let expected = if preserve {
+            [128, 0, 0, 128]
+        } else {
+            [0, 0, 0, if alpha { 0 } else { 255 }]
+        };
+        ensure(
+            discarded[0..4] == expected
+                && discarded[(40 * 40 - 1) * 4..(40 * 40) * 4] == expected,
+            "drawing buffer did not match preserveDrawingBuffer after composition",
+        )?;
         let first = generation.clone().ok_or("initial generation missing")?;
         runtime.execute_script("composition:reset", "scene.width=scene.width; if(scene.getContext('webgl2')!==gl)throw Error('Reset replaced context');")?;
         compose(
@@ -390,6 +431,12 @@ fn run_composition_case(alpha: bool, premultiplied: bool) -> Result<()> {
             &mut generation,
         )?;
         check_composition(&painter, &output, true, alpha, premultiplied)?;
+        runtime.execute_script(
+            "composition:preserve-attribute",
+            format!(
+                "if(gl.getContextAttributes().preserveDrawingBuffer!=={preserve}) throw Error('preserveDrawingBuffer was not reported');"
+            ),
+        )?;
         if let Some(path) = std::env::var_os("THREEJS_NATIVE_COMPOSITION_CAPTURE") {
             window_capture::save(&painter.bridge, &output, Path::new(&path))?;
         }

@@ -306,6 +306,22 @@ struct PbufferClearState {
     }
 };
 
+struct PostCompositeClearState {
+    PbufferClearState framebuffer;
+    GLboolean depth_mask = GL_TRUE;
+    GLint front_stencil_mask = 0, back_stencil_mask = 0;
+    PostCompositeClearState() {
+        glGetBooleanv(GL_DEPTH_WRITEMASK, &depth_mask);
+        glGetIntegerv(GL_STENCIL_WRITEMASK, &front_stencil_mask);
+        glGetIntegerv(GL_STENCIL_BACK_WRITEMASK, &back_stencil_mask);
+    }
+    ~PostCompositeClearState() noexcept {
+        glDepthMask(depth_mask);
+        glStencilMaskSeparate(GL_FRONT, static_cast<GLuint>(front_stencil_mask));
+        glStencilMaskSeparate(GL_BACK, static_cast<GLuint>(back_stencil_mask));
+    }
+};
+
 void initialize_pbuffer_attachments() {
     // ANGLE ac6cda4cbd71 reads a null lazy Metal color attachment when the
     // first operation on a robust pbuffer is a blit. Clear only newly allocated
@@ -337,6 +353,23 @@ void initialize_pbuffer_attachments() {
     glStencilMaskSeparate(GL_FRONT, static_cast<GLuint>(front_mask));
     glStencilMaskSeparate(GL_BACK, static_cast<GLuint>(back_mask));
 }
+
+void discard_pbuffer_drawing_buffer(bool depth, bool stencil) {
+    const PostCompositeClearState restore;
+    const GLenum buffer = GL_BACK;
+    glDrawBuffers(1, &buffer);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_RASTERIZER_DISCARD);
+    const GLfloat zero[4] = {};
+    glClearBufferfv(GL_COLOR, 0, zero);
+    const GLfloat one = 1.0f;
+    const GLint zero_stencil = 0;
+    glDepthMask(GL_TRUE);
+    glStencilMaskSeparate(GL_FRONT_AND_BACK, ~0u);
+    if (depth) glClearBufferfv(GL_DEPTH, 0, &one);
+    if (stencil) glClearBufferiv(GL_STENCIL, 0, &zero_stencil);
+}
 } // namespace
 
 struct AngleDisplay { std::shared_ptr<DisplayState> owner; };
@@ -348,6 +381,7 @@ struct AngleContext {
     unsigned width = 0, height = 0;
     unsigned live_snapshots = 0;
     bool alpha = true;
+    bool depth = true, stencil = true;
 
     void check() const {
         owner->check_ready();
@@ -630,6 +664,20 @@ struct AngleSnapshot {
         poisoned = false;
         return token;
     }
+    void wait_for_consumer() {
+        check();
+        require(!poisoned, "ANGLE snapshot is poisoned; only drain/destruction may be retried");
+        if (phase != Phase::Released) return;
+        SnapshotCurrent current(*parent);
+        poisoned = true;
+        auxiliary_sync = event_sync(token + 1, true);
+        require_egl(eglWaitSync(parent->owner->display, auxiliary_sync, 0),
+                    "ANGLE snapshot consumer GPU wait failed");
+        // ANGLE encodes the shared-event wait on its Metal queue before return.
+        destroy_sync(auxiliary_sync);
+        current.restore();
+        poisoned = false;
+    }
     id<MTLCommandQueue> validate_queue(void *raw_queue, uint64_t value, Phase expected) {
         check();
         require(!poisoned, "ANGLE snapshot is poisoned; only drain/destruction may be retried");
@@ -769,6 +817,8 @@ extern "C" AngleContext *angle_context_create_with_attributes(AngleDisplay *disp
         result->owner = display->owner;
         result->config = config;
         result->alpha = alpha != 0;
+        result->depth = depth != 0;
+        result->stencil = stencil != 0;
         const CurrentBinding previous;
         require_egl(eglBindAPI(EGL_OPENGL_ES_API), "ANGLE OpenGL ES API binding failed");
         const EGLint attributes[] = {
@@ -831,6 +881,17 @@ extern "C" int angle_context_make_current(AngleContext *context) noexcept {
         context->check();
         require_egl(eglMakeCurrent(context->owner->display, context->surface, context->surface, context->context),
                     "ANGLE make-current failed");
+        return 1;
+    });
+}
+
+extern "C" int angle_context_discard_drawing_buffer(AngleContext *context) noexcept {
+    return protected_call(0, [=] {
+        require(context, "ANGLE context handle is required");
+        context->check();
+        require_egl(eglMakeCurrent(context->owner->display, context->surface, context->surface, context->context),
+                    "ANGLE discard make-current failed");
+        discard_pbuffer_drawing_buffer(context->depth, context->stencil);
         return 1;
     });
 }
@@ -935,6 +996,14 @@ extern "C" uint64_t angle_snapshot_publish(AngleSnapshot *snapshot) noexcept {
     return protected_call<uint64_t>(0, [=] {
         require(snapshot, "ANGLE snapshot handle is required");
         return snapshot->publish();
+    });
+}
+
+extern "C" int angle_snapshot_wait_for_consumer(AngleSnapshot *snapshot) noexcept {
+    return protected_call(0, [=] {
+        require(snapshot, "ANGLE snapshot handle is required");
+        snapshot->wait_for_consumer();
+        return 1;
     });
 }
 

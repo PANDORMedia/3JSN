@@ -248,6 +248,14 @@ impl WindowScene {
         Ok(())
     }
 
+    #[cfg(feature = "native-webgl")]
+    pub fn presented(&self, runtime: &mut JsRuntime) -> Result<()> {
+        if let Some(canvas) = &self.webgl {
+            canvas.discard_after_composite(runtime)?;
+        }
+        Ok(())
+    }
+
     pub fn capture(&self, path: &std::path::Path) -> Result<()> {
         crate::window_capture::save(&self.painter.bridge, &self.output, path)
     }

@@ -11,7 +11,8 @@ registerCanvasBackend('webgl2', {
     const context = new ExperimentalWebGLContext(canvas, width, height, options);
     try {
       core.ops.op_webgl_canvas_register(idOf(canvas), contextIdentity(context),
-        contextAttributes(context).premultipliedAlpha);
+        contextAttributes(context).premultipliedAlpha,
+        contextAttributes(context).preserveDrawingBuffer);
     } catch (error) {
       try { closeContext(context); }
       catch (cleanupError) {

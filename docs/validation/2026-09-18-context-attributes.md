@@ -73,8 +73,9 @@ record exact commands, environments and input hashes for the 60-frame runs.
 ## Remaining boundary
 
 This is an experimental Metal checkpoint, not full WebGL conformance or a new
-platform claim. `preserveDrawingBuffer` remains forced to true and is reported as
-such; the requested false/default post-presentation discard is not implemented.
+platform claim. The earlier `preserveDrawingBuffer` limitation is superseded by
+the [2026-09-25 preservation checkpoint](2026-09-25-preserve-drawing-buffer.md),
+which reports the requested value and clears after native composition when false.
 Antialiasing remains unavailable and reports false. Power preference is validated
 as an enum but remains a hint; there is no GPU-selection policy. Desynchronized
 presentation and performance-caveat policy remain unimplemented.

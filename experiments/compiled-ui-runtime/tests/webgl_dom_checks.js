@@ -57,8 +57,9 @@
   const attributesGl = attributesCanvas.getContext('webgl2', options);
   check(order.join() === names.join(), 'Context dictionary getters were reordered or repeated');
   const attributes = attributesGl.getContextAttributes();
-  check(attributes.alpha && attributes.depth && !attributes.stencil && attributes.premultipliedAlpha,
-    'Default alpha/depth/stencil/premultiplication differ from WebGL');
+  check(attributes.alpha && attributes.depth && !attributes.stencil && attributes.premultipliedAlpha
+    && !attributes.preserveDrawingBuffer,
+    'Default WebGL context attributes differ');
   attributes.alpha = false;
   attributes.depth = false;
   check(attributesGl.getContextAttributes().alpha && attributesGl.getContextAttributes().depth,
@@ -84,6 +85,10 @@
   const noDepth = document.createElement('canvas').getContext('webgl2', { depth: 0, stencil: true });
   check(!noDepth.getContextAttributes().depth && noDepth.getContextAttributes().stencil,
     'Depth/stencil options were not forwarded');
+  const preservedCanvas = document.createElement('canvas');
+  const preserved = preservedCanvas.getContext('webgl2', { preserveDrawingBuffer: true });
+  check(preserved.getContextAttributes().preserveDrawingBuffer,
+    'preserveDrawingBuffer request was not reported');
   check(noDepth.getParameter(noDepth.DEPTH_BITS) === 0 && noDepth.getParameter(noDepth.STENCIL_BITS) >= 8,
     'Native depth/stencil buffers differ from reported attributes');
   check(gl.getError() === gl.NO_ERROR && attributesGl.getError() === attributesGl.NO_ERROR,

@@ -46,6 +46,65 @@ pub fn snapshot(runtime: &mut deno_core::JsRuntime, context_id: u32) -> Result<S
         .snapshot()
 }
 
+/// Clear the default drawing buffer after the host has presented its composite.
+pub fn discard_drawing_buffer(
+    runtime: &mut deno_core::JsRuntime,
+    context_id: u32,
+) -> Result<(), String> {
+    let state = runtime.op_state();
+    state
+        .borrow_mut()
+        .borrow_mut::<State>()
+        .contexts
+        .get(&context_id)
+        .ok_or_else(|| "Unknown or disposed ANGLE context".to_string())?
+        .discard_drawing_buffer()
+}
+
+/// Read a bounded RGBA frame for host-side integration assertions.
+pub fn observe_frame(
+    runtime: &mut deno_core::JsRuntime,
+    context_id: u32,
+    width: u32,
+    height: u32,
+    output: &mut [u8],
+) -> Result<(), String> {
+    let required = width.checked_mul(height).and_then(|pixels| pixels.checked_mul(4));
+    if required.is_none_or(|bytes| bytes == 0 || bytes as usize != output.len() || bytes > 16 * 1024 * 1024) {
+        return Err("RGBA observation exceeds its bounded output".into());
+    }
+    let state = runtime.op_state();
+    let mut state = state.borrow_mut();
+    let context = current(&mut state, context_id).map_err(|error| error.to_string())?;
+    unsafe {
+        for (name, expected) in [
+            (glow::PIXEL_PACK_BUFFER_BINDING, 0),
+            (glow::PACK_ALIGNMENT, 4),
+            (glow::PACK_ROW_LENGTH, 0),
+            (glow::PACK_SKIP_PIXELS, 0),
+            (glow::PACK_SKIP_ROWS, 0),
+        ] {
+            if context.gl.get_parameter_i32(name) != expected {
+                return Err("RGBA observation requires default pack state".into());
+            }
+        }
+        context.gl.read_pixels(
+            0,
+            0,
+            width as i32,
+            height as i32,
+            glow::RGBA,
+            glow::UNSIGNED_BYTE,
+            glow::PixelPackData::Slice(Some(output)),
+        );
+        let error = context.gl.get_error();
+        if error != glow::NO_ERROR {
+            return Err(format!("ANGLE observation failed: {error:#x}"));
+        }
+    }
+    Ok(())
+}
+
 fn failure(message: impl Into<String>) -> JsErrorBox {
     JsErrorBox::generic(message.into())
 }

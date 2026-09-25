@@ -8,6 +8,7 @@ use threejs_native_webgl_runtime::snapshot_consumer::{AlphaConversion, GpuSnapsh
 struct Generation {
     context_id: u32,
     alpha_conversion: AlphaConversion,
+    preserve_drawing_buffer: bool,
     consumer: Option<GpuSnapshot>,
     revision: u64,
     released: bool,
@@ -30,6 +31,25 @@ impl Canvas {
 
     pub fn node_key(&self) -> &str {
         &self.node_key
+    }
+
+    /// Apply WebGL's post-composite drawing-buffer discard when preservation is disabled.
+    pub fn discard_after_composite(&self, runtime: &mut JsRuntime) -> crate::Result<()> {
+        let should_discard = {
+            let mut generation = self.generation.try_borrow_mut()?;
+            if generation.preserve_drawing_buffer {
+                false
+            } else {
+                if let Some(consumer) = generation.consumer.as_mut() {
+                    consumer.order_source_write_after_consumer()?;
+                }
+                true
+            }
+        };
+        if should_discard {
+            threejs_native_webgl_runtime::discard_drawing_buffer(runtime, self.context_id)?;
+        }
+        Ok(())
     }
 
     /// Convert the latest ANGLE frame into a top-left, straight-alpha GPU texture.
@@ -94,6 +114,7 @@ fn op_webgl_canvas_register(
     #[string] node_key: String,
     context_id: u32,
     premultiplied_alpha: bool,
+    preserve_drawing_buffer: bool,
 ) -> Result<(), JsErrorBox> {
     // Both identities come from private JS brands, never application properties.
     if node_key.parse::<u64>().is_err() {
@@ -116,6 +137,7 @@ fn op_webgl_canvas_register(
             } else {
                 AlphaConversion::Preserve
             },
+            preserve_drawing_buffer,
             consumer: None,
             revision: 0,
             released: false,

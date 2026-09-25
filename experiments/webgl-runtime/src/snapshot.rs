@@ -8,6 +8,7 @@ unsafe extern "C" {
     fn angle_snapshot_device(snapshot: *mut c_void) -> *mut c_void;
     fn angle_snapshot_texture(snapshot: *mut c_void) -> *mut c_void;
     fn angle_snapshot_publish(snapshot: *mut c_void) -> u64;
+    fn angle_snapshot_wait_for_consumer(snapshot: *mut c_void) -> i32;
     fn angle_snapshot_queue_wait(snapshot: *mut c_void, queue: *mut c_void, token: u64) -> i32;
     fn angle_snapshot_queue_signal(snapshot: *mut c_void, queue: *mut c_void, token: u64) -> i32;
     fn angle_snapshot_drain(snapshot: *mut c_void, timeout_ns: u64) -> i32;
@@ -61,6 +62,11 @@ impl Snapshot {
     pub fn publish(&mut self) -> Result<u64, String> {
         let token = unsafe { angle_snapshot_publish(self.raw()?) };
         if token == 0 { Err(error()) } else { Ok(token) }
+    }
+
+    /// Enqueue a producer-side GPU wait after the consumer's last source read.
+    pub fn wait_for_consumer(&mut self) -> Result<(), String> {
+        checked(unsafe { angle_snapshot_wait_for_consumer(self.raw()?) })
     }
 
     /// # Safety

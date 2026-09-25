@@ -380,6 +380,8 @@ pub async fn run(mut worker: Worker) -> std::result::Result<(u64, u64), String> 
             {
                 let (_, frame) = pending.take().unwrap();
                 frame.present();
+                #[cfg(feature = "native-webgl")]
+                scene.presented(&mut runtime)?;
                 presented += 1;
                 composed = false;
                 worker.proxy.send_event(HostEvent::Presented(presented))?;
