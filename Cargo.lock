@@ -3256,6 +3256,7 @@ name = "threejs-native-js-sources"
 version = "0.0.0"
 dependencies = [
  "deno_core",
+ "deno_image",
  "deno_web",
  "deno_webgpu",
  "deno_webidl",
@@ -3290,6 +3291,7 @@ version = "0.0.0"
 dependencies = [
  "deno_core",
  "deno_error",
+ "deno_image",
  "deno_web",
  "deno_webgpu",
  "deno_webidl",

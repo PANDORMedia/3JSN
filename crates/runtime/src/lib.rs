@@ -102,6 +102,7 @@ impl Runtime {
                 deno_web::InMemoryBroadcastChannel::default(),
             ),
             deno_webgpu::deno_webgpu::init(),
+            deno_image::deno_image::init(),
             bootstrap,
         ];
         extensions

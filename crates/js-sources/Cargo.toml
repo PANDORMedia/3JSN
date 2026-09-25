@@ -12,9 +12,11 @@ deno_core.workspace = true
 deno_web.workspace = true
 deno_webidl.workspace = true
 deno_webgpu.workspace = true
+deno_image.workspace = true
 
 [build-dependencies]
 deno_core.workspace = true
 deno_web.workspace = true
 deno_webidl.workspace = true
 deno_webgpu.workspace = true
+deno_image.workspace = true

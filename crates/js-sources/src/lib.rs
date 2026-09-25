@@ -86,6 +86,7 @@ mod tests {
                 deno_web::InMemoryBroadcastChannel::default(),
             ),
             deno_webgpu::deno_webgpu::init(),
+            deno_image::deno_image::init(),
         ];
         let mut checked = 0;
         for mut extension in extensions {

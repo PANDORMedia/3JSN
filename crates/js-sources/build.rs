@@ -43,6 +43,7 @@ fn main() {
             deno_web::InMemoryBroadcastChannel::default(),
         ),
         deno_webgpu::deno_webgpu::init(),
+        deno_image::deno_image::init(),
     ];
     let mut sources = BTreeMap::new();
     for extension in extensions {
