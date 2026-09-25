@@ -14,7 +14,7 @@ required work, not optional migrations for the application.
 | Rust-hosted JavaScript/WebGPU | V8 module/event/error tests and Metal triangle pixels pass | Native surface/presentation and broader WebGPU fixtures remain |
 | Window, swapchain, resize, DPI | [Opaque Three.js window presents on macOS/Metal](validation/2026-09-18-visible-window.md); resize/DPI and broader lifecycle gates open | M1; see [window contract](native-window.md) |
 | TSL custom materials, compute, instancing | Not yet tested here | Add dedicated fixtures |
-| WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | [Pinned upstream Three fixtures render through ANGLE/Metal](validation/2026-09-18-webgl-mesh.md); [unchanged HTML/Three demo passes offscreen in both parser modes](validation/2026-09-18-webgl-demo.md) | Experimental opt-in; full API/context-loss, native-window and other-platform gates remain |
+| WebGLRenderer, raw GLSL ShaderMaterial/onBeforeCompile | [Pinned upstream Three fixtures render through ANGLE/Metal](validation/2026-09-18-webgl-mesh.md); [unchanged HTML/Three demo passes offscreen in both parser modes](validation/2026-09-18-webgl-demo.md); [preserveDrawingBuffer true/false composition passes on Metal](validation/2026-09-25-preserve-drawing-buffer.md) | Experimental opt-in; full API/context-loss, native-window presentation and other-platform gates remain |
 | glTF, animation, textures | Not yet tested here | Native asset I/O and decoding; regression scenes |
 | Draco, KTX2/Basis, other Wasm decoders | Not implemented | Worker/Wasm and binary asset integration |
 | requestAnimationFrame | Host-driven scheduler and bounded lifecycle checks | Validate native presentation/input timing |

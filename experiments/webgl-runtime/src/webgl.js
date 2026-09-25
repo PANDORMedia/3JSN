@@ -117,7 +117,8 @@ export class ExperimentalWebGLContext {
       width, height, requested.alpha, requested.depth, requested.stencil,
     );
     const attributes = Object.freeze({ alpha, depth, stencil, antialias: false,
-      premultipliedAlpha: requested.premultipliedAlpha, preserveDrawingBuffer: true,
+      premultipliedAlpha: requested.premultipliedAlpha,
+      preserveDrawingBuffer: requested.preserveDrawingBuffer,
       powerPreference: 'default', failIfMajorPerformanceCaveat: false, desynchronized: false });
     contexts.set(this, { id, canvas, width, height, attributes, closed: false, errors: new Set() });
   }
@@ -125,8 +126,6 @@ export class ExperimentalWebGLContext {
   get drawingBufferWidth() { return state(this).width; }
   get drawingBufferHeight() { return state(this).height; }
   getContextAttributes() {
-    // Preservation remains forced in this experimental host; automatic post-present
-    // clearing needs the compositor's presentation boundary before it can be exposed.
     return { ...state(this).attributes };
   }
   getSupportedExtensions() { state(this); return []; }

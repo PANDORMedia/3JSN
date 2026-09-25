@@ -215,6 +215,24 @@ impl GpuSnapshot {
         Ok(&resources.output)
     }
 
+    /// Order later ANGLE writes after this consumer has finished reading its source.
+    pub fn order_source_write_after_consumer(&mut self) -> Result<(), String> {
+        if let Some(error) = &self.failure {
+            return Err(format!("snapshot consumer is poisoned: {error}"));
+        }
+        let result = self
+            .resources
+            .as_mut()
+            .ok_or("snapshot consumer is closed")?
+            .snapshot
+            .wait_for_consumer();
+        if let Err(error) = result {
+            self.failure = Some(error.clone());
+            return Err(error);
+        }
+        Ok(())
+    }
+
     /// Publish, wait, convert, submit and acknowledge one native snapshot token.
     ///
     /// # Safety
