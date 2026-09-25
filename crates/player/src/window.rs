@@ -61,6 +61,14 @@ struct HostState {
     close: bool,
 }
 
+struct WorkerConfig {
+    surface: WindowSurface,
+    initial_viewport: Viewport,
+    module: PathBuf,
+    package_resources: Vec<Resource>,
+    frame_limit: Option<u64>,
+}
+
 impl HostState {
     fn drawable(self) -> bool {
         self.visible && self.viewport.width > 0 && self.viewport.height > 0 && !self.close
@@ -284,11 +292,13 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
                             WorkerError::Failed(format!("cannot start runtime reactor: {error}"))
                         })?;
                     reactor.block_on(run_worker(
-                        surface,
-                        viewport,
-                        module,
-                        package_resources,
-                        frame_limit,
+                        WorkerConfig {
+                            surface,
+                            initial_viewport: viewport,
+                            module,
+                            package_resources,
+                            frame_limit,
+                        },
                         receiver,
                         input_receiver,
                         &proxy,
@@ -437,17 +447,14 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
 }
 
 async fn run_worker(
-    surface: WindowSurface,
-    initial_viewport: Viewport,
-    module: PathBuf,
-    package_resources: Vec<Resource>,
-    frame_limit: Option<u64>,
+    config: WorkerConfig,
     mut receiver: watch::Receiver<HostState>,
     mut input: mpsc::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
 ) -> Result<u64, WorkerError> {
-    let runtime = surface
-        .into_runtime_with_package_resources(package_resources)
+    let runtime = config
+        .surface
+        .into_runtime_with_package_resources(config.package_resources)
         .map_err(WorkerError::from)?;
     proxy
         .send_event(HostEvent::Ready(runtime.interrupt_handle()))
@@ -456,7 +463,7 @@ async fn run_worker(
     if current.close {
         return Ok(0);
     }
-    let initialization = runtime.into_interactive(&module);
+    let initialization = runtime.into_interactive(&config.module);
     tokio::pin!(initialization);
     let mut runtime = loop {
         tokio::select! {
@@ -468,7 +475,7 @@ async fn run_worker(
     };
     current = *receiver.borrow_and_update();
     if !current.close
-        && current.viewport != initial_viewport
+        && current.viewport != config.initial_viewport
         && current.viewport.width > 0
         && current.viewport.height > 0
     {
@@ -482,7 +489,7 @@ async fn run_worker(
     }
     let result = drive_runtime(
         &mut runtime,
-        frame_limit,
+        config.frame_limit,
         &mut receiver,
         &mut input,
         proxy,
