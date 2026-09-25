@@ -1,4 +1,4 @@
-//! Bounded default-framebuffer readback for the partial WebGL facade.
+//! Bounded current read-framebuffer readback for the partial WebGL facade.
 //! Only RGBA/UNSIGNED_BYTE into a caller-owned Uint8Array is admitted.
 
 use deno_core::{OpState, op2};
