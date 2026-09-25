@@ -23,11 +23,24 @@ Validation run:
   deferred-surface test remains intentionally ignored.
 - `cargo fmt --all -- --check`: passed.
 
-This checkpoint exercises package loading, decoding and the player handoff on one
-Mac, but does not render the packaged texture to the GPU or perform GPU readback.
+An ignored hardware-GPU integration test now exercises the package path end to
+end: it generates a temporary app manifest with a hash-verified PNG, loads it
+through `threejs_native_package`, passes verified resources into the runtime,
+uses the untouched Three.js r186 `ImageBitmapLoader` and `WebGPURenderer`, then
+checks four rendered quadrant colors after Metal readback on Apple M1 Pro. This
+test's manifest is generated directly by Rust; it does not yet launch a package
+emitted by the CLI after moving it to another directory. Other platforms remain
+unverified. No speed or broad compatibility claim follows from these tests.
+
+The GPU test is ignored in ordinary workspace runs because it requires a host
+hardware adapter. Run it explicitly on a supported GPU host:
+
+```sh
+CARGO_TARGET_DIR=/private/tmp/3jsn-image-target CARGO_PROFILE_DEV_DEBUG=0 \
+  CARGO_INCREMENTAL=0 cargo test --locked --offline \
+  -p threejs-native-runtime --test package_image_gpu -- --ignored --nocapture
+```
+
 The separate [ImageBitmap texture checkpoint](2026-09-25-image-bitmap.md)
-verified an inline synthetic PNG upload and four Metal readback pixels on an
-Apple M1 Pro; that inline probe was rerun after this runtime integration and
-passed. The packaged-resource path itself still needs a GPU readback test,
-package relocation test and validation on other platforms. No speed or broad
-compatibility claim follows from these tests.
+records the inline synthetic-PNG upload probe. Decode and staging still use CPU
+memory; native decoding and zero-copy upload remain unverified.

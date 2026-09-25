@@ -34,8 +34,12 @@ This path covers statically imported raster URLs emitted by esbuild. It does not
 discover Vite `public/` files, HTML/CSS URLs, arbitrary `fetch()` strings,
 computed paths, SVG, glTF sidecar files, audio or fonts. Those require build-graph
 and runtime contracts of their own. The image bytes are decoded and staged in
-CPU memory before the existing narrow WebGPU texture copy; native decoding,
-zero-copy uploads and packaged-image GPU readback are not established here.
+CPU memory before the existing narrow WebGPU texture copy. An ignored hardware-
+GPU integration test now verifies manifest-checked package bytes through the
+unmodified Three.js loader and WebGPURenderer to Metal readback on Apple M1 Pro.
+Native decoding and zero-copy uploads are not established. The GPU test creates
+its package manifest directly; GPU readback from a relocated package emitted by
+the CLI remains open.
 
 See the [packaged image loading validation](validation/2026-09-25-packaged-image-loading.md)
 for the current test evidence and remaining gates.

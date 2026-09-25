@@ -20,9 +20,11 @@ The probe uses an inline synthetic PNG. This checkpoint does not cover packaged
 resource loading, WebGL texture uploads, other image sources, native windows or
 platforms beyond the recorded Mac. The later
 [packaged image loading checkpoint](2026-09-25-packaged-image-loading.md) verifies
-the upstream loader against an integrity-checked package resource, but GPU
-readback from that packaged image and relocation of the image package remain
-open.
+the upstream loader against an integrity-checked package resource. A separate
+ignored hardware-GPU test now renders that package-loaded image through Three.js
+and verifies four Metal readback colors on Apple M1 Pro. Its test manifest is
+generated directly rather than emitted by the CLI; GPU readback from a relocated
+CLI-built package remains open.
 
 Verification:
 

@@ -4253,10 +4253,13 @@ dependencies = [
  "deno_webgpu",
  "deno_webidl",
  "raw-window-handle",
+ "serde_json",
+ "sha2",
  "thiserror 2.0.18",
  "threejs-native-js-sources",
  "threejs-native-package",
  "tokio",
+ "url",
 ]
 
 [[package]]

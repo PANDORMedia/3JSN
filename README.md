@@ -27,7 +27,7 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 - [Webfont packaging](docs/web-fonts.md): opt-in static font downloads, pinned offline builds and native face loading.
 - [Packaged raster images](docs/package-assets.md): bounded build and runtime support for statically imported image resources.
 - [ImageBitmap checkpoint](docs/validation/2026-09-25-image-bitmap.md): first Metal-backed Three.js texture upload from a decoded PNG fixture.
-- [Package image loading checkpoint](docs/validation/2026-09-25-packaged-image-loading.md): package verification, stock `ImageBitmapLoader` and build output evidence; GPU readback from a packaged asset remains open.
+- [Package image loading checkpoint](docs/validation/2026-09-25-packaged-image-loading.md): package verification, stock `ImageBitmapLoader`, CLI build output and package-to-Metal readback evidence on Apple M1 Pro.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.
