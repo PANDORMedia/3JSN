@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { buildProject } from '../packages/cli/build.mjs';
 
@@ -18,6 +18,7 @@ const fixture = join(root, 'examples/package-image');
 const inputNames = ['3jsn.json', 'native.mjs', 'checker.png'];
 const inputs = await Promise.all(inputNames.map(async name => ({ name,
   sha256: hash(await readFile(join(fixture, name))) })));
+await mkdir(dirname(output), { recursive: true });
 await mkdir(output);
 const source = join(output, 'build-input');
 await mkdir(source);
