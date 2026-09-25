@@ -237,6 +237,20 @@ the build step can resolve the installed Three.js dependency:
 npm run probe:package -- target/release/threejs-native-player artifacts/package-relocation
 ```
 
+To validate a statically imported raster image through CLI packaging, relocation,
+the packaged executable and a native Three.js GPU readback, build the player and
+run the hardware probe on a machine with a supported GPU:
+
+```sh
+cargo build --locked -p threejs-native-player
+npm run probe:package:image -- target/debug/threejs-native-player artifacts/package-image-relocation
+```
+
+The probe uses the redistributable fixture under `examples/package-image`, deletes
+its temporary build input, relocates the output, and checks four texture pixels
+from a Three.js render target. This is a one-host correctness check; it does not
+certify other platforms or general web-project compatibility.
+
 The DOM counterpart additionally removes the supplied font, checks HTML/font
 corruption and profile mismatch, and exercises unusable-font and packaged
 animation-error failures. Its native subprocess denies network access and reads

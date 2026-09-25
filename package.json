@@ -19,6 +19,7 @@
     "probe:three": "node scripts/probe-three.mjs",
     "probe:window-lifecycle": "node scripts/probe-window-lifecycle.mjs",
     "probe:package": "node scripts/probe-package.mjs",
+    "probe:package:image": "node scripts/probe-package-image.mjs",
     "doctor": "node scripts/doctor.mjs"
   },
   "dependencies": {

@@ -18,7 +18,7 @@ runtime before the native window starts.
 Validation run:
 
 - `npm test`: 121 passed, 1 skipped.
-- `npm run check`: 604 source/config/document files checked.
+- `npm run check`: 610 source/config/document files checked.
 - `cargo test --workspace --locked --offline`: passed; the existing GPU-dependent
   deferred-surface test remains intentionally ignored.
 - `cargo fmt --all -- --check`: passed.
@@ -32,6 +32,16 @@ test's manifest is generated directly by Rust; it does not yet launch a package
 emitted by the CLI after moving it to another directory. Other platforms remain
 unverified. No speed or broad compatibility claim follows from these tests.
 
+The stronger CLI package relocation probe closes that integration gap on the
+recorded Mac. It builds the checked-in `examples/package-image` fixture with the
+real CLI and player, verifies the content-hashed image in the manifest, moves the
+package to a path containing spaces and Unicode, removes the temporary source,
+and launches the packaged executable from another working directory. The
+unchanged Three.js loader fetches that image, WebGPURenderer draws it to a render
+target, and `readRenderTargetPixelsAsync` verifies the four quadrant colors.
+The player also presents 120 native-window frames. This remains a one-host
+hardware observation.
+
 The GPU test is ignored in ordinary workspace runs because it requires a host
 hardware adapter. Run it explicitly on a supported GPU host:
 
@@ -39,6 +49,8 @@ hardware adapter. Run it explicitly on a supported GPU host:
 CARGO_TARGET_DIR=/private/tmp/3jsn-image-target CARGO_PROFILE_DEV_DEBUG=0 \
   CARGO_INCREMENTAL=0 cargo test --locked --offline \
   -p threejs-native-runtime --test package_image_gpu -- --ignored --nocapture
+cargo build --locked -p threejs-native-player
+npm run probe:package:image -- target/debug/threejs-native-player artifacts/package-image-relocation
 ```
 
 The separate [ImageBitmap texture checkpoint](2026-09-25-image-bitmap.md)

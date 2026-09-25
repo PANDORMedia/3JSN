@@ -23,8 +23,8 @@ platforms beyond the recorded Mac. The later
 the upstream loader against an integrity-checked package resource. A separate
 ignored hardware-GPU test now renders that package-loaded image through Three.js
 and verifies four Metal readback colors on Apple M1 Pro. Its test manifest is
-generated directly rather than emitted by the CLI; GPU readback from a relocated
-CLI-built package remains open.
+generated directly. The CLI-built relocation probe now also verifies the
+packaged executable renders those pixels on the same host.
 
 Verification:
 

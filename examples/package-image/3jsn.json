@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profile": "native-window-v1",
+  "name": "package-image-demo",
+  "entry": "native.mjs"
+}

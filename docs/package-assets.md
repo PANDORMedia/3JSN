@@ -37,9 +37,10 @@ and runtime contracts of their own. The image bytes are decoded and staged in
 CPU memory before the existing narrow WebGPU texture copy. An ignored hardware-
 GPU integration test now verifies manifest-checked package bytes through the
 unmodified Three.js loader and WebGPURenderer to Metal readback on Apple M1 Pro.
-Native decoding and zero-copy uploads are not established. The GPU test creates
-its package manifest directly; GPU readback from a relocated package emitted by
-the CLI remains open.
+In addition, the [CLI package relocation probe](validation/2026-09-25-packaged-image-loading.md)
+builds this fixture with the actual CLI, relocates and launches the packaged
+executable, and verifies the texture's GPU readback. Native decoding and
+zero-copy uploads are not established, and other platforms remain unverified.
 
 See the [packaged image loading validation](validation/2026-09-25-packaged-image-loading.md)
 for the current test evidence and remaining gates.
