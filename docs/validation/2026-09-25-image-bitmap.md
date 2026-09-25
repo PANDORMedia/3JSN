@@ -4,10 +4,9 @@ The Rust-hosted WebGPU runtime now decodes a small PNG into `ImageBitmap` and
 uploads it through Three.js r186's unchanged `WebGPURenderer` path. The probe
 ran on macOS arm64 with an Apple M1 Pro Metal adapter. It checked the rendered
 readback at all four quadrants against the source colors and found no WebGPU
-errors. The rendered image is available at
-[`artifacts/rust-three-image/texture.png`](../../artifacts/rust-three-image/texture.png);
-the machine-readable versions, adapter details, hashes and pixel samples are in
-[`report.json`](../../artifacts/rust-three-image/report.json).
+errors. The probe writes a rendered image and machine-readable adapter/hash/pixel
+report under `artifacts/rust-three-image/` on the machine where it runs; those
+generated outputs are not required by the source checks.
 
 This checkpoint adds `Blob`, `createImageBitmap`, `ImageBitmap` and a narrow
 `GPUQueue.copyExternalImageToTexture` implementation. Image bytes are decoded
