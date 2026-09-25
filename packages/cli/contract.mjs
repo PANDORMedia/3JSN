@@ -23,7 +23,8 @@ const COMMON_LIMITATIONS = [
   'These unsigned local artifacts are not a release distribution; third-party notices, SBOM, signing and release verification remain open.',
 ];
 export const LIMITATIONS = [...COMMON_LIMITATIONS,
-  'The native-window-v1 profile provides no HTML/CSS integration, frontend command, custom plugin, inherited tsconfig, or runtime asset-copy workflow.',
+  'The native-window-v1 profile packages statically imported raster images only; HTML/CSS resources, public-directory assets, dynamic asset discovery and general asset copying remain unsupported.',
+  'The profile provides no frontend command, custom plugin or inherited tsconfig.',
 ];
 
 export function limitationsFor(profile, { webFonts = false } = {}) {

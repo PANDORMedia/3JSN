@@ -38,6 +38,7 @@ fn packaged_executable_discovers_its_manifest_and_rejects_damage_without_a_gpu()
     let description: Value = serde_json::from_slice(&description.stdout).unwrap();
     assert_eq!(description["packageVersions"], json!([1]));
     assert_eq!(description["profiles"], json!(["native-window-v1"]));
+    assert_eq!(description["capabilities"], json!(["package-assets-v1"]));
 
     let fixture =
         Fixture(std::env::temp_dir().join(format!("3jsn-package-cli-{}", std::process::id())));

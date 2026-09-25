@@ -107,10 +107,13 @@ Support JavaScript modules and a TypeScript/npm build workflow first. A bundle
 is the initial deployment unit; arbitrary Node modules are not guaranteed to run
 in the embedded host. Preserve source maps and useful JS stack traces.
 
-Add local assets, image decoding, `fetch` for supported protocols, text encoding,
-timers and input incrementally. Use an explicit asset root or package scheme so
-games do not depend on the process working directory or a web server. A native
-asset service should expose decoded bytes to compatible Three.js loaders.
+The current native profile packages statically imported raster images as
+integrity-checked resources and resolves them through a package-only `fetch`
+origin. This supports the upstream Three.js `ImageBitmapLoader` without tying
+paths to the working directory or a web server. Expand this contract to other
+build graphs, URL forms, formats and loaders only with explicit capability and
+failure tests; the package service owns bytes, and image decoding remains a
+separate runtime responsibility.
 
 Wasm physics and decoders are candidates. Workers, audio, networking and gamepads
 each need an API contract, lifecycle behavior and platform tests. HTML/CSS menus

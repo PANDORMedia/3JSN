@@ -13,6 +13,9 @@ import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILIT
 
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
+const PACKAGE_ASSETS_CAPABILITY = 'package-assets-v1';
+const IMAGE_RESOURCE_LIMITS = Object.freeze({ count: 64, bytes: 32 * 1024 * 1024, totalBytes: 64 * 1024 * 1024 });
+const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.webp']);
 const forward = path => path.split(sep).join('/');
 const within = (root, path) => {
   const rel = relative(root, path);
@@ -98,14 +101,16 @@ function inputLabel(root, path, identity) {
   return `dependencies/${identity.sha256.slice(0, 16)}/${parts.slice(parts.lastIndexOf('node_modules') + 1).join('/')}`;
 }
 
-async function bundle(root, entry, staging) {
+async function bundle(root, entry, staging, { allowImageResources }) {
   const loaded = new Map();
+  const imageInputs = new Set();
   let loadError;
   let result;
   const outfile = join(staging, 'app', 'main.mjs');
   try {
     result = await esbuild.build({
-      absWorkingDir: root, entryPoints: [entry], outfile, bundle: true, platform: 'browser', format: 'esm',
+      absWorkingDir: root, entryPoints: [entry], outdir: dirname(outfile), entryNames: 'main',
+      assetNames: 'assets/[name]-[hash]', outExtension: { '.js': '.mjs' }, bundle: true, platform: 'browser', format: 'esm',
       target: 'esnext', sourcemap: 'linked', sourcesContent: true, metafile: true, write: false,
       logLevel: 'silent', tsconfigRaw: {},
       plugins: [{ name: 'measured-inputs', setup(build) {
@@ -115,11 +120,15 @@ async function bundle(root, entry, staging) {
             if (!within(root, path) && !path.split(sep).includes('node_modules')) {
               throw new BuildError('EXTERNAL_SOURCE', 'A bundled source import escapes the project outside node_modules.');
             }
-            const loader = { '.js': 'js', '.mjs': 'js', '.cjs': 'js', '.jsx': 'jsx', '.ts': 'ts', '.tsx': 'tsx', '.json': 'json' }[extname(path)];
+            const extension = extname(path).toLowerCase();
+            const image = IMAGE_EXTENSIONS.has(extension);
+            if (image && !allowImageResources) throw new BuildError('UNSUPPORTED_INPUT', 'Raster image imports are supported only by the native-window-v1 profile.');
+            const loader = image ? 'file' : { '.js': 'js', '.mjs': 'js', '.cjs': 'js', '.jsx': 'jsx', '.ts': 'ts', '.tsx': 'tsx', '.json': 'json' }[extension];
             if (!loader) throw new BuildError('UNSUPPORTED_INPUT', `Only bundled JavaScript, TypeScript and JSON inputs are supported: ${basename(path)}`);
             const contents = await readFile(path);
             const identity = { bytes: contents.length, sha256: digest(contents) };
             loaded.set(path, { path: inputLabel(root, path, identity), ...identity });
+            if (image) imageInputs.add(path);
             return { contents, loader, resolveDir: dirname(path) };
           } catch (error) { loadError ??= error; throw error; }
         });
@@ -137,11 +146,21 @@ async function bundle(root, entry, staging) {
     const after = await fileIdentity(path);
     if (after.sha256 !== before.sha256 || after.bytes !== before.bytes) throw new BuildError('INPUT_CHANGED', 'A bundled input changed during bundling.');
   }
-  const expected = new Set([outfile, `${outfile}.map`]);
-  if (result.outputFiles.length !== 2 || result.outputFiles.some(item => !expected.has(item.path))) {
-    throw new BuildError('UNSUPPORTED_OUTPUT', 'This profile permits only app/main.mjs and its source map.');
+  const imageOutputs = result.outputFiles.filter(item => IMAGE_EXTENSIONS.has(extname(item.path).toLowerCase()));
+  const expected = new Set([outfile, `${outfile}.map`, ...imageOutputs.map(item => item.path)]);
+  if (result.outputFiles.length !== expected.size || result.outputFiles.some(item => !expected.has(item.path))
+    || imageInputs.size && !imageOutputs.length) {
+    throw new BuildError('UNSUPPORTED_OUTPUT', 'The build emitted an output outside the entry, source map and supported image assets.');
+  }
+  let imageBytes = 0;
+  if (imageOutputs.length > IMAGE_RESOURCE_LIMITS.count) throw new BuildError('RESOURCE_LIMIT', 'Image resource count exceeds the package limit.');
+  for (const output of imageOutputs) {
+    if (output.contents.length > IMAGE_RESOURCE_LIMITS.bytes || (imageBytes += output.contents.length) > IMAGE_RESOURCE_LIMITS.totalBytes) {
+      throw new BuildError('RESOURCE_LIMIT', `Generated image resources exceed package limits: ${basename(output.path)}`);
+    }
   }
   const files = [];
+  const resources = [];
   const outputIdentities = [];
   await mkdir(join(staging, 'app'));
   for (const output of result.outputFiles) {
@@ -163,13 +182,16 @@ async function bundle(root, entry, staging) {
     const path = forward(relative(staging, output.path));
     if (!portablePath(path) || !path.startsWith('app/')) throw new BuildError('INVALID_OUTPUT', 'Bundler output escapes app/.');
     const identity = { path, bytes: bytes.length, sha256: digest(bytes) };
+    await mkdir(dirname(output.path), { recursive: true });
     await writeFile(output.path, bytes, { flag: 'wx' });
     files.push(identity);
+    if (IMAGE_EXTENSIONS.has(extname(output.path).toLowerCase())) resources.push({ path, kind: 'image' });
     outputIdentities.push({ ...identity, esbuildSha256: digest(output.contents) });
   }
   files.sort((a, b) => a.path.localeCompare(b.path));
+  resources.sort((a, b) => a.path.localeCompare(b.path));
   if (new Set(files.map(item => item.path.toLowerCase())).size !== files.length) throw new BuildError('OUTPUT_COLLISION', 'Output paths collide when case folded.');
-  return { files, loaded, metadata: { version: esbuild.version, options: { platform: 'browser', format: 'esm', target: 'esnext', sourcemap: 'linked', tsconfigRaw: {} },
+  return { files, resources, loaded, metadata: { version: esbuild.version, options: { platform: 'browser', format: 'esm', target: 'esnext', sourcemap: 'linked', assetNames: 'assets/[name]-[hash]', tsconfigRaw: {} },
     inputs: [...loaded.values()].sort((a, b) => a.path.localeCompare(b.path)), outputs: outputIdentities,
     metafile: result.metafile, metafileScope: 'Original esbuild provenance includes build-location paths and pre-source-label-rewrite output sizes; it is not a complete or hermetic resolution inventory.' } };
 }
@@ -229,7 +251,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
     }
     staging = await mkdtemp(join(parent, '.3jsn-build-'));
     checkCancellation(signal);
-    const built = await bundle(root, entry, staging);
+    const built = await bundle(root, entry, staging, { allowImageResources: !isDom });
+    if (built.resources.length && !description.capabilities?.includes(PACKAGE_ASSETS_CAPABILITY)) {
+      throw new BuildError('INCOMPATIBLE_RUNTIME', `The supplied player does not advertise ${PACKAGE_ASSETS_CAPABILITY}.`);
+    }
     checkCancellation(signal);
     if (html) {
       await writeFile(join(staging, 'app/index.html'), html.bytes, { flag: 'wx' });
@@ -254,7 +279,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
     if (JSON.stringify(copiedRuntime) !== JSON.stringify(runtimeBefore)) throw new BuildError('RUNTIME_CHANGED', 'The copied player differs from the inspected binary.');
     const manifest = { schemaVersion: 1, profile: config.profile, name: config.name, target, entry: 'app/main.mjs',
       ...(html ? { html: 'app/index.html', font: 'app/font.woff2' } : {}),
-      ...(webFonts ? { requires: [WEB_FONT_CAPABILITY], resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) } : {}), files: built.files };
+      ...(webFonts ? { requires: [WEB_FONT_CAPABILITY], resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) }
+        : built.resources.length ? { requires: [PACKAGE_ASSETS_CAPABILITY], resources: built.resources } : {}), files: built.files };
     const manifestBytes = jsonBytes(manifest);
     if (Buffer.byteLength(manifestBytes) > 1024 * 1024 || manifest.files.length > 4096) throw new BuildError('MANIFEST_LIMIT', 'Package manifest exceeds version 1 limits.');
     after = await snapshotTree(root, { exclude: ['node_modules'] });

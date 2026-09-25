@@ -115,7 +115,7 @@ fn run_package(manifest: Option<PathBuf>, frames: Option<u64>) -> ExitCode {
                 .with_file_name("app.json"),
         };
         let app = package::load(&path).map_err(|error| error.to_string())?;
-        window::run(app.entry, frames)
+        window::run_packaged(app.entry, frames, app.resources.unwrap_or_default())
     })();
     finish(result)
 }

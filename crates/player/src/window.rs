@@ -8,6 +8,7 @@ use std::{
     time::{Duration, Instant},
 };
 
+use threejs_native_package::Resource;
 use threejs_native_runtime::{
     FrameOutcome, InteractiveRuntime, NativeInput, RuntimeError, RuntimeInterrupt, WindowSurface,
 };
@@ -67,6 +68,14 @@ impl HostState {
 }
 
 pub fn run(module: PathBuf, frame_limit: Option<u64>) -> Result<(), String> {
+    run_packaged(module, frame_limit, Vec::new())
+}
+
+pub fn run_packaged(
+    module: PathBuf,
+    frame_limit: Option<u64>,
+    package_resources: Vec<Resource>,
+) -> Result<(), String> {
     let event_loop = EventLoop::<HostEvent>::with_user_event()
         .build()
         .map_err(|error| error.to_string())?;
@@ -79,6 +88,7 @@ pub fn run(module: PathBuf, frame_limit: Option<u64>) -> Result<(), String> {
         interrupt: None,
         proxy: event_loop.create_proxy(),
         module,
+        package_resources: Some(package_resources),
         frame_limit,
         presented_frames: 0,
         error: None,
@@ -133,6 +143,7 @@ struct PlayerWindow {
     interrupt: Option<RuntimeInterrupt>,
     proxy: EventLoopProxy<HostEvent>,
     module: PathBuf,
+    package_resources: Option<Vec<Resource>>,
     frame_limit: Option<u64>,
     presented_frames: u64,
     error: Option<String>,
@@ -258,6 +269,7 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
         let proxy = self.proxy.clone();
         let module = self.module.clone();
         let frame_limit = self.frame_limit;
+        let package_resources = self.package_resources.take().unwrap_or_default();
         // The worker never invokes winit methods. Surface preparation and all
         // Window calls stay on this thread, so asynchronous shutdown cannot
         // deadlock waiting for a main-thread Window dispatch.
@@ -275,6 +287,7 @@ impl ApplicationHandler<HostEvent> for PlayerWindow {
                         surface,
                         viewport,
                         module,
+                        package_resources,
                         frame_limit,
                         receiver,
                         input_receiver,
@@ -427,12 +440,15 @@ async fn run_worker(
     surface: WindowSurface,
     initial_viewport: Viewport,
     module: PathBuf,
+    package_resources: Vec<Resource>,
     frame_limit: Option<u64>,
     mut receiver: watch::Receiver<HostState>,
     mut input: mpsc::Receiver<NativeInput>,
     proxy: &EventLoopProxy<HostEvent>,
 ) -> Result<u64, WorkerError> {
-    let runtime = surface.into_runtime().map_err(WorkerError::from)?;
+    let runtime = surface
+        .into_runtime_with_package_resources(package_resources)
+        .map_err(WorkerError::from)?;
     proxy
         .send_event(HostEvent::Ready(runtime.interrupt_handle()))
         .map_err(|_| WorkerError::Failed("native event loop closed".into()))?;

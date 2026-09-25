@@ -1,9 +1,10 @@
 //! Embedded JavaScript and WebGPU execution. The caller owns the OS event loop.
 
-use std::{any::Any, path::Path, rc::Rc, sync::Arc};
+use std::{any::Any, collections::HashMap, path::Path, rc::Rc, sync::Arc};
 
-use deno_core::{FsModuleLoader, JsRuntime, RuntimeOptions};
+use deno_core::{FsModuleLoader, JsRuntime, ModuleSpecifier, OpState, RuntimeOptions, op2};
 use deno_webgpu::{wgpu_core, wgpu_types};
+use threejs_native_package::{Resource, ResourceKind};
 
 mod embedded;
 mod input;
@@ -19,18 +20,73 @@ pub use surface::{FrameOutcome, WindowSurface};
 
 deno_core::extension!(
     threejs_native_bootstrap,
-    deps = [deno_webidl, deno_web, deno_webgpu],
+    deps = [deno_webidl, deno_web, deno_webgpu, deno_fetch],
     ops = [op_native_has_surface, op_native_bind_callbacks, op_native_frame_pending,
         op_native_keep_alive, op_native_request_adapter, op_native_canvas_context,
-        op_native_resize, op_native_discard, op_native_current_texture, op_native_bind_input],
+        op_native_resize, op_native_discard, op_native_current_texture, op_native_bind_input,
+        op_native_load_package_asset],
     esm_entry_point = "ext:threejs_native_bootstrap/bootstrap.js",
-    options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface>, input: InputCallback },
+    options = { instance: deno_webgpu::Instance, surface: Option<SharedSurface>, input: InputCallback,
+        package_assets: PackageAssets },
     state = |state, options| {
         state.put(options.instance);
         state.put(options.surface);
         state.put(options.input);
+        state.put(options.package_assets);
     },
 );
+
+#[derive(Clone, Default)]
+struct PackageAssets(Rc<HashMap<String, Vec<u8>>>);
+
+impl PackageAssets {
+    fn from_resources(resources: Vec<Resource>) -> Self {
+        let images = resources
+            .into_iter()
+            .filter_map(|resource| {
+                (resource.kind == ResourceKind::Image).then_some((resource.path, resource.bytes))
+            })
+            .collect();
+        Self(Rc::new(images))
+    }
+}
+
+fn package_asset_path(url: &str) -> Result<String, deno_error::JsErrorBox> {
+    let parsed = ModuleSpecifier::parse(url)
+        .map_err(|_| deno_error::JsErrorBox::type_error("Invalid packaged asset URL"))?;
+    if parsed.scheme() != "threejsn"
+        || parsed.host_str() != Some("package")
+        || !parsed.username().is_empty()
+        || parsed.password().is_some()
+        || parsed.port().is_some()
+        || parsed.query().is_some()
+        || parsed.fragment().is_some()
+        || !parsed.path().starts_with("/app/")
+        || parsed.path().contains(['\\', '%'])
+    {
+        return Err(deno_error::JsErrorBox::type_error(
+            "Only canonical packaged application assets can be fetched",
+        ));
+    }
+    Ok(parsed.path()[1..].to_owned())
+}
+
+#[op2]
+#[buffer]
+fn op_native_load_package_asset(
+    state: &mut OpState,
+    #[string] url: String,
+) -> Result<Vec<u8>, deno_error::JsErrorBox> {
+    let path = package_asset_path(&url)?;
+    state
+        .borrow::<PackageAssets>()
+        .0
+        .get(&path)
+        .cloned()
+        .ok_or_else(|| {
+            deno_error::JsErrorBox::type_error(format!("Packaged resource is not declared: {path}"))
+        })
+}
 
 #[derive(Debug, thiserror::Error)]
 pub enum RuntimeError {
@@ -81,17 +137,27 @@ pub fn backend_name() -> &'static str {
 
 impl Runtime {
     pub fn new() -> Self {
-        Self::construct(new_instance(), None, None)
+        Self::construct(new_instance(), None, None, Vec::new())
+    }
+
+    /// Construct a runtime with immutable, integrity-verified package assets.
+    pub fn with_package_resources(resources: Vec<Resource>) -> Self {
+        Self::construct(new_instance(), None, None, resources)
     }
 
     fn construct(
         instance: deno_webgpu::Instance,
         surface: Option<SharedSurface>,
         window_owner: Option<Box<dyn Any>>,
+        package_resources: Vec<Resource>,
     ) -> Self {
         let input = InputCallback::default();
-        let mut bootstrap =
-            threejs_native_bootstrap::init(instance, surface.clone(), input.clone());
+        let mut bootstrap = threejs_native_bootstrap::init(
+            instance,
+            surface.clone(),
+            input.clone(),
+            PackageAssets::from_resources(package_resources),
+        );
         bootstrap.esm_files = embedded::bootstrap_sources();
         let mut extensions = vec![
             deno_webidl::deno_webidl::init(),
@@ -103,6 +169,8 @@ impl Runtime {
             ),
             deno_webgpu::deno_webgpu::init(),
             deno_image::deno_image::init(),
+            threejs_native_js_sources::network_fetch_shim(),
+            deno_fetch::deno_fetch::init(deno_fetch::Options::default()),
             bootstrap,
         ];
         extensions

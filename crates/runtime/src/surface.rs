@@ -12,6 +12,7 @@ use deno_webgpu::{
     wgpu_core, wgpu_types,
 };
 use raw_window_handle::{HasDisplayHandle, HasWindowHandle};
+use threejs_native_package::Resource;
 
 use crate::{Runtime, RuntimeError, native_backend, new_instance};
 
@@ -67,7 +68,15 @@ impl WindowSurface {
 
     /// Construct the isolate inside its owning current-thread async runtime.
     /// GPU surface ownership transfers exactly once into Deno's SurfaceData.
-    pub fn into_runtime(mut self) -> Result<Runtime, RuntimeError> {
+    pub fn into_runtime(self) -> Result<Runtime, RuntimeError> {
+        self.into_runtime_with_package_resources(Vec::new())
+    }
+
+    /// Construct the isolate with package-verified resources retained in memory.
+    pub fn into_runtime_with_package_resources(
+        mut self,
+        resources: Vec<Resource>,
+    ) -> Result<Runtime, RuntimeError> {
         let (instance, id) = self.native.take().expect("surface is consumed once");
         let bindings = SurfaceBindings::new(SurfaceData {
             instance: instance.clone(),
@@ -75,8 +84,12 @@ impl WindowSurface {
             width: self.width.max(1),
             height: self.height.max(1),
         });
-        let mut runtime =
-            Runtime::construct(instance, Some(bindings), Some(Box::new(self.owner.clone())));
+        let mut runtime = Runtime::construct(
+            instance,
+            Some(bindings),
+            Some(Box::new(self.owner.clone())),
+            resources,
+        );
         runtime.resize_window(self.width, self.height, self.scale)?;
         Ok(runtime)
     }

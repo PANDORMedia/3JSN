@@ -12,7 +12,7 @@ import { snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 const hash = value => createHash('sha256').update(value).digest('hex');
 const readJson = async path => JSON.parse(await readFile(path, 'utf8'));
 const description = () => ({ schemaVersion: 1, playerVersion: '0.0.0', packageVersions: [1],
-  profiles: ['native-window-v1'], target: hostTarget(),
+  profiles: ['native-window-v1'], capabilities: ['package-assets-v1'], target: hostTarget(),
   backend: { darwin: 'metal', linux: 'vulkan', win32: 'dx12' }[process.platform], v8: 'test-version' });
 
 async function fixture(t, entry = 'import { answer } from "./answer.ts"; console.log(answer);') {
@@ -95,6 +95,33 @@ test('real bundling emits a relocatable manifest, linked map, identities and unc
   assert.equal(metadata.manifest.sha256, hash(await readFile(result.manifest)));
   assert.ok(metadata.esbuild.inputs.some(item => item.path === 'project/answer.ts'));
   assert.equal((await readdir(f.temporary)).some(name => name.startsWith('.3jsn-')), false);
+});
+
+test('native build emits integrity-checked raster imports as package image resources', async t => {
+  const f = await fixture(t, 'import imageUrl from "./assets/checker.png"; console.log(imageUrl);');
+  await mkdir(join(f.project, 'assets'));
+  const png = await readFile(new URL('../../crates/runtime/tests/fixtures/checker.png', import.meta.url));
+  await writeFile(join(f.project, 'assets/checker.png'), png);
+  const result = await f.build();
+  const manifest = await readJson(result.manifest);
+  assert.deepEqual(manifest.requires, ['package-assets-v1']);
+  assert.equal(manifest.resources.length, 1);
+  assert.deepEqual(manifest.resources[0], { path: manifest.files.find(file => file.path.endsWith('.png')).path, kind: 'image' });
+  const imagePath = join(f.out, manifest.resources[0].path);
+  assert.deepEqual(await readFile(imagePath), png);
+  const imageFile = manifest.files.find(file => file.path === manifest.resources[0].path);
+  assert.equal(imageFile.bytes, png.length);
+  assert.equal(imageFile.sha256, hash(png));
+  const bundle = await readFile(join(f.out, manifest.entry), 'utf8');
+  assert.match(bundle, /\.\/assets\/checker-[A-Z0-9]+\.png/);
+  assert.equal(result.sourcePreserved, true);
+});
+
+test('native image imports require the player to advertise package asset loading', async t => {
+  const f = await fixture(t, 'import imageUrl from "./assets/checker.png"; console.log(imageUrl);');
+  await mkdir(join(f.project, 'assets'));
+  await writeFile(join(f.project, 'assets/checker.png'), await readFile(new URL('../../crates/runtime/tests/fixtures/checker.png', import.meta.url)));
+  await failed(f, 'INCOMPATIBLE_RUNTIME', () => f.build({}, async () => ({ ...description(), capabilities: [] })));
 });
 
 test('experimental opt-in and every unsupported or multi target fail before writing or describing', async t => {

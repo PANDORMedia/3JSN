@@ -108,8 +108,9 @@ impl PackageResources {
             }
             if resource.bytes.len() as u64 > resource.kind.byte_limit() {
                 return Err(ResourceError::Limit(match resource.kind {
-                    ResourceKind::Font => "font bytes",
-                    ResourceKind::Stylesheet => "stylesheet bytes",
+                ResourceKind::Font => "font bytes",
+                ResourceKind::Stylesheet => "stylesheet bytes",
+                ResourceKind::Image => "image bytes",
                 }));
             }
             total = total
@@ -121,6 +122,7 @@ impl PackageResources {
             let is_font = match resource.kind {
                 ResourceKind::Font => true,
                 ResourceKind::Stylesheet => false,
+                ResourceKind::Image => return Err(ResourceError::InvalidAsset(path)),
             };
             if !is_font && std::str::from_utf8(&resource.bytes).is_err() {
                 return Err(ResourceError::InvalidAsset(path));

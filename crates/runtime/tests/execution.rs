@@ -1,4 +1,5 @@
 use std::path::Path;
+use threejs_native_package::{Resource, ResourceKind};
 use threejs_native_runtime::{Runtime, RuntimeError};
 
 #[tokio::test(flavor = "current_thread")]
@@ -20,6 +21,14 @@ async fn modules_web_globals_and_errors() {
         .execute_module(&fixture.join("image-bitmap.mjs"))
         .await
         .unwrap();
+    Runtime::with_package_resources(vec![Resource {
+        path: "app/checker.png".into(),
+        kind: ResourceKind::Image,
+        bytes: std::fs::read(fixture.join("checker.png")).unwrap(),
+    }])
+    .execute_module(&fixture.join("package-fetch.mjs"))
+    .await
+    .unwrap();
     let thrown = Runtime::new()
         .execute_module(&fixture.join("throws.mjs"))
         .await

@@ -4,6 +4,15 @@ use deno_core::{Extension, ExtensionFileSource, ExtensionFileSourceCode};
 
 include!(concat!(env!("OUT_DIR"), "/embedded_extension_sources.rs"));
 
+deno_core::extension!(
+    deno_net,
+    lazy_loaded_js = [dir "src/deno_net", "02_tls.js"]
+);
+
+pub fn network_fetch_shim() -> Extension {
+    deno_net::init()
+}
+
 /// Remove build-machine filesystem dependencies before Deno registers any sources.
 /// Missing entries are a build integration defect, never a reason to read runtime files.
 pub fn embed_extension_sources(extension: &mut Extension) {
@@ -87,6 +96,8 @@ mod tests {
             ),
             deno_webgpu::deno_webgpu::init(),
             deno_image::deno_image::init(),
+            deno_fetch::deno_fetch::init(deno_fetch::Options::default()),
+            network_fetch_shim(),
         ];
         let mut checked = 0;
         for mut extension in extensions {

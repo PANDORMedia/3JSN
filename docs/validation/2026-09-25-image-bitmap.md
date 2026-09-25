@@ -16,13 +16,13 @@ supported copy is limited to ImageBitmap sources, straight-alpha sRGB input and
 `rgba8unorm` destinations. This does not establish native image decoding or a
 zero-copy path.
 
-The probe uses an inline synthetic PNG. It does not implement package-resource
-fetch, `Response`, or Three.js `ImageBitmapLoader`; ordinary project texture
-URLs therefore remain unsupported by this checkpoint. It also does not cover
-WebGL texture uploads, other image sources, native windows, or platforms beyond
-the recorded Mac. The next resource gate is integrity-checked package loading
-through unchanged upstream `ImageBitmapLoader` and texture rendering after
-relocating the built package.
+The probe uses an inline synthetic PNG. This checkpoint does not cover packaged
+resource loading, WebGL texture uploads, other image sources, native windows or
+platforms beyond the recorded Mac. The later
+[packaged image loading checkpoint](2026-09-25-packaged-image-loading.md) verifies
+the upstream loader against an integrity-checked package resource, but GPU
+readback from that packaged image and relocation of the image package remain
+open.
 
 Verification:
 

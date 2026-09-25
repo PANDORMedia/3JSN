@@ -15,9 +15,11 @@ const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
 pub const DOM_PROFILE: &str = "dom-window-v1";
 pub const DOM_FONT_CAPABILITY: &str = "dom-package-fonts-v1";
+pub const PACKAGE_ASSETS_CAPABILITY: &str = "package-assets-v1";
 pub const MAX_RESOURCES: usize = 64;
 pub const MAX_STYLESHEET_BYTES: u64 = 1024 * 1024;
 pub const MAX_FONT_BYTES: u64 = 16 * 1024 * 1024;
+pub const MAX_IMAGE_BYTES: u64 = 32 * 1024 * 1024;
 pub const MAX_RESOURCE_BYTES: u64 = 64 * 1024 * 1024;
 
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq)]
@@ -25,6 +27,7 @@ pub const MAX_RESOURCE_BYTES: u64 = 64 * 1024 * 1024;
 pub enum ResourceKind {
     Font,
     Stylesheet,
+    Image,
 }
 
 impl ResourceKind {
@@ -32,6 +35,7 @@ impl ResourceKind {
         match self {
             Self::Font => MAX_FONT_BYTES,
             Self::Stylesheet => MAX_STYLESHEET_BYTES,
+            Self::Image => MAX_IMAGE_BYTES,
         }
     }
 }
@@ -180,14 +184,19 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         {
             resources
         }
+        (Some(requires), Some(resources))
+            if profile == Profile::NativeWindow && requires == &[PACKAGE_ASSETS_CAPABILITY] =>
+        {
+            resources
+        }
         _ => {
             return Err(invalid(
-                "resources require the dom-package-fonts-v1 DOM capability",
+                "resources require a profile-supported package capability",
             ));
         }
     };
     if resources.len() > MAX_RESOURCES {
-        return Err(invalid("package exceeds 64 font/stylesheet resources"));
+        return Err(invalid("package exceeds 64 resources"));
     }
     let mut paths = HashSet::new();
     let mut total = 0_u64;
@@ -207,7 +216,11 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         let suffixes: &[&str] = match resource.kind {
             ResourceKind::Font => &[".ttf", ".otf", ".woff", ".woff2"],
             ResourceKind::Stylesheet => &[".css"],
+            ResourceKind::Image => &[".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"],
         };
+        if resource.kind == ResourceKind::Image && profile != Profile::NativeWindow {
+            return Err(invalid("image resources require native-window-v1"));
+        }
         if !suffixes
             .iter()
             .any(|suffix| resource.path.ends_with(suffix))
@@ -507,6 +520,22 @@ mod tests {
             }
             manifest
         }
+
+        fn image_manifest(&self) -> Value {
+            let mut manifest = self.manifest();
+            manifest["requires"] = json!([PACKAGE_ASSETS_CAPABILITY]);
+            manifest["resources"] = json!([
+                {"path":"app/assets/checker.png", "kind":"image"},
+            ]);
+            let bytes = b"verified image bytes";
+            fs::create_dir_all(self.0.join("app/assets")).unwrap();
+            fs::write(self.0.join("app/assets/checker.png"), bytes).unwrap();
+            manifest["files"].as_array_mut().unwrap().push(json!({
+                "path":"app/assets/checker.png", "bytes":bytes.len(),
+                "sha256":format!("{:x}", Sha256::digest(bytes))
+            }));
+            manifest
+        }
     }
 
     impl Drop for Fixture {
@@ -718,6 +747,26 @@ mod tests {
             load_for(&path, Profile::DomWindow),
             Err(PackageError::Integrity(_))
         ));
+    }
+
+    #[test]
+    fn native_image_resources_are_verified_and_owned_after_relocation() {
+        let mut fixture = Fixture::new();
+        fixture.write(&fixture.image_manifest());
+        let moved = fixture.0.with_extension("images-relocated");
+        fs::rename(&fixture.0, &moved).unwrap();
+        fixture.0 = moved;
+        let path = fixture.0.join("app.json");
+        let app = load(&path).unwrap();
+        let resources = app.resources.unwrap();
+        assert_eq!(resources.len(), 1);
+        assert_eq!(resources[0].path, "app/assets/checker.png");
+        assert_eq!(resources[0].kind, ResourceKind::Image);
+        assert_eq!(resources[0].bytes, b"verified image bytes");
+
+        fs::write(fixture.0.join("app/assets/checker.png"), b"damaged").unwrap();
+        assert_eq!(resources[0].bytes, b"verified image bytes");
+        assert!(matches!(load(&path), Err(PackageError::Integrity(_))));
     }
 
     #[test]
