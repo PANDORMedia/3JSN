@@ -62,11 +62,17 @@ writing elsewhere.
 
 The report records each Vite manifest entry and its static/dynamic import, CSS
 and asset references, every emitted regular file (including plugin, public,
-worker and Wasm outputs), SHA-256 identities, and source-map source lists.
+worker and Wasm outputs), SHA-256 identities, and source-map source lists. HTML
+reference extraction is limited to `src`, `href` and `poster` attributes; it does
+not resolve `srcset`, inline-style URLs, computed JavaScript URLs or network
+requests. Those remain unresolved inputs, even when related output files appear
+in the inventory.
 Symlink outputs, malformed manifest references, more than 10,000 files, files
-over 128 MiB or output over 2 GiB fail the build. Cancellation terminates the
-Vite process and publishes no output. Vite config/plugin code is arbitrary
-trusted code; the adapter is not a sandbox. Its report labels client/server
+over 128 MiB or output over 2 GiB fail the build. This inventory does not yet
+reject case-folding or Unicode-normalization path collisions, so it does not
+certify that filenames are portable across target filesystems. Cancellation
+terminates the Vite process and publishes no output. Vite config/plugin code is
+arbitrary trusted code; the adapter is not a sandbox. Its report labels client/server
 boundaries unclassified because plugin-defined builds can add SSR or other
 environments. Capturing a worker or Wasm file does not establish that the native
 runtime can execute it. The runtime package contract still admits only its

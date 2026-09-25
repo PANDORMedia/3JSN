@@ -60,7 +60,8 @@ test('Vite output report captures manifest edges, source maps, plugin, worker, W
   assert.ok(report.manifest.entries.some(entry => entry.isEntry && entry.file.endsWith('.js')));
   assert.ok(report.manifest.entries.some(entry => entry.isDynamicEntry));
   assert.ok(report.sourceMaps.some(map => map.path.endsWith('.map') && map.sources.length > 0));
-  assert.ok(report.documents.some(document => document.references.some(reference => reference.element === 'script' && reference.attribute === 'src')));
+  assert.deepEqual(report.documents.urlAttributes, ['src', 'href', 'poster']);
+  assert.ok(report.documents.files.some(document => document.references.some(reference => reference.element === 'script' && reference.attribute === 'src')));
   const paths = new Set(report.files.map(file => file.path));
   assert.ok(paths.has('.vite/manifest.json'));
   assert.ok(paths.has('plugin-output.txt'));
