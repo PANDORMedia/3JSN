@@ -63,8 +63,9 @@ cannot establish a self-contained snapshot and inspection fails explicitly.
 Static inventory does not resolve imports, aliases, installed dependencies,
 non-npm lockfiles, build outputs, client/server boundaries or source maps. For npm
 lockfiles, only exact Three.js package versions and lockfile package paths are
-reported; integrity values, resolved URLs and other package metadata are not
-retained. Computed access,
+reported. Safe relative npm link targets are followed within the same lockfile;
+unsafe or missing targets are omitted with an uncertainty. Integrity values,
+resolved URLs and other package metadata are not retained. Computed access,
 dynamic imports and generated behavior remain unresolved. There is no optional
 runtime trace implementation yet. Absence of a finding never means an API is safe.
 The current desktop profile has no completely verified target, so even a small

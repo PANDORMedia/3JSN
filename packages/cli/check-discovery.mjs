@@ -10,6 +10,26 @@ const npmLockfiles = new Set(['package-lock.json', 'npm-shrinkwrap.json']);
 const packageName = value => typeof value === 'string' && /^(?:@[a-z0-9._-]+\/)?[a-z0-9._-]+$/i.test(value) ? value : undefined;
 const location = (path, node) => ({ path, line: node?.startLine ?? node?.line ?? 1, column: node?.startCol ?? node?.column ?? 1 });
 const names = object => object && typeof object === 'object' && !Array.isArray(object) ? Object.keys(object).filter(name => packageName(name)).sort() : [];
+const safeLockPath = value => typeof value === 'string' && value.length > 0 && value.length <= 1024
+  && !value.startsWith('/') && !value.includes('\\') && !/[\u0000-\u001f\u007f:?#]/.test(value)
+  && value.split('/').every(segment => segment !== '' && segment !== '.' && segment !== '..');
+function safeNpmPackagePath(value) {
+  if (!safeLockPath(value) || !/(?:^|\/)node_modules\/three$/.test(value)) return false;
+  const segments = value.split('/');
+  for (let index = 0; index < segments.length; index++) {
+    if (segments[index] !== 'node_modules') continue;
+    const name = segments[index + 1];
+    if (typeof name !== 'string') return false;
+    if (name.startsWith('@')) {
+      if (!/^@[a-z0-9._-]+$/i.test(name) || !packageName(segments[index + 2])) return false;
+      index += 2;
+    } else {
+      if (!packageName(name)) return false;
+      index++;
+    }
+  }
+  return true;
+}
 
 // Public reports retain a resource identity, never credentials or URL payloads.
 function safeUrl(value) {
@@ -39,8 +59,7 @@ export function analyzeProjectFiles(files) {
   const uncertainty = (code, message, at) => append(result.uncertainties, { code, message, location: at });
   const requirement = (feature, at, evidence) => append(result.requirements, { feature, location: at, evidence });
   const resolveThree = (path, dependencyPath, version) => {
-    if (dependencyPath.length > 1024 || !/^(?:[A-Za-z0-9@._-]+\/)*node_modules\/three$/.test(dependencyPath)
-      || /(?:^|\/)\.{1,2}(?:\/|$)/.test(dependencyPath)) {
+    if (!safeNpmPackagePath(dependencyPath)) {
       uncertainty('npm-three-path-omitted', 'A Three.js lockfile package path is not safely reportable.', location(path));
       return;
     }
@@ -66,9 +85,27 @@ export function analyzeProjectFiles(files) {
       for (const [packagePath, record] of Object.entries(lock.packages)) {
         if (++scanned > MAX_LOCK_PACKAGES) { truncated = true; break; }
         if (/(?:^|\/)node_modules\/three$/.test(packagePath)) {
-          if (record?.name !== undefined && record.name !== 'three') {
+          let resolved = record;
+          const visitedLinks = new Set([packagePath]);
+          while (resolved?.link === true) {
+            const target = resolved.resolved;
+            if (!safeLockPath(target) || visitedLinks.has(target) || !Object.hasOwn(lock.packages, target)) {
+              uncertainty('npm-three-link-omitted', 'A Three.js lockfile link does not identify a contained package record.', location(path));
+              resolved = null;
+              break;
+            }
+            visitedLinks.add(target);
+            resolved = lock.packages[target];
+            if (!resolved || typeof resolved !== 'object' || Array.isArray(resolved)) {
+              uncertainty('npm-three-link-omitted', 'A Three.js lockfile link does not identify a package record.', location(path));
+              resolved = null;
+              break;
+            }
+          }
+          if (!resolved) continue;
+          if (resolved?.name !== undefined && resolved.name !== 'three') {
             uncertainty('npm-three-alias-omitted', 'A lockfile path named three identifies a different package name.', location(path));
-          } else resolveThree(path, packagePath, record?.version);
+          } else resolveThree(path, packagePath, resolved?.version);
         }
       }
     } else if (lock.dependencies && typeof lock.dependencies === 'object' && !Array.isArray(lock.dependencies)) {
