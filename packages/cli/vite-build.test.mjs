@@ -136,7 +136,11 @@ test('Vite DOM graph admits one static HTML and JavaScript entry with linked CSS
       { code: 'UNSUPPORTED_VITE_GRAPH' });
   }
   const fontRecord = { ...record, assets: ['assets/font.woff2'] };
-  assert.deepEqual([...validateViteDomGraph({ ...artifacts, graph: [fontRecord], files: [...files, { path: 'assets/font.woff2' }] },
+  assert.throws(() => validateViteDomGraph({ ...artifacts, graph: [fontRecord], files: [...files, { path: 'assets/font.woff2' }] },
+    'index.html', { webFonts: true }), { code: 'UNSUPPORTED_VITE_GRAPH' });
+  const emittedFont = { key: 'assets/font.woff2', file: 'assets/font.woff2', isEntry: false, isDynamicEntry: false,
+    imports: [], dynamicImports: [], css: [], assets: [] };
+  assert.deepEqual([...validateViteDomGraph({ ...artifacts, graph: [record, emittedFont], files: [...files, { path: 'assets/font.woff2' }] },
     'index.html', { webFonts: true }).fontFiles], ['assets/font.woff2']);
   assert.throws(() => validateViteDomGraph({ ...artifacts, graph: [fontRecord], files: [...files, { path: 'assets/image.png' }] },
     'index.html', { webFonts: true }), { code: 'UNSUPPORTED_VITE_GRAPH' });

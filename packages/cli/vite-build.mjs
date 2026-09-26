@@ -319,15 +319,13 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   }
   const byKey = new Map(artifacts.graph.map(item => [item.key, item]));
   const jsFiles = new Set([htmlRecord.file]);
-  const assetFiles = new Set();
   const visited = new Map();
   const visit = item => {
     if (visited.has(item.key)) return;
     visited.set(item.key, item);
-    if (item.dynamicImports.length || (item.assets.length && !webFonts)) {
+    if (item.dynamicImports.length || item.assets.length) {
       throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports or asset graph edges outside this package profile.`);
     }
-    if (webFonts) for (const file of item.assets) assetFiles.add(file);
     for (const key of item.imports) {
       const dependency = byKey.get(key);
       if (!dependency || !dependency.file.endsWith('.js') || dependency.isDynamicEntry) {
@@ -339,7 +337,6 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   };
   visit(htmlRecord);
   const fontRecords = webFonts ? artifacts.graph.filter(item => /\.(?:ttf|otf|woff|woff2)$/i.test(item.file)) : [];
-  for (const item of fontRecords) assetFiles.add(item.file);
   const graphChunks = artifacts.graph.filter(item => item !== htmlRecord && !fontRecords.includes(item));
   if (graphChunks.some(item => !jsFiles.has(item.file)) || graphChunks.length !== visited.size - 1) {
     throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'Vite emitted JavaScript outside the selected HTML entry graph.');
@@ -352,7 +349,7 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
     cssFiles.add(file);
   }
   const fontFiles = new Set();
-  for (const path of assetFiles) {
+  for (const { file: path } of fontRecords) {
     if (!artifacts.files.some(output => output.path === path) || !/\.(?:ttf|otf|woff|woff2)$/i.test(path)) {
       throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted a non-font resource edge outside this package profile: ${path}.`);
     }
