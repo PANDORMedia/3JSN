@@ -36,7 +36,7 @@ fail before JavaScript starts. Unsupported request paths fail when fetched;
 decoder errors propagate from `createImageBitmap`.
 The supported `copyExternalImageToTexture` bridge honors dictionary and
 sequence origins and extents; omitted extent height and array-layer count use
-WebGPU's default of one.
+WebGPU's default of one, while the extent width remains required.
 
 This path covers statically imported raster URLs emitted by esbuild. It does not
 discover Vite `public/` files, HTML/CSS URLs, arbitrary `fetch()` strings,

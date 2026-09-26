@@ -46,7 +46,7 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
       const destinationY = originValue(destinationOrigin, "y", 1, "destination y");
       const destinationZ = originValue(destinationOrigin, "z", 2, "destination z");
       const mipLevel = integer(destinationInfo.mipLevel ?? 0, "mip level");
-      const width = extentValue(copySize, "width", 0, bitmap.width - sourceX);
+      const width = extentValue(copySize, "width", 0);
       const height = extentValue(copySize, "height", 1, 1);
       const depth = extentValue(copySize, "depthOrArrayLayers", 2, 1);
       if (mipLevel >= destination.mipLevelCount) {
