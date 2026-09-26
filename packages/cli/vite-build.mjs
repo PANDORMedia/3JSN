@@ -243,7 +243,7 @@ function outputReference(htmlPath, value) {
   return portablePath(path) ? path : undefined;
 }
 
-export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModulePreloads }) {
+export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModulePreloads, allowedStylesheets = new Set() }) {
   let source;
   try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
     throw new BuildError('INVALID_VITE_HTML', 'Vite emitted HTML that is not valid UTF-8.', { cause });
@@ -252,19 +252,35 @@ export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModu
   const tree = parseHtml(source, { sourceCodeLocationInfo: true, scriptingEnabled: true, onParseError: error => errors.push(error) });
   if (errors.length) throw new BuildError('INVALID_VITE_HTML', `Vite emitted HTML with parse error ${errors[0].code}.`);
   const edits = [];
+  const linkedStylesheets = new Set();
   visitHtml(tree, node => {
     if (node.tagName === 'link') {
       const attrs = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
-      if ((attrs.get('rel') ?? '').toLowerCase() !== 'modulepreload') {
-        throw new BuildError('UNSUPPORTED_VITE_HTML', 'Only Vite modulepreload links can be removed from the generated DOM entry.');
-      }
-      const href = outputReference(htmlPath, attrs.get('href'));
-      if (!href || !allowedModulePreloads.has(href)) {
-        throw new BuildError('INVALID_VITE_GRAPH', 'Vite modulepreload link is not present in its static JavaScript graph.');
-      }
       const location = node.sourceCodeLocation;
-      if (!location) throw new BuildError('INVALID_VITE_HTML', 'Vite modulepreload link has no source location.');
-      edits.push({ start: location.startOffset, end: location.endOffset, text: '' });
+      if (!location) throw new BuildError('INVALID_VITE_HTML', 'Generated link has no source location.');
+      if ((attrs.get('rel') ?? '').toLowerCase() === 'modulepreload') {
+        const href = outputReference(htmlPath, attrs.get('href'));
+        if (!href || !allowedModulePreloads.has(href)) {
+          throw new BuildError('INVALID_VITE_GRAPH', 'Vite modulepreload link is not present in its static JavaScript graph.');
+        }
+        edits.push({ start: location.startOffset, end: location.endOffset, text: '' });
+      } else if ((attrs.get('rel') ?? '').toLowerCase() === 'stylesheet') {
+        const href = outputReference(htmlPath, attrs.get('href'));
+        if (!href || !allowedStylesheets.has(href) || (attrs.get('type') && attrs.get('type').toLowerCase() !== 'text/css')) {
+          throw new BuildError('INVALID_VITE_GRAPH', 'Vite stylesheet link is not present in its CSS output graph.');
+        }
+        if (linkedStylesheets.has(href)) throw new BuildError('INVALID_VITE_HTML', `Vite generated a duplicate stylesheet link: ${href}`);
+        linkedStylesheets.add(href);
+        const hrefLocation = location.attrs?.href;
+        if (!hrefLocation) throw new BuildError('INVALID_VITE_HTML', 'Vite stylesheet link has no source location.');
+        edits.push({ start: hrefLocation.startOffset, end: hrefLocation.endOffset, text: `href="./vite/${href}"` });
+        for (const attribute of ['crossorigin', 'integrity']) {
+          const attributeLocation = location.attrs?.[attribute];
+          if (attributeLocation) edits.push({ start: attributeLocation.startOffset, end: attributeLocation.endOffset, text: '' });
+        }
+      } else {
+        throw new BuildError('UNSUPPORTED_VITE_HTML', 'Only Vite modulepreload and stylesheet links are supported in generated HTML.');
+      }
     }
     if (node.tagName === 'script') {
       const attrs = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
@@ -285,6 +301,9 @@ export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModu
     normalized = normalized.slice(0, edit.start) + edit.text + normalized.slice(edit.end);
     boundary = edit.start;
   }
+  if (linkedStylesheets.size !== allowedStylesheets.size || [...allowedStylesheets].some(path => !linkedStylesheets.has(path))) {
+    throw new BuildError('INVALID_VITE_GRAPH', 'Generated HTML does not link every stylesheet in the selected Vite CSS graph.');
+  }
   return Buffer.from(normalized);
 }
 
@@ -299,12 +318,12 @@ export function validateViteDomGraph(artifacts, htmlEntry) {
   }
   const byKey = new Map(artifacts.graph.map(item => [item.key, item]));
   const jsFiles = new Set([htmlRecord.file]);
-  const visited = new Set();
+  const visited = new Map();
   const visit = item => {
     if (visited.has(item.key)) return;
-    visited.add(item.key);
-    if (item.dynamicImports.length || item.css.length || item.assets.length) {
-      throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports, CSS or asset graph edges outside this package profile.`);
+    visited.set(item.key, item);
+    if (item.dynamicImports.length || item.assets.length) {
+      throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports or asset graph edges outside this package profile.`);
     }
     for (const key of item.imports) {
       const dependency = byKey.get(key);
@@ -320,10 +339,17 @@ export function validateViteDomGraph(artifacts, htmlEntry) {
   if (graphChunks.some(item => !jsFiles.has(item.file)) || graphChunks.length !== visited.size - 1) {
     throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'Vite emitted JavaScript outside the selected HTML entry graph.');
   }
+  const cssFiles = new Set();
+  for (const item of visited.values()) for (const file of item.css) {
+    if (!file.endsWith('.css') || !artifacts.files.some(output => output.path === file)) {
+      throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite CSS edge is not a regular emitted stylesheet: ${file}.`);
+    }
+    cssFiles.add(file);
+  }
   const unexpectedFiles = artifacts.files.filter(file => ![htmlRecord.file, artifacts.manifestPath].includes(file.path)
-    && file.path !== htmlEntry && !file.path.endsWith('.map') && !jsFiles.has(file.path));
+    && file.path !== htmlEntry && !file.path.endsWith('.map') && !jsFiles.has(file.path) && !cssFiles.has(file.path));
   if (unexpectedFiles.length) throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted unsupported files: ${unexpectedFiles.slice(0, 4).map(file => file.path).join(', ')}.`);
-  return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles };
+  return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles };
 }
 
 /** Run the selected project's Vite build and capture its generated client artifact graph without rewriting sources. */

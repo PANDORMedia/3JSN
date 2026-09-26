@@ -27,12 +27,14 @@ export const LIMITATIONS = [...COMMON_LIMITATIONS,
   'The profile provides no frontend command, custom plugin or inherited tsconfig.',
 ];
 
-export function limitationsFor(profile, { webFonts = false } = {}) {
+export function limitationsFor(profile, { webFonts = false, vite = false } = {}) {
   if (profile !== DOM_PROFILE) return LIMITATIONS;
   return [...COMMON_LIMITATIONS,
     'Interim interpreted-HTML profile: the native runtime still parses packaged HTML/CSS and maintains a dynamic DOM; this is not build-time UI compilation.',
     'Only an explicitly supplied current-host macOS Metal dom-window-v1 player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.',
-    webFonts
+    vite
+      ? 'The Vite adapter admits linked, resource-free CSS output only; CSS url() and @import, emitted assets and dynamic resource discovery remain unsupported.'
+      : webFonts
       ? 'Opt-in static CSS/font localization preserves rule order and descriptors; native font admission is separate. Other static resources and dynamic asset discovery remain unsupported.'
       : 'Static HTML and CSS resource references, foreign content, templates, classic/inline scripts and browser navigation are rejected; accepted syntax does not establish rendering or DOM API support.',
     'CSS animation and transition timelines are not advanced by the current DOM painter, even when declarations parse successfully.',

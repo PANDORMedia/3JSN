@@ -29,7 +29,10 @@ pub fn description() -> serde_json::Value {
         "playerVersion": env!("CARGO_PKG_VERSION"),
         "packageVersions": [1],
         "profiles": [threejs_native_package::DOM_PROFILE],
-        "capabilities": [threejs_native_package::DOM_FONT_CAPABILITY],
+        "capabilities": [
+            threejs_native_package::DOM_FONT_CAPABILITY,
+            threejs_native_package::DOM_STYLESHEET_CAPABILITY
+        ],
         "target": threejs_native_package::target(),
         "backend": "metal",
         "v8": deno_core::v8::V8::get_version(),

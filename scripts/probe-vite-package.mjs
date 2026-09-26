@@ -13,7 +13,7 @@ assert(playerArgument && fontArgument && outputArgument && !extra.length,
   'Usage: node scripts/probe-vite-package.mjs <dom-player> <font.woff2> <new-evidence-directory>');
 const output = resolve(outputArgument);
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-const sourceFiles = ['3jsn.json', 'vite.config.mjs', 'dom-window/index.html', 'dom-window/app.mjs', 'spinning-scene/scene.mjs'];
+const sourceFiles = ['3jsn.json', 'vite.config.mjs', 'dom-window/index.html', 'dom-window/style.css', 'dom-window/app.mjs', 'spinning-scene/scene.mjs'];
 const inputFiles = ['scripts/probe-vite-package.mjs', 'packages/cli/build.mjs', 'packages/cli/vite-build.mjs',
   'packages/cli/html.mjs', 'packages/cli/contract.mjs', 'packages/cli/cli.mjs', 'scripts/compatibility/snapshot.mjs',
   'package-lock.json', ...sourceFiles.map(path => `examples/${path}`)];
@@ -56,11 +56,16 @@ assert.deepEqual(JSON.parse(verify.stdout), { packageVerified: true });
 const native = await nativeExecute(['--frames', '120']);
 await writeFile(join(output, 'native-stdout.txt'), native.stdout);
 await writeFile(join(output, 'native-stderr.txt'), native.stderr);
-const completion = native.stdout.trim().split('\n').map(line => JSON.parse(line)).find(record => record.nativeDomWindow === true);
+const runtimeRecords = native.stdout.trim().split('\n').map(line => JSON.parse(line));
+const completion = runtimeRecords.find(record => record.nativeDomWindow === true);
+const resourceDelivery = runtimeRecords.find(record => record.packagedResources)?.packagedResources;
 assert.equal(completion?.presentedFrames, 120);
 assert.equal(completion?.cpuImageTransport, false);
 assert.equal(completion?.nativeDeviceIdentityChecked, true);
 assert.equal(completion?.nativeQueueIdentityChecked, true);
+assert.equal(resourceDelivery?.stylesheetDeliveries, 1);
+assert.equal(resourceDelivery?.transportDrained, true);
+assert.ok(resourceDelivery.deliveredUrls.some(url => url.endsWith('.css')));
 const metadata = JSON.parse(await readFile(join(relocated, 'metadata/build.json')));
 assert.equal(metadata.vite.htmlEntry, 'dom-window/index.html');
 assert.deepEqual(metadata.source.preservation.preserved, true);
@@ -74,7 +79,7 @@ const report = { kind: 'experimental-vite-native-package-relocation', profile: b
   sourcePreservedDuringBuild: metadata.source.preservation.preserved, runtime: metadata.runtime,
   html: metadata.html, manifest: { sha256: hash(await readFile(manifestPath)), files: manifest.files }, completion,
   limitations: ['One development Mac with Metal validation; not a clean-machine or performance certification.',
-    'Only one Vite HTML entry and a static JavaScript graph are admitted; CSS files, assets, dynamic chunks, workers, Wasm and server output are rejected.',
+    'Only one Vite HTML entry, a static JavaScript graph and resource-free static CSS are admitted; emitted assets, dynamic chunks, workers, Wasm and server output are rejected.',
     'The DOM profile remains experimental and retains its runtime HTML/CSS parsers.',
     'Only the native child has a restricted PATH and file/network sandbox.'] };
 await writeFile(join(output, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);

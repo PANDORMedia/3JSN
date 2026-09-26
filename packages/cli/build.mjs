@@ -8,7 +8,7 @@ import { promisify } from 'node:util';
 import * as esbuild from 'esbuild';
 import { compareSnapshots, snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 import { BuildError, DOM_PROFILE, hostTarget, limitationsFor, portablePath, readConfig, validateDescription, validateProfileTarget, validateTargets } from './contract.mjs';
-import { analyzeHtml, prepareHtml, renderHtml } from './html.mjs';
+import { analyzeHtml, prepareHtml, renderHtml, validatePackagedStylesheet } from './html.mjs';
 import { localizeWebFonts } from './web-fonts.mjs';
 import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILITY } from './web-font-policy.mjs';
 import { captureViteArtifacts, normalizeViteHtml, sourceRoot as viteSourceRoot,
@@ -17,6 +17,8 @@ import { captureViteArtifacts, normalizeViteHtml, sourceRoot as viteSourceRoot,
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
 const PACKAGE_ASSETS_CAPABILITY = 'package-assets-v1';
+const DOM_STYLESHEET_CAPABILITY = 'dom-package-stylesheets-v1';
+const DOM_STYLESHEET_LIMITS = Object.freeze({ count: 64, bytes: 1024 * 1024, totalBytes: 64 * 1024 * 1024 });
 const IMAGE_RESOURCE_LIMITS = Object.freeze({ count: 64, bytes: 32 * 1024 * 1024, totalBytes: 64 * 1024 * 1024 });
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.webp']);
 const forward = path => path.split(sep).join('/');
@@ -309,6 +311,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
     checkCancellation(signal);
     let bundleRoot = root;
     let additionalInputs = [];
+    let viteStylesheets = [];
     if (useVite) {
       viteOutput = join(staging, 'vite');
       await mkdir(viteOutput);
@@ -316,12 +319,35 @@ export async function buildProject(options, { describeRuntime: describe = descri
       const admitted = validateViteDomGraph(viteArtifacts, config.entry);
       const generatedHtml = await readFile(join(viteOutput, ...admitted.htmlFile.split('/')));
       const normalizedHtml = normalizeViteHtml(generatedHtml, { htmlPath: config.entry,
-        allowedScripts: admitted.jsFiles, allowedModulePreloads: admitted.modulePreloads });
-      const analysis = analyzeHtml(normalizedHtml, config.entry);
+        allowedScripts: admitted.jsFiles, allowedModulePreloads: admitted.modulePreloads,
+        allowedStylesheets: admitted.cssFiles });
+      const analysis = analyzeHtml(normalizedHtml, config.entry, { externalStylesheets: true });
       if (analysis.entry !== admitted.entryScript) throw new BuildError('INVALID_VITE_GRAPH', 'Vite HTML script does not resolve to the manifest JavaScript entry.');
+      const linkedStylesheets = new Set(analysis.styles.filter(style => style.kind === 'linked').map(style => style.href));
+      const expectedStylesheets = new Set([...admitted.cssFiles].map(path => `./vite/${path}`));
+      const linkedPaths = [...linkedStylesheets].map(href => href.startsWith('./vite/') ? href : '');
+      if (linkedStylesheets.size !== expectedStylesheets.size || linkedPaths.some(path => !expectedStylesheets.has(path))) {
+        throw new BuildError('INVALID_VITE_GRAPH', 'Generated HTML stylesheet links do not match the selected Vite CSS graph.');
+      }
       html = { ...analysis, bytes: renderHtml(analysis), metadata: { ...analysis.metadata,
         interpretation: 'vite-generated-interim-runtime-html-css', generatedHtml: admitted.htmlFile,
-        adapter: 'vite-client-artifact-graph-v1' } };
+        adapter: 'vite-client-artifact-graph-v1',
+        rewrite: 'The generated module is bundled; linked CSS hrefs are remapped to package-relative resources.',
+        stylesheetResources: { capability: DOM_STYLESHEET_CAPABILITY, rejectedEdges: ['url()', '@import'] } } };
+      let stylesheetBytes = 0;
+      if (admitted.cssFiles.size > DOM_STYLESHEET_LIMITS.count) throw new BuildError('VITE_CSS_LIMIT', 'Vite emitted more than 64 CSS resources.');
+      for (const path of [...admitted.cssFiles].sort()) {
+        const payload = await readFile(join(viteOutput, ...path.split('/')));
+        const captured = viteArtifacts.files.find(file => file.path === path);
+        if (!captured || captured.bytes !== payload.length || captured.sha256 !== digest(payload)) {
+          throw new BuildError('VITE_OUTPUT_CHANGED', `Vite stylesheet changed after artifact capture: ${path}`);
+        }
+        if (payload.length > DOM_STYLESHEET_LIMITS.bytes) throw new BuildError('VITE_CSS_LIMIT', `Vite stylesheet exceeds 1 MiB: ${path}`);
+        validatePackagedStylesheet(payload, path);
+        stylesheetBytes += payload.length;
+        if (stylesheetBytes > DOM_STYLESHEET_LIMITS.totalBytes) throw new BuildError('VITE_CSS_LIMIT', 'Vite stylesheets exceed 64 MiB in total.');
+        viteStylesheets.push({ path: `app/vite/${path}`, sourcePath: path, payload, bytes: payload.length, sha256: digest(payload), kind: 'stylesheet' });
+      }
       entry = join(viteOutput, ...analysis.entry.split('/'));
       bundleRoot = viteOutput;
       additionalInputs = await viteSourceMapInputs(viteOutput, viteArtifacts.sourceMaps, snapshotRoot, root);
@@ -336,6 +362,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
       || !description.capabilities.includes(PACKAGE_ASSETS_CAPABILITY))) {
       throw new BuildError('INCOMPATIBLE_RUNTIME', `The supplied player does not advertise ${PACKAGE_ASSETS_CAPABILITY}.`);
     }
+    if (viteStylesheets.length && (!Array.isArray(description.capabilities)
+      || !description.capabilities.includes(DOM_STYLESHEET_CAPABILITY))) {
+      throw new BuildError('INCOMPATIBLE_RUNTIME', `The supplied DOM player must advertise ${DOM_STYLESHEET_CAPABILITY}.`);
+    }
     checkCancellation(signal);
     if (html) {
       await writeFile(join(staging, 'app/index.html'), html.bytes, { flag: 'wx' });
@@ -347,6 +377,12 @@ export async function buildProject(options, { describeRuntime: describe = descri
       for (const resource of webFonts?.files ?? []) {
         await mkdir(dirname(join(staging, resource.path)), { recursive: true });
         await writeFile(join(staging, resource.path), resource.payload, { flag: 'wx' });
+        built.files.push({ path: resource.path, bytes: resource.bytes, sha256: resource.sha256 });
+      }
+      for (const resource of viteStylesheets) {
+        const destination = join(staging, ...resource.path.split('/'));
+        await mkdir(dirname(destination), { recursive: true });
+        await writeFile(destination, resource.payload, { flag: 'wx' });
         built.files.push({ path: resource.path, bytes: resource.bytes, sha256: resource.sha256 });
       }
       built.files.sort((a, b) => a.path.localeCompare(b.path));
@@ -361,6 +397,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
     const manifest = { schemaVersion: 1, profile: config.profile, name: config.name, target, entry: 'app/main.mjs',
       ...(html ? { html: 'app/index.html', font: 'app/font.woff2' } : {}),
       ...(webFonts ? { requires: [WEB_FONT_CAPABILITY], resources: webFonts.files.map(({ path, kind }) => ({ path, kind })) }
+        : viteStylesheets.length ? { requires: [DOM_STYLESHEET_CAPABILITY], resources: viteStylesheets.map(({ path, kind }) => ({ path, kind })) }
         : built.resources.length ? { requires: [PACKAGE_ASSETS_CAPABILITY], resources: built.resources } : {}), files: built.files };
     const manifestBytes = jsonBytes(manifest);
     if (Buffer.byteLength(manifestBytes) > 1024 * 1024 || manifest.files.length > 4096) throw new BuildError('MANIFEST_LIMIT', 'Package manifest exceeds version 1 limits.');
@@ -386,10 +423,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
     if (font) await verifyFont(font);
     checkCancellation(signal);
     const metadata = { schemaVersion: 1, status: 'experimental', profile: config.profile, target,
-      compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile, { webFonts: Boolean(webFonts) }) },
+      compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile, { webFonts: Boolean(webFonts), vite: useVite }) },
       config, runtime: { executable, ...copiedRuntime, description },
       source: { before, after, preservation }, esbuild: built.metadata,
-      ...(viteSummary ? { vite: viteSummary } : {}),
+      ...(viteSummary ? { vite: { ...viteSummary, packagedStylesheets: viteStylesheets.map(({ path, sourcePath, bytes, sha256 }) => ({ path, sourcePath, bytes, sha256 })) } } : {}),
       ...(html ? { html: { ...html.metadata, source: { path: config.entry, bytes: htmlSource.length, sha256: digest(htmlSource) },
         generated: { path: 'app/index.html', bytes: html.bytes.length, sha256: digest(html.bytes) } }, assets: { font: fontMetadata(font) } } : {}),
       ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY, stateDir: webFonts.stateDir, offline: options.offline ?? false,
