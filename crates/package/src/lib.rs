@@ -15,6 +15,7 @@ const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
 pub const DOM_PROFILE: &str = "dom-window-v1";
 pub const DOM_FONT_CAPABILITY: &str = "dom-package-fonts-v1";
+pub const DOM_STYLESHEET_CAPABILITY: &str = "dom-package-stylesheets-v1";
 pub const PACKAGE_ASSETS_CAPABILITY: &str = "package-assets-v1";
 pub const MAX_RESOURCES: usize = 64;
 pub const MAX_STYLESHEET_BYTES: u64 = 1024 * 1024;
@@ -177,17 +178,22 @@ fn validate_path(path: &str) -> Result<(), PackageError> {
 }
 
 fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), PackageError> {
-    let resources = match (&manifest.requires, &manifest.resources) {
+    let (resources, stylesheet_only) = match (&manifest.requires, &manifest.resources) {
         (None, None) => return Ok(()),
         (Some(requires), Some(resources))
             if profile == Profile::DomWindow && requires == &[DOM_FONT_CAPABILITY] =>
         {
-            resources
+            (resources, false)
+        }
+        (Some(requires), Some(resources))
+            if profile == Profile::DomWindow && requires == &[DOM_STYLESHEET_CAPABILITY] =>
+        {
+            (resources, true)
         }
         (Some(requires), Some(resources))
             if profile == Profile::NativeWindow && requires == &[PACKAGE_ASSETS_CAPABILITY] =>
         {
-            resources
+            (resources, false)
         }
         _ => {
             return Err(invalid(
@@ -201,6 +207,11 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
     let mut paths = HashSet::new();
     let mut total = 0_u64;
     for resource in resources {
+        if stylesheet_only && resource.kind != ResourceKind::Stylesheet {
+            return Err(invalid(
+                "stylesheet capability may contain only stylesheet resources",
+            ));
+        }
         validate_path(&resource.path)?;
         if !paths.insert(resource.path.to_lowercase()) {
             return Err(invalid(format!("duplicate resource: {}", resource.path)));
@@ -522,6 +533,13 @@ mod tests {
             manifest
         }
 
+        fn stylesheet_manifest(&self) -> Value {
+            let mut manifest = self.font_manifest();
+            manifest["requires"] = json!([DOM_STYLESHEET_CAPABILITY]);
+            manifest["resources"] = json!([{"path":"app/type.css", "kind":"stylesheet"}]);
+            manifest
+        }
+
         fn image_manifest(&self) -> Value {
             let mut manifest = self.manifest();
             manifest["requires"] = json!([PACKAGE_ASSETS_CAPABILITY]);
@@ -805,6 +823,12 @@ mod tests {
             validate_resources(&manifest, Profile::DomWindow)
         };
         assert!(validate(&valid).is_ok());
+        let stylesheet_only = fixture.stylesheet_manifest();
+        assert!(validate(&stylesheet_only).is_ok());
+        let mut font_under_stylesheet_capability = stylesheet_only.clone();
+        font_under_stylesheet_capability["resources"] =
+            json!([{"path":"app/type.ttf", "kind":"font"}]);
+        assert!(validate(&font_under_stylesheet_capability).is_err());
         for key in ["requires", "resources"] {
             let mut value = valid.clone();
             value.as_object_mut().unwrap().remove(key);

@@ -29,7 +29,7 @@ function checkCss(source, context) {
   });
 }
 
-function inspect(source, webFonts = false) {
+function inspect(source, { webFonts = false, externalStylesheets = false } = {}) {
   if (/<\?xml(?:\s|\?)/i.test(source)) reject('XML declarations are not supported.');
   // Pinned Blitz sniffs the entire first DOCTYPE line, including later comments.
   if (source.startsWith('<!DOCTYPE') && /XHTML|xhtml/.test(source.split('\n', 1)[0])) reject('This first DOCTYPE line triggers the native XHTML parser.');
@@ -43,7 +43,7 @@ function inspect(source, webFonts = false) {
   const scripts = [], canvases = [], sceneIds = [], styles = [];
   function visit(node) {
     if (node.tagName) {
-      const isLink = webFonts && node.tagName === 'link';
+      const isLink = (webFonts || externalStylesheets) && node.tagName === 'link';
       if (node.namespaceURI !== 'http://www.w3.org/1999/xhtml' || !(elements.has(node.tagName) || isLink)) reject(`Element <${node.tagName}> is outside the interim HTML profile.`);
       for (const attr of node.attrs) {
         if (attr.namespace || attr.prefix || !((attributes.has(attr.name) || /^(?:aria|data)-[a-z0-9-]+$/.test(attr.name))
@@ -94,18 +94,18 @@ function modulePath(htmlPath, src) {
 }
 
 /** Validate a bounded static document and rewrite only its generated module src. No source file is changed. */
-export function analyzeHtml(bytes, htmlPath, { webFonts = false } = {}) {
+export function analyzeHtml(bytes, htmlPath, { webFonts = false, externalStylesheets = false } = {}) {
   let source;
   try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
     throw new BuildError('INVALID_HTML_ENCODING', 'HTML must be valid UTF-8.', { cause });
   }
   if (source.startsWith('\ufeff')) reject('UTF-8 BOMs are outside the interim HTML profile.');
-  const { src, location, styles } = inspect(source, webFonts);
+  const { src, location, styles } = inspect(source, { webFonts, externalStylesheets });
   const entry = modulePath(htmlPath, src);
-  return { source, entry, location, styles, webFonts, metadata: { interpretation: 'interim-runtime-html-css',
+  return { source, entry, location, styles, webFonts, externalStylesheets, metadata: { interpretation: 'interim-runtime-html-css',
     parsers: { html: 'parse5@8.0.1', css: 'css-tree@3.2.1' },
     originalModuleSrc: src, moduleEntry: entry, rewrite: 'Only the module src attribute is replaced in generated HTML.',
-    grammar: 'HTML5 no-quirks UTF-8 without BOM; ordinary text/structural elements, one unique #scene canvas and one local external module; plain inline CSS with no at-rules, URLs, escapes, parse recovery or unlisted functions. No templates, noscript, foreign content, navigation, inline handlers or static resources.' } };
+    grammar: `HTML5 no-quirks UTF-8 without BOM; ordinary text/structural elements, one unique #scene canvas and one local external module; plain inline CSS with no at-rules, URLs, escapes, parse recovery or unlisted functions. No templates, noscript, foreign content, navigation or inline handlers.${webFonts || externalStylesheets ? ' Ordinary linked stylesheets are recorded as package resources.' : ' Static resources are not admitted.'}` } };
 }
 
 export function renderHtml(analysis, replacements = []) {
@@ -115,8 +115,25 @@ export function renderHtml(analysis, replacements = []) {
     if (edit.start < 0 || edit.end > boundary || edit.start > edit.end) reject('Generated HTML edits overlap or escape the input.');
     generated = generated.slice(0, edit.start) + edit.text + generated.slice(edit.end); boundary = edit.start;
   }
-  if (inspect(generated, analysis.webFonts).src !== './main.mjs') reject('Generated module src verification failed.');
+  if (inspect(generated, { webFonts: analysis.webFonts, externalStylesheets: analysis.externalStylesheets }).src !== './main.mjs') reject('Generated module src verification failed.');
   return Buffer.from(generated);
+}
+
+export function validatePackagedStylesheet(bytes, path) {
+  let source;
+  try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
+    throw new BuildError('INVALID_VITE_CSS', `Vite stylesheet is not valid UTF-8: ${path}`, { cause });
+  }
+  let ast;
+  try { ast = parseCss(source, { context: 'stylesheet', onParseError: error => { throw error; } }); } catch (cause) {
+    throw new BuildError('INVALID_VITE_CSS', `Vite stylesheet cannot be parsed without recovery: ${path}`, { cause });
+  }
+  walk(ast, node => {
+    if (node.type === 'Url' || (node.type === 'Atrule' && ['import', 'font-face'].includes(node.name.toLowerCase()))) {
+      throw new BuildError('UNSUPPORTED_VITE_CSS_RESOURCE', `Vite stylesheet has a URL, import or font-face rule outside the packaged resource graph: ${path}`);
+    }
+  });
+  return source;
 }
 
 export function prepareHtml(bytes, htmlPath) {

@@ -42,10 +42,10 @@ other-platform evidence remain open under
 [#27](https://github.com/PANDORMedia/3JSN/issues/27).
 
 The [Vite native-package checkpoint](validation/2026-09-26-vite-native-package.md)
-passes one static Vite HTML/JavaScript graph through the DOM profile, source
+passes one static Vite HTML/JavaScript/CSS graph through the DOM profile, source
 removal, relocation and 120 native Metal frames on the same Mac. This is a
-single-configuration integration result; general Vite builds, generated CSS or
-asset graphs, and other platforms remain open under
+single-configuration integration result; general Vite builds, CSS resource
+graphs, and other platforms remain open under
 [#37](https://github.com/PANDORMedia/3JSN/issues/37).
 
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
