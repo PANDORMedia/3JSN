@@ -11,6 +11,7 @@ import { analyzeProjectFiles } from './check-discovery.mjs';
 const profilePath = new URL('../../docs/profiles/experimental-desktop-v1.json', import.meta.url);
 const javascript = /\.(?:[cm]?js|jsx|[cm]?ts|tsx)$/i;
 const sourceExtension = /\.(?:[cm]?js|jsx|[cm]?ts|tsx|html?|css)$/i;
+const npmLockfiles = new Set(['package-lock.json', 'npm-shrinkwrap.json']);
 const limits = { files: 4096, fileBytes: 2 * 1024 * 1024, totalBytes: 32 * 1024 * 1024, findings: 10000, analysisMilliseconds: 10000 };
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const cancelled = signal => { if (signal?.aborted) throw Object.assign(new Error(), { code: 'CANCELLED' }); };
@@ -54,15 +55,15 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
   discover = analyzeProjectFiles, analyze = analyzeJavaScript, analysisMilliseconds = limits.analysisMilliseconds } = {}) {
   const report = { schemaVersion: 1, operation: 'check', profile: null, targets: [],
     analysisCoverage: { mode: 'syntactic-project-inventory', runtimeTracing: false, certified: false,
-      sourceFiles: [], skippedFiles: [], limits,
+      sourceFiles: [], lockfiles: [], skippedFiles: [], limits,
       exclusions: ['.git', 'node_modules'], excludeBasenames: ['node_modules'],
       limitations: [
         'Findings are syntactic candidates, including potentially unused, shadowed, server and build-tool code. Reachability and client/server boundaries are unresolved.',
         'Dependencies, aliases, generated code and build plugins are not executed or resolved. Missing findings do not establish missing runtime requirements.',
-        'Source maps and lockfiles are not resolved. Declared dependency ranges are not installed version evidence.',
+        'Only npm lockfile Three.js version records are inventoried. Installed files, import resolution, runtime use, other package managers and source maps remain unresolved; declared dependency ranges are not installed-version evidence.',
         'No runtime, browser, network request or project command is launched; this is not a native compatibility certificate.',
       ] },
-    project: { entryPages: [], packages: [], buildSystems: [], resources: [], imports: [], requirements: [] },
+    project: { entryPages: [], packages: [], buildSystems: [], resources: [], imports: [], requirements: [], dependencyResolutions: [] },
     diagnostics: [], preservation: { status: 'unknown', preserved: null }, artifacts: [], exitCode: 1 };
   let before, root, failureCode;
   try {
@@ -89,7 +90,8 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
         report.diagnostics.push(diagnostic('UNSUPPORTED_SOURCE_FORMAT', 'Component source format is not analyzed; dependencies and capabilities remain unresolved.', { location: location(entry.path) }));
         continue;
       }
-      if (entry.kind !== 'file' || (!sourceExtension.test(entry.path) && basename(entry.path) !== 'package.json')) continue;
+      const name = basename(entry.path);
+      if (entry.kind !== 'file' || (!sourceExtension.test(entry.path) && name !== 'package.json' && !npmLockfiles.has(name))) continue;
       if (entry.path.split('/').includes('node_modules') || attemptedFiles >= limits.files
         || entry.bytes > limits.fileBytes || totalBytes + entry.bytes > limits.totalBytes) {
         report.analysisCoverage.skippedFiles.push(entry.path);
@@ -109,6 +111,7 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
       }
       files.push({ path: entry.path, source });
       report.analysisCoverage.sourceFiles.push({ path: entry.path, bytes: entry.bytes, sha256: entry.sha256 });
+      if (npmLockfiles.has(name)) report.analysisCoverage.lockfiles.push({ path: entry.path, bytes: entry.bytes, sha256: entry.sha256 });
     }
     const found = discover === analyzeProjectFiles
       ? await isolatedAnalysis('discover', [files], options.signal, analysisMilliseconds) : await discover(files);

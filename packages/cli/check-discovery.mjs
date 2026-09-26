@@ -4,6 +4,8 @@ import * as css from 'css-tree';
 const MAX_HTML_DEPTH = 256;
 const MAX_HTML_NODES = 20000;
 const MAX_FINDINGS = 10000;
+const MAX_LOCK_PACKAGES = 100000;
+const npmLockfiles = new Set(['package-lock.json', 'npm-shrinkwrap.json']);
 
 const packageName = value => typeof value === 'string' && /^(?:@[a-z0-9._-]+\/)?[a-z0-9._-]+$/i.test(value) ? value : undefined;
 const location = (path, node) => ({ path, line: node?.startLine ?? node?.line ?? 1, column: node?.startCol ?? node?.column ?? 1 });
@@ -25,7 +27,7 @@ function safeUrl(value) {
 
 /** Discover candidates without resolving dependencies, reading files or executing project code. */
 export function analyzeProjectFiles(files) {
-  const result = { entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [] };
+  const result = { entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], dependencyResolutions: [], uncertainties: [] };
   let findings = 0, limited = false;
   const append = (array, value) => {
     if (findings++ < MAX_FINDINGS) array.push(value);
@@ -36,6 +38,61 @@ export function analyzeProjectFiles(files) {
   };
   const uncertainty = (code, message, at) => append(result.uncertainties, { code, message, location: at });
   const requirement = (feature, at, evidence) => append(result.requirements, { feature, location: at, evidence });
+  const resolveThree = (path, dependencyPath, version) => {
+    if (dependencyPath.length > 1024 || !/^(?:[A-Za-z0-9@._-]+\/)*node_modules\/three$/.test(dependencyPath)
+      || /(?:^|\/)\.{1,2}(?:\/|$)/.test(dependencyPath)) {
+      uncertainty('npm-three-path-omitted', 'A Three.js lockfile package path is not safely reportable.', location(path));
+      return;
+    }
+    if (typeof version !== 'string' || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(version)) {
+      uncertainty('npm-three-resolution-omitted', 'A locked Three.js version is not a reportable semantic version.', location(path));
+      return;
+    }
+    append(result.dependencyResolutions, { manager: 'npm', lockfile: path, packagePath: dependencyPath, name: 'three', version,
+      evidence: 'Version recorded in an npm lockfile; installation and runtime use are unverified.' });
+  };
+  const npmLock = (path, source) => {
+    let lock;
+    try { lock = JSON.parse(source.replace(/^\uFEFF/, '')); } catch {
+      uncertainty('invalid-lockfile', 'npm lockfile is not valid JSON.', location(path));
+      return;
+    }
+    if (!lock || typeof lock !== 'object' || Array.isArray(lock)) {
+      uncertainty('invalid-lockfile', 'npm lockfile must be a JSON object.', location(path));
+      return;
+    }
+    let scanned = 0, truncated = false;
+    if (lock.packages && typeof lock.packages === 'object' && !Array.isArray(lock.packages)) {
+      for (const [packagePath, record] of Object.entries(lock.packages)) {
+        if (++scanned > MAX_LOCK_PACKAGES) { truncated = true; break; }
+        if (/(?:^|\/)node_modules\/three$/.test(packagePath)) {
+          if (record?.name !== undefined && record.name !== 'three') {
+            uncertainty('npm-three-alias-omitted', 'A lockfile path named three identifies a different package name.', location(path));
+          } else resolveThree(path, packagePath, record?.version);
+        }
+      }
+    } else if (lock.dependencies && typeof lock.dependencies === 'object' && !Array.isArray(lock.dependencies)) {
+      const pending = [{ dependencies: lock.dependencies, parent: '' }];
+      while (pending.length) {
+        const { dependencies, parent } = pending.pop();
+        for (const [name, record] of Object.entries(dependencies)) {
+          if (++scanned > MAX_LOCK_PACKAGES) { truncated = true; pending.length = 0; break; }
+          const packagePath = `${parent ? `${parent}/` : ''}node_modules/${name}`;
+          if (name === 'three') {
+            if (record?.name !== undefined && record.name !== 'three') {
+              uncertainty('npm-three-alias-omitted', 'A lockfile path named three identifies a different package name.', location(path));
+            } else resolveThree(path, packagePath, record?.version);
+          }
+          if (record?.dependencies && typeof record.dependencies === 'object' && !Array.isArray(record.dependencies)) {
+            pending.push({ dependencies: record.dependencies, parent: packagePath });
+          }
+        }
+      }
+    } else {
+      uncertainty('npm-lock-structure-unknown', 'npm lockfile has no recognized packages or dependencies table.', location(path));
+    }
+    if (truncated) uncertainty('ANALYSIS_INCOMPLETE', 'npm lockfile package limit reached; remaining resolutions were not inspected.', location(path));
+  };
   const resource = (kind, value, at) => {
     const url = safeUrl(value);
     append(result.resources, { kind, ...(url ? { url } : { dynamic: true }), location: at });
@@ -62,6 +119,7 @@ export function analyzeProjectFiles(files) {
   for (const { path, source } of files) {
     const at = location(path);
     const basename = path.split('/').at(-1);
+    if (npmLockfiles.has(basename)) npmLock(path, source);
     if (/^vite\.config\.(?:[cm]?[jt]s)$/.test(basename)) append(result.buildSystems, { name: 'vite', candidate: true, location: at, evidence: 'Configuration filename; configuration was not executed.' });
     if (basename === 'package.json') {
       let manifest;
