@@ -322,14 +322,16 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
   await writeFile(join(f.project, 'src/main.js'), "import fontUrl from './fixture.woff2?no-inline'; console.log(fontUrl);");
   const beforeJavaScriptFont = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
   const mixedFontOutput = join(f.temporary, 'vite-font-javascript-package');
+  let javascriptFontError;
   await assert.rejects(buildProject({ ...options, out: mixedFontOutput }, {
     describeRuntime: describe(['dom-package-fonts-v1']),
-  }), async error => {
+  }), error => {
     assert.equal(error.code, 'UNSUPPORTED_VITE_GRAPH');
     assert.equal(error.sourcePreserved, true);
-    assert.equal((await readJson(error.receipt)).source.preservation.preserved, true);
+    javascriptFontError = error;
     return true;
   });
+  assert.equal((await readJson(javascriptFontError.receipt)).source.preservation.preserved, true);
   assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), beforeJavaScriptFont);
   await assert.rejects(readFile(mixedFontOutput), { code: 'ENOENT' });
 });
