@@ -9,7 +9,8 @@ import test from 'node:test';
 import { buildProject } from './build.mjs';
 import { validatePackagedStylesheet } from './html.mjs';
 import { hostTarget } from './contract.mjs';
-import { buildViteProject, normalizeViteHtml, validateViteDomGraph, validateViteFontJavaScriptReferences } from './vite-build.mjs';
+import { buildViteProject, normalizeViteHtml, validateViteDomGraph, validateViteFontJavaScriptReferences,
+  viteFontContainer } from './vite-build.mjs';
 import { snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 
 const repository = fileURLToPath(new URL('../../', import.meta.url));
@@ -135,11 +136,20 @@ test('Vite DOM graph admits one static HTML and JavaScript entry with linked CSS
     assert.throws(() => validateViteDomGraph({ ...artifacts, graph: [{ ...record, [edge]: ['unsupported.js'] }] }, 'index.html'),
       { code: 'UNSUPPORTED_VITE_GRAPH' });
   }
-  const fontRecord = { ...record, assets: ['assets/font.woff2'] };
-  const emittedFont = { key: 'assets/font.woff2', file: 'assets/font.woff2', isEntry: false, isDynamicEntry: false,
+  const fontRecord = { ...record, assets: ['assets/brand-face'] };
+  const emittedFont = { key: 'assets/brand-face', file: 'assets/brand-face', isEntry: false, isDynamicEntry: false,
     imports: [], dynamicImports: [], css: [], assets: [] };
-  assert.deepEqual([...validateViteDomGraph({ ...artifacts, graph: [fontRecord, emittedFont], files: [...files, { path: 'assets/font.woff2' }] },
-    'index.html', { webFonts: true }).fontFiles], ['assets/font.woff2']);
+  const customNamedFont = { path: 'assets/brand-face', fontContainer: 'woff2' };
+  assert.deepEqual([...validateViteDomGraph({ ...artifacts, graph: [fontRecord, emittedFont], files: [...files, customNamedFont] },
+    'index.html', { webFonts: true }).fontFiles], ['assets/brand-face']);
+  assert.equal(viteFontContainer(Buffer.from('wOF2')), 'woff2');
+  assert.equal(viteFontContainer(Buffer.from('wOFF')), 'woff');
+  assert.equal(viteFontContainer(Buffer.from('OTTO')), 'otf');
+  assert.equal(viteFontContainer(Buffer.from([0, 1, 0, 0])), 'ttf');
+  assert.equal(viteFontContainer(Buffer.from('not a font')), undefined);
+  assert.throws(() => validateViteDomGraph({ ...artifacts,
+    graph: [{ ...record, assets: ['assets/not-a-font.woff2'] }], files: [...files, { path: 'assets/not-a-font.woff2' }] },
+  'index.html', { webFonts: true }), { code: 'UNSUPPORTED_VITE_GRAPH' });
   const jsEntry = { ...record, imports: ['assets/chunk.js'] };
   const jsChunk = { key: 'assets/chunk.js', file: 'assets/chunk.mjs', isEntry: false, isDynamicEntry: false,
     imports: [], dynamicImports: [], css: [], assets: ['assets/font.woff2'] };
@@ -158,11 +168,21 @@ test('webfont packaging rejects generated font URLs retained by JavaScript', () 
   const fontFiles = new Set(['assets/fixture-Skh_p6iR.woff2']);
   assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
     new Map([['assets/main.js', 'console.log("game ready")']])));
+  assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', '// ./assets/fixture-Skh_p6iR.woff2\n/* "/assets/fixture-Skh_p6iR.woff2" */ const note = "fixture-Skh_p6iR.woff2 is bundled";']])));
+  assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const unrelated = "./other/fixture-Skh_p6iR.woff2";']])));
   for (const javascriptPath of ['assets/main.js', 'assets/chunk.js']) {
     assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
-      new Map([[javascriptPath, 'const font = "./assets/fixture-Skh_p6iR.woff2";']])),
+      new Map([[javascriptPath, 'const font = "/assets/fixture-Skh_p6iR.woff2?import";']])),
     { code: 'UNSUPPORTED_VITE_GRAPH' });
   }
+  assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/chunk/main.js', 'const font = "../fixture-Skh_p6iR.woff2";']])),
+  { code: 'UNSUPPORTED_VITE_GRAPH' });
+  assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const font = `\\u002e/fixture-Skh_p6iR.woff2`;']])),
+  { code: 'UNSUPPORTED_VITE_GRAPH' });
 });
 
 test('Vite HTML normalization removes only measured module preloads and transport attributes', () => {
@@ -271,14 +291,16 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
     webFontsState: join(f.temporary, 'font-state') };
   const stateInsideWorkspace = join(f.project, 'font-cache');
   const beforeInvalidState = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
+  let invalidStateError;
   await assert.rejects(buildProject({ ...options, out: join(f.temporary, 'vite-font-invalid-state'), webFontsState: stateInsideWorkspace }, {
     describeRuntime: describe(['dom-package-fonts-v1']),
-  }), async error => {
+  }), error => {
     assert.equal(error.code, 'FONT_STATE_INVALID');
     assert.equal(error.sourcePreserved, true);
-    assert.equal((await readJson(error.receipt)).source.preservation.preserved, true);
+    invalidStateError = error;
     return true;
   });
+  assert.equal((await readJson(invalidStateError.receipt)).source.preservation.preserved, true);
   assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), beforeInvalidState);
   await assert.rejects(readdir(stateInsideWorkspace), { code: 'ENOENT' });
   const result = await buildProject(options, { describeRuntime: describe(['dom-package-fonts-v1']) });

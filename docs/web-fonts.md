@@ -11,6 +11,10 @@ stylesheets and their supported font resources. CSS/font inputs must belong to
 the captured output graph, and the selected player must advertise
 `dom-package-fonts-v1`. Without the flag, the Vite stylesheet path remains
 resource-free and rejects CSS URLs, imports and font-face rules.
+Emitted font assets are identified by their container signature, so Vite output
+filenames need not use a font extension. Direct JavaScript URLs to those emitted
+fonts are rejected because this profile rewrites CSS references only; comments
+and unrelated strings that merely mention a font filename are not treated as URLs.
 
 ```sh
 node packages/cli/cli.mjs build fixtures/web-fonts \

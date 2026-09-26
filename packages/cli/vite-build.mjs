@@ -110,13 +110,33 @@ async function fileIdentity(path, root, relativePath) {
   if (!before.isFile()) throw new BuildError('INVALID_VITE_OUTPUT', `Vite output must contain regular files only: ${relativePath}`);
   if (before.size > 128n * 1024n * 1024n) throw new BuildError('VITE_OUTPUT_LIMIT', `Vite output file exceeds 128 MiB: ${relativePath}`);
   const hash = createHash('sha256');
-  for await (const chunk of createReadStream(path)) hash.update(chunk);
+  const prefix = Buffer.alloc(4);
+  let prefixBytes = 0;
+  for await (const chunk of createReadStream(path)) {
+    hash.update(chunk);
+    if (prefixBytes < prefix.length) {
+      const count = Math.min(chunk.length, prefix.length - prefixBytes);
+      chunk.copy(prefix, prefixBytes, 0, count);
+      prefixBytes += count;
+    }
+  }
   const after = await lstat(path, { bigint: true });
   if (!after.isFile() || ['dev', 'ino', 'size', 'mtimeNs', 'ctimeNs'].some(key => before[key] !== after[key])) {
     throw new BuildError('VITE_OUTPUT_CHANGED', `Vite output changed while it was being inventoried: ${relativePath}`);
   }
   if (!within(root, resolve(path))) throw new BuildError('INVALID_VITE_OUTPUT', `Vite output escaped its staging directory: ${relativePath}`);
-  return { path: relativePath, bytes: Number(after.size), sha256: hash.digest('hex') };
+  const fontContainer = viteFontContainer(prefix);
+  return { path: relativePath, bytes: Number(after.size), sha256: hash.digest('hex'), ...(fontContainer ? { fontContainer } : {}) };
+}
+
+export function viteFontContainer(bytes) {
+  if (!Buffer.isBuffer(bytes) || bytes.length < 4) return undefined;
+  const tag = bytes.toString('ascii', 0, 4);
+  if (tag === 'wOF2') return 'woff2';
+  if (tag === 'wOFF') return 'woff';
+  if (tag === 'OTTO') return 'otf';
+  if (tag === 'true' || bytes.readUInt32BE(0) === 0x00010000) return 'ttf';
+  return undefined;
 }
 
 async function inventory(directory) {
@@ -337,7 +357,8 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
     }
   };
   visit(htmlRecord);
-  const fontRecords = webFonts ? artifacts.graph.filter(item => /\.(?:ttf|otf|woff|woff2)$/i.test(item.file)) : [];
+  const fontFilesByPath = new Set(webFonts ? artifacts.files.filter(file => file.fontContainer).map(file => file.path) : []);
+  const fontRecords = webFonts ? artifacts.graph.filter(item => fontFilesByPath.has(item.file)) : [];
   for (const item of fontRecords) assetFiles.add(item.file);
   const graphChunks = artifacts.graph.filter(item => item !== htmlRecord && !fontRecords.includes(item));
   if (graphChunks.some(item => !jsFiles.has(item.file)) || graphChunks.length !== visited.size - 1) {
@@ -352,7 +373,7 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   }
   const fontFiles = new Set();
   for (const path of assetFiles) {
-    if (!artifacts.files.some(output => output.path === path) || !/\.(?:ttf|otf|woff|woff2)$/i.test(path)) {
+    if (!fontFilesByPath.has(path)) {
       throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted a non-font resource edge outside this package profile: ${path}.`);
     }
     fontFiles.add(path);
@@ -364,10 +385,79 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles, fontFiles };
 }
 
+function readJavaScriptString(source, start, quote) {
+  let value = '';
+  for (let index = start; index < source.length; index++) {
+    const character = source[index];
+    if (character === quote) return { value, end: index };
+    if (character !== '\\') { value += character; continue; }
+    const escaped = source[++index];
+    if (escaped === undefined) return undefined;
+    const simple = { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0' };
+    if (Object.hasOwn(simple, escaped)) { value += simple[escaped]; continue; }
+    if (escaped === '\n') continue;
+    if (escaped === '\r' && source[index + 1] === '\n') { index++; continue; }
+    if (escaped === 'x' && /^[\da-f]{2}$/i.test(source.slice(index + 1, index + 3))) {
+      value += String.fromCharCode(parseInt(source.slice(index + 1, index + 3), 16)); index += 2; continue;
+    }
+    if (escaped === 'u') {
+      const braced = /^\{([\da-f]+)\}/i.exec(source.slice(index + 1));
+      if (braced && Number.parseInt(braced[1], 16) <= 0x10ffff) {
+        value += String.fromCodePoint(Number.parseInt(braced[1], 16)); index += braced[0].length; continue;
+      }
+      const digits = source.slice(index + 1, index + 5);
+      if (/^[\da-f]{4}$/i.test(digits)) { value += String.fromCharCode(parseInt(digits, 16)); index += 4; continue; }
+    }
+    value += escaped;
+  }
+  return undefined;
+}
+
+function javascriptStringLiterals(source) {
+  const values = [];
+  for (let index = 0; index < source.length; index++) {
+    const character = source[index];
+    if (character === '/' && source[index + 1] === '/') {
+      index += 2;
+      while (index < source.length && source[index] !== '\n' && source[index] !== '\r') index++;
+      continue;
+    }
+    if (character === '/' && source[index + 1] === '*') {
+      const end = source.indexOf('*/', index + 2);
+      index = end < 0 ? source.length : end + 1;
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      const literal = readJavaScriptString(source, index + 1, character);
+      if (literal) { values.push(literal.value); index = literal.end; }
+      continue;
+    }
+    if (character === '`') {
+      const literal = readJavaScriptString(source, index + 1, '`');
+      if (literal) {
+        const raw = source.slice(index + 1, literal.end);
+        if (!raw.includes('${')) values.push(literal.value);
+        index = literal.end;
+      }
+    }
+  }
+  return values;
+}
+
+function isEmittedAssetUrl(value, path, javascriptPath) {
+  try {
+    const base = new URL('https://3jsn.invalid/');
+    if (/^[a-z][a-z\d+.-]*:/i.test(value) || value.startsWith('//')) return false;
+    const parsed = new URL(value, new URL(javascriptPath, base));
+    return parsed.origin === base.origin && decodeURIComponent(parsed.pathname).replace(/^\//, '') === path;
+  } catch { return false; }
+}
+
 export function validateViteFontJavaScriptReferences(fontFiles, javascriptSources) {
   for (const [javascriptPath, source] of javascriptSources) {
+    const literals = javascriptStringLiterals(source);
     for (const fontPath of fontFiles) {
-      if (source.includes(basename(fontPath))) {
+      if (literals.some(value => isEmittedAssetUrl(value, fontPath, javascriptPath))) {
         throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite JavaScript ${javascriptPath} references a font URL that CSS localization cannot rewrite.`);
       }
     }
