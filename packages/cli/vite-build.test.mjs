@@ -290,10 +290,10 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
   const mixedFontOutput = join(f.temporary, 'vite-font-javascript-package');
   await assert.rejects(buildProject({ ...options, out: mixedFontOutput }, {
     describeRuntime: describe(['dom-package-fonts-v1']),
-  }), error => {
+  }), async error => {
     assert.equal(error.code, 'UNSUPPORTED_VITE_GRAPH');
     assert.equal(error.sourcePreserved, true);
-    assert.equal(error.source.preservation.preserved, true);
+    assert.equal((await readJson(error.receipt)).source.preservation.preserved, true);
     return true;
   });
   assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), beforeJavaScriptFont);
