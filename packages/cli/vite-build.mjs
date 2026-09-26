@@ -243,7 +243,8 @@ function outputReference(htmlPath, value) {
   return portablePath(path) ? path : undefined;
 }
 
-export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModulePreloads, allowedStylesheets = new Set() }) {
+export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModulePreloads, allowedStylesheets = new Set(),
+  rewriteStylesheets = true }) {
   let source;
   try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
     throw new BuildError('INVALID_VITE_HTML', 'Vite emitted HTML that is not valid UTF-8.', { cause });
@@ -273,7 +274,7 @@ export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModu
         linkedStylesheets.add(href);
         const hrefLocation = location.attrs?.href;
         if (!hrefLocation) throw new BuildError('INVALID_VITE_HTML', 'Vite stylesheet link has no source location.');
-        edits.push({ start: hrefLocation.startOffset, end: hrefLocation.endOffset, text: `href="./vite/${href}"` });
+        if (rewriteStylesheets) edits.push({ start: hrefLocation.startOffset, end: hrefLocation.endOffset, text: `href="./vite/${href}"` });
         for (const attribute of ['crossorigin', 'integrity']) {
           const attributeLocation = location.attrs?.[attribute];
           if (attributeLocation) edits.push({ start: attributeLocation.startOffset, end: attributeLocation.endOffset, text: '' });
@@ -307,7 +308,7 @@ export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModu
   return Buffer.from(normalized);
 }
 
-export function validateViteDomGraph(artifacts, htmlEntry) {
+export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } = {}) {
   const htmlEntries = artifacts.graph.filter(item => item.key.endsWith('.html'));
   if (htmlEntries.length !== 1 || htmlEntries[0].key !== htmlEntry || !htmlEntries[0].isEntry) {
     throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'dom-window-v1 Vite packaging requires one HTML entry matching 3jsn.json entry.');
@@ -318,13 +319,15 @@ export function validateViteDomGraph(artifacts, htmlEntry) {
   }
   const byKey = new Map(artifacts.graph.map(item => [item.key, item]));
   const jsFiles = new Set([htmlRecord.file]);
+  const assetFiles = new Set();
   const visited = new Map();
   const visit = item => {
     if (visited.has(item.key)) return;
     visited.set(item.key, item);
-    if (item.dynamicImports.length || item.assets.length) {
+    if (item.dynamicImports.length || (item.assets.length && !webFonts)) {
       throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports or asset graph edges outside this package profile.`);
     }
+    if (webFonts) for (const file of item.assets) assetFiles.add(file);
     for (const key of item.imports) {
       const dependency = byKey.get(key);
       if (!dependency || !dependency.file.endsWith('.js') || dependency.isDynamicEntry) {
@@ -335,7 +338,9 @@ export function validateViteDomGraph(artifacts, htmlEntry) {
     }
   };
   visit(htmlRecord);
-  const graphChunks = artifacts.graph.filter(item => item !== htmlRecord);
+  const fontRecords = webFonts ? artifacts.graph.filter(item => /\.(?:ttf|otf|woff|woff2)$/i.test(item.file)) : [];
+  for (const item of fontRecords) assetFiles.add(item.file);
+  const graphChunks = artifacts.graph.filter(item => item !== htmlRecord && !fontRecords.includes(item));
   if (graphChunks.some(item => !jsFiles.has(item.file)) || graphChunks.length !== visited.size - 1) {
     throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'Vite emitted JavaScript outside the selected HTML entry graph.');
   }
@@ -346,10 +351,18 @@ export function validateViteDomGraph(artifacts, htmlEntry) {
     }
     cssFiles.add(file);
   }
+  const fontFiles = new Set();
+  for (const path of assetFiles) {
+    if (!artifacts.files.some(output => output.path === path) || !/\.(?:ttf|otf|woff|woff2)$/i.test(path)) {
+      throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted a non-font resource edge outside this package profile: ${path}.`);
+    }
+    fontFiles.add(path);
+  }
   const unexpectedFiles = artifacts.files.filter(file => ![htmlRecord.file, artifacts.manifestPath].includes(file.path)
-    && file.path !== htmlEntry && !file.path.endsWith('.map') && !jsFiles.has(file.path) && !cssFiles.has(file.path));
+    && file.path !== htmlEntry && !file.path.endsWith('.map') && !jsFiles.has(file.path) && !cssFiles.has(file.path)
+    && !fontFiles.has(file.path));
   if (unexpectedFiles.length) throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted unsupported files: ${unexpectedFiles.slice(0, 4).map(file => file.path).join(', ')}.`);
-  return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles };
+  return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles, fontFiles };
 }
 
 /** Run the selected project's Vite build and capture its generated client artifact graph without rewriting sources. */

@@ -12,7 +12,7 @@ compatibility workaround.
 | Profile | Entry and payload | Supplied player |
 | --- | --- | --- |
 | `native-window-v1` | JS/TS entry, source map and statically imported raster images | Current-host native-window player |
-| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font; optional single-entry Vite capture with static CSS | Experimental macOS Metal DOM-window player |
+| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font; optional single-entry Vite capture with static CSS and opt-in webfont localization | Experimental macOS Metal DOM-window player |
 
 The DOM profile still parses HTML/CSS at runtime. It has a narrow experimental
 Vite adapter for one static JavaScript graph; this does not establish general
@@ -170,12 +170,15 @@ artifacts/vite-native-demo/3jsn-dom-demo --frames 120
 
 The Vite config must identify one HTML input and disable Vite's module-preload
 polyfill for this profile. One static JavaScript chunk graph and linked CSS
-files are admitted. CSS `url()`, `@import` and `@font-face` edges, emitted assets, dynamic
-imports/chunks, workers, Wasm, public-directory files, multiple HTML entries
-and server builds fail closed. Stylesheets remain parsed by the runtime and are
-not compiled into GPU commands at build time. Font auto-discovery and
-`--bundle-web-fonts` are not combined with this adapter. The
-[stylesheet resource contract](package-stylesheets.md) and
+files are admitted. Without `--bundle-web-fonts`, CSS `url()`, `@import` and
+`@font-face` edges and emitted assets fail closed. With that explicit flag, the
+existing font localizer captures supported stylesheet imports and local or
+pinned remote font resources; other emitted assets, dynamic imports/chunks,
+workers, Wasm, public-directory files, multiple HTML entries and server builds
+still fail closed. The runtime parses the packaged CSS and paints its DOM result;
+CSS is not compiled into GPU commands at build time. The build requires the
+player's `dom-package-fonts-v1` capability when font localization is enabled.
+The [stylesheet resource contract](package-stylesheets.md) and
 [checkpoint](validation/2026-09-26-vite-native-package.md) document the exact
 limits and current platform evidence.
 

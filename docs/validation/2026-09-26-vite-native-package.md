@@ -21,6 +21,16 @@ false. The runtime reported one stylesheet request and delivery from
 This is a relocation and runtime correctness check, not a clean-machine or
 performance certification or browser-visual parity claim.
 
+The same probe was extended to exercise `--bundle-web-fonts`. A disposable Vite
+copy of the example referenced the supplied DejaVu WOFF2 from CSS using
+`@font-face`. The build packaged one stylesheet and one font under
+`dom-package-fonts-v1`; after deleting the copied project, supplied fallback
+font and font-cache state, the relocated application loaded both resources with
+network and source-tree reads denied. The native host reported one font request,
+one registered face, zero pending faces and 759,644 decoded font bytes. It again
+presented 120 Metal frames with 120 canvas snapshots and no CPU image transport.
+The probe output was `/private/tmp/3jsn-vite-font-probe-20260926-4/report.json`.
+
 Reproduce from the repository root after preparing the pinned DOM experiment
 and installing the locked Node dependencies:
 
@@ -41,10 +51,13 @@ temporary directory and that every measured repository input retains its
 original hash.
 
 This evidence covers one Vite configuration and the experimental macOS DOM
-profile only. The adapter admits one HTML entry, a static JavaScript import
-graph and linked static CSS with no `url()`, `@import` or `@font-face` resource
-edges. It rejects emitted assets, dynamic imports/chunks, workers, Wasm,
-public-directory assets, multiple HTML entries and server builds. The DOM and
-CSS parsers still run at application startup. Unchanged-project compatibility,
-arbitrary Vite plugins, other operating systems and performance remain
-unverified; see [issue #37](https://github.com/PANDORMedia/3JSN/issues/37).
+profile only. The adapter admits one HTML entry and a static JavaScript import
+graph. Without the explicit font flag, its stylesheet capability accepts
+resource-free CSS only; with `--bundle-web-fonts`, the existing policy localizes
+supported stylesheet/font edges under `dom-package-fonts-v1`. Other emitted
+assets, dynamic imports/chunks, workers, Wasm, public-directory assets, multiple
+HTML entries and server builds remain rejected. The DOM and CSS parsers still
+run at application startup. Unchanged-project compatibility, arbitrary Vite
+plugins, other operating systems and performance remain unverified; see
+[issue #37](https://github.com/PANDORMedia/3JSN/issues/37) and
+[issue #56](https://github.com/PANDORMedia/3JSN/issues/56).

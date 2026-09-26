@@ -6,6 +6,12 @@ HTML/CSS to local package references. Original application files stay unchanged.
 The option extends the experimental macOS `dom-window-v1` profile; it is not a
 claim that arbitrary web applications are supported.
 
+For `--frontend vite`, the same flag enables localization of Vite-emitted linked
+stylesheets and their supported font resources. CSS/font inputs must belong to
+the captured output graph, and the selected player must advertise
+`dom-package-fonts-v1`. Without the flag, the Vite stylesheet path remains
+resource-free and rejects CSS URLs, imports and font-face rules.
+
 ```sh
 node packages/cli/cli.mjs build fixtures/web-fonts \
   --runtime target/debug/threejs-dom-window-probe \

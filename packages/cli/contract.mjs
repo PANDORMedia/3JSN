@@ -32,7 +32,9 @@ export function limitationsFor(profile, { webFonts = false, vite = false } = {})
   return [...COMMON_LIMITATIONS,
     'Interim interpreted-HTML profile: the native runtime still parses packaged HTML/CSS and maintains a dynamic DOM; this is not build-time UI compilation.',
     'Only an explicitly supplied current-host macOS Metal dom-window-v1 player, one #scene canvas, one local module and one explicit WOFF2 font are packaged.',
-    vite
+    vite && webFonts
+      ? 'The Vite adapter admits one static JavaScript graph and linked CSS; opt-in webfont localization captures supported stylesheet/font resources, while other emitted assets and dynamic resource discovery remain unsupported.'
+      : vite
       ? 'The Vite adapter admits linked, resource-free CSS output only; CSS url() and @import, emitted assets and dynamic resource discovery remain unsupported.'
       : webFonts
       ? 'Opt-in static CSS/font localization preserves rule order and descriptors; native font admission is separate. Other static resources and dynamic asset discovery remain unsupported.'

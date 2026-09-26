@@ -2,7 +2,7 @@ import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { constants, createReadStream } from 'node:fs';
 import { chmod, copyFile, lstat, mkdir, mkdtemp, readFile, realpath, rename, rm, rmdir, writeFile } from 'node:fs/promises';
-import { basename, dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { basename, dirname, extname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import * as esbuild from 'esbuild';
@@ -279,9 +279,6 @@ export async function buildProject(options, { describeRuntime: describe = descri
     if (useVite && !isDom) throw new BuildError('UNSUPPORTED_FRONTEND', 'The Vite frontend adapter currently requires dom-window-v1 and an HTML entry.');
     if (Object.hasOwn(options, 'bundleWebFonts') && options.bundleWebFonts !== true) throw new BuildError('USAGE', '--bundle-web-fonts must be an explicit opt-in.');
     if (options.bundleWebFonts && !isDom) throw new BuildError('UNEXPECTED_WEB_FONTS', '--bundle-web-fonts is accepted only by dom-window-v1.');
-    if (useVite && (options.bundleWebFonts || Object.hasOwn(options, 'webFontsState') || Object.hasOwn(options, 'offline')) ) {
-      throw new BuildError('UNSUPPORTED_FRONTEND', 'Vite packaging and webfont localization cannot be combined in this profile yet.');
-    }
     if (!options.bundleWebFonts && ['webFontsState', 'offline'].some(key => Object.hasOwn(options, key))) throw new BuildError('UNEXPECTED_WEB_FONTS', '--web-fonts-state and --offline require --bundle-web-fonts.');
     if (Object.hasOwn(options, 'webFontsState') && (typeof options.webFontsState !== 'string' || !options.webFontsState)) throw new BuildError('USAGE', '--web-fonts-state requires a directory path.');
     if (Object.hasOwn(options, 'offline') && typeof options.offline !== 'boolean') throw new BuildError('USAGE', '--offline must be boolean.');
@@ -300,7 +297,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
     checkCancellation(signal);
     const runtimeAfter = await fileIdentity(runtime);
     if (JSON.stringify(runtimeBefore) !== JSON.stringify(runtimeAfter)) throw new BuildError('RUNTIME_CHANGED', 'The supplied player changed during inspection.');
-    if (options.bundleWebFonts) {
+    if (options.bundleWebFonts && !useVite) {
       webFonts = await localizeWebFonts({ projectRoot: root, outputDir: out, htmlEntry: config.entry, htmlBytes: htmlSource,
         stateDir: options.webFontsState ?? join(parent, '.3jsn-web-fonts', digest(root).slice(0, 16)),
         offline: options.offline ?? false, signal, fontPolicy }, { fetchImpl });
@@ -316,27 +313,56 @@ export async function buildProject(options, { describeRuntime: describe = descri
       viteOutput = join(staging, 'vite');
       await mkdir(viteOutput);
       viteArtifacts = await captureViteArtifacts({ project: root, outputDirectory: viteOutput, signal, base: './' });
-      const admitted = validateViteDomGraph(viteArtifacts, config.entry);
+      const admitted = validateViteDomGraph(viteArtifacts, config.entry, { webFonts: Boolean(options.bundleWebFonts) });
       const generatedHtml = await readFile(join(viteOutput, ...admitted.htmlFile.split('/')));
       const normalizedHtml = normalizeViteHtml(generatedHtml, { htmlPath: config.entry,
         allowedScripts: admitted.jsFiles, allowedModulePreloads: admitted.modulePreloads,
-        allowedStylesheets: admitted.cssFiles });
+        allowedStylesheets: admitted.cssFiles, rewriteStylesheets: !options.bundleWebFonts });
       const analysis = analyzeHtml(normalizedHtml, config.entry, { externalStylesheets: true });
       if (analysis.entry !== admitted.entryScript) throw new BuildError('INVALID_VITE_GRAPH', 'Vite HTML script does not resolve to the manifest JavaScript entry.');
-      const linkedStylesheets = new Set(analysis.styles.filter(style => style.kind === 'linked').map(style => style.href));
-      const expectedStylesheets = new Set([...admitted.cssFiles].map(path => `./vite/${path}`));
-      const linkedPaths = [...linkedStylesheets].map(href => href.startsWith('./vite/') ? href : '');
-      if (linkedStylesheets.size !== expectedStylesheets.size || linkedPaths.some(path => !expectedStylesheets.has(path))) {
+      const linkedStylesheets = new Set(analysis.styles.filter(style => style.kind === 'linked').map(style => options.bundleWebFonts
+        ? posix.normalize(posix.join(posix.dirname(config.entry), style.href)) : style.href));
+      const expectedStylesheets = new Set([...admitted.cssFiles].map(path => options.bundleWebFonts ? path : `./vite/${path}`));
+      if (linkedStylesheets.size !== expectedStylesheets.size || [...linkedStylesheets].some(path => !expectedStylesheets.has(path))) {
         throw new BuildError('INVALID_VITE_GRAPH', 'Generated HTML stylesheet links do not match the selected Vite CSS graph.');
       }
+      if (options.bundleWebFonts) {
+        webFonts = await localizeWebFonts({ projectRoot: viteOutput, outputDir: out, htmlEntry: config.entry,
+          htmlBytes: normalizedHtml, stateDir: options.webFontsState ?? join(parent, '.3jsn-web-fonts', digest(root).slice(0, 16)),
+          offline: options.offline ?? false, signal, fontPolicy }, { fetchImpl });
+        if (webFonts.entry !== admitted.entryScript) throw new BuildError('INVALID_VITE_GRAPH', 'Localized Vite HTML entry differs from the admitted JavaScript entry.');
+        webFonts.requirements = webFonts.requirements.map(requirement => ({ ...requirement,
+          stylesheet: requirement.stylesheet.startsWith('file:')
+            ? relative(viteOutput, fileURLToPath(requirement.stylesheet)).split(sep).join('/') : requirement.stylesheet }));
+        const sourceInputs = new Map(webFonts.sourceInputs.map(input => [input.path, input]));
+        const capturedInputs = new Map(viteArtifacts.files.map(file => [file.path, file]));
+        for (const input of sourceInputs.values()) {
+          const captured = capturedInputs.get(input.path);
+          if (!captured || captured.bytes !== input.bytes || captured.sha256 !== input.sha256
+            || (!admitted.cssFiles.has(input.path) && !admitted.fontFiles.has(input.path))) {
+            throw new BuildError('VITE_OUTPUT_CHANGED', `Localized Vite input is outside the captured CSS/font graph or changed: ${input.path}`);
+          }
+        }
+        for (const path of admitted.cssFiles) if (!sourceInputs.has(path)) {
+          throw new BuildError('INVALID_VITE_GRAPH', `Vite stylesheet was not consumed by font localization: ${path}`);
+        }
+        for (const path of admitted.fontFiles) if (!sourceInputs.has(path)) {
+          throw new BuildError('INVALID_VITE_GRAPH', `Vite font asset was not consumed by font localization: ${path}`);
+        }
+        entry = join(viteOutput, ...webFonts.entry.split('/'));
+        html = { ...webFonts, metadata: { ...webFonts.metadata, interpretation: 'vite-generated-interim-runtime-html-css',
+          generatedHtml: admitted.htmlFile, adapter: 'vite-client-artifact-graph-v1',
+          stylesheetResources: { capability: WEB_FONT_CAPABILITY, localizedResources: webFonts.files.map(({ path, kind }) => ({ path, kind })) } } };
+      } else {
       html = { ...analysis, bytes: renderHtml(analysis), metadata: { ...analysis.metadata,
         interpretation: 'vite-generated-interim-runtime-html-css', generatedHtml: admitted.htmlFile,
         adapter: 'vite-client-artifact-graph-v1',
         rewrite: 'The generated module is bundled; linked CSS hrefs are remapped to package-relative resources.',
         stylesheetResources: { capability: DOM_STYLESHEET_CAPABILITY, rejectedEdges: ['url()', '@import'] } } };
+      }
       let stylesheetBytes = 0;
-      if (admitted.cssFiles.size > DOM_STYLESHEET_LIMITS.count) throw new BuildError('VITE_CSS_LIMIT', 'Vite emitted more than 64 CSS resources.');
-      for (const path of [...admitted.cssFiles].sort()) {
+      if (!options.bundleWebFonts && admitted.cssFiles.size > DOM_STYLESHEET_LIMITS.count) throw new BuildError('VITE_CSS_LIMIT', 'Vite emitted more than 64 CSS resources.');
+      for (const path of options.bundleWebFonts ? [] : [...admitted.cssFiles].sort()) {
         const payload = await readFile(join(viteOutput, ...path.split('/')));
         const captured = viteArtifacts.files.find(file => file.path === path);
         if (!captured || captured.bytes !== payload.length || captured.sha256 !== digest(payload)) {
@@ -348,7 +374,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
         if (stylesheetBytes > DOM_STYLESHEET_LIMITS.totalBytes) throw new BuildError('VITE_CSS_LIMIT', 'Vite stylesheets exceed 64 MiB in total.');
         viteStylesheets.push({ path: `app/vite/${path}`, sourcePath: path, payload, bytes: payload.length, sha256: digest(payload), kind: 'stylesheet' });
       }
-      entry = join(viteOutput, ...analysis.entry.split('/'));
+      if (!options.bundleWebFonts) entry = join(viteOutput, ...analysis.entry.split('/'));
       bundleRoot = viteOutput;
       additionalInputs = await viteSourceMapInputs(viteOutput, viteArtifacts.sourceMaps, snapshotRoot, root);
       viteSummary = { version: viteArtifacts.viteVersion, manifest: viteArtifacts.manifestPath,
@@ -411,11 +437,23 @@ export async function buildProject(options, { describeRuntime: describe = descri
       checkCancellation(signal);
       if (final.sha256 !== initial.sha256 || final.bytes !== initial.bytes) throw new BuildError('INPUT_CHANGED', 'A bundled dependency changed before publication.');
     }
+    if (viteOutput && webFonts) {
+      const capturedInputs = new Map(viteArtifacts.files.map(file => [file.path, file]));
+      for (const initial of webFonts.sourceInputs) {
+        const captured = capturedInputs.get(initial.path);
+        if (!captured || captured.bytes !== initial.bytes || captured.sha256 !== initial.sha256) {
+          throw new BuildError('FONT_SOURCE_CHANGED', 'A localized Vite stylesheet/font input changed before publication.');
+        }
+        const final = await fileIdentity(join(viteOutput, ...initial.path.split('/')));
+        if (final.bytes !== initial.bytes || final.sha256 !== initial.sha256) throw new BuildError('FONT_SOURCE_CHANGED', 'A localized Vite stylesheet/font input changed before publication.');
+        checkCancellation(signal);
+      }
+    }
     if (viteOutput) {
       await rm(viteOutput, { recursive: true, force: true });
       viteOutput = undefined;
     }
-    for (const initial of webFonts?.sourceInputs ?? []) {
+    for (const initial of webFonts?.sourceInputs ?? []) if (!useVite) {
       const final = await fileIdentity(join(root, initial.path));
       if (final.bytes !== initial.bytes || final.sha256 !== initial.sha256) throw new BuildError('FONT_SOURCE_CHANGED', 'A localized stylesheet/font input changed before publication.');
       checkCancellation(signal);
@@ -429,7 +467,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
       ...(viteSummary ? { vite: { ...viteSummary, packagedStylesheets: viteStylesheets.map(({ path, sourcePath, bytes, sha256 }) => ({ path, sourcePath, bytes, sha256 })) } } : {}),
       ...(html ? { html: { ...html.metadata, source: { path: config.entry, bytes: htmlSource.length, sha256: digest(htmlSource) },
         generated: { path: 'app/index.html', bytes: html.bytes.length, sha256: digest(html.bytes) } }, assets: { font: fontMetadata(font) } } : {}),
-      ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY, stateDir: webFonts.stateDir, offline: options.offline ?? false,
+      ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY,
+        stateDir: useVite ? relative(parent, webFonts.stateDir).split(sep).join('/') : webFonts.stateDir, offline: options.offline ?? false,
         sourceInputs: webFonts.sourceInputs, provenance: webFonts.provenance, requirements: webFonts.requirements, lock: webFonts.lock } } : {}),
       manifest: { bytes: Buffer.byteLength(manifestBytes), sha256: digest(manifestBytes) } };
     await mkdir(join(staging, 'metadata'));
