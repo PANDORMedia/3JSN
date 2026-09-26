@@ -218,8 +218,14 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
             ResourceKind::Stylesheet => &[".css"],
             ResourceKind::Image => &[".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"],
         };
-        if resource.kind == ResourceKind::Image && profile != Profile::NativeWindow {
-            return Err(invalid("image resources require native-window-v1"));
+        match profile {
+            Profile::NativeWindow if resource.kind != ResourceKind::Image => {
+                return Err(invalid("native-window-v1 supports image resources only"));
+            }
+            Profile::DomWindow if resource.kind == ResourceKind::Image => {
+                return Err(invalid("image resources require native-window-v1"));
+            }
+            _ => {}
         }
         let lowercase_path = resource.path.to_ascii_lowercase();
         if !suffixes
@@ -851,6 +857,44 @@ mod tests {
                     .contains("byte limit")
             );
         }
+    }
+
+    #[test]
+    fn each_profile_rejects_resources_the_runtime_does_not_serve() {
+        for (kind, path, bytes) in [
+            ("font", "app/assets/type.ttf", b"font bytes".as_slice()),
+            ("stylesheet", "app/assets/type.css", b"body{}".as_slice()),
+        ] {
+            let fixture = Fixture::new();
+            let mut manifest = fixture.image_manifest();
+            manifest["resources"] = json!([{ "path": path, "kind": kind }]);
+            fs::write(fixture.0.join(path), bytes).unwrap();
+            manifest["files"].as_array_mut().unwrap().push(json!({
+                "path": path, "bytes": bytes.len(), "sha256": format!("{:x}", Sha256::digest(bytes))
+            }));
+            let error = load_for(&fixture.write(&manifest), Profile::NativeWindow).unwrap_err();
+            assert!(error.to_string().contains("supports image resources only"));
+        }
+
+        let fixture = Fixture::new();
+        let mut manifest = fixture.font_manifest();
+        let path = "app/assets/checker.png";
+        let bytes = b"image bytes";
+        fs::create_dir_all(fixture.0.join("app/assets")).unwrap();
+        fs::write(fixture.0.join(path), bytes).unwrap();
+        manifest["resources"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!({ "path": path, "kind": "image" }));
+        manifest["files"].as_array_mut().unwrap().push(json!({
+            "path": path, "bytes": bytes.len(), "sha256": format!("{:x}", Sha256::digest(bytes))
+        }));
+        let error = load_for(&fixture.write(&manifest), Profile::DomWindow).unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("image resources require native-window-v1")
+        );
     }
 
     #[cfg(target_os = "macos")]

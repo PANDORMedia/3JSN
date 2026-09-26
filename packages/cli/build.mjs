@@ -110,7 +110,7 @@ async function bundle(root, entry, staging, { allowImageResources }) {
   try {
     result = await esbuild.build({
       absWorkingDir: root, entryPoints: [entry], outdir: dirname(outfile), entryNames: 'main',
-      assetNames: 'assets/[name]-[hash]', outExtension: { '.js': '.mjs' }, bundle: true, platform: 'browser', format: 'esm',
+      assetNames: 'assets/[hash]', outExtension: { '.js': '.mjs' }, bundle: true, platform: 'browser', format: 'esm',
       target: 'esnext', sourcemap: 'linked', sourcesContent: true, metafile: true, write: false,
       logLevel: 'silent', tsconfigRaw: {},
       plugins: [{ name: 'measured-inputs', setup(build) {
@@ -191,7 +191,7 @@ async function bundle(root, entry, staging, { allowImageResources }) {
   files.sort((a, b) => a.path.localeCompare(b.path));
   resources.sort((a, b) => a.path.localeCompare(b.path));
   if (new Set(files.map(item => item.path.toLowerCase())).size !== files.length) throw new BuildError('OUTPUT_COLLISION', 'Output paths collide when case folded.');
-  return { files, resources, loaded, metadata: { version: esbuild.version, options: { platform: 'browser', format: 'esm', target: 'esnext', sourcemap: 'linked', assetNames: 'assets/[name]-[hash]', tsconfigRaw: {} },
+  return { files, resources, loaded, metadata: { version: esbuild.version, options: { platform: 'browser', format: 'esm', target: 'esnext', sourcemap: 'linked', assetNames: 'assets/[hash]', tsconfigRaw: {} },
     inputs: [...loaded.values()].sort((a, b) => a.path.localeCompare(b.path)), outputs: outputIdentities,
     metafile: result.metafile, metafileScope: 'Original esbuild provenance includes build-location paths and pre-source-label-rewrite output sizes; it is not a complete or hermetic resolution inventory.' } };
 }

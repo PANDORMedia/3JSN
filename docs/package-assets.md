@@ -2,9 +2,10 @@
 
 `native-window-v1` currently supports a bounded path for raster images that are
 statically imported by the JavaScript/TypeScript bundle. The builder writes
-content-hashed files under `app/assets/`, records their byte lengths and SHA-256
-hashes in `app.json`, and declares the `package-assets-v1` capability. It refuses
-image imports when the supplied player does not advertise that capability.
+content-hashed files under `app/assets/` using URL-safe names that do not include
+the source basename. It records their byte lengths and SHA-256 hashes in
+`app.json`, and declares the `package-assets-v1` capability. It refuses image
+imports when the supplied player does not advertise that capability.
 
 For example, existing source can import a URL without a 3JSN-specific runtime
 API:

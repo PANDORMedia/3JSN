@@ -113,7 +113,24 @@ test('native build emits integrity-checked raster imports as package image resou
   assert.equal(imageFile.bytes, png.length);
   assert.equal(imageFile.sha256, hash(png));
   const bundle = await readFile(join(f.out, manifest.entry), 'utf8');
-  assert.match(bundle, /\.\/assets\/checker-[A-Z0-9]+\.png/);
+  assert.match(bundle, /\.\/assets\/[A-Z0-9]+\.png/);
+  assert.equal(result.sourcePreserved, true);
+});
+
+test('native image asset URLs do not inherit unsafe source filenames', async t => {
+  const sourcePath = 'assets/texture space % café.PNG';
+  const f = await fixture(t, `import imageUrl from ${JSON.stringify(`./${sourcePath}`)}; console.log(imageUrl);`);
+  await mkdir(join(f.project, 'assets'));
+  const png = await readFile(new URL('../../crates/runtime/tests/fixtures/checker.png', import.meta.url));
+  await writeFile(join(f.project, sourcePath), png);
+  const result = await f.build();
+  const manifest = await readJson(result.manifest);
+  const resource = manifest.resources[0];
+  assert.equal(resource.kind, 'image');
+  assert.match(resource.path, /^app\/assets\/[A-Z0-9]+\.PNG$/);
+  const bundle = await readFile(join(f.out, manifest.entry), 'utf8');
+  assert.match(bundle, /\.\/assets\/[A-Z0-9]+\.PNG/);
+  assert.doesNotMatch(bundle, /\.\/assets\/texture/);
   assert.equal(result.sourcePreserved, true);
 });
 
