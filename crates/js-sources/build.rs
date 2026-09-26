@@ -2,6 +2,11 @@ use std::{collections::BTreeMap, env, fmt::Write, fs, path::PathBuf, sync::Arc};
 
 use deno_core::{Extension, ExtensionFileSourceCode};
 
+deno_core::extension!(
+    deno_net,
+    lazy_loaded_js = [dir "src/deno_net", "02_tls.js"]
+);
+
 fn collect_sources(extension: Extension, sources: &mut BTreeMap<&'static str, String>) {
     for source in [
         &extension.js_files,
@@ -43,12 +48,14 @@ fn main() {
             deno_web::InMemoryBroadcastChannel::default(),
         ),
         deno_webgpu::deno_webgpu::init(),
+        deno_image::deno_image::init(),
+        deno_fetch::deno_fetch::init(deno_fetch::Options::default()),
+        deno_net::init(),
     ];
     let mut sources = BTreeMap::new();
     for extension in extensions {
         collect_sources(extension, &mut sources);
     }
-
     // Literal bytes keep generated output independent of checkout and registry paths.
     let mut generated =
         String::from("static EMBEDDED_SOURCES: &[(&str, deno_core::FastStaticString)] = &[\n");

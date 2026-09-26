@@ -4,12 +4,13 @@
 `dom-window-v1` fixtures. It bundles JavaScript/TypeScript and an explicitly supplied native player
 into a portable application directory. The shipped executable runs without Node,
 esbuild or a development server. This is not the unchanged-web-project pipeline:
-general HTML/CSS, WebGL, frontend build commands, assets and full browser services
-still need integration. Do not port a game to these fixtures as a compatibility workaround.
+Vite builds, arbitrary HTML/CSS, WebGL, public-directory assets and full browser
+services still need integration. Do not port a game to these fixtures as a
+compatibility workaround.
 
 | Profile | Entry and payload | Supplied player |
 | --- | --- | --- |
-| `native-window-v1` | JS/TS entry and source map | Current-host native-window player |
+| `native-window-v1` | JS/TS entry, source map and statically imported raster images | Current-host native-window player |
 | `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font | Experimental macOS Metal DOM-window player |
 
 The DOM profile still parses HTML/CSS at runtime. The
@@ -52,6 +53,14 @@ characters. Reserved Windows device names and package-directory names are invali
 Entries are contained relative `.js`, `.mjs` or `.ts` paths. This profile uses the
 existing native-window adapter; it does not replace the proposed
 `experimental-desktop-v1` unchanged-game compatibility contract.
+
+The native builder emits statically imported PNG, JPEG, GIF, BMP, ICO and WebP
+files under content-hashed `app/assets/` paths. It records each as an
+integrity-checked `image` resource and requires `package-assets-v1` from the
+player. This works with Three.js `ImageBitmapLoader` for the generated URL. The
+builder does not discover public directories, CSS URLs, arbitrary `fetch()`
+strings or dynamically computed paths. Individual images are limited to 32 MiB,
+with at most 64 image resources and 64 MiB total.
 
 Only the current host target is accepted: `macos-arm64`, `macos-x64`, `linux-x64`
 or `windows-x64`. An optional `--targets` must name exactly that target. This
@@ -151,7 +160,9 @@ protocol. `--verify-app` checks manifest and payload integrity, not HTML behavio
 or font decoding. The old positional DOM-probe invocation remains available.
 Webfont builds also declare the `dom-package-fonts-v1` requirement and listed
 font/stylesheet resources; their verified bytes remain owned in memory. See the
-[resource bounds and native contract](web-fonts.md).
+[resource bounds and native contract](web-fonts.md). Native image resources use
+the same verified in-memory ownership and package-relative loading; see
+[raster-image packaging](package-assets.md).
 
 These are corruption and configuration checks for trusted local code. The
 manifest is unsigned, module execution reopens verified files, and packages must stay
@@ -172,7 +183,7 @@ behavioral compatibility.
 Bundling uses the pinned esbuild browser/ESM path with an explicit empty tsconfig;
 custom plugins, inherited tsconfig and frontend scripts are not run. Warnings,
 unresolved/external literal imports and unexpected output kinds fail. Computed
-imports, relative asset URLs and dynamic API access remain unresolved. The output
+imports, dynamic asset URLs and dynamic API access remain unresolved. The output
 is labelled experimental even when bundling succeeds.
 
 Work occurs in a sibling staging directory. Publication exclusively reserves a
@@ -225,6 +236,20 @@ the build step can resolve the installed Three.js dependency:
 ```sh
 npm run probe:package -- target/release/threejs-native-player artifacts/package-relocation
 ```
+
+To validate a statically imported raster image through CLI packaging, relocation,
+the packaged executable and a native Three.js GPU readback, build the player and
+run the hardware probe on a machine with a supported GPU:
+
+```sh
+cargo build --locked -p threejs-native-player
+npm run probe:package:image -- target/debug/threejs-native-player artifacts/package-image-relocation
+```
+
+The probe uses the redistributable fixture under `examples/package-image`, deletes
+its temporary build input, relocates the output, and checks four texture pixels
+from a Three.js render target. This is a one-host correctness check; it does not
+certify other platforms or general web-project compatibility.
 
 The DOM counterpart additionally removes the supplied font, checks HTML/font
 corruption and profile mismatch, and exercises unusable-font and packaged

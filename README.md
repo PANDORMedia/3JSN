@@ -6,9 +6,10 @@ An open-source native runtime and build tool for existing Three.js web games.
 The goal is **unchanged game source → `3jsn build` → native desktop applications**.
 
 **Status: Rust-hosted Three.js/WebGPU rendering, a visible native Metal demo,
-and compatibility experiments. An experimental host-only build CLI packages the
-native-window fixture and a restricted HTML-entry demo; existing web-project builds are not integrated.
-No platform or unchanged-project compatibility is certified.**
+and compatibility experiments. The experimental host-only CLI bundles JS/TS
+entries and statically imported raster images, plus a restricted HTML-entry demo.
+Vite projects, general HTML/CSS UI and unchanged-project compatibility remain
+unverified. No cross-platform certification is claimed.**
 
 The leading design uses a Rust harness and native GPU APIs. Existing WebGL/GLSL
 projects and dynamic HTML/CSS interfaces are part of the target, alongside WebGPU.
@@ -24,6 +25,9 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 - [HTML/CSS research](docs/html-rendering.md): DOM, layout, interaction and GPU composition.
 - [Compiled UI direction](docs/adr/0003-compiled-ui-and-generic-compatibility.md): build-time HTML/CSS processing, live native UI state and proven parser omission.
 - [Webfont packaging](docs/web-fonts.md): opt-in static font downloads, pinned offline builds and native face loading.
+- [Packaged raster images](docs/package-assets.md): bounded build and runtime support for statically imported image resources.
+- [ImageBitmap checkpoint](docs/validation/2026-09-25-image-bitmap.md): first Metal-backed Three.js texture upload from a decoded PNG fixture.
+- [Package image loading checkpoint](docs/validation/2026-09-25-packaged-image-loading.md): stock `ImageBitmapLoader`, CLI-built relocated package and Metal readback evidence on Apple M1 Pro.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.

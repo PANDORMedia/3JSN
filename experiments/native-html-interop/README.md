@@ -27,6 +27,8 @@ WebGPU classes. The DOM adapter extends those classes instead of installing a
 second event implementation. The original DOM fixture and shared Three.js scene
 sources remain unchanged. The fixture still supplies a minimal offscreen canvas
 and manual frame timestamps; it does not run an arbitrary unchanged web project.
+This probe has no package asset store, so the shared bootstrap does not expose
+`fetch`; the shipping runtime exposes it only when its package loader is present.
 
 ## GPU contract
 

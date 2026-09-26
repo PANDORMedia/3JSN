@@ -1,0 +1,41 @@
+# ImageBitmap to native Three.js texture checkpoint
+
+The Rust-hosted WebGPU runtime now decodes a small PNG into `ImageBitmap` and
+uploads it through Three.js r186's unchanged `WebGPURenderer` path. The probe
+ran on macOS arm64 with an Apple M1 Pro Metal adapter. It checked the rendered
+readback at all four quadrants against the source colors and found no WebGPU
+errors. The probe writes a rendered image and machine-readable adapter/hash/pixel
+report under `artifacts/rust-three-image/` on the machine where it runs; those
+generated outputs are not required by the source checks.
+
+This checkpoint adds `Blob`, `createImageBitmap`, `ImageBitmap` and a narrow
+`GPUQueue.copyExternalImageToTexture` implementation. Image bytes are decoded
+and staged through CPU memory before the native WebGPU queue uploads them. The
+supported copy is limited to ImageBitmap sources, straight-alpha sRGB input and
+`rgba8unorm` destinations. This does not establish native image decoding or a
+zero-copy path.
+
+The probe uses an inline synthetic PNG. This checkpoint does not cover packaged
+resource loading, WebGL texture uploads, other image sources, native windows or
+platforms beyond the recorded Mac. The later
+[packaged image loading checkpoint](2026-09-25-packaged-image-loading.md) verifies
+the upstream loader against an integrity-checked package resource. A separate
+ignored hardware-GPU test now renders that package-loaded image through Three.js
+and verifies four Metal readback colors on Apple M1 Pro. Its test manifest is
+generated directly. The CLI-built relocation probe now also verifies the
+packaged executable renders those pixels on the same host.
+
+Verification:
+
+```sh
+CARGO_TARGET_DIR=/private/tmp/3jsn-image-target CARGO_PROFILE_DEV_DEBUG=0 \
+  CARGO_INCREMENTAL=0 node scripts/probe-three-image.mjs
+CARGO_TARGET_DIR=/private/tmp/3jsn-image-target CARGO_PROFILE_DEV_DEBUG=0 \
+  CARGO_INCREMENTAL=0 cargo +1.93.0 test -j 2 -p threejs-native-runtime --locked --offline
+cargo +1.93.0 fmt --all --check
+npm run check
+```
+
+The probe needs host Metal access; the Cargo integration test validates image
+decode and malformed-PNG rejection without requiring a GPU. One existing
+GPU-dependent runtime test remains intentionally ignored in the CPU test run.

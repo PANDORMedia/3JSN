@@ -15,9 +15,11 @@ const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 pub const PROFILE: &str = "native-window-v1";
 pub const DOM_PROFILE: &str = "dom-window-v1";
 pub const DOM_FONT_CAPABILITY: &str = "dom-package-fonts-v1";
+pub const PACKAGE_ASSETS_CAPABILITY: &str = "package-assets-v1";
 pub const MAX_RESOURCES: usize = 64;
 pub const MAX_STYLESHEET_BYTES: u64 = 1024 * 1024;
 pub const MAX_FONT_BYTES: u64 = 16 * 1024 * 1024;
+pub const MAX_IMAGE_BYTES: u64 = 32 * 1024 * 1024;
 pub const MAX_RESOURCE_BYTES: u64 = 64 * 1024 * 1024;
 
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq)]
@@ -25,6 +27,7 @@ pub const MAX_RESOURCE_BYTES: u64 = 64 * 1024 * 1024;
 pub enum ResourceKind {
     Font,
     Stylesheet,
+    Image,
 }
 
 impl ResourceKind {
@@ -32,6 +35,7 @@ impl ResourceKind {
         match self {
             Self::Font => MAX_FONT_BYTES,
             Self::Stylesheet => MAX_STYLESHEET_BYTES,
+            Self::Image => MAX_IMAGE_BYTES,
         }
     }
 }
@@ -172,6 +176,18 @@ fn validate_path(path: &str) -> Result<(), PackageError> {
     Ok(())
 }
 
+fn validate_image_resource_path(path: &str) -> Result<(), PackageError> {
+    if !path
+        .bytes()
+        .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'/' | b'.' | b'_' | b'-'))
+    {
+        return Err(invalid(
+            "native image resource paths must use URL-safe ASCII characters",
+        ));
+    }
+    Ok(())
+}
+
 fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), PackageError> {
     let resources = match (&manifest.requires, &manifest.resources) {
         (None, None) => return Ok(()),
@@ -180,19 +196,27 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         {
             resources
         }
+        (Some(requires), Some(resources))
+            if profile == Profile::NativeWindow && requires == &[PACKAGE_ASSETS_CAPABILITY] =>
+        {
+            resources
+        }
         _ => {
             return Err(invalid(
-                "resources require the dom-package-fonts-v1 DOM capability",
+                "resources require a profile-supported package capability",
             ));
         }
     };
     if resources.len() > MAX_RESOURCES {
-        return Err(invalid("package exceeds 64 font/stylesheet resources"));
+        return Err(invalid("package exceeds 64 resources"));
     }
     let mut paths = HashSet::new();
     let mut total = 0_u64;
     for resource in resources {
         validate_path(&resource.path)?;
+        if profile == Profile::NativeWindow && resource.kind == ResourceKind::Image {
+            validate_image_resource_path(&resource.path)?;
+        }
         if !paths.insert(resource.path.to_lowercase()) {
             return Err(invalid(format!("duplicate resource: {}", resource.path)));
         }
@@ -207,10 +231,21 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         let suffixes: &[&str] = match resource.kind {
             ResourceKind::Font => &[".ttf", ".otf", ".woff", ".woff2"],
             ResourceKind::Stylesheet => &[".css"],
+            ResourceKind::Image => &[".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"],
         };
+        match profile {
+            Profile::NativeWindow if resource.kind != ResourceKind::Image => {
+                return Err(invalid("native-window-v1 supports image resources only"));
+            }
+            Profile::DomWindow if resource.kind == ResourceKind::Image => {
+                return Err(invalid("image resources require native-window-v1"));
+            }
+            _ => {}
+        }
+        let lowercase_path = resource.path.to_ascii_lowercase();
         if !suffixes
             .iter()
-            .any(|suffix| resource.path.ends_with(suffix))
+            .any(|suffix| lowercase_path.ends_with(suffix))
         {
             return Err(invalid(format!(
                 "resource kind does not match its path: {}",
@@ -507,6 +542,22 @@ mod tests {
             }
             manifest
         }
+
+        fn image_manifest(&self) -> Value {
+            let mut manifest = self.manifest();
+            manifest["requires"] = json!([PACKAGE_ASSETS_CAPABILITY]);
+            manifest["resources"] = json!([
+                {"path":"app/assets/checker.png", "kind":"image"},
+            ]);
+            let bytes = b"verified image bytes";
+            fs::create_dir_all(self.0.join("app/assets")).unwrap();
+            fs::write(self.0.join("app/assets/checker.png"), bytes).unwrap();
+            manifest["files"].as_array_mut().unwrap().push(json!({
+                "path":"app/assets/checker.png", "bytes":bytes.len(),
+                "sha256":format!("{:x}", Sha256::digest(bytes))
+            }));
+            manifest
+        }
     }
 
     impl Drop for Fixture {
@@ -721,6 +772,62 @@ mod tests {
     }
 
     #[test]
+    fn native_image_resources_are_verified_and_owned_after_relocation() {
+        let mut fixture = Fixture::new();
+        fixture.write(&fixture.image_manifest());
+        let moved = fixture.0.with_extension("images-relocated");
+        fs::rename(&fixture.0, &moved).unwrap();
+        fixture.0 = moved;
+        let path = fixture.0.join("app.json");
+        let app = load(&path).unwrap();
+        let resources = app.resources.unwrap();
+        assert_eq!(resources.len(), 1);
+        assert_eq!(resources[0].path, "app/assets/checker.png");
+        assert_eq!(resources[0].kind, ResourceKind::Image);
+        assert_eq!(resources[0].bytes, b"verified image bytes");
+
+        fs::write(fixture.0.join("app/assets/checker.png"), b"damaged").unwrap();
+        assert_eq!(resources[0].bytes, b"verified image bytes");
+        assert!(matches!(load(&path), Err(PackageError::Integrity(_))));
+    }
+
+    #[test]
+    fn native_image_resource_validation_accepts_mixed_case_suffixes() {
+        let fixture = Fixture::new();
+        let mut manifest = fixture.image_manifest();
+        let old_path = "app/assets/checker.png";
+        let new_path = "app/assets/checker.PNG";
+        fs::rename(fixture.0.join(old_path), fixture.0.join(new_path)).unwrap();
+        manifest["resources"][0]["path"] = json!(new_path);
+        manifest["files"][1]["path"] = json!(new_path);
+        assert_eq!(
+            load(&fixture.write(&manifest)).unwrap().resources.unwrap()[0].kind,
+            ResourceKind::Image
+        );
+    }
+
+    #[test]
+    fn native_image_resource_paths_must_be_url_safe() {
+        let valid = Fixture::new().image_manifest();
+        for path in [
+            "app/assets/a b.png",
+            "app/assets/café.png",
+            "app/assets/a%20b.png",
+            "app/assets/a#b.png",
+        ] {
+            let mut manifest = valid.clone();
+            manifest["resources"][0]["path"] = json!(path);
+            manifest["files"][1]["path"] = json!(path);
+            let manifest: Manifest = serde_json::from_value(manifest).unwrap();
+            let error = validate_resources(&manifest, Profile::NativeWindow).unwrap_err();
+            assert!(
+                error.to_string().contains("URL-safe ASCII"),
+                "accepted {path}"
+            );
+        }
+    }
+
+    #[test]
     fn resource_capabilities_are_explicit_and_profile_specific() {
         let fixture = Fixture::new();
         for (requires, resources) in [
@@ -786,6 +893,45 @@ mod tests {
                     .contains("byte limit")
             );
         }
+    }
+
+    #[test]
+    fn each_profile_rejects_resources_the_runtime_does_not_serve() {
+        for (kind, path, bytes) in [
+            ("font", "app/assets/type.ttf", b"font bytes".as_slice()),
+            ("stylesheet", "app/assets/type.css", b"body{}".as_slice()),
+        ] {
+            let fixture = Fixture::new();
+            let mut manifest = fixture.image_manifest();
+            manifest["resources"] = json!([{ "path": path, "kind": kind }]);
+            fs::write(fixture.0.join(path), bytes).unwrap();
+            manifest["files"].as_array_mut().unwrap().push(json!({
+                "path": path, "bytes": bytes.len(), "sha256": format!("{:x}", Sha256::digest(bytes))
+            }));
+            let error = load_for(&fixture.write(&manifest), Profile::NativeWindow).unwrap_err();
+            assert!(error.to_string().contains("supports image resources only"));
+        }
+
+        let fixture = Fixture::new();
+        let mut manifest = fixture.font_manifest();
+        let path = "app/assets/checker.png";
+        let bytes = b"image bytes";
+        fs::create_dir_all(fixture.0.join("app/assets")).unwrap();
+        fs::write(fixture.0.join(path), bytes).unwrap();
+        manifest["resources"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!({ "path": path, "kind": "image" }));
+        manifest["files"].as_array_mut().unwrap().push(json!({
+            "path": path, "bytes": bytes.len(), "sha256": format!("{:x}", Sha256::digest(bytes))
+        }));
+        let manifest: Manifest = serde_json::from_value(manifest).unwrap();
+        let error = validate_resources(&manifest, Profile::DomWindow).unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("image resources require native-window-v1")
+        );
     }
 
     #[cfg(target_os = "macos")]
