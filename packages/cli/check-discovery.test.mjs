@@ -39,10 +39,13 @@ test('invalid npm lockfiles and unreportable Three.js versions are explicit and 
   const result = analyzeProjectFiles([
     { path: 'package-lock.json', source: '{"SECRET' },
     { path: 'npm-shrinkwrap.json', source: JSON.stringify({ lockfileVersion: 3, packages: { 'node_modules/three': { version: 'file:../SECRET' } } }) },
+    { path: 'oversized-version/package-lock.json', source: JSON.stringify({ lockfileVersion: 3, packages: {
+      'node_modules/three': { version: `0.186.1-${'a'.repeat(129)}` },
+    } }) },
     { path: 'apps/game/package-lock.json', source: JSON.stringify({ lockfileVersion: 3, packages: { 'node_modules/three': { link: true, resolved: '../../SECRET' } } }) },
   ]);
   assert.ok(result.uncertainties.some(row => row.code === 'invalid-lockfile'));
-  assert.ok(result.uncertainties.some(row => row.code === 'npm-three-resolution-omitted'));
+  assert.equal(result.uncertainties.filter(row => row.code === 'npm-three-resolution-omitted').length, 2);
   assert.ok(result.uncertainties.some(row => row.code === 'npm-three-link-omitted'));
   assert.deepEqual(result.dependencyResolutions, []);
   assert.ok(!JSON.stringify(result).includes('SECRET'));

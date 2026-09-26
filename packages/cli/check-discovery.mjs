@@ -63,7 +63,7 @@ export function analyzeProjectFiles(files) {
       uncertainty('npm-three-path-omitted', 'A Three.js lockfile package path is not safely reportable.', location(path));
       return;
     }
-    if (typeof version !== 'string' || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(version)) {
+    if (typeof version !== 'string' || version.length > 128 || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(version)) {
       uncertainty('npm-three-resolution-omitted', 'A locked Three.js version is not a reportable semantic version.', location(path));
       return;
     }

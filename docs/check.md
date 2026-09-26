@@ -31,6 +31,8 @@ source-map-remapped locations.
   records Three.js versions found in npm `package-lock.json` or
   `npm-shrinkwrap.json`, with their lockfile and package path; these are locked
   candidates, not evidence that the package is installed or used at runtime.
+  Exact versions longer than 128 characters are omitted to keep malformed
+  lockfiles from inflating the report.
 - `analysisCoverage` identifies measured/analyzed source files, skipped inputs,
   inspected npm lockfiles, limits and unimplemented analysis. Findings can include unused code, shadowed
   names, server code and build tooling. They are not proven runtime requirements.
