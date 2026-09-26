@@ -222,7 +222,10 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
             return Err(invalid("image resources require native-window-v1"));
         }
         let lowercase_path = resource.path.to_ascii_lowercase();
-        if !suffixes.iter().any(|suffix| lowercase_path.ends_with(suffix)) {
+        if !suffixes
+            .iter()
+            .any(|suffix| lowercase_path.ends_with(suffix))
+        {
             return Err(invalid(format!(
                 "resource kind does not match its path: {}",
                 resource.path
