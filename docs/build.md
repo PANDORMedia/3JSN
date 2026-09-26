@@ -175,7 +175,9 @@ files are admitted. Without `--bundle-web-fonts`, CSS `url()`, `@import` and
 existing font localizer captures supported stylesheet imports and local or
 pinned remote font resources; other emitted assets, dynamic imports/chunks,
 workers, Wasm, public-directory files, multiple HTML entries and server builds
-still fail closed. The runtime parses the packaged CSS and paints its DOM result;
+still fail closed. Font URLs retained in generated JavaScript are also rejected,
+because CSS localization does not rewrite JavaScript asset references. The
+runtime parses the packaged CSS and paints its DOM result;
 CSS is not compiled into GPU commands at build time. The build requires the
 player's `dom-package-fonts-v1` capability when font localization is enabled.
 The [stylesheet resource contract](package-stylesheets.md) and

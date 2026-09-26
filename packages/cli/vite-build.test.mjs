@@ -9,7 +9,7 @@ import test from 'node:test';
 import { buildProject } from './build.mjs';
 import { validatePackagedStylesheet } from './html.mjs';
 import { hostTarget } from './contract.mjs';
-import { buildViteProject, normalizeViteHtml, validateViteDomGraph } from './vite-build.mjs';
+import { buildViteProject, normalizeViteHtml, validateViteDomGraph, validateViteFontJavaScriptReferences } from './vite-build.mjs';
 import { snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 
 const repository = fileURLToPath(new URL('../../', import.meta.url));
@@ -154,6 +154,17 @@ test('Vite DOM graph admits one static HTML and JavaScript entry with linked CSS
     { code: 'UNSUPPORTED_VITE_GRAPH' });
 });
 
+test('webfont packaging rejects generated font URLs retained by JavaScript', () => {
+  const fontFiles = new Set(['assets/fixture-Skh_p6iR.woff2']);
+  assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'console.log("game ready")']])));
+  for (const javascriptPath of ['assets/main.js', 'assets/chunk.js']) {
+    assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+      new Map([[javascriptPath, 'const font = "./assets/fixture-Skh_p6iR.woff2";']])),
+    { code: 'UNSUPPORTED_VITE_GRAPH' });
+  }
+});
+
 test('Vite HTML normalization removes only measured module preloads and transport attributes', () => {
   const html = Buffer.from('<!doctype html><html><head><link rel="stylesheet" crossorigin href="../assets/main.css">'
     + '<link rel="modulepreload" href="../assets/chunk.js" crossorigin></head>'
@@ -274,4 +285,17 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
   await assert.rejects(buildProject({ ...options, out: join(f.temporary, 'missing-capability') }, {
     describeRuntime: describe([]), fetchImpl: () => assert.fail('local font path must not fetch'),
   }), { code: 'INCOMPATIBLE_RUNTIME' });
+  await writeFile(join(f.project, 'src/main.js'), "import fontUrl from './fixture.woff2?no-inline'; console.log(fontUrl);");
+  const beforeJavaScriptFont = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
+  const mixedFontOutput = join(f.temporary, 'vite-font-javascript-package');
+  await assert.rejects(buildProject({ ...options, out: mixedFontOutput }, {
+    describeRuntime: describe(['dom-package-fonts-v1']),
+  }), error => {
+    assert.equal(error.code, 'UNSUPPORTED_VITE_GRAPH');
+    assert.equal(error.sourcePreserved, true);
+    assert.equal(error.source.preservation.preserved, true);
+    return true;
+  });
+  assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), beforeJavaScriptFont);
+  await assert.rejects(readFile(mixedFontOutput), { code: 'ENOENT' });
 });

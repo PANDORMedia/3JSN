@@ -364,6 +364,16 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles, fontFiles };
 }
 
+export function validateViteFontJavaScriptReferences(fontFiles, javascriptSources) {
+  for (const [javascriptPath, source] of javascriptSources) {
+    for (const fontPath of fontFiles) {
+      if (source.includes(basename(fontPath))) {
+        throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite JavaScript ${javascriptPath} references a font URL that CSS localization cannot rewrite.`);
+      }
+    }
+  }
+}
+
 /** Run the selected project's Vite build and capture its generated client artifact graph without rewriting sources. */
 export async function buildViteProject(options) {
   if (typeof options?.project !== 'string' || !options.project || typeof options?.out !== 'string' || !options.out) {

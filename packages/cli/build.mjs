@@ -12,7 +12,7 @@ import { analyzeHtml, prepareHtml, renderHtml, validatePackagedStylesheet } from
 import { localizeWebFonts } from './web-fonts.mjs';
 import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILITY } from './web-font-policy.mjs';
 import { captureViteArtifacts, normalizeViteHtml, sourceRoot as viteSourceRoot,
-  sourceSnapshot as viteSourceSnapshot, validateViteDomGraph } from './vite-build.mjs';
+  sourceSnapshot as viteSourceSnapshot, validateViteDomGraph, validateViteFontJavaScriptReferences } from './vite-build.mjs';
 
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -314,6 +314,20 @@ export async function buildProject(options, { describeRuntime: describe = descri
       await mkdir(viteOutput);
       viteArtifacts = await captureViteArtifacts({ project: root, outputDirectory: viteOutput, signal, base: './' });
       const admitted = validateViteDomGraph(viteArtifacts, config.entry, { webFonts: Boolean(options.bundleWebFonts) });
+      if (options.bundleWebFonts) {
+        const capturedOutputs = new Map(viteArtifacts.files.map(file => [file.path, file]));
+        const javascriptSources = new Map();
+        for (const path of admitted.jsFiles) {
+          checkCancellation(signal);
+          const bytes = await readFile(join(viteOutput, ...path.split('/')));
+          const captured = capturedOutputs.get(path);
+          if (!captured || bytes.length !== captured.bytes || digest(bytes) !== captured.sha256) {
+            throw new BuildError('VITE_OUTPUT_CHANGED', `Vite JavaScript changed after capture: ${path}`);
+          }
+          javascriptSources.set(path, bytes.toString('utf8'));
+        }
+        validateViteFontJavaScriptReferences(admitted.fontFiles, javascriptSources);
+      }
       const generatedHtml = await readFile(join(viteOutput, ...admitted.htmlFile.split('/')));
       const normalizedHtml = normalizeViteHtml(generatedHtml, { htmlPath: config.entry,
         allowedScripts: admitted.jsFiles, allowedModulePreloads: admitted.modulePreloads,
