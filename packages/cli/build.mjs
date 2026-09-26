@@ -252,7 +252,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
     staging = await mkdtemp(join(parent, '.3jsn-build-'));
     checkCancellation(signal);
     const built = await bundle(root, entry, staging, { allowImageResources: !isDom });
-    if (built.resources.length && !description.capabilities?.includes(PACKAGE_ASSETS_CAPABILITY)) {
+    if (built.resources.length && (!Array.isArray(description.capabilities)
+      || !description.capabilities.includes(PACKAGE_ASSETS_CAPABILITY))) {
       throw new BuildError('INCOMPATIBLE_RUNTIME', `The supplied player does not advertise ${PACKAGE_ASSETS_CAPABILITY}.`);
     }
     checkCancellation(signal);

@@ -122,6 +122,7 @@ test('native image imports require the player to advertise package asset loading
   await mkdir(join(f.project, 'assets'));
   await writeFile(join(f.project, 'assets/checker.png'), await readFile(new URL('../../crates/runtime/tests/fixtures/checker.png', import.meta.url)));
   await failed(f, 'INCOMPATIBLE_RUNTIME', () => f.build({}, async () => ({ ...description(), capabilities: [] })));
+  await failed(f, 'INCOMPATIBLE_RUNTIME', () => f.build({}, async () => ({ ...description(), capabilities: 'package-assets-v1' })));
 });
 
 test('experimental opt-in and every unsupported or multi target fail before writing or describing', async t => {

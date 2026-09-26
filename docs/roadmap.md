@@ -34,10 +34,11 @@ registrations and 22 browser/native width comparisons in an offline Metal run.
 Broader font behavior and
 distribution gates remain tracked in [#56](https://github.com/PANDORMedia/3JSN/issues/56).
 
-The [ImageBitmap checkpoint](validation/2026-09-25-image-bitmap.md) now verifies
-an unchanged Three.js r186 texture upload and quadrant readback on macOS Metal.
-It uses an inline PNG; packaged texture fetching through upstream
-`ImageBitmapLoader` remains open under [#27](https://github.com/PANDORMedia/3JSN/issues/27).
+The packaged-image checkpoint now verifies an unchanged Three.js r186
+`ImageBitmapLoader` path from a relocated native package and quadrant readback
+on macOS Metal. The executable relocation probe passes on one M1 Pro. Broader
+image formats, WebGL uploads, SVG/glTF sidecars, Vite assets, and other-platform
+evidence remain open under [#27](https://github.com/PANDORMedia/3JSN/issues/27).
 
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
 adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.

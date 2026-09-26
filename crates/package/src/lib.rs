@@ -221,10 +221,8 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
         if resource.kind == ResourceKind::Image && profile != Profile::NativeWindow {
             return Err(invalid("image resources require native-window-v1"));
         }
-        if !suffixes
-            .iter()
-            .any(|suffix| resource.path.ends_with(suffix))
-        {
+        let lowercase_path = resource.path.to_ascii_lowercase();
+        if !suffixes.iter().any(|suffix| lowercase_path.ends_with(suffix)) {
             return Err(invalid(format!(
                 "resource kind does not match its path: {}",
                 resource.path
@@ -767,6 +765,21 @@ mod tests {
         fs::write(fixture.0.join("app/assets/checker.png"), b"damaged").unwrap();
         assert_eq!(resources[0].bytes, b"verified image bytes");
         assert!(matches!(load(&path), Err(PackageError::Integrity(_))));
+    }
+
+    #[test]
+    fn native_image_resource_validation_accepts_mixed_case_suffixes() {
+        let fixture = Fixture::new();
+        let mut manifest = fixture.image_manifest();
+        let old_path = "app/assets/checker.png";
+        let new_path = "app/assets/checker.PNG";
+        fs::rename(fixture.0.join(old_path), fixture.0.join(new_path)).unwrap();
+        manifest["resources"][0]["path"] = json!(new_path);
+        manifest["files"][1]["path"] = json!(new_path);
+        assert_eq!(
+            load(&fixture.write(&manifest)).unwrap().resources.unwrap()[0].kind,
+            ResourceKind::Image
+        );
     }
 
     #[test]
