@@ -48,6 +48,15 @@ async fn main() -> Result<()> {
             ..Default::default()
         },
     );
+    let copy_bridge_installed: bool = host::evaluate(
+        &mut runtime,
+        "typeof GPUQueue.prototype.copyExternalImageToTexture === 'function'".into(),
+    )
+    .await?;
+    check(
+        copy_bridge_installed,
+        "shared web globals did not install the image-copy bridge",
+    )?;
     runtime.execute_script("probe:original-dom", ORIGINAL)?;
     runtime.execute_script(
         "probe:original-frames",
