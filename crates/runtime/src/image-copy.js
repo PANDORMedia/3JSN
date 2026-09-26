@@ -7,6 +7,10 @@ function extentValue(size, name, index, fallback) {
   return integer((Array.isArray(size) ? size[index] : size?.[name]) ?? fallback, name);
 }
 
+function originValue(origin, name, index) {
+  return integer((Array.isArray(origin) ? origin[index] : origin?.[name]) ?? 0, name);
+}
+
 export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
   Object.defineProperty(GPUQueue.prototype, "copyExternalImageToTexture", {
     configurable: true,
@@ -29,11 +33,11 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
 
       const sourceOrigin = sourceInfo.origin ?? {};
       const destinationOrigin = destinationInfo.origin ?? {};
-      const sourceX = integer(sourceOrigin.x ?? 0, "source x");
-      const sourceY = integer(sourceOrigin.y ?? 0, "source y");
-      const destinationX = integer(destinationOrigin.x ?? 0, "destination x");
-      const destinationY = integer(destinationOrigin.y ?? 0, "destination y");
-      const destinationZ = integer(destinationOrigin.z ?? 0, "destination z");
+      const sourceX = originValue(sourceOrigin, "source x", 0);
+      const sourceY = originValue(sourceOrigin, "source y", 1);
+      const destinationX = originValue(destinationOrigin, "destination x", 0);
+      const destinationY = originValue(destinationOrigin, "destination y", 1);
+      const destinationZ = originValue(destinationOrigin, "destination z", 2);
       const mipLevel = integer(destinationInfo.mipLevel ?? 0, "mip level");
       const width = extentValue(copySize, "width", 0, bitmap.width - sourceX);
       const height = extentValue(copySize, "height", 1, bitmap.height - sourceY);
