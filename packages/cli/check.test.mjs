@@ -181,6 +181,9 @@ test('parser deadline returns incomplete inventory with preservation, not a tool
 
 test('parser results arriving during worker termination cannot override a fired deadline', async t => {
   const f = await fixture(t);
+  let terminationComplete = false;
+  let finalSnapshotObservedTermination = false;
+  let snapshots = 0;
   class LateResultWorker {
     handlers = new Map();
     on(name, callback) { this.handlers.set(name, callback); return this; }
@@ -189,10 +192,19 @@ test('parser results arriving during worker termination cannot override a fired 
         entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [],
       } }), 10);
     }
-    terminate() { return new Promise(resolveTerminate => setTimeout(resolveTerminate, 30)); }
+    terminate() { return new Promise(resolveTerminate => setTimeout(() => {
+      terminationComplete = true;
+      resolveTerminate();
+    }, 30)); }
   }
-  const report = await checkProject(f.options, { analysisMilliseconds: 1, WorkerCtor: LateResultWorker });
+  const report = await checkProject(f.options, { analysisMilliseconds: 1, WorkerCtor: LateResultWorker,
+    snapshot: async (...args) => {
+      const value = await snapshotTree(...args);
+      if (++snapshots > 1) finalSnapshotObservedTermination = terminationComplete;
+      return value;
+    } });
   assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+  assert.equal(finalSnapshotObservedTermination, true, 'final preservation verification must wait for parser worker termination');
   assert.equal(report.preservation.preserved, true);
 });
 

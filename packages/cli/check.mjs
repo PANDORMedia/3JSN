@@ -26,6 +26,7 @@ class AnalysisSession {
     this.projectDeadline = performance.now() + projectMilliseconds;
     this.WorkerCtor = WorkerCtor;
     this.worker = null;
+    this.stopping = null;
     this.sequence = 0;
     this.pending = new Map();
   }
@@ -45,7 +46,8 @@ class AnalysisSession {
   _stop(worker, error) {
     if (this.worker === worker) this.worker = null;
     for (const id of this.pending.keys()) this._finish(id, error);
-    return worker.terminate().catch(() => undefined);
+    if (!this.stopping) this.stopping = Promise.resolve().then(() => worker.terminate()).catch(() => undefined);
+    return this.stopping;
   }
 
   _ensureWorker() {
@@ -87,7 +89,8 @@ class AnalysisSession {
 
   async close() {
     const worker = this.worker;
-    if (worker) await this._stop(worker, Object.assign(new Error(), { code: 'CANCELLED' }));
+    if (worker) this._stop(worker, Object.assign(new Error(), { code: 'CANCELLED' }));
+    await this.stopping;
   }
 }
 
