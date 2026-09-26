@@ -15,11 +15,11 @@ const named = node => ident.decode(node.name ?? node.property ?? '').toLowerCase
 const ordinaryFunctions = new Set(['rgb', 'rgba', 'hsl', 'hsla', 'calc', 'min', 'max', 'clamp', 'var',
   'linear-gradient', 'radial-gradient', 'conic-gradient', 'repeating-linear-gradient', 'repeating-radial-gradient', 'repeating-conic-gradient']);
 
-function resourceUrl(value, base) {
+function resourceUrl(value, base, allowInlineFont = false) {
   if (!value || /[\p{Cc}\\]/u.test(value)) fail('FONT_URL_INVALID', 'CSS/font URL is empty or contains unsupported controls/backslashes.');
   let url;
   try { url = new URL(value, base); } catch (cause) { throw new BuildError('FONT_URL_INVALID', 'Cannot resolve CSS/font URL.', { cause }); }
-  if (!['file:', 'http:', 'https:'].includes(url.protocol) || url.username || url.password || url.hash
+  if ((!['file:', 'http:', 'https:'].includes(url.protocol) && !(allowInlineFont && url.protocol === 'data:')) || url.username || url.password || url.hash
     || (new URL(base).protocol !== 'file:' && url.protocol === 'file:')) fail('FONT_URL_INVALID', 'CSS/font resource uses an unsupported URL scheme, credentials or fragment.');
   return url.href;
 }
@@ -147,9 +147,9 @@ function decodeCss(resource) {
 
 /** Localize the CSS/font graph without publishing a package or editing the project. */
 export async function localizeWebFonts({ projectRoot, outputDir, htmlEntry, htmlBytes, stateDir, offline = false, signal,
-  limits = WEB_FONT_LIMITS, fontPolicy }, { fetchImpl = globalThis.fetch } = {}) {
+  limits = WEB_FONT_LIMITS, fontPolicy, protectedRoots = [] }, { fetchImpl = globalThis.fetch } = {}) {
   const analysis = analyzeHtml(htmlBytes, htmlEntry, { webFonts: true });
-  const cache = await openWebFontCache({ projectRoot, outputDir, stateDir, offline, signal, limits, fetchImpl });
+  const cache = await openWebFontCache({ projectRoot, outputDir, stateDir, offline, signal, limits, protectedRoots, fetchImpl });
   limits = cache.limits;
   const files = new Map(), sheets = new Map(), provenance = [], requirements = [], replacements = [];
   let htmlBase, outputBytes = 0;
@@ -202,18 +202,33 @@ export async function localizeWebFonts({ projectRoot, outputDir, htmlEntry, html
         if (fontPolicy) {
           try { fontPolicy(requirement); } catch (error) { throw contextual(error, `@font-face in ${base}:${face.location.line}:${face.location.column}`); }
         }
-        for (const item of face.sources) {
+        for (const [sourceIndex, item] of face.sources.entries()) {
           if (item.type !== 'url') continue;
-          const url = resourceUrl(item.value, base);
+          const url = resourceUrl(item.value, base, true);
           let resource, format;
           try {
             resource = await cache.read(url, 'font');
             format = fontFormat(resource.bytes);
+            const inlineTypeFormats = { 'font/woff': ['woff'], 'application/font-woff': ['woff'], 'application/x-font-woff': ['woff'],
+              'font/woff2': ['woff2'], 'application/font-woff2': ['woff2'], 'application/x-font-woff2': ['woff2'],
+              'font/ttf': ['ttf'], 'application/x-font-ttf': ['ttf'], 'application/x-font-truetype': ['ttf'],
+              'font/otf': ['otf'], 'application/x-font-opentype': ['otf'], 'application/vnd.ms-opentype': ['otf'],
+              'application/font-sfnt': ['ttf', 'otf'] };
+            const inlineType = resource.provenance.inlineData?.contentType;
+            if (inlineType && !inlineTypeFormats[inlineType]?.includes(format)) {
+              fail('FONT_FORMAT_INVALID', 'Inline font MIME type does not match the font container format.');
+            }
             if (item.format && !item.format.some(hint => ({ woff2: ['woff2'], woff: ['woff'], truetype: ['ttf'], opentype: ['ttf', 'otf'] }[hint] ?? []).includes(format))) {
               fail('FONT_FORMAT_INVALID', 'Font bytes do not match their declared format hint.');
             }
           } catch (error) {
-            throw contextual(error, `font request ${url}, src in ${base}:${item.node.loc.start.line}:${item.node.loc.start.column}`);
+            const label = url.startsWith('data:') ? url.slice(0, url.indexOf(';') > 0 ? url.indexOf(';') : url.indexOf(',')) : url;
+            throw contextual(error, `font request ${label}, src in ${base}:${item.node.loc.start.line}:${item.node.loc.start.column}`);
+          }
+          if (resource.provenance.inlineData) {
+            requirement.sources[sourceIndex] = { ...requirement.sources[sourceIndex], value: resource.finalUrl };
+            const srcDescriptor = requirement.descriptors.find(descriptor => descriptor.name === 'src');
+            if (srcDescriptor) srcDescriptor.value = srcDescriptor.value.replace(item.value, resource.finalUrl);
           }
           const path = addFile(`app/fonts/${hash(resource.bytes)}.${format}`, resource.bytes, 'font');
           provenance.push(resource.provenance);

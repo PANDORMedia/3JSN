@@ -29,6 +29,7 @@
     "webgpu": "0.6.1"
   },
   "devDependencies": {
+    "acorn": "8.18.0",
     "css-tree": "3.2.1",
     "esbuild": "0.28.2",
     "parse5": "8.0.1",

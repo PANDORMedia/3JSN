@@ -6,6 +6,21 @@ HTML/CSS to local package references. Original application files stay unchanged.
 The option extends the experimental macOS `dom-window-v1` profile; it is not a
 claim that arbitrary web applications are supported.
 
+For `--frontend vite`, the same flag enables localization of Vite-emitted linked
+stylesheets and their supported font resources. CSS/font inputs must belong to
+the captured output graph, and the selected player must advertise
+`dom-package-fonts-v1`. Without the flag, the Vite stylesheet path remains
+resource-free and rejects CSS URLs, imports and font-face rules.
+Emitted font assets are identified by their container signature, so Vite output
+filenames need not use a font extension. Direct JavaScript URLs to those emitted
+fonts are rejected because this profile rewrites CSS references only; comments
+and unrelated strings that merely mention a font filename are not treated as URLs.
+CSS font `data:` URLs are decoded into ordinary packaged font resources, including
+Vite's default inline output for small fonts. Only recognized font MIME types with
+matching TTF/OTF/WOFF/WOFF2 bytes are accepted; base64 and percent-encoded bytes
+are supported within the same font and aggregate resource limits. Payloads are
+omitted from build provenance and lock files.
+
 ```sh
 node packages/cli/cli.mjs build fixtures/web-fonts \
   --runtime target/debug/threejs-dom-window-probe \
@@ -37,7 +52,8 @@ or initial-screen glyph subsetting is added.
 
 State defaults to `<output-parent>/.3jsn-web-fonts/<project-identity>/`. Override
 it with `--web-fonts-state <directory>`. State, project and package output must be
-disjoint directory trees, including filesystem aliases. `lock.json` pins remote
+disjoint directory trees, including filesystem aliases. For Vite builds, the
+complete detected workspace is protected too. `lock.json` pins remote
 representations and `blobs/<sha256>` stores immutable bytes. Every use verifies
 the cached bytes. Existing pins never refresh silently: use a new state directory
 for an intentional provider update. A single build leases a state directory;

@@ -30,7 +30,7 @@ demanding acceptance example. No game-specific behavior belongs in the runtime.
 - [Packaged Vite stylesheets](docs/package-stylesheets.md): integrity-checked CSS links for the experimental DOM profile.
 - [ImageBitmap checkpoint](docs/validation/2026-09-25-image-bitmap.md): first Metal-backed Three.js texture upload from a decoded PNG fixture.
 - [Package image loading checkpoint](docs/validation/2026-09-25-packaged-image-loading.md): stock `ImageBitmapLoader`, CLI-built relocated package and Metal readback evidence on Apple M1 Pro.
-- [Vite native package checkpoint](docs/validation/2026-09-26-vite-native-package.md): one Vite HTML/static-JS/CSS graph, relocated package and 120 native Metal frames on Apple M1 Pro.
+- [Vite native package checkpoint](docs/validation/2026-09-26-vite-native-package.md): one Vite HTML/static-JS/CSS graph, opt-in webfont delivery, relocated package and 120 native Metal frames on Apple M1 Pro.
 - [Roadmap](docs/roadmap.md) and [issues](docs/issues.md): milestones and tracked work.
 - [Compatibility](docs/compatibility.md) and [CtF inventory](docs/ctf-compatibility.md): requirements and verified gaps.
 - [Engineering standards](docs/engineering.md): maintainable boundaries, reliable behavior and purposeful comments.
