@@ -3,7 +3,7 @@ import { buildProject } from './build.mjs';
 import { buildViteProject } from './vite-build.mjs';
 import { BuildError } from './contract.mjs';
 
-const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--font <font.woff2> (dom-window-v1 only)] [--bundle-web-fonts [--web-fonts-state <directory>] [--offline]]\n3jsn vite-build <project> --out <new-directory>';
+const usage = '3jsn build <project> --runtime <player> --out <new-directory> --experimental [--targets <host-target>] [--frontend vite (dom-window-v1 only)] [--font <font.woff2> (dom-window-v1 only)] [--bundle-web-fonts [--web-fonts-state <directory>] [--offline]]\n3jsn vite-build <project> --out <new-directory>';
 const controller = new AbortController();
 let interruptedBy;
 const interrupt = signal => { interruptedBy ??= signal; controller.abort(); };
@@ -17,7 +17,7 @@ try {
   const options = { project, signal: controller.signal };
   for (let index = 0; index < args.length; index++) {
     const flag = args[index];
-    const flags = command === 'vite-build' ? { '--out': 'out' } : { '--runtime': 'runtime', '--out': 'out', '--targets': 'targets', '--experimental': 'experimental', '--font': 'font',
+    const flags = command === 'vite-build' ? { '--out': 'out' } : { '--runtime': 'runtime', '--out': 'out', '--targets': 'targets', '--experimental': 'experimental', '--frontend': 'frontend', '--font': 'font',
       '--bundle-web-fonts': 'bundleWebFonts', '--web-fonts-state': 'webFontsState', '--offline': 'offline' };
     const key = flags[flag];
     if (!key || Object.hasOwn(options, key)) throw new BuildError('USAGE', usage);

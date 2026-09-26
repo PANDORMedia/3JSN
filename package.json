@@ -20,6 +20,7 @@
     "probe:window-lifecycle": "node scripts/probe-window-lifecycle.mjs",
     "probe:package": "node scripts/probe-package.mjs",
     "probe:package:image": "node scripts/probe-package-image.mjs",
+    "probe:package:vite": "node scripts/probe-vite-package.mjs",
     "doctor": "node scripts/doctor.mjs"
   },
   "dependencies": {

@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, rmdir, writeFile } from 'node:fs/promises';
-import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { basename, dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { parse as parseHtml } from 'parse5';
 import { compareSnapshots, snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
@@ -39,7 +39,7 @@ async function viteCli(root) {
   throw new BuildError('INVALID_VITE_INSTALL', 'The resolved Vite entry has no containing package manifest and CLI.');
 }
 
-async function sourceRoot(projectRoot) {
+export async function sourceRoot(projectRoot) {
   let current = projectRoot;
   let workspace = projectRoot;
   while (true) {
@@ -60,7 +60,7 @@ async function sourceRoot(projectRoot) {
   return workspace;
 }
 
-async function sourceSnapshot(root, excluded) {
+export async function sourceSnapshot(root, excluded) {
   if (!excluded) {
     excluded = ['node_modules'];
     async function findNested(current, prefix = '') {
@@ -77,9 +77,11 @@ async function sourceSnapshot(root, excluded) {
   return snapshotTree(root, { exclude: excluded });
 }
 
-async function runVite(cli, root, outDir, signal) {
+async function runVite(cli, root, outDir, signal, base) {
   cancelled(signal);
-  const child = spawn(process.execPath, [cli, 'build', '--outDir', outDir, '--emptyOutDir', '--manifest', '.vite/manifest.json', '--sourcemap'], {
+  const args = [cli, 'build', '--outDir', outDir, '--emptyOutDir', '--manifest', '.vite/manifest.json', '--sourcemap'];
+  if (base !== undefined) args.push('--base', base);
+  const child = spawn(process.execPath, args, {
     cwd: root, windowsHide: true, stdio: 'inherit',
   });
   let abort;
@@ -202,6 +204,128 @@ async function documentReferences(root, files) {
   return documents;
 }
 
+export async function captureViteArtifacts({ project, outputDirectory, signal, base }) {
+  if (typeof project !== 'string' || !project || typeof outputDirectory !== 'string' || !outputDirectory) {
+    throw new BuildError('USAGE', 'Vite project root and an output directory are required.');
+  }
+  const projectPath = resolve(project);
+  if (!(await lstat(projectPath)).isDirectory()) throw new BuildError('INVALID_PROJECT', 'The project must be a real directory, not a symbolic link.');
+  const root = await realpath(projectPath);
+  const output = resolve(outputDirectory);
+  if (within(root, output)) throw new BuildError('INVALID_OUTPUT', 'Vite staging output must be outside the project directory.');
+  if (!(await lstat(output)).isDirectory()) throw new BuildError('INVALID_OUTPUT', 'Vite staging output must be an existing directory.');
+  cancelled(signal);
+  const vite = await viteCli(root);
+  await runVite(vite.cli, root, output, signal, base);
+  cancelled(signal);
+  const files = await inventory(output);
+  const filePaths = new Set(files.map(file => file.path));
+  const manifestPath = '.vite/manifest.json';
+  if (!filePaths.has(manifestPath)) throw new BuildError('INVALID_VITE_MANIFEST', 'Vite did not emit the requested .vite/manifest.json.');
+  let manifest;
+  try { manifest = JSON.parse(await readFile(join(output, ...manifestPath.split('/')), 'utf8')); } catch (cause) {
+    throw new BuildError('INVALID_VITE_MANIFEST', 'Vite emitted an invalid JSON manifest.', { cause });
+  }
+  const graph = graphFromManifest(manifest, filePaths);
+  const maps = await sourceMaps(output, files);
+  const html = await documentReferences(output, files);
+  return { root, output, viteVersion: vite.version, manifestPath, manifest, graph, files, sourceMaps: maps, documents: html };
+}
+
+function visitHtml(node, visit) {
+  visit(node);
+  for (const child of node.childNodes ?? []) visitHtml(child, visit);
+}
+
+function outputReference(htmlPath, value) {
+  if (typeof value !== 'string' || !value || /[%?#\\:\s\p{Cc}]/u.test(value) || value.startsWith('/')) return undefined;
+  const path = posix.normalize(posix.join(posix.dirname(htmlPath), value));
+  return portablePath(path) ? path : undefined;
+}
+
+export function normalizeViteHtml(bytes, { htmlPath, allowedScripts, allowedModulePreloads }) {
+  let source;
+  try { source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch (cause) {
+    throw new BuildError('INVALID_VITE_HTML', 'Vite emitted HTML that is not valid UTF-8.', { cause });
+  }
+  const errors = [];
+  const tree = parseHtml(source, { sourceCodeLocationInfo: true, scriptingEnabled: true, onParseError: error => errors.push(error) });
+  if (errors.length) throw new BuildError('INVALID_VITE_HTML', `Vite emitted HTML with parse error ${errors[0].code}.`);
+  const edits = [];
+  visitHtml(tree, node => {
+    if (node.tagName === 'link') {
+      const attrs = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
+      if ((attrs.get('rel') ?? '').toLowerCase() !== 'modulepreload') {
+        throw new BuildError('UNSUPPORTED_VITE_HTML', 'Only Vite modulepreload links can be removed from the generated DOM entry.');
+      }
+      const href = outputReference(htmlPath, attrs.get('href'));
+      if (!href || !allowedModulePreloads.has(href)) {
+        throw new BuildError('INVALID_VITE_GRAPH', 'Vite modulepreload link is not present in its static JavaScript graph.');
+      }
+      const location = node.sourceCodeLocation;
+      if (!location) throw new BuildError('INVALID_VITE_HTML', 'Vite modulepreload link has no source location.');
+      edits.push({ start: location.startOffset, end: location.endOffset, text: '' });
+    }
+    if (node.tagName === 'script') {
+      const attrs = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
+      const src = outputReference(htmlPath, attrs.get('src'));
+      if (attrs.get('type')?.toLowerCase() !== 'module' || !src || !allowedScripts.has(src)) {
+        throw new BuildError('INVALID_VITE_GRAPH', 'Generated HTML must reference a JavaScript entry in the admitted Vite graph.');
+      }
+      for (const attribute of ['crossorigin', 'integrity']) {
+        const location = node.sourceCodeLocation?.attrs?.[attribute];
+        if (location) edits.push({ start: location.startOffset, end: location.endOffset, text: '' });
+      }
+    }
+  });
+  let normalized = source;
+  let boundary = source.length;
+  for (const edit of edits.sort((a, b) => b.start - a.start)) {
+    if (edit.end > boundary) throw new BuildError('INVALID_VITE_HTML', 'Generated HTML normalization edits overlap.');
+    normalized = normalized.slice(0, edit.start) + edit.text + normalized.slice(edit.end);
+    boundary = edit.start;
+  }
+  return Buffer.from(normalized);
+}
+
+export function validateViteDomGraph(artifacts, htmlEntry) {
+  const htmlEntries = artifacts.graph.filter(item => item.key.endsWith('.html'));
+  if (htmlEntries.length !== 1 || htmlEntries[0].key !== htmlEntry || !htmlEntries[0].isEntry) {
+    throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'dom-window-v1 Vite packaging requires one HTML entry matching 3jsn.json entry.');
+  }
+  const htmlRecord = htmlEntries[0];
+  if (!artifacts.files.some(file => file.path === htmlEntry) || !htmlRecord.file.endsWith('.js')) {
+    throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'Vite must emit the configured HTML document and one associated JavaScript entry.');
+  }
+  const byKey = new Map(artifacts.graph.map(item => [item.key, item]));
+  const jsFiles = new Set([htmlRecord.file]);
+  const visited = new Set();
+  const visit = item => {
+    if (visited.has(item.key)) return;
+    visited.add(item.key);
+    if (item.dynamicImports.length || item.css.length || item.assets.length) {
+      throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports, CSS or asset graph edges outside this package profile.`);
+    }
+    for (const key of item.imports) {
+      const dependency = byKey.get(key);
+      if (!dependency || !dependency.file.endsWith('.js') || dependency.isDynamicEntry) {
+        throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite static import ${key} is not a JavaScript chunk.`);
+      }
+      jsFiles.add(dependency.file);
+      visit(dependency);
+    }
+  };
+  visit(htmlRecord);
+  const graphChunks = artifacts.graph.filter(item => item !== htmlRecord);
+  if (graphChunks.some(item => !jsFiles.has(item.file)) || graphChunks.length !== visited.size - 1) {
+    throw new BuildError('UNSUPPORTED_VITE_GRAPH', 'Vite emitted JavaScript outside the selected HTML entry graph.');
+  }
+  const unexpectedFiles = artifacts.files.filter(file => ![htmlRecord.file, artifacts.manifestPath].includes(file.path)
+    && file.path !== htmlEntry && !file.path.endsWith('.map') && !jsFiles.has(file.path));
+  if (unexpectedFiles.length) throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite emitted unsupported files: ${unexpectedFiles.slice(0, 4).map(file => file.path).join(', ')}.`);
+  return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles };
+}
+
 /** Run the selected project's Vite build and capture its generated client artifact graph without rewriting sources. */
 export async function buildViteProject(options) {
   if (typeof options?.project !== 'string' || !options.project || typeof options?.out !== 'string' || !options.out) {
@@ -228,26 +352,18 @@ export async function buildViteProject(options) {
     before = await sourceSnapshot(measuredRoot);
     exclusions = before.exclusions.filter(path => path !== '.git');
     cancelled(options.signal);
-    const vite = await viteCli(root);
     staging = await mkdtemp(join(parent, '.3jsn-vite-'));
     const emitted = join(staging, 'web');
-    await runVite(vite.cli, root, emitted, options.signal);
-    cancelled(options.signal);
-    const files = await inventory(emitted);
-    const filePaths = new Set(files.map(file => file.path));
-    const manifestPath = '.vite/manifest.json';
-    if (!filePaths.has(manifestPath)) throw new BuildError('INVALID_VITE_MANIFEST', 'Vite did not emit the requested .vite/manifest.json.');
-    const manifest = JSON.parse(await readFile(join(emitted, ...manifestPath.split('/')), 'utf8'));
-    const graph = graphFromManifest(manifest, filePaths);
-    const maps = await sourceMaps(emitted, files);
-    const html = await documentReferences(emitted, files);
+    await mkdir(emitted);
+    const artifacts = await captureViteArtifacts({ project: root, outputDirectory: emitted, signal: options.signal });
+    const { viteVersion, manifestPath, graph, files, sourceMaps: maps, documents: html } = artifacts;
     const after = await sourceSnapshot(measuredRoot, exclusions);
     const preservation = compareSnapshots(before, after);
     if (!preservation.preserved) throw new BuildError('SOURCE_CHANGED', 'The Vite build changed project/workspace files; its output was not published.');
     cancelled(options.signal);
     const report = { schemaVersion: 1, status: 'experimental', adapter: 'vite-client-artifact-graph-v1',
       project: { rootName: projectPath.split(sep).filter(Boolean).at(-1) ?? '.', sourceRootName: measuredRoot.split(sep).filter(Boolean).at(-1) ?? '.',
-        relativeToSourceRoot: relative(measuredRoot, root).split(sep).join('/'), viteVersion: vite.version },
+        relativeToSourceRoot: relative(measuredRoot, root).split(sep).join('/'), viteVersion },
       executionBoundary: { status: 'unclassified', note: 'Vite configuration and plugins are trusted project code; this report does not identify or certify client/server boundaries.' },
       build: { command: ['vite', 'build', '--outDir', '<staging>/web', '--emptyOutDir', '--manifest', manifestPath, '--sourcemap'], configExecuted: true },
       source: { before, after, preservation }, manifest: { path: manifestPath, entries: graph }, files,

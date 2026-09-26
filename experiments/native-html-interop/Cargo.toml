@@ -12,6 +12,7 @@ path = "src/main.rs"
 [workspace]
 
 [dependencies]
+threejs-native-js-sources = { path = "../../crates/js-sources" }
 blitz-dom = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false, features = ["woff"] }
 blitz-html = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
 blitz-paint = { git = "https://github.com/DioxusLabs/blitz", rev = "9d92719b37c801b8b41c81b799a2a474db8b3936", default-features = false }
@@ -30,6 +31,8 @@ pollster = "=0.4.0"
 png = "=0.18.1"
 sha2 = "=0.10.9"
 deno_webgpu = "=0.226.0"
+deno_image = "=0.35.0"
+deno_fetch = "=0.283.0"
 
 deno_web = "=0.290.0"
 deno_webidl = "=0.259.0"

@@ -3,17 +3,20 @@
 `3jsn build` has initial local packaging paths for the `native-window-v1` and
 `dom-window-v1` fixtures. It bundles JavaScript/TypeScript and an explicitly supplied native player
 into a portable application directory. The shipped executable runs without Node,
-esbuild or a development server. This is not the unchanged-web-project pipeline:
-Vite builds, arbitrary HTML/CSS, WebGL, public-directory assets and full browser
+esbuild or a development server. A narrow Vite HTML/static-JavaScript graph can
+feed the experimental DOM profile, but this is not the unchanged-web-project
+pipeline. Arbitrary HTML/CSS, WebGL, public-directory assets and full browser
 services still need integration. Do not port a game to these fixtures as a
 compatibility workaround.
 
 | Profile | Entry and payload | Supplied player |
 | --- | --- | --- |
 | `native-window-v1` | JS/TS entry, source map and statically imported raster images | Current-host native-window player |
-| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font | Experimental macOS Metal DOM-window player |
+| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font; optional single-entry Vite capture | Experimental macOS Metal DOM-window player |
 
-The DOM profile still parses HTML/CSS at runtime. The
+The DOM profile still parses HTML/CSS at runtime. It has a narrow experimental
+Vite adapter for one static JavaScript graph; this does not establish general
+Vite compatibility. The
 [compiled UI architecture](adr/0003-compiled-ui-and-generic-compatibility.md) is a
 separate planned path; neither parser omission nor generic project compatibility
 is implied by this packaging checkpoint.
@@ -144,6 +147,35 @@ host, not the generic product contract. Accepted markup does not establish DOM,
 CSS or input support. Dynamic HTML/style/resource creation, lifecycle events,
 CSSOM, focus/forms/IME, scrolling and general asset loading remain unresolved.
 The current painter does not advance CSS animation/transition timelines.
+
+## Package a Vite HTML entry
+
+`--frontend vite` asks the project's installed Vite to build into temporary
+staging, then admits its output only when it contains one configured HTML entry
+and a single static JavaScript entry graph. Vite config and plugin code execute
+as trusted project code. The selected DOM profile still uses its runtime HTML
+and CSS parsers; generated HTML is checked against the same narrow grammar, and
+only the local module `src` is rewritten. The module is bundled into the normal
+package entry, with measured source-map inputs and the project snapshot retained
+in build metadata.
+
+From the repository root, use the DOM-window player, an explicit local fallback
+font, and an output directory outside the workspace:
+
+```sh
+node packages/cli/cli.mjs build examples --runtime target/debug/threejs-dom-window-probe --font .cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2 --frontend vite --out artifacts/vite-native-demo --experimental
+artifacts/vite-native-demo/3jsn-dom-demo --frames 120
+```
+
+The Vite config must identify one HTML input and disable Vite's module-preload
+polyfill for this profile. One static JavaScript chunk is accepted. CSS output,
+emitted assets, dynamic imports/chunks, workers, Wasm, public-directory files,
+multiple HTML entries and server builds fail closed; Vite's broad artifact
+inventory remains available separately through `3jsn vite-build`. Font
+auto-discovery and `--bundle-web-fonts` are not combined with this adapter.
+Only one macOS arm64/Metal fixture has passed the end-to-end relocation probe;
+the [checkpoint](validation/2026-09-26-vite-native-package.md) documents the
+evidence and remaining compatibility gates.
 
 `--font` is required for this profile and rejected for `native-window-v1`. The
 builder checks a regular WOFF2 input, its header/declared length and source/copy
