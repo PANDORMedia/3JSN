@@ -176,6 +176,18 @@ fn validate_path(path: &str) -> Result<(), PackageError> {
     Ok(())
 }
 
+fn validate_image_resource_path(path: &str) -> Result<(), PackageError> {
+    if !path
+        .bytes()
+        .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'/' | b'.' | b'_' | b'-'))
+    {
+        return Err(invalid(
+            "native image resource paths must use URL-safe ASCII characters",
+        ));
+    }
+    Ok(())
+}
+
 fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), PackageError> {
     let resources = match (&manifest.requires, &manifest.resources) {
         (None, None) => return Ok(()),
@@ -202,6 +214,9 @@ fn validate_resources(manifest: &Manifest, profile: Profile) -> Result<(), Packa
     let mut total = 0_u64;
     for resource in resources {
         validate_path(&resource.path)?;
+        if profile == Profile::NativeWindow && resource.kind == ResourceKind::Image {
+            validate_image_resource_path(&resource.path)?;
+        }
         if !paths.insert(resource.path.to_lowercase()) {
             return Err(invalid(format!("duplicate resource: {}", resource.path)));
         }
@@ -789,6 +804,27 @@ mod tests {
             load(&fixture.write(&manifest)).unwrap().resources.unwrap()[0].kind,
             ResourceKind::Image
         );
+    }
+
+    #[test]
+    fn native_image_resource_paths_must_be_url_safe() {
+        let valid = Fixture::new().image_manifest();
+        for path in [
+            "app/assets/a b.png",
+            "app/assets/café.png",
+            "app/assets/a%20b.png",
+            "app/assets/a#b.png",
+        ] {
+            let mut manifest = valid.clone();
+            manifest["resources"][0]["path"] = json!(path);
+            manifest["files"][1]["path"] = json!(path);
+            let manifest: Manifest = serde_json::from_value(manifest).unwrap();
+            let error = validate_resources(&manifest, Profile::NativeWindow).unwrap_err();
+            assert!(
+                error.to_string().contains("URL-safe ASCII"),
+                "accepted {path}"
+            );
+        }
     }
 
     #[test]

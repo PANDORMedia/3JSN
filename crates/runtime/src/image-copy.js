@@ -47,7 +47,7 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
       const destinationZ = originValue(destinationOrigin, "z", 2, "destination z");
       const mipLevel = integer(destinationInfo.mipLevel ?? 0, "mip level");
       const width = extentValue(copySize, "width", 0, bitmap.width - sourceX);
-      const height = extentValue(copySize, "height", 1, bitmap.height - sourceY);
+      const height = extentValue(copySize, "height", 1, 1);
       const depth = extentValue(copySize, "depthOrArrayLayers", 2, 1);
       if (mipLevel >= destination.mipLevelCount) {
         throw new DOMException("Image copy mip level is outside the destination texture", "OperationError");

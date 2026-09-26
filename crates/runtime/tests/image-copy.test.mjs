@@ -42,6 +42,12 @@ test('external image copies preserve dictionary origins and convert typed-array 
       { texture, origin: { x: 1, y: 0, z: 0 } }, { width: 1, height: 1 });
     assert.deepEqual([...dictionaryQueue.writes[0][1]], green);
     assert.deepEqual(dictionaryQueue.writes[0][0].origin, { x: 1, y: 0, z: 0 });
+
+    const defaultHeightQueue = new FixtureQueue();
+    defaultHeightQueue.copyExternalImageToTexture({ source: bitmap, origin: { x: 1, y: 0 } },
+      { texture }, { width: 1 });
+    assert.deepEqual([...defaultHeightQueue.writes[0][1]], green);
+    assert.deepEqual(defaultHeightQueue.writes[0][3], { width: 1, height: 1, depthOrArrayLayers: 1 });
   } finally {
     if (original === undefined) delete globalThis.ImageBitmap;
     else globalThis.ImageBitmap = original;

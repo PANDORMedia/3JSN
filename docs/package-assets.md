@@ -6,6 +6,10 @@ content-hashed files under `app/assets/` using URL-safe names that do not includ
 the source basename. It records their byte lengths and SHA-256 hashes in
 `app.json`, and declares the `package-assets-v1` capability. It refuses image
 imports when the supplied player does not advertise that capability.
+Native image resource paths in the package manifest must use the supported
+URL-safe ASCII subset (`A-Z`, `a-z`, digits, `/`, `.`, `_` and `-`); names containing
+spaces, non-ASCII characters, `%` or `#` are rejected before startup because
+the runtime accepts only canonical package URLs.
 
 For example, existing source can import a URL without a 3JSN-specific runtime
 API:
@@ -30,6 +34,9 @@ limited to 32 MiB, a package can declare at most 64 image resources, and their
 combined bytes are limited to 64 MiB. Missing or hash-mismatched package files
 fail before JavaScript starts. Unsupported request paths fail when fetched;
 decoder errors propagate from `createImageBitmap`.
+The supported `copyExternalImageToTexture` bridge honors dictionary and
+sequence origins and extents; omitted extent height and array-layer count use
+WebGPU's default of one.
 
 This path covers statically imported raster URLs emitted by esbuild. It does not
 discover Vite `public/` files, HTML/CSS URLs, arbitrary `fetch()` strings,
