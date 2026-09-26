@@ -37,8 +37,16 @@ distribution gates remain tracked in [#56](https://github.com/PANDORMedia/3JSN/i
 The packaged-image checkpoint now verifies an unchanged Three.js r186
 `ImageBitmapLoader` path from a relocated native package and quadrant readback
 on macOS Metal. The executable relocation probe passes on one M1 Pro. Broader
-image formats, WebGL uploads, SVG/glTF sidecars, Vite assets, and other-platform
-evidence remain open under [#27](https://github.com/PANDORMedia/3JSN/issues/27).
+image formats, WebGL uploads, SVG/glTF sidecars, general Vite assets, and
+other-platform evidence remain open under
+[#27](https://github.com/PANDORMedia/3JSN/issues/27).
+
+The [Vite native-package checkpoint](validation/2026-09-26-vite-native-package.md)
+passes one static Vite HTML/JavaScript graph through the DOM profile, source
+removal, relocation and 120 native Metal frames on the same Mac. This is a
+single-configuration integration result; general Vite builds, generated CSS or
+asset graphs, and other platforms remain open under
+[#37](https://github.com/PANDORMedia/3JSN/issues/37).
 
 The [compiled UI direction](adr/0003-compiled-ui-and-generic-compatibility.md)
 adds static HTML/CSS compilation and evidence-based parser omission to M3/M5.

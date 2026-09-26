@@ -6,6 +6,8 @@ on one Apple M1 Pro running macOS arm64 with Metal validation enabled. Vite
 manifest. The CLI captured that graph, checked its HTML against the DOM profile,
 bundled the generated module into the native package and recorded source
 identities. The example source snapshot was unchanged.
+The DOM host also loads the image and fetch extensions required by the shared
+web globals, using the package-only fetch shim for native launches.
 
 The executable passed package verification after relocation to a path containing
 spaces and Unicode. The disposable app sources, Vite installation and supplied
