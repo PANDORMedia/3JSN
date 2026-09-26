@@ -4,6 +4,7 @@ import { createReadStream } from 'node:fs';
 import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, rmdir, writeFile } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
+import { tokenizer as tokenizeJavaScript } from 'acorn';
 import { parse as parseHtml } from 'parse5';
 import { compareSnapshots, snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 import { BuildError, portablePath } from './contract.mjs';
@@ -385,61 +386,15 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   return { htmlFile: htmlEntry, entryScript: htmlRecord.file, jsFiles, modulePreloads: jsFiles, cssFiles, fontFiles };
 }
 
-function readJavaScriptString(source, start, quote) {
-  let value = '';
-  for (let index = start; index < source.length; index++) {
-    const character = source[index];
-    if (character === quote) return { value, end: index };
-    if (character !== '\\') { value += character; continue; }
-    const escaped = source[++index];
-    if (escaped === undefined) return undefined;
-    const simple = { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0' };
-    if (Object.hasOwn(simple, escaped)) { value += simple[escaped]; continue; }
-    if (escaped === '\n') continue;
-    if (escaped === '\r' && source[index + 1] === '\n') { index++; continue; }
-    if (escaped === 'x' && /^[\da-f]{2}$/i.test(source.slice(index + 1, index + 3))) {
-      value += String.fromCharCode(parseInt(source.slice(index + 1, index + 3), 16)); index += 2; continue;
-    }
-    if (escaped === 'u') {
-      const braced = /^\{([\da-f]+)\}/i.exec(source.slice(index + 1));
-      if (braced && Number.parseInt(braced[1], 16) <= 0x10ffff) {
-        value += String.fromCodePoint(Number.parseInt(braced[1], 16)); index += braced[0].length; continue;
-      }
-      const digits = source.slice(index + 1, index + 5);
-      if (/^[\da-f]{4}$/i.test(digits)) { value += String.fromCharCode(parseInt(digits, 16)); index += 4; continue; }
-    }
-    value += escaped;
-  }
-  return undefined;
-}
-
-function javascriptStringLiterals(source) {
+function javascriptStringLiterals(source, javascriptPath) {
   const values = [];
-  for (let index = 0; index < source.length; index++) {
-    const character = source[index];
-    if (character === '/' && source[index + 1] === '/') {
-      index += 2;
-      while (index < source.length && source[index] !== '\n' && source[index] !== '\r') index++;
-      continue;
+  try {
+    const tokenizer = tokenizeJavaScript(source, { ecmaVersion: 'latest', sourceType: 'module' });
+    for (let token; (token = tokenizer.getToken()).type.label !== 'eof';) {
+      if ((token.type.label === 'string' || token.type.label === 'template') && typeof token.value === 'string') values.push(token.value);
     }
-    if (character === '/' && source[index + 1] === '*') {
-      const end = source.indexOf('*/', index + 2);
-      index = end < 0 ? source.length : end + 1;
-      continue;
-    }
-    if (character === '"' || character === "'") {
-      const literal = readJavaScriptString(source, index + 1, character);
-      if (literal) { values.push(literal.value); index = literal.end; }
-      continue;
-    }
-    if (character === '`') {
-      const literal = readJavaScriptString(source, index + 1, '`');
-      if (literal) {
-        const raw = source.slice(index + 1, literal.end);
-        if (!raw.includes('${')) values.push(literal.value);
-        index = literal.end;
-      }
-    }
+  } catch (cause) {
+    throw new BuildError('INVALID_VITE_JAVASCRIPT', `Vite JavaScript cannot be tokenized safely: ${javascriptPath}`, { cause });
   }
   return values;
 }
@@ -455,7 +410,7 @@ function isEmittedAssetUrl(value, path, javascriptPath) {
 
 export function validateViteFontJavaScriptReferences(fontFiles, javascriptSources) {
   for (const [javascriptPath, source] of javascriptSources) {
-    const literals = javascriptStringLiterals(source);
+    const literals = javascriptStringLiterals(source, javascriptPath);
     for (const fontPath of fontFiles) {
       if (literals.some(value => isEmittedAssetUrl(value, fontPath, javascriptPath))) {
         throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite JavaScript ${javascriptPath} references a font URL that CSS localization cannot rewrite.`);

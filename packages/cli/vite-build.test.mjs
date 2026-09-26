@@ -172,6 +172,8 @@ test('webfont packaging rejects generated font URLs retained by JavaScript', () 
     new Map([['assets/main.js', '// ./assets/fixture-Skh_p6iR.woff2\n/* "/assets/fixture-Skh_p6iR.woff2" */ const note = "fixture-Skh_p6iR.woff2 is bundled";']])));
   assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
     new Map([['assets/main.js', 'const unrelated = "./other/fixture-Skh_p6iR.woff2";']])));
+  assert.doesNotThrow(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const label = `fixture-Skh_p6iR.woff2 is mentioned`;']])));
   for (const javascriptPath of ['assets/main.js', 'assets/chunk.js']) {
     assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
       new Map([[javascriptPath, 'const font = "/assets/fixture-Skh_p6iR.woff2?import";']])),
@@ -181,7 +183,16 @@ test('webfont packaging rejects generated font URLs retained by JavaScript', () 
     new Map([['assets/chunk/main.js', 'const font = "../fixture-Skh_p6iR.woff2";']])),
   { code: 'UNSUPPORTED_VITE_GRAPH' });
   assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const re=/"/; const font="/assets/fixture-Skh_p6iR.woff2";']])),
+  { code: 'UNSUPPORTED_VITE_GRAPH' });
+  assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const quotient = 8 / 2; const font="/assets/fixture-Skh_p6iR.woff2";']])),
+  { code: 'UNSUPPORTED_VITE_GRAPH' });
+  assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
     new Map([['assets/main.js', 'const font = `\\u002e/fixture-Skh_p6iR.woff2`;']])),
+  { code: 'UNSUPPORTED_VITE_GRAPH' });
+  assert.throws(() => validateViteFontJavaScriptReferences(fontFiles,
+    new Map([['assets/main.js', 'const font = `${"/assets/fixture-Skh_p6iR.woff2"}`;']])),
   { code: 'UNSUPPORTED_VITE_GRAPH' });
 });
 
