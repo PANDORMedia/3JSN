@@ -48,12 +48,14 @@ most 5,000 and project aggregation caps retained findings at 10,000. HTML traver
 is iterative, with depth 256 and 20,000 visited/queued nodes. Reaching a cap emits
 `ANALYSIS_INCOMPLETE`; missing findings cannot establish compatibility.
 
-Default parsers run in a terminable worker with a 10-second wall-clock deadline
-per discovery operation or JavaScript input. A deadline emits `ANALYSIS_TIMEOUT`
-and `ANALYSIS_INCOMPLETE`, still verifies preservation, and returns exit 1 if that
-verification succeeds. These limits do not bound the complete filesystem snapshot:
-all nonexcluded assets must be hashed to support the preservation claim. All nonexcluded files are still
-included in content preservation. Contained symlinks are preserved in the snapshot;
+Default parsers share one terminable worker for an inspection. Each synchronous
+discovery or JavaScript parse has a 10-second deadline, and all parser work shares
+a 30-second project budget. Either deadline emits `ANALYSIS_TIMEOUT` and
+`ANALYSIS_INCOMPLETE`, still verifies preservation, and returns exit 1 if that
+verification succeeds. These limits do not bound source scanning or the complete
+filesystem snapshot: all nonexcluded assets must be hashed to support the
+preservation claim. All nonexcluded files are still included in content
+preservation. Contained symlinks are preserved in the snapshot;
 their targets are analyzed through their normal paths. External/dangling links and source links into excluded dependencies
 cannot establish a self-contained snapshot and inspection fails explicitly.
 

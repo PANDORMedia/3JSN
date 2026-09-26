@@ -2,6 +2,7 @@ import { Worker, isMainThread, parentPort, workerData } from 'node:worker_thread
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { basename, join, resolve } from 'node:path';
+import { performance } from 'node:perf_hooks';
 import { snapshotTree, compareSnapshots } from '../../scripts/compatibility/snapshot.mjs';
 import { validateProfile, featureStatus } from '../../scripts/compatibility/profile.mjs';
 import { hostTarget } from './contract.mjs';
@@ -11,38 +12,97 @@ import { analyzeProjectFiles } from './check-discovery.mjs';
 const profilePath = new URL('../../docs/profiles/experimental-desktop-v1.json', import.meta.url);
 const javascript = /\.(?:[cm]?js|jsx|[cm]?ts|tsx)$/i;
 const sourceExtension = /\.(?:[cm]?js|jsx|[cm]?ts|tsx|html?|css)$/i;
-const limits = { files: 4096, fileBytes: 2 * 1024 * 1024, totalBytes: 32 * 1024 * 1024, findings: 10000, analysisMilliseconds: 10000 };
+const limits = { files: 4096, fileBytes: 2 * 1024 * 1024, totalBytes: 32 * 1024 * 1024, findings: 10000,
+  analysisMilliseconds: 10000, analysisBudgetMilliseconds: 30000 };
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const cancelled = signal => { if (signal?.aborted) throw Object.assign(new Error(), { code: 'CANCELLED' }); };
 const location = path => ({ path, line: 1, column: 1 });
 
 // Only this repository's parsers run in the worker; project text is inert input.
-// Termination keeps signals and parser deadlines independent of synchronous AST work.
-function isolatedAnalysis(operation, args, signal, milliseconds) {
-  cancelled(signal);
-  return new Promise((resolveResult, reject) => {
-    const worker = new Worker(new URL(import.meta.url), { workerData: { checkAnalysis: true, operation, args }, execArgv: [] });
-    let settled = false;
-    const finish = (error, value) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      signal?.removeEventListener('abort', abort);
-      worker.terminate().then(() => error ? reject(error) : resolveResult(value), reject);
-    };
-    const abort = () => finish(Object.assign(new Error(), { code: 'CANCELLED' }));
-    const timer = setTimeout(() => finish(Object.assign(new Error(), { code: 'ANALYSIS_TIMEOUT' })), milliseconds);
-    signal?.addEventListener('abort', abort, { once: true });
-    worker.once('message', value => finish(null, value));
-    worker.once('error', () => finish(Object.assign(new Error(), { code: 'ANALYSIS_FAILED' })));
-    worker.once('exit', () => { if (!settled) finish(Object.assign(new Error(), { code: 'ANALYSIS_FAILED' })); });
-    if (signal?.aborted) abort();
-  });
+class AnalysisSession {
+  constructor(signal, perInputMilliseconds, projectMilliseconds, WorkerCtor) {
+    this.signal = signal;
+    this.perInputMilliseconds = perInputMilliseconds;
+    this.projectDeadline = performance.now() + projectMilliseconds;
+    this.WorkerCtor = WorkerCtor;
+    this.worker = null;
+    this.sequence = 0;
+    this.pending = new Map();
+  }
+
+  remainingMilliseconds() { return this.projectDeadline - performance.now(); }
+
+  _finish(id, error, value) {
+    const pending = this.pending.get(id);
+    if (!pending) return;
+    this.pending.delete(id);
+    clearTimeout(pending.timer);
+    this.signal?.removeEventListener('abort', pending.abort);
+    if (error) pending.reject(error);
+    else pending.resolve(value);
+  }
+
+  _stop(worker, error) {
+    if (this.worker === worker) this.worker = null;
+    return worker.terminate().catch(() => undefined).then(() => {
+      for (const id of this.pending.keys()) this._finish(id, error);
+    });
+  }
+
+  _ensureWorker() {
+    if (this.worker) return this.worker;
+    const worker = new this.WorkerCtor(new URL(import.meta.url), { workerData: { checkAnalysis: true }, execArgv: [] });
+    this.worker = worker;
+    worker.on('message', message => {
+      if (!message || !Number.isSafeInteger(message.id)) return;
+      const error = message.error ? Object.assign(new Error(), { code: message.error }) : null;
+      this._finish(message.id, error, message.value);
+    });
+    worker.on('error', () => { void this._stop(worker, Object.assign(new Error(), { code: 'ANALYSIS_FAILED' })); });
+    worker.on('exit', () => {
+      if (this.worker === worker) {
+        this.worker = null;
+        for (const id of this.pending.keys()) this._finish(id, Object.assign(new Error(), { code: 'ANALYSIS_FAILED' }));
+      }
+    });
+    return worker;
+  }
+
+  async run(operation, args) {
+    cancelled(this.signal);
+    const remaining = this.remainingMilliseconds();
+    if (remaining <= 0) throw Object.assign(new Error(), { code: 'ANALYSIS_TIMEOUT' });
+    const timeout = Math.max(1, Math.min(this.perInputMilliseconds, Math.ceil(remaining)));
+    const worker = this._ensureWorker();
+    const id = ++this.sequence;
+    return new Promise((resolveResult, reject) => {
+      const abort = () => { void this._stop(worker, Object.assign(new Error(), { code: 'CANCELLED' })); };
+      const timer = setTimeout(() => { void this._stop(worker, Object.assign(new Error(), { code: 'ANALYSIS_TIMEOUT' })); }, timeout);
+      this.pending.set(id, { resolve: resolveResult, reject, abort, timer });
+      this.signal?.addEventListener('abort', abort, { once: true });
+      try { worker.postMessage({ id, operation, args }); }
+      catch { void this._stop(worker, Object.assign(new Error(), { code: 'ANALYSIS_FAILED' })); }
+      if (this.signal?.aborted) abort();
+    });
+  }
+
+  async close() {
+    const worker = this.worker;
+    if (worker) await this._stop(worker, Object.assign(new Error(), { code: 'CANCELLED' }));
+  }
 }
 
 if (!isMainThread && workerData?.checkAnalysis === true) {
-  const fn = workerData.operation === 'discover' ? analyzeProjectFiles : analyzeJavaScript;
-  parentPort.postMessage(fn(...workerData.args));
+  parentPort.on('message', message => {
+    if (!message || !Number.isSafeInteger(message.id) || !Array.isArray(message.args)) return;
+    try {
+      const fn = message.operation === 'discover' ? analyzeProjectFiles : message.operation === 'javascript' ? analyzeJavaScript : null;
+      if (!fn) throw new Error('Unknown analysis operation.');
+      parentPort.postMessage({ id: message.id, value: fn(...message.args) });
+    } catch {
+      parentPort.postMessage({ id: message.id, error: 'ANALYSIS_FAILED' });
+    }
+  });
 }
 
 function diagnostic(code, message, extra = {}) {
@@ -51,10 +111,11 @@ function diagnostic(code, message, extra = {}) {
 
 /** Inspect a quiescent source tree without resolving or executing its build configuration. */
 export async function checkProject(options, { snapshot = snapshotTree, read = readFile,
-  discover = analyzeProjectFiles, analyze = analyzeJavaScript, analysisMilliseconds = limits.analysisMilliseconds } = {}) {
+  discover = analyzeProjectFiles, analyze = analyzeJavaScript, analysisMilliseconds = limits.analysisMilliseconds,
+  analysisBudgetMilliseconds = limits.analysisBudgetMilliseconds, WorkerCtor = Worker } = {}) {
   const report = { schemaVersion: 1, operation: 'check', profile: null, targets: [],
     analysisCoverage: { mode: 'syntactic-project-inventory', runtimeTracing: false, certified: false,
-      sourceFiles: [], skippedFiles: [], limits,
+      sourceFiles: [], skippedFiles: [], limits: { ...limits },
       exclusions: ['.git', 'node_modules'], excludeBasenames: ['node_modules'],
       limitations: [
         'Findings are syntactic candidates, including potentially unused, shadowed, server and build-tool code. Reachability and client/server boundaries are unresolved.',
@@ -64,11 +125,14 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
       ] },
     project: { entryPages: [], packages: [], buildSystems: [], resources: [], imports: [], requirements: [] },
     diagnostics: [], preservation: { status: 'unknown', preserved: null }, artifacts: [], exitCode: 1 };
-  let before, root, failureCode;
+  let before, root, failureCode, analysisSession;
   try {
     if (!options || typeof options.project !== 'string' || !options.project
       || (options.targets !== undefined && typeof options.targets !== 'string')) throw Object.assign(new Error(), { code: 'USAGE' });
-    if (!Number.isSafeInteger(analysisMilliseconds) || analysisMilliseconds < 1) throw Object.assign(new Error(), { code: 'USAGE' });
+    if (!Number.isSafeInteger(analysisMilliseconds) || analysisMilliseconds < 1
+      || !Number.isSafeInteger(analysisBudgetMilliseconds) || analysisBudgetMilliseconds < 1) throw Object.assign(new Error(), { code: 'USAGE' });
+    report.analysisCoverage.limits.analysisMilliseconds = analysisMilliseconds;
+    report.analysisCoverage.limits.analysisBudgetMilliseconds = analysisBudgetMilliseconds;
     root = resolve(options.project);
     const profileBytes = await read(profilePath);
     let profile;
@@ -110,8 +174,9 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
       files.push({ path: entry.path, source });
       report.analysisCoverage.sourceFiles.push({ path: entry.path, bytes: entry.bytes, sha256: entry.sha256 });
     }
+    analysisSession = new AnalysisSession(options.signal, analysisMilliseconds, analysisBudgetMilliseconds, WorkerCtor);
     const found = discover === analyzeProjectFiles
-      ? await isolatedAnalysis('discover', [files], options.signal, analysisMilliseconds) : await discover(files);
+      ? await analysisSession.run('discover', [files]) : await discover(files);
     const requirements = [], uncertainties = [];
     report.project = { ...report.project, ...found, imports: [], requirements: [], resources: [] };
     delete report.project.uncertainties;
@@ -130,7 +195,7 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
       cancelled(options.signal);
       if (findingCount >= limits.findings) { truncated = true; return; }
       const result = analyze === analyzeJavaScript
-        ? await isolatedAnalysis('javascript', [source, path, offset], options.signal, analysisMilliseconds) : await analyze(source, path, offset);
+        ? await analysisSession.run('javascript', [source, path, offset]) : await analyze(source, path, offset);
       append(requirements, result.requirements);
       append(uncertainties, result.uncertainties);
       append(report.project.imports, result.imports);
@@ -164,13 +229,14 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
     cancelled(options.signal);
   } catch (error) {
     failureCode = error.code ?? 'CHECK_FAILED';
-    if (failureCode === 'ANALYSIS_TIMEOUT') report.diagnostics.push(diagnostic('ANALYSIS_INCOMPLETE', 'Parser wall-clock budget exceeded; inventory is incomplete.'));
+    if (failureCode === 'ANALYSIS_TIMEOUT') report.diagnostics.push(diagnostic('ANALYSIS_INCOMPLETE', 'A parser or project analysis time budget was exceeded; inventory is incomplete.'));
     report.diagnostics.push(diagnostic(failureCode, failureCode === 'CANCELLED'
       ? 'Inspection was cancelled; source verification follows.'
       : 'Inspection could not complete. Check invocation, profile, file permissions and source-tree stability; no project code was executed.'));
   } finally {
     // Inline source is only an analysis input, including when parsing or cancellation fails.
     for (const page of report.project.entryPages) for (const script of page.scripts ?? []) delete script.source;
+    await analysisSession?.close();
     if (before) {
       try {
         const after = await snapshot(root, { exclude: ['node_modules'], excludeBasenames: ['node_modules'] });
