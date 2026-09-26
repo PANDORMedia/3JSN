@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
+import { Worker } from 'node:worker_threads';
 import { checkProject } from './check.mjs';
 import { analyzeProjectFiles } from './check-discovery.mjs';
 import { snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
@@ -170,6 +171,54 @@ test('parser deadline returns incomplete inventory with preservation, not a tool
   assert.equal(report.preservation.preserved, true);
   assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
   assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+  const aggregate = await checkProject(f.options, { analysisMilliseconds: 10000, analysisBudgetMilliseconds: 1 });
+  assert.equal(aggregate.exitCode, 1);
+  assert.equal(aggregate.analysisCoverage.limits.analysisBudgetMilliseconds, 1);
+  assert.ok(aggregate.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.ok(aggregate.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+  assert.equal(aggregate.preservation.preserved, true);
+});
+
+test('parser results arriving during worker termination cannot override a fired deadline', async t => {
+  const f = await fixture(t);
+  let terminationComplete = false;
+  let finalSnapshotObservedTermination = false;
+  let snapshots = 0;
+  class LateResultWorker {
+    handlers = new Map();
+    on(name, callback) { this.handlers.set(name, callback); return this; }
+    postMessage({ id }) {
+      setTimeout(() => this.handlers.get('message')?.({ id, value: {
+        entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [],
+      } }), 10);
+    }
+    terminate() { return new Promise(resolveTerminate => setTimeout(() => {
+      terminationComplete = true;
+      resolveTerminate();
+    }, 30)); }
+  }
+  const report = await checkProject(f.options, { analysisMilliseconds: 1, WorkerCtor: LateResultWorker,
+    snapshot: async (...args) => {
+      const value = await snapshotTree(...args);
+      if (++snapshots > 1) finalSnapshotObservedTermination = terminationComplete;
+      return value;
+    } });
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+  assert.equal(finalSnapshotObservedTermination, true, 'final preservation verification must wait for parser worker termination');
+  assert.equal(report.preservation.preserved, true);
+});
+
+test('one isolated parser worker serves all project inputs', async t => {
+  const f = await fixture(t);
+  for (let index = 0; index < 32; index++) await writeFile(join(f.project, `module-${index}.js`), `export const value${index} = ${index};`);
+  let workers = 0;
+  class CountedWorker extends Worker {
+    constructor(...args) { workers++; super(...args); }
+  }
+  const report = await checkProject(f.options, { WorkerCtor: CountedWorker });
+  assert.equal(report.preservation.preserved, true);
+  assert.equal(report.exitCode, 1);
+  assert.equal(workers, 1);
 });
 
 test('abort can interrupt actual parser work and still verify preservation', async t => {
