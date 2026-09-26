@@ -179,6 +179,23 @@ test('parser deadline returns incomplete inventory with preservation, not a tool
   assert.equal(aggregate.preservation.preserved, true);
 });
 
+test('parser results arriving during worker termination cannot override a fired deadline', async t => {
+  const f = await fixture(t);
+  class LateResultWorker {
+    handlers = new Map();
+    on(name, callback) { this.handlers.set(name, callback); return this; }
+    postMessage({ id }) {
+      setTimeout(() => this.handlers.get('message')?.({ id, value: {
+        entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [],
+      } }), 10);
+    }
+    terminate() { return new Promise(resolveTerminate => setTimeout(resolveTerminate, 30)); }
+  }
+  const report = await checkProject(f.options, { analysisMilliseconds: 1, WorkerCtor: LateResultWorker });
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_TIMEOUT'));
+  assert.equal(report.preservation.preserved, true);
+});
+
 test('one isolated parser worker serves all project inputs', async t => {
   const f = await fixture(t);
   for (let index = 0; index < 32; index++) await writeFile(join(f.project, `module-${index}.js`), `export const value${index} = ${index};`);

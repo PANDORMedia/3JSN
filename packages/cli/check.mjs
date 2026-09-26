@@ -44,9 +44,8 @@ class AnalysisSession {
 
   _stop(worker, error) {
     if (this.worker === worker) this.worker = null;
-    return worker.terminate().catch(() => undefined).then(() => {
-      for (const id of this.pending.keys()) this._finish(id, error);
-    });
+    for (const id of this.pending.keys()) this._finish(id, error);
+    return worker.terminate().catch(() => undefined);
   }
 
   _ensureWorker() {
