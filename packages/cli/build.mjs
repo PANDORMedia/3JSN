@@ -103,7 +103,6 @@ function inputLabel(root, path, identity) {
 
 async function bundle(root, entry, staging, { allowImageResources }) {
   const loaded = new Map();
-  const imageInputs = new Set();
   let loadError;
   let result;
   const outfile = join(staging, 'app', 'main.mjs');
@@ -128,7 +127,6 @@ async function bundle(root, entry, staging, { allowImageResources }) {
             const contents = await readFile(path);
             const identity = { bytes: contents.length, sha256: digest(contents) };
             loaded.set(path, { path: inputLabel(root, path, identity), ...identity });
-            if (image) imageInputs.add(path);
             return { contents, loader, resolveDir: dirname(path) };
           } catch (error) { loadError ??= error; throw error; }
         });
@@ -148,8 +146,7 @@ async function bundle(root, entry, staging, { allowImageResources }) {
   }
   const imageOutputs = result.outputFiles.filter(item => IMAGE_EXTENSIONS.has(extname(item.path).toLowerCase()));
   const expected = new Set([outfile, `${outfile}.map`, ...imageOutputs.map(item => item.path)]);
-  if (result.outputFiles.length !== expected.size || result.outputFiles.some(item => !expected.has(item.path))
-    || imageInputs.size && !imageOutputs.length) {
+  if (result.outputFiles.length !== expected.size || result.outputFiles.some(item => !expected.has(item.path))) {
     throw new BuildError('UNSUPPORTED_OUTPUT', 'The build emitted an output outside the entry, source map and supported image assets.');
   }
   let imageBytes = 0;

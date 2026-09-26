@@ -117,6 +117,19 @@ test('native build emits integrity-checked raster imports as package image resou
   assert.equal(result.sourcePreserved, true);
 });
 
+test('tree-shaken raster imports do not require an emitted package resource', async t => {
+  const f = await fixture(t, 'import imageUrl from "./assets/checker.png";');
+  await mkdir(join(f.project, 'assets'));
+  const png = await readFile(new URL('../../crates/runtime/tests/fixtures/checker.png', import.meta.url));
+  await writeFile(join(f.project, 'assets/checker.png'), png);
+  const result = await f.build();
+  const manifest = await readJson(result.manifest);
+  assert.equal(manifest.requires, undefined);
+  assert.equal(manifest.resources, undefined);
+  assert.equal(manifest.files.some(file => file.path.startsWith('app/assets/')), false);
+  assert.equal(result.sourcePreserved, true);
+});
+
 test('native image asset URLs do not inherit unsafe source filenames', async t => {
   const sourcePath = 'assets/texture space % café.PNG';
   const f = await fixture(t, `import imageUrl from ${JSON.stringify(`./${sourcePath}`)}; console.log(imageUrl);`);

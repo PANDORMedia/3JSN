@@ -3,12 +3,19 @@ function integer(value, name) {
   return value;
 }
 
-function extentValue(size, name, index, fallback) {
-  return integer((Array.isArray(size) ? size[index] : size?.[name]) ?? fallback, name);
+function sequenceValues(value) {
+  if (Array.isArray(value)) return value;
+  return value && typeof value[Symbol.iterator] === "function" ? Array.from(value) : undefined;
 }
 
-function originValue(origin, name, index) {
-  return integer((Array.isArray(origin) ? origin[index] : origin?.[name]) ?? 0, name);
+function extentValue(size, name, index, fallback) {
+  const sequence = sequenceValues(size);
+  return integer((sequence ? sequence[index] : size?.[name]) ?? fallback, name);
+}
+
+function originValue(origin, key, index, label) {
+  const sequence = sequenceValues(origin);
+  return integer((sequence ? sequence[index] : origin?.[key]) ?? 0, label);
 }
 
 export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
@@ -33,11 +40,11 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
 
       const sourceOrigin = sourceInfo.origin ?? {};
       const destinationOrigin = destinationInfo.origin ?? {};
-      const sourceX = originValue(sourceOrigin, "source x", 0);
-      const sourceY = originValue(sourceOrigin, "source y", 1);
-      const destinationX = originValue(destinationOrigin, "destination x", 0);
-      const destinationY = originValue(destinationOrigin, "destination y", 1);
-      const destinationZ = originValue(destinationOrigin, "destination z", 2);
+      const sourceX = originValue(sourceOrigin, "x", 0, "source x");
+      const sourceY = originValue(sourceOrigin, "y", 1, "source y");
+      const destinationX = originValue(destinationOrigin, "x", 0, "destination x");
+      const destinationY = originValue(destinationOrigin, "y", 1, "destination y");
+      const destinationZ = originValue(destinationOrigin, "z", 2, "destination z");
       const mipLevel = integer(destinationInfo.mipLevel ?? 0, "mip level");
       const width = extentValue(copySize, "width", 0, bitmap.width - sourceX);
       const height = extentValue(copySize, "height", 1, bitmap.height - sourceY);
