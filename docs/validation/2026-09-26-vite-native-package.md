@@ -29,7 +29,8 @@ font and font-cache state, the relocated application loaded both resources with
 network and source-tree reads denied. The native host reported one font request,
 one registered face, zero pending faces and 759,644 decoded font bytes. It again
 presented 120 Metal frames with 120 canvas snapshots and no CPU image transport.
-The probe output was `/private/tmp/3jsn-vite-font-probe-20260926-4/report.json`.
+The probe writes these resource counters into its generated `report.json` as
+well as asserting them during the run.
 
 Reproduce from the repository root after preparing the pinned DOM experiment
 and installing the locked Node dependencies:
