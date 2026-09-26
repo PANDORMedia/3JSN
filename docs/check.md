@@ -27,9 +27,14 @@ source-map-remapped locations.
 
 - `project` contains entry, package, import, resource and requirement candidates.
   Script **names**, not their command strings, are recorded. Three.js declarations
-  are ranges, not proof of the installed/resolved version.
+  are ranges, not proof of the installed/resolved version. `dependencyResolutions`
+  records Three.js versions found in npm `package-lock.json` or
+  `npm-shrinkwrap.json`, with their lockfile and package path; these are locked
+  candidates, not evidence that the package is installed or used at runtime.
+  Exact versions longer than 128 characters are omitted to keep malformed
+  lockfiles from inflating the report.
 - `analysisCoverage` identifies measured/analyzed source files, skipped inputs,
-  limits and unimplemented analysis. Findings can include unused code, shadowed
+  inspected npm lockfiles, limits and unimplemented analysis. Findings can include unused code, shadowed
   names, server code and build tooling. They are not proven runtime requirements.
 - `diagnostics` distinguish unavailable features, unresolved syntax/dependencies
   and unverified targets. They include source locations where available.
@@ -38,13 +43,15 @@ source-map-remapped locations.
   explicitly recorded, including pnpm links inside those dependency trees. Contents of dependencies are not certified.
 - `artifacts` is empty: inspection does not package or launch anything.
 
-Analysis covers UTF-8 JS/TS/JSX, HTML, CSS and package manifests in the selected
-tree. It accepts at most 4,096 source files, 2 MiB per file and 32 MiB of analyzed
+Analysis covers UTF-8 JS/TS/JSX, HTML, CSS, package manifests and npm lockfiles in the selected
+tree. It accepts at most 4,096 inputs, 2 MiB per file and 32 MiB of analyzed
 text. Excess and undecodable source files, plus unsupported `.vue`/`.svelte`
 inputs, are listed as skipped and cause an incomplete-analysis diagnostic.
 Dependency trees are excluded from both analysis and preservation, not walked or
 hashed. Discovery emits at most 10,000 findings; each JavaScript input emits at
-most 5,000 and project aggregation caps retained findings at 10,000. HTML traversal
+most 5,000 and project aggregation caps retained findings at 10,000 across
+requirements, uncertainties, resources, imports and locked dependency resolution
+candidates. HTML traversal
 is iterative, with depth 256 and 20,000 visited/queued nodes. Reaching a cap emits
 `ANALYSIS_INCOMPLETE`; missing findings cannot establish compatibility.
 
@@ -58,7 +65,11 @@ their targets are analyzed through their normal paths. External/dangling links a
 cannot establish a self-contained snapshot and inspection fails explicitly.
 
 Static inventory does not resolve imports, aliases, installed dependencies,
-lockfiles, build outputs, client/server boundaries or source maps. Computed access,
+non-npm lockfiles, build outputs, client/server boundaries or source maps. For npm
+lockfiles, only exact Three.js package versions and lockfile package paths are
+reported. Safe relative npm link targets are followed within the same lockfile;
+unsafe or missing targets are omitted with an uncertainty. Integrity values,
+resolved URLs and other package metadata are not retained. Computed access,
 dynamic imports and generated behavior remain unresolved. There is no optional
 runtime trace implementation yet. Absence of a finding never means an API is safe.
 The current desktop profile has no completely verified target, so even a small

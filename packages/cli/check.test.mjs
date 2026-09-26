@@ -14,6 +14,9 @@ async function fixture(t) {
   await writeFile(join(project, 'package.json'), JSON.stringify({ name: 'game',
     scripts: { build: 'node malicious-command-with-SECRET.mjs' },
     dependencies: { three: '^0.186.0', vite: '^7.0.0' } }));
+  await writeFile(join(project, 'package-lock.json'), JSON.stringify({ lockfileVersion: 3, packages: {
+    '': { name: 'game' }, 'node_modules/three': { version: '0.186.1', resolved: 'https://user:SECRET@example.test/three.tgz?token=SECRET' },
+  } }));
   await writeFile(join(project, 'index.html'), '<!doctype html><title>Game</title><canvas></canvas><script type="module" src="./main.ts"></script>');
   await writeFile(join(project, 'main.ts'), 'import { WebGLRenderer as Renderer } from "three"; new Renderer(); fetch("https://user:SECRET@example.test/data?token=SECRET");');
   return { project, options: { project, targets: 'macos-arm64,windows-x64' } };
@@ -29,12 +32,31 @@ test('check inventories an unconfigured project, preserves sources and refuses u
   assert.deepEqual(await snapshotTree(f.project, { exclude: ['node_modules'] }), before);
   assert.equal(report.project.entryPages[0].path, 'index.html');
   assert.equal(report.project.packages[0].three, '^0.186.0');
+  assert.deepEqual(report.project.dependencyResolutions, [{ manager: 'npm', lockfile: 'package-lock.json',
+    packagePath: 'node_modules/three', name: 'three', version: '0.186.1',
+    evidence: 'Version recorded in an npm lockfile; installation and runtime use are unverified.' }]);
+  assert.deepEqual(report.analysisCoverage.lockfiles, report.analysisCoverage.sourceFiles.filter(file => file.path === 'package-lock.json'));
   assert(report.project.requirements.some(item => item.feature === 'graphics.webgl2'));
   assert(report.project.requirements.some(item => item.feature === 'services.fetch'));
   assert(report.diagnostics.some(item => item.code === 'DYNAMIC_BEHAVIOR_UNRESOLVED'));
   assert.equal(report.diagnostics.filter(item => item.code === 'TARGET_UNVERIFIED').length, 2);
   assert.equal(JSON.stringify(report).includes('SECRET'), false);
   assert.deepEqual(report.artifacts, []);
+});
+
+test('check analyzes npm lockfiles within the report and preservation boundaries', async t => {
+  const f = await fixture(t);
+  const report = await checkProject(f.options, { discover: files => analyzeProjectFiles(files),
+    analyze: () => ({ requirements: [], imports: [], assets: [], uncertainties: [] }) });
+  assert.equal(report.exitCode, 1);
+  assert.deepEqual(report.project.dependencyResolutions.map(({ lockfile, packagePath, version }) => ({ lockfile, packagePath, version })), [
+    { lockfile: 'package-lock.json', packagePath: 'node_modules/three', version: '0.186.1' },
+  ]);
+  assert.deepEqual(report.analysisCoverage.lockfiles.map(file => file.path), ['package-lock.json']);
+  assert.ok(report.analysisCoverage.lockfiles[0].bytes > 0);
+  assert.match(report.analysisCoverage.lockfiles[0].sha256, /^[0-9a-f]{64}$/);
+  assert.equal(report.preservation.preserved, true);
+  assert.equal(JSON.stringify(report).includes('SECRET'), false);
 });
 
 test('inline JavaScript has original locations and its source never enters reports', async t => {
@@ -161,6 +183,24 @@ test('large finding arrays aggregate without argument spread and fail closed at 
   assert.equal(report.preservation.preserved, true);
   assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
   assert.ok(report.diagnostics.length < 10100);
+});
+
+test('lockfile resolutions and source findings share the project finding limit', async t => {
+  const f = await fixture(t);
+  const report = await checkProject(f.options, {
+    discover: () => ({ entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [],
+      dependencyResolutions: Array.from({ length: 9999 }, (_, index) => ({ manager: 'npm', lockfile: 'package-lock.json',
+        packagePath: `node_modules/three-${index}`, name: 'three', version: '0.186.1' })) }),
+    analyze: () => ({ requirements: [], imports: Array.from({ length: 10 }, (_, index) => ({ kind: 'import', specifier: `module-${index}` })),
+      assets: [], uncertainties: [] }),
+  });
+  assert.equal(report.project.dependencyResolutions.length, 9999);
+  assert.equal(report.project.imports.length, 1);
+  assert.equal(report.project.dependencyResolutions.length + report.project.imports.length
+    + report.project.requirements.length + report.project.resources.length, 10000);
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.equal(report.exitCode, 1);
+  assert.equal(report.preservation.preserved, true);
 });
 
 test('parser deadline returns incomplete inventory with preservation, not a tool crash', async t => {

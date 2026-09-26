@@ -10,6 +10,47 @@ test('manifest discovery retains metadata without commands or endpoint versions'
   assert.ok(!JSON.stringify(result).includes('SECRET'));
 });
 
+test('npm lockfiles report exact Three.js version candidates without package metadata', () => {
+  const lockV3 = { lockfileVersion: 3, packages: {
+    '': { name: 'sample' }, 'node_modules/three': { link: true, resolved: 'packages/local three' },
+    'packages/local three': { name: 'three', version: '0.186.1' },
+    'apps/my game/node_modules/three': { version: '0.185.0' },
+    'node_modules/vite': { version: '7.0.0', resolved: 'https://user:SECRET@example.test/vite.tgz?token=SECRET' },
+    'node_modules/alias/node_modules/three': { name: 'other-package', version: '1.2.3' },
+    'https://user:SECRET@example.test/node_modules/three': { version: '0.183.0' },
+  } };
+  const lockV1 = { lockfileVersion: 1, dependencies: { vite: { version: '7.0.0', dependencies: { three: { version: '0.184.0' } } } } };
+  const result = analyzeProjectFiles([
+    { path: 'package-lock.json', source: JSON.stringify(lockV3) },
+    { path: 'apps/game/npm-shrinkwrap.json', source: JSON.stringify(lockV1) },
+  ]);
+  assert.ok(result.uncertainties.some(row => row.code === 'npm-three-alias-omitted'));
+  assert.ok(result.uncertainties.some(row => row.code === 'npm-three-path-omitted'));
+  assert.deepEqual(result.dependencyResolutions.map(({ lockfile, packagePath, name, version, evidence }) => ({ lockfile, packagePath, name, version, evidence })), [
+    { lockfile: 'package-lock.json', packagePath: 'node_modules/three', name: 'three', version: '0.186.1', evidence: 'Version recorded in an npm lockfile; installation and runtime use are unverified.' },
+    { lockfile: 'package-lock.json', packagePath: 'apps/my game/node_modules/three', name: 'three', version: '0.185.0', evidence: 'Version recorded in an npm lockfile; installation and runtime use are unverified.' },
+    { lockfile: 'apps/game/npm-shrinkwrap.json', packagePath: 'node_modules/vite/node_modules/three', name: 'three', version: '0.184.0', evidence: 'Version recorded in an npm lockfile; installation and runtime use are unverified.' },
+  ]);
+  assert.ok(!JSON.stringify(result).includes('SECRET'));
+  assert.ok(!JSON.stringify(result).includes('resolved'));
+});
+
+test('invalid npm lockfiles and unreportable Three.js versions are explicit and source-free', () => {
+  const result = analyzeProjectFiles([
+    { path: 'package-lock.json', source: '{"SECRET' },
+    { path: 'npm-shrinkwrap.json', source: JSON.stringify({ lockfileVersion: 3, packages: { 'node_modules/three': { version: 'file:../SECRET' } } }) },
+    { path: 'oversized-version/package-lock.json', source: JSON.stringify({ lockfileVersion: 3, packages: {
+      'node_modules/three': { version: `0.186.1-${'a'.repeat(129)}` },
+    } }) },
+    { path: 'apps/game/package-lock.json', source: JSON.stringify({ lockfileVersion: 3, packages: { 'node_modules/three': { link: true, resolved: '../../SECRET' } } }) },
+  ]);
+  assert.ok(result.uncertainties.some(row => row.code === 'invalid-lockfile'));
+  assert.equal(result.uncertainties.filter(row => row.code === 'npm-three-resolution-omitted').length, 2);
+  assert.ok(result.uncertainties.some(row => row.code === 'npm-three-link-omitted'));
+  assert.deepEqual(result.dependencyResolutions, []);
+  assert.ok(!JSON.stringify(result).includes('SECRET'));
+});
+
 test('invalid manifests produce located errors without input excerpts', () => {
   const result = analyzeProjectFiles([{ path: 'package.json', source: '{"SECRET' }, { path: 'nested/package.json', source: 'null' }]);
   assert.equal(result.uncertainties.length, 2);
