@@ -62,6 +62,17 @@ test('external image copies normalize origins, extents and WebIDL booleans', () 
     assert.deepEqual(generatorQueue.writes[0][0].origin, { x: 1, y: 0, z: 0 });
     assert.deepEqual(generatorQueue.writes[0][3], { width: 1, height: 2, depthOrArrayLayers: 1 });
 
+    const coercionQueue = new FixtureQueue();
+    coercionQueue.copyExternalImageToTexture({ source: bitmap, origin: { x: '1.9', y: 0 } },
+      { texture, origin: { x: '1.9', y: 0 } }, { width: '1.9', height: 1.9 });
+    assert.deepEqual([...coercionQueue.writes[0][1]], green);
+    assert.deepEqual(coercionQueue.writes[0][0].origin, { x: 1, y: 0, z: 0 });
+    assert.deepEqual(coercionQueue.writes[0][3], { width: 1, height: 1, depthOrArrayLayers: 1 });
+    assert.throws(() => coercionQueue.copyExternalImageToTexture({ source: bitmap },
+      { texture }, { width: -0.5 }), /Invalid image copy width/);
+    assert.throws(() => coercionQueue.copyExternalImageToTexture({ source: bitmap },
+      { texture }, { width: 0x1_0000_0000 }), /Invalid image copy width/);
+
     const flipQueue = new FixtureQueue();
     flipQueue.copyExternalImageToTexture({ source: bitmap, flipY: 1 },
       { texture }, { width: 1, height: 2 });

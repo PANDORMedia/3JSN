@@ -33,11 +33,13 @@ try {
   if (error.name !== "AbortError") throw error;
 }
 
-for (const url of ["./missing.png", "https://example.test/checker.png", "./checker.png?cache=1"]) {
+for (const url of ["./missing.png", "https://example.test/checker.png", "./checker.png?cache=1",
+  "./nested/%2e%2e/checker.png"]) {
   try {
     await fetch(url);
     throw new Error(`unsupported package request unexpectedly succeeded: ${url}`);
   } catch (error) {
     if (error.message.startsWith("unsupported package request unexpectedly succeeded")) throw error;
+    if (url.includes("%") && !error.message.includes("canonical path")) throw error;
   }
 }

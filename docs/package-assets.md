@@ -25,7 +25,8 @@ passes it to `createImageBitmap`. The player retains package-verified image byte
 in memory and provides the standard Deno `Request`, `Response` and `Headers`
 objects. Its global `fetch` resolves only paths at
 `threejsn://package/app/`; requests for missing resources, non-package origins,
-queries, fragments and non-canonical encoded paths reject with `TypeError`.
+queries, fragments and raw percent-encoded paths (including encoded dot
+segments) reject with `TypeError` before the fetch shim resolves the URL.
 This profile does not expose remote or filesystem fetch. Resource bytes stay
 independent of the process working directory after package verification.
 
@@ -36,7 +37,8 @@ fail before JavaScript starts. Unsupported request paths fail when fetched;
 decoder errors propagate from `createImageBitmap`.
 The supported `copyExternalImageToTexture` bridge honors dictionary and
 sequence origins and extents; omitted extent height and array-layer count use
-WebGPU's default of one, while the extent width remains required.
+WebGPU's default of one, while the extent width remains required. Coordinates
+use WebIDL unsigned-long coercion and reject values outside its range.
 
 This path covers statically imported raster URLs emitted by esbuild. It does not
 discover Vite `public/` files, HTML/CSS URLs, arbitrary `fetch()` strings,

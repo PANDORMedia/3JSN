@@ -1,6 +1,10 @@
 function integer(value, name) {
-  if (!Number.isSafeInteger(value) || value < 0) throw new TypeError(`Invalid image copy ${name}`);
-  return value;
+  let number;
+  try { number = +value; } catch { throw new TypeError(`Invalid image copy ${name}`); }
+  if (!Number.isFinite(number) || number < 0 || number > 0xffff_ffff) {
+    throw new TypeError(`Invalid image copy ${name}`);
+  }
+  return Math.trunc(number);
 }
 
 function sequenceValues(value) {

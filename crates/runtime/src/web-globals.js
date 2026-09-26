@@ -29,6 +29,9 @@ function packagedMimeType(pathname) {
 async function fetchPackageAsset(input, init = {}) {
   const inputUrl = input instanceof request.Request ? input.url
     : input instanceof url.URL ? input.href : String(input);
+  if (inputUrl.includes("%") || inputUrl.includes("\\")) {
+    throw new TypeError("packaged asset URL must use a canonical path");
+  }
   const target = new url.URL(inputUrl, packageBase);
   if (target.protocol !== "threejsn:" || target.hostname !== "package"
     || target.username || target.password || target.port || target.search || target.hash) {
