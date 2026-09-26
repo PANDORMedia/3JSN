@@ -15,8 +15,10 @@ function sequenceValues(value) {
 
 function extentValues(size) {
   const sequence = sequenceValues(size);
-  const value = (name, index, fallback) => integer(
-    (sequence ? sequence[index] : size?.[name]) ?? fallback, name);
+  const value = (name, index, fallback) => {
+    const field = sequence ? sequence[index] : size?.[name];
+    return integer(field === undefined ? fallback : field, name);
+  };
   return {
     width: value("width", 0, undefined),
     height: value("height", 1, 1),

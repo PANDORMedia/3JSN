@@ -53,6 +53,10 @@ test('external image copies normalize origins, extents and WebIDL booleans', () 
       { texture }, { width: 1 });
     assert.deepEqual([...defaultHeightQueue.writes[0][1]], green);
     assert.deepEqual(defaultHeightQueue.writes[0][3], { width: 1, height: 1, depthOrArrayLayers: 1 });
+    assert.throws(() => defaultHeightQueue.copyExternalImageToTexture(
+      { source: bitmap }, { texture }, { width: 1, height: null }), { name: 'OperationError' });
+    assert.throws(() => defaultHeightQueue.copyExternalImageToTexture(
+      { source: bitmap }, { texture }, { width: null, height: 1 }), { name: 'OperationError' });
 
     const once = function* (values) { yield* values; };
     const generatorQueue = new FixtureQueue();
