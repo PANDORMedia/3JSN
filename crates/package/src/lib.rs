@@ -889,7 +889,8 @@ mod tests {
         manifest["files"].as_array_mut().unwrap().push(json!({
             "path": path, "bytes": bytes.len(), "sha256": format!("{:x}", Sha256::digest(bytes))
         }));
-        let error = load_for(&fixture.write(&manifest), Profile::DomWindow).unwrap_err();
+        let manifest: Manifest = serde_json::from_value(manifest).unwrap();
+        let error = validate_resources(&manifest, Profile::DomWindow).unwrap_err();
         assert!(
             error
                 .to_string()
