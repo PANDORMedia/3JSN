@@ -155,6 +155,9 @@ test('local path traversal, symlinks and state aliases into source are rejected'
   }
   await assert.rejects(f.run({ stateDir: join(f.base, 'alias/cache') }, forbidNetwork), { code: 'FONT_STATE_INVALID' });
   await assert.rejects(f.run({ stateDir: f.options.outputDir }, forbidNetwork), { code: 'FONT_STATE_INVALID' });
+  const protectedState = join(f.base, 'workspace-font-state');
+  await assert.rejects(f.run({ stateDir: protectedState, protectedRoots: [f.base] }, forbidNetwork), { code: 'FONT_STATE_INVALID' });
+  await assert.rejects(readdir(protectedState), { code: 'ENOENT' });
 });
 
 test('cache ancestors cannot turn a project named blobs into a download directory', async t => {

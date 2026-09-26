@@ -343,7 +343,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
       if (options.bundleWebFonts) {
         webFonts = await localizeWebFonts({ projectRoot: viteOutput, outputDir: out, htmlEntry: config.entry,
           htmlBytes: normalizedHtml, stateDir: options.webFontsState ?? join(parent, '.3jsn-web-fonts', digest(root).slice(0, 16)),
-          offline: options.offline ?? false, signal, fontPolicy }, { fetchImpl });
+          offline: options.offline ?? false, signal, fontPolicy, protectedRoots: [snapshotRoot] }, { fetchImpl });
         if (webFonts.entry !== admitted.entryScript) throw new BuildError('INVALID_VITE_GRAPH', 'Localized Vite HTML entry differs from the admitted JavaScript entry.');
         webFonts.requirements = webFonts.requirements.map(requirement => ({ ...requirement,
           stylesheet: requirement.stylesheet.startsWith('file:')

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -269,6 +269,18 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
     profiles: ['dom-window-v1'], capabilities, target, backend: 'metal', v8: 'fixture' });
   const options = { project: f.project, runtime, out: output, font: fallback, frontend: 'vite', experimental: true, bundleWebFonts: true,
     webFontsState: join(f.temporary, 'font-state') };
+  const stateInsideWorkspace = join(f.project, 'font-cache');
+  const beforeInvalidState = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
+  await assert.rejects(buildProject({ ...options, out: join(f.temporary, 'vite-font-invalid-state'), webFontsState: stateInsideWorkspace }, {
+    describeRuntime: describe(['dom-package-fonts-v1']),
+  }), async error => {
+    assert.equal(error.code, 'FONT_STATE_INVALID');
+    assert.equal(error.sourcePreserved, true);
+    assert.equal((await readJson(error.receipt)).source.preservation.preserved, true);
+    return true;
+  });
+  assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), beforeInvalidState);
+  await assert.rejects(readdir(stateInsideWorkspace), { code: 'ENOENT' });
   const result = await buildProject(options, { describeRuntime: describe(['dom-package-fonts-v1']) });
   assert.deepEqual(await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] }), before);
   const manifest = await readJson(result.manifest);

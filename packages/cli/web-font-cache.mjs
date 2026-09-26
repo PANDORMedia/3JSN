@@ -64,13 +64,20 @@ function validateLock(value) {
 
 /** A single build owns the lease and awaits reads sequentially. Pins never update implicitly. */
 export async function openWebFontCache({ projectRoot, outputDir, stateDir, offline = false, signal, limits = WEB_FONT_LIMITS,
-  fetchImpl = globalThis.fetch }) {
+  protectedRoots = [], fetchImpl = globalThis.fetch }) {
   limits = validateLimits(limits);
+  if (!Array.isArray(protectedRoots) || protectedRoots.some(path => typeof path !== 'string' || !path)) {
+    fail('FONT_STATE_INVALID', 'Protected source roots must be existing directory paths.');
+  }
   const root = await realpath(projectRoot);
   const requestedState = resolve(stateDir);
   const state = await futureRealpath(requestedState);
   const output = await futureRealpath(resolve(outputDir));
-  if (within(root, state) || within(state, root) || within(output, state) || within(state, output)) fail('FONT_STATE_INVALID', 'Web-font state must be disjoint from the project and package output.');
+  const protectedPaths = await Promise.all(protectedRoots.map(path => realpath(path)));
+  if (within(root, state) || within(state, root) || within(output, state) || within(state, output)
+    || protectedPaths.some(path => within(path, state) || within(state, path))) {
+    fail('FONT_STATE_INVALID', 'Web-font state must be disjoint from the project, protected source roots and package output.');
+  }
   try { if ((await lstat(requestedState)).isSymbolicLink()) fail('FONT_STATE_INVALID', 'Web-font state cannot be a symbolic link.'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   checkAbort(signal);
   await mkdir(state, { recursive: true });

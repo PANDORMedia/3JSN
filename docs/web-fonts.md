@@ -43,7 +43,8 @@ or initial-screen glyph subsetting is added.
 
 State defaults to `<output-parent>/.3jsn-web-fonts/<project-identity>/`. Override
 it with `--web-fonts-state <directory>`. State, project and package output must be
-disjoint directory trees, including filesystem aliases. `lock.json` pins remote
+disjoint directory trees, including filesystem aliases. For Vite builds, the
+complete detected workspace is protected too. `lock.json` pins remote
 representations and `blobs/<sha256>` stores immutable bytes. Every use verifies
 the cached bytes. Existing pins never refresh silently: use a new state directory
 for an intentional provider update. A single build leases a state directory;

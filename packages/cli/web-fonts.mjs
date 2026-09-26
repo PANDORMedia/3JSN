@@ -147,9 +147,9 @@ function decodeCss(resource) {
 
 /** Localize the CSS/font graph without publishing a package or editing the project. */
 export async function localizeWebFonts({ projectRoot, outputDir, htmlEntry, htmlBytes, stateDir, offline = false, signal,
-  limits = WEB_FONT_LIMITS, fontPolicy }, { fetchImpl = globalThis.fetch } = {}) {
+  limits = WEB_FONT_LIMITS, fontPolicy, protectedRoots = [] }, { fetchImpl = globalThis.fetch } = {}) {
   const analysis = analyzeHtml(htmlBytes, htmlEntry, { webFonts: true });
-  const cache = await openWebFontCache({ projectRoot, outputDir, stateDir, offline, signal, limits, fetchImpl });
+  const cache = await openWebFontCache({ projectRoot, outputDir, stateDir, offline, signal, limits, protectedRoots, fetchImpl });
   limits = cache.limits;
   const files = new Map(), sheets = new Map(), provenance = [], requirements = [], replacements = [];
   let htmlBase, outputBytes = 0;
