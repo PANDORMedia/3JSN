@@ -340,14 +340,17 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
   }
   const byKey = new Map(artifacts.graph.map(item => [item.key, item]));
   const jsFiles = new Set([htmlRecord.file]);
-  const assetFiles = new Set(webFonts ? htmlRecord.assets : []);
+  const assetFiles = new Set();
+  const fontFilesByPath = new Set(webFonts ? artifacts.files.filter(file => file.fontContainer).map(file => file.path) : []);
   const visited = new Map();
   const visit = item => {
     if (visited.has(item.key)) return;
     visited.set(item.key, item);
-    if (item.dynamicImports.length || (item.assets.length && (item !== htmlRecord || !webFonts))) {
+    if (item.dynamicImports.length || (!webFonts && item.assets.length)
+      || item.assets.some(path => !fontFilesByPath.has(path))) {
       throw new BuildError('UNSUPPORTED_VITE_GRAPH', `Vite entry ${item.key} includes dynamic imports or asset graph edges outside this package profile.`);
     }
+    for (const path of item.assets) assetFiles.add(path);
     for (const key of item.imports) {
       const dependency = byKey.get(key);
       if (!dependency || !dependency.file.endsWith('.js') || dependency.isDynamicEntry) {
@@ -358,7 +361,6 @@ export function validateViteDomGraph(artifacts, htmlEntry, { webFonts = false } 
     }
   };
   visit(htmlRecord);
-  const fontFilesByPath = new Set(webFonts ? artifacts.files.filter(file => file.fontContainer).map(file => file.path) : []);
   const fontRecords = webFonts ? artifacts.graph.filter(item => fontFilesByPath.has(item.file)) : [];
   for (const item of fontRecords) assetFiles.add(item.file);
   const graphChunks = artifacts.graph.filter(item => item !== htmlRecord && !fontRecords.includes(item));

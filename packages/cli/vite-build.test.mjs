@@ -151,11 +151,16 @@ test('Vite DOM graph admits one static HTML and JavaScript entry with linked CSS
     graph: [{ ...record, assets: ['assets/not-a-font.woff2'] }], files: [...files, { path: 'assets/not-a-font.woff2' }] },
   'index.html', { webFonts: true }), { code: 'UNSUPPORTED_VITE_GRAPH' });
   const jsEntry = { ...record, imports: ['assets/chunk.js'] };
-  const jsChunk = { key: 'assets/chunk.js', file: 'assets/chunk.mjs', isEntry: false, isDynamicEntry: false,
-    imports: [], dynamicImports: [], css: [], assets: ['assets/font.woff2'] };
-  assert.throws(() => validateViteDomGraph({ ...artifacts, graph: [jsEntry, jsChunk, emittedFont],
-    files: [...files, { path: 'assets/font.woff2' }, { path: 'assets/chunk.mjs' }] }, 'index.html', { webFonts: true }),
-  { code: 'UNSUPPORTED_VITE_GRAPH' });
+  const jsChunk = { key: 'assets/chunk.js', file: 'assets/chunk.js', isEntry: false, isDynamicEntry: false,
+    imports: [], dynamicImports: [], css: ['assets/main.css'], assets: ['assets/brand-face'] };
+  const childFontGraph = validateViteDomGraph({ ...artifacts, graph: [jsEntry, jsChunk, emittedFont],
+    files: [...files, customNamedFont, { path: 'assets/chunk.js' }] }, 'index.html', { webFonts: true });
+  assert.deepEqual([...childFontGraph.fontFiles], ['assets/brand-face']);
+  assert.deepEqual([...childFontGraph.cssFiles], ['assets/main.css']);
+  assert.doesNotThrow(() => validateViteFontJavaScriptReferences(childFontGraph.fontFiles,
+    new Map([['assets/chunk.js', 'export const ready = true;']])));
+  assert.throws(() => validateViteFontJavaScriptReferences(childFontGraph.fontFiles,
+    new Map([['assets/chunk.js', 'const font = "./brand-face";']])), { code: 'UNSUPPORTED_VITE_GRAPH' });
   assert.throws(() => validateViteDomGraph({ ...artifacts, graph: [fontRecord], files: [...files, { path: 'assets/image.png' }] },
     'index.html', { webFonts: true }), { code: 'UNSUPPORTED_VITE_GRAPH' });
   assert.throws(() => validateViteDomGraph({ ...artifacts, files: files.filter(file => file.path !== 'assets/main.css') }, 'index.html'),
