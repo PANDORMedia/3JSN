@@ -1,10 +1,11 @@
 function integer(value, name) {
   let number;
   try { number = +value; } catch { throw new TypeError(`Invalid image copy ${name}`); }
-  if (!Number.isFinite(number) || number < 0 || number > 0xffff_ffff) {
+  const truncated = Math.trunc(number);
+  if (!Number.isFinite(number) || truncated < 0 || truncated > 0xffff_ffff) {
     throw new TypeError(`Invalid image copy ${name}`);
   }
-  return Math.trunc(number);
+  return truncated || 0;
 }
 
 function sequenceValues(value) {

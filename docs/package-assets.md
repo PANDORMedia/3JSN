@@ -38,7 +38,8 @@ decoder errors propagate from `createImageBitmap`.
 The supported `copyExternalImageToTexture` bridge honors dictionary and
 sequence origins and extents; omitted extent height and array-layer count use
 WebGPU's default of one, while the extent width remains required. Coordinates
-use WebIDL unsigned-long coercion and reject values outside its range.
+use WebIDL unsigned-long coercion, truncate toward zero, then reject values
+outside the type's range.
 
 This path covers statically imported raster URLs emitted by esbuild. It does not
 discover Vite `public/` files, HTML/CSS URLs, arbitrary `fetch()` strings,
