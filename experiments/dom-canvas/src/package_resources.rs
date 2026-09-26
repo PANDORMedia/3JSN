@@ -108,9 +108,9 @@ impl PackageResources {
             }
             if resource.bytes.len() as u64 > resource.kind.byte_limit() {
                 return Err(ResourceError::Limit(match resource.kind {
-                ResourceKind::Font => "font bytes",
-                ResourceKind::Stylesheet => "stylesheet bytes",
-                ResourceKind::Image => "image bytes",
+                    ResourceKind::Font => "font bytes",
+                    ResourceKind::Stylesheet => "stylesheet bytes",
+                    ResourceKind::Image => "image bytes",
                 }));
             }
             total = total

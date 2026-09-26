@@ -20,6 +20,7 @@
     "probe:window-lifecycle": "node scripts/probe-window-lifecycle.mjs",
     "probe:package": "node scripts/probe-package.mjs",
     "probe:package:image": "node scripts/probe-package-image.mjs",
+    "probe:package:vite": "node scripts/probe-vite-package.mjs",
     "doctor": "node scripts/doctor.mjs"
   },
   "dependencies": {
@@ -31,6 +32,7 @@
     "css-tree": "3.2.1",
     "esbuild": "0.28.2",
     "parse5": "8.0.1",
+    "vite": "8.3.0",
     "ws": "8.21.3"
   }
 }

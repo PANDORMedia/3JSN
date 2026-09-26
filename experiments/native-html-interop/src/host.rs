@@ -12,7 +12,7 @@ use crate::{Result, dom_bridge, metal::MetalBridge};
 
 deno_core::extension!(
     interop_globals,
-    deps = [deno_webidl, deno_web, deno_webgpu],
+    deps = [deno_webidl, deno_web, deno_webgpu, deno_image, deno_fetch],
     options = { instance: deno_webgpu::Instance },
     state = |state, options| state.put(options.instance),
 );
@@ -46,10 +46,16 @@ pub fn create_with_prepared_extensions(
     ));
     let mut globals = interop_globals::init(instance);
     globals.esm_entry_point = Some("ext:interop_globals/web-globals.js");
-    globals.esm_files = vec![deno_core::ExtensionFileSource::new(
-        "ext:interop_globals/web-globals.js",
-        deno_core::ascii_str_include!("../../../crates/runtime/src/web-globals.js"),
-    )]
+    globals.esm_files = vec![
+        deno_core::ExtensionFileSource::new(
+            "ext:interop_globals/web-globals.js",
+            deno_core::ascii_str_include!("../../../crates/runtime/src/web-globals.js"),
+        ),
+        deno_core::ExtensionFileSource::new(
+            "ext:interop_globals/image-copy.js",
+            deno_core::ascii_str_include!("../../../crates/runtime/src/image-copy.js"),
+        ),
+    ]
     .into();
     let mut installed = vec![
         deno_webidl::deno_webidl::init(),
@@ -60,6 +66,9 @@ pub fn create_with_prepared_extensions(
             deno_web::InMemoryBroadcastChannel::default(),
         ),
         deno_webgpu::deno_webgpu::init(),
+        deno_image::deno_image::init(),
+        threejs_native_js_sources::network_fetch_shim(),
+        deno_fetch::deno_fetch::init(deno_fetch::Options::default()),
         globals,
         dom_bridge::extension(html, config),
     ];

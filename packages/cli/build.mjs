@@ -3,13 +3,16 @@ import { createHash } from 'node:crypto';
 import { constants, createReadStream } from 'node:fs';
 import { chmod, copyFile, lstat, mkdir, mkdtemp, readFile, realpath, rename, rm, rmdir, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import * as esbuild from 'esbuild';
 import { compareSnapshots, snapshotTree } from '../../scripts/compatibility/snapshot.mjs';
 import { BuildError, DOM_PROFILE, hostTarget, limitationsFor, portablePath, readConfig, validateDescription, validateProfileTarget, validateTargets } from './contract.mjs';
-import { analyzeHtml, prepareHtml } from './html.mjs';
+import { analyzeHtml, prepareHtml, renderHtml } from './html.mjs';
 import { localizeWebFonts } from './web-fonts.mjs';
 import { validateWebFontRequirements, validateWebFontRuntime, WEB_FONT_CAPABILITY } from './web-font-policy.mjs';
+import { captureViteArtifacts, normalizeViteHtml, sourceRoot as viteSourceRoot,
+  sourceSnapshot as viteSourceSnapshot, validateViteDomGraph } from './vite-build.mjs';
 
 const execute = promisify(execFile);
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -95,15 +98,54 @@ export async function describeRuntime(runtime, { signal } = {}) {
   }
 }
 
-function inputLabel(root, path, identity) {
+function inputLabel(root, path, identity, generatedRoot) {
   if (within(root, path)) return `project/${forward(relative(root, path))}`;
+  if (generatedRoot && within(generatedRoot, path)) return `vite-output/${forward(relative(generatedRoot, path))}`;
   const parts = path.split(sep);
   return `dependencies/${identity.sha256.slice(0, 16)}/${parts.slice(parts.lastIndexOf('node_modules') + 1).join('/')}`;
 }
 
-async function bundle(root, entry, staging, { allowImageResources }) {
+async function viteSourceMapInputs(outputRoot, maps, sourceRoot, projectRoot) {
+  const inputs = new Map();
+  const dependencyRoots = [];
+  for (let current = projectRoot; ; current = dirname(current)) {
+    try { dependencyRoots.push(await realpath(join(current, 'node_modules'))); } catch {}
+    if (current === dirname(current)) break;
+  }
+  for (const record of maps) {
+    const mapPath = join(outputRoot, ...record.path.split('/'));
+    let map;
+    try { map = JSON.parse(await readFile(mapPath, 'utf8')); } catch (cause) {
+      throw new BuildError('INVALID_SOURCE_MAP', `Cannot read Vite source map ${record.path}.`, { cause });
+    }
+    for (const [index, source] of map.sources.entries()) {
+      let candidate;
+      try {
+        candidate = source.startsWith('file:') ? fileURLToPath(source)
+          : resolve(dirname(mapPath), map.sourceRoot ?? '', source);
+      } catch (cause) { throw new BuildError('UNSUPPORTED_SOURCE_MAP', `Vite source map contains an unsupported source: ${source}.`, { cause }); }
+      let path;
+      try { path = await realpath(candidate); } catch (cause) {
+        throw new BuildError('UNSUPPORTED_SOURCE_MAP', `Vite source map refers to a missing source: ${source}.`, { cause });
+      }
+      if (!within(sourceRoot, path) && !dependencyRoots.some(dependencyRoot => within(dependencyRoot, path))) {
+        throw new BuildError('UNSUPPORTED_SOURCE_MAP', 'Vite source maps may reference only measured project/workspace files and installed dependencies.');
+      }
+      const identity = await fileIdentity(path);
+      const content = map.sourcesContent?.[index];
+      if (typeof content === 'string' && digest(Buffer.from(content)) !== identity.sha256) {
+        throw new BuildError('VITE_SOURCE_CHANGED', `Vite source-map content differs from the measured source: ${source}.`);
+      }
+      inputs.set(path, { path, ...identity });
+    }
+  }
+  return [...inputs.values()];
+}
+
+async function bundle(root, entry, staging, { allowImageResources, labelRoot = root, generatedRoot, additionalInputs = [] }) {
   const loaded = new Map();
   const imageInputs = new Set();
+  for (const item of additionalInputs) loaded.set(item.path, { path: inputLabel(labelRoot, item.path, item, generatedRoot), bytes: item.bytes, sha256: item.sha256 });
   let loadError;
   let result;
   const outfile = join(staging, 'app', 'main.mjs');
@@ -127,7 +169,7 @@ async function bundle(root, entry, staging, { allowImageResources }) {
             if (!loader) throw new BuildError('UNSUPPORTED_INPUT', `Only bundled JavaScript, TypeScript and JSON inputs are supported: ${basename(path)}`);
             const contents = await readFile(path);
             const identity = { bytes: contents.length, sha256: digest(contents) };
-            loaded.set(path, { path: inputLabel(root, path, identity), ...identity });
+            loaded.set(path, { path: inputLabel(labelRoot, path, identity, generatedRoot), ...identity });
             if (image) imageInputs.add(path);
             return { contents, loader, resolveDir: dirname(path) };
           } catch (error) { loadError ??= error; throw error; }
@@ -203,6 +245,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
   validateTargets(options.targets, target);
   if (options.experimental !== true) throw new BuildError('EXPERIMENTAL_REQUIRED', 'Pass --experimental to acknowledge the bounded experimental build profile.');
   if (![options.project, options.runtime, options.out].every(value => typeof value === 'string' && value)) throw new BuildError('USAGE', 'Project, runtime and output paths are required.');
+  if (options.frontend !== undefined && options.frontend !== 'vite') throw new BuildError('USAGE', 'The only supported --frontend value is vite.');
+  const useVite = options.frontend === 'vite';
   const { signal } = options;
   checkCancellation(signal);
   const projectPath = resolve(options.project);
@@ -215,17 +259,27 @@ export async function buildProject(options, { describeRuntime: describe = descri
   if (await exists(out)) throw new BuildError('OUTPUT_EXISTS', 'The output path already exists; no files were replaced.');
   if (!(await lstat(parent)).isDirectory()) throw new BuildError('INVALID_OUTPUT', 'The output parent must already be a directory.');
   const runtime = resolve(options.runtime);
-  let before, after, preservation, staging, config, font, webFonts, reserved = false;
+  let before, after, preservation, staging, config, font, webFonts, viteArtifacts, viteOutput, viteSummary,
+    snapshotRoot = root, snapshotExclusions, reserved = false;
   const published = [];
   let primary;
   try {
-    before = await snapshotTree(root, { exclude: ['node_modules'] });
+    if (useVite) {
+      snapshotRoot = await viteSourceRoot(root);
+      if (within(snapshotRoot, out)) throw new BuildError('INVALID_OUTPUT', 'Vite package output must be outside the detected project workspace.');
+      before = await viteSourceSnapshot(snapshotRoot);
+      snapshotExclusions = before.exclusions.filter(path => path !== '.git');
+    } else before = await snapshotTree(root, { exclude: ['node_modules'] });
     checkCancellation(signal);
     config = await readConfig(join(root, '3jsn.json'));
     validateProfileTarget(config.profile, target);
     const isDom = config.profile === DOM_PROFILE;
+    if (useVite && !isDom) throw new BuildError('UNSUPPORTED_FRONTEND', 'The Vite frontend adapter currently requires dom-window-v1 and an HTML entry.');
     if (Object.hasOwn(options, 'bundleWebFonts') && options.bundleWebFonts !== true) throw new BuildError('USAGE', '--bundle-web-fonts must be an explicit opt-in.');
     if (options.bundleWebFonts && !isDom) throw new BuildError('UNEXPECTED_WEB_FONTS', '--bundle-web-fonts is accepted only by dom-window-v1.');
+    if (useVite && (options.bundleWebFonts || Object.hasOwn(options, 'webFontsState') || Object.hasOwn(options, 'offline')) ) {
+      throw new BuildError('UNSUPPORTED_FRONTEND', 'Vite packaging and webfont localization cannot be combined in this profile yet.');
+    }
     if (!options.bundleWebFonts && ['webFontsState', 'offline'].some(key => Object.hasOwn(options, key))) throw new BuildError('UNEXPECTED_WEB_FONTS', '--web-fonts-state and --offline require --bundle-web-fonts.');
     if (Object.hasOwn(options, 'webFontsState') && (typeof options.webFontsState !== 'string' || !options.webFontsState)) throw new BuildError('USAGE', '--web-fonts-state requires a directory path.');
     if (Object.hasOwn(options, 'offline') && typeof options.offline !== 'boolean') throw new BuildError('USAGE', '--offline must be boolean.');
@@ -233,8 +287,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
     if (isDom) font = await inspectFont(options.font);
     const configuredEntry = await regularContainedEntry(root, config.entry);
     const htmlSource = isDom ? await readFile(configuredEntry) : undefined;
-    let html = isDom ? (options.bundleWebFonts ? analyzeHtml(htmlSource, config.entry, { webFonts: true }) : prepareHtml(htmlSource, config.entry)) : undefined;
-    const entry = html ? await regularContainedEntry(root, html.entry) : configuredEntry;
+    let html = isDom && !useVite
+      ? (options.bundleWebFonts ? analyzeHtml(htmlSource, config.entry, { webFonts: true }) : prepareHtml(htmlSource, config.entry))
+      : undefined;
+    let entry = html ? await regularContainedEntry(root, html.entry) : configuredEntry;
     const runtimeBefore = await fileIdentity(runtime);
     checkCancellation(signal);
     const description = validateDescription(await describe(runtime, { signal }), target, config.profile);
@@ -251,7 +307,31 @@ export async function buildProject(options, { describeRuntime: describe = descri
     }
     staging = await mkdtemp(join(parent, '.3jsn-build-'));
     checkCancellation(signal);
-    const built = await bundle(root, entry, staging, { allowImageResources: !isDom });
+    let bundleRoot = root;
+    let additionalInputs = [];
+    if (useVite) {
+      viteOutput = join(staging, 'vite');
+      await mkdir(viteOutput);
+      viteArtifacts = await captureViteArtifacts({ project: root, outputDirectory: viteOutput, signal, base: './' });
+      const admitted = validateViteDomGraph(viteArtifacts, config.entry);
+      const generatedHtml = await readFile(join(viteOutput, ...admitted.htmlFile.split('/')));
+      const normalizedHtml = normalizeViteHtml(generatedHtml, { htmlPath: config.entry,
+        allowedScripts: admitted.jsFiles, allowedModulePreloads: admitted.modulePreloads });
+      const analysis = analyzeHtml(normalizedHtml, config.entry);
+      if (analysis.entry !== admitted.entryScript) throw new BuildError('INVALID_VITE_GRAPH', 'Vite HTML script does not resolve to the manifest JavaScript entry.');
+      html = { ...analysis, bytes: renderHtml(analysis), metadata: { ...analysis.metadata,
+        interpretation: 'vite-generated-interim-runtime-html-css', generatedHtml: admitted.htmlFile,
+        adapter: 'vite-client-artifact-graph-v1' } };
+      entry = join(viteOutput, ...analysis.entry.split('/'));
+      bundleRoot = viteOutput;
+      additionalInputs = await viteSourceMapInputs(viteOutput, viteArtifacts.sourceMaps, snapshotRoot, root);
+      viteSummary = { version: viteArtifacts.viteVersion, manifest: viteArtifacts.manifestPath,
+        htmlEntry: admitted.htmlFile, javascriptEntry: admitted.entryScript,
+        staticModules: [...admitted.jsFiles].sort(), capturedFiles: viteArtifacts.files };
+    }
+    const built = await bundle(bundleRoot, entry, staging, {
+      allowImageResources: !isDom, labelRoot: snapshotRoot, generatedRoot: useVite ? viteOutput : undefined, additionalInputs,
+    });
     if (built.resources.length && (!Array.isArray(description.capabilities)
       || !description.capabilities.includes(PACKAGE_ASSETS_CAPABILITY))) {
       throw new BuildError('INCOMPATIBLE_RUNTIME', `The supplied player does not advertise ${PACKAGE_ASSETS_CAPABILITY}.`);
@@ -284,7 +364,8 @@ export async function buildProject(options, { describeRuntime: describe = descri
         : built.resources.length ? { requires: [PACKAGE_ASSETS_CAPABILITY], resources: built.resources } : {}), files: built.files };
     const manifestBytes = jsonBytes(manifest);
     if (Buffer.byteLength(manifestBytes) > 1024 * 1024 || manifest.files.length > 4096) throw new BuildError('MANIFEST_LIMIT', 'Package manifest exceeds version 1 limits.');
-    after = await snapshotTree(root, { exclude: ['node_modules'] });
+    after = useVite ? await viteSourceSnapshot(snapshotRoot, snapshotExclusions)
+      : await snapshotTree(root, { exclude: ['node_modules'] });
     preservation = compareSnapshots(before, after);
     checkCancellation(signal);
     if (!preservation.preserved) throw new BuildError('SOURCE_CHANGED', 'Project source changed during the build; the output was not published.');
@@ -292,6 +373,10 @@ export async function buildProject(options, { describeRuntime: describe = descri
       const final = await fileIdentity(path);
       checkCancellation(signal);
       if (final.sha256 !== initial.sha256 || final.bytes !== initial.bytes) throw new BuildError('INPUT_CHANGED', 'A bundled dependency changed before publication.');
+    }
+    if (viteOutput) {
+      await rm(viteOutput, { recursive: true, force: true });
+      viteOutput = undefined;
     }
     for (const initial of webFonts?.sourceInputs ?? []) {
       const final = await fileIdentity(join(root, initial.path));
@@ -304,6 +389,7 @@ export async function buildProject(options, { describeRuntime: describe = descri
       compatibility: { certified: false, unresolvedDynamicBehavior: true, limitations: limitationsFor(config.profile, { webFonts: Boolean(webFonts) }) },
       config, runtime: { executable, ...copiedRuntime, description },
       source: { before, after, preservation }, esbuild: built.metadata,
+      ...(viteSummary ? { vite: viteSummary } : {}),
       ...(html ? { html: { ...html.metadata, source: { path: config.entry, bytes: htmlSource.length, sha256: digest(htmlSource) },
         generated: { path: 'app/index.html', bytes: html.bytes.length, sha256: digest(html.bytes) } }, assets: { font: fontMetadata(font) } } : {}),
       ...(webFonts ? { webFonts: { capability: WEB_FONT_CAPABILITY, stateDir: webFonts.stateDir, offline: options.offline ?? false,
@@ -346,7 +432,11 @@ export async function buildProject(options, { describeRuntime: describe = descri
   if (before) {
     after = undefined;
     preservation = undefined;
-    try { after = await snapshotTree(root, { exclude: ['node_modules'] }); preservation = compareSnapshots(before, after); } catch (error) { snapshotError = failure(error); }
+    try {
+      after = useVite ? await viteSourceSnapshot(snapshotRoot, snapshotExclusions)
+        : await snapshotTree(root, { exclude: ['node_modules'] });
+      preservation = compareSnapshots(before, after);
+    } catch (error) { snapshotError = failure(error); }
   }
   const error = primary instanceof BuildError ? primary : new BuildError(primary.code ?? 'BUILD_FAILED', primary.message, { cause: primary });
   let fontError;

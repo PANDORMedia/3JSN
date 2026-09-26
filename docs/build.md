@@ -3,17 +3,20 @@
 `3jsn build` has initial local packaging paths for the `native-window-v1` and
 `dom-window-v1` fixtures. It bundles JavaScript/TypeScript and an explicitly supplied native player
 into a portable application directory. The shipped executable runs without Node,
-esbuild or a development server. This is not the unchanged-web-project pipeline:
-Vite builds, arbitrary HTML/CSS, WebGL, public-directory assets and full browser
+esbuild or a development server. A narrow Vite HTML/static-JavaScript graph can
+feed the experimental DOM profile, but this is not the unchanged-web-project
+pipeline. Arbitrary HTML/CSS, WebGL, public-directory assets and full browser
 services still need integration. Do not port a game to these fixtures as a
 compatibility workaround.
 
 | Profile | Entry and payload | Supplied player |
 | --- | --- | --- |
 | `native-window-v1` | JS/TS entry, source map and statically imported raster images | Current-host native-window player |
-| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font | Experimental macOS Metal DOM-window player |
+| `dom-window-v1` | Bounded HTML entry, one bundled module/map and explicit WOFF2 font; optional single-entry Vite capture | Experimental macOS Metal DOM-window player |
 
-The DOM profile still parses HTML/CSS at runtime. The
+The DOM profile still parses HTML/CSS at runtime. It has a narrow experimental
+Vite adapter for one static JavaScript graph; this does not establish general
+Vite compatibility. The
 [compiled UI architecture](adr/0003-compiled-ui-and-generic-compatibility.md) is a
 separate planned path; neither parser omission nor generic project compatibility
 is implied by this packaging checkpoint.
@@ -35,6 +38,47 @@ On Windows, use `target/release/threejs-native-player.exe`. The npm bin entry is
 Output must not already exist, its parent must exist, and it must be outside the
 project directory. No overwrite switch, automatic runtime download, package
 installation or project build-script execution is provided.
+
+## Inspect a Vite build
+
+For an existing Vite application, `vite-build` invokes the Vite installation
+resolved from the selected project/workspace without running an npm script or
+installing dependencies:
+
+```sh
+node packages/cli/cli.mjs vite-build path/to/workspace/packages/game \
+  --out artifacts/vite-game
+```
+
+The selected project directory is Vite's working directory. Its Vite config and
+plugins execute as trusted project code. The adapter preserves Vite's configured
+root/base and plugin/build behavior while directing output to a unique staging
+directory and requesting Vite's manifest and source maps. The destination must
+be a new directory outside the detected npm/pnpm workspace. Output is copied to
+`web/`, with a `build-report.json` beside it; this is captured web output, not a
+native application package. The adapter does not edit application files or run
+package scripts. It hashes the selected project and detected workspace before
+and after success, failure and cancellation; `.git` and `node_modules` trees
+are excluded. These hashes detect changes, not prevent a Vite plugin from
+writing elsewhere.
+
+The report records each Vite manifest entry and its static/dynamic import, CSS
+and asset references, every emitted regular file (including plugin, public,
+worker and Wasm outputs), SHA-256 identities, and source-map source lists. HTML
+reference extraction is limited to `src`, `href` and `poster` attributes; it does
+not resolve `srcset`, inline-style URLs, computed JavaScript URLs or network
+requests. Those remain unresolved inputs, even when related output files appear
+in the inventory.
+Symlink outputs, malformed manifest references, more than 10,000 files, files
+over 128 MiB or output over 2 GiB fail the build. This inventory does not yet
+reject case-folding or Unicode-normalization path collisions, so it does not
+certify that filenames are portable across target filesystems. Cancellation
+terminates the Vite process and publishes no output. Vite config/plugin code is
+arbitrary trusted code; the adapter is not a sandbox. Its report labels client/server
+boundaries unclassified because plugin-defined builds can add SSR or other
+environments. Capturing a worker or Wasm file does not establish that the native
+runtime can execute it. The runtime package contract still admits only its
+documented narrow output profiles.
 
 The example has a `3jsn.json` configuration:
 
@@ -103,6 +147,35 @@ host, not the generic product contract. Accepted markup does not establish DOM,
 CSS or input support. Dynamic HTML/style/resource creation, lifecycle events,
 CSSOM, focus/forms/IME, scrolling and general asset loading remain unresolved.
 The current painter does not advance CSS animation/transition timelines.
+
+## Package a Vite HTML entry
+
+`--frontend vite` asks the project's installed Vite to build into temporary
+staging, then admits its output only when it contains one configured HTML entry
+and a single static JavaScript entry graph. Vite config and plugin code execute
+as trusted project code. The selected DOM profile still uses its runtime HTML
+and CSS parsers; generated HTML is checked against the same narrow grammar, and
+only the local module `src` is rewritten. The module is bundled into the normal
+package entry, with measured source-map inputs and the project snapshot retained
+in build metadata.
+
+From the repository root, use the DOM-window player, an explicit local fallback
+font, and an output directory outside the workspace:
+
+```sh
+node packages/cli/cli.mjs build examples --runtime target/debug/threejs-dom-window-probe --font .cache/dom-canvas/blitz/examples/wasm_hello/assets/DejaVuSans.woff2 --frontend vite --out artifacts/vite-native-demo --experimental
+artifacts/vite-native-demo/3jsn-dom-demo --frames 120
+```
+
+The Vite config must identify one HTML input and disable Vite's module-preload
+polyfill for this profile. One static JavaScript chunk is accepted. CSS output,
+emitted assets, dynamic imports/chunks, workers, Wasm, public-directory files,
+multiple HTML entries and server builds fail closed; Vite's broad artifact
+inventory remains available separately through `3jsn vite-build`. Font
+auto-discovery and `--bundle-web-fonts` are not combined with this adapter.
+Only one macOS arm64/Metal fixture has passed the end-to-end relocation probe;
+the [checkpoint](validation/2026-09-26-vite-native-package.md) documents the
+evidence and remaining compatibility gates.
 
 `--font` is required for this profile and rejected for `native-window-v1`. The
 builder checks a regular WOFF2 input, its header/declared length and source/copy
