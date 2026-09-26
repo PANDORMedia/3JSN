@@ -27,6 +27,7 @@ function packagedMimeType(pathname) {
 }
 
 async function fetchPackageAsset(input, init = {}) {
+  init ??= {};
   const inputUrl = input instanceof request.Request ? input.url
     : input instanceof url.URL ? input.href : String(input);
   if (inputUrl.includes("%") || inputUrl.includes("\\")) {
@@ -78,7 +79,7 @@ Object.assign(globalThis, {
   Headers: headers.Headers,
   Request: request.Request,
   Response: response.Response,
-  fetch: fetchPackageAsset,
+  ...(typeof core.ops.op_native_load_package_asset === "function" ? { fetch: fetchPackageAsset } : {}),
   Blob: file.Blob,
   File: file.File,
   ImageBitmap: image.ImageBitmap,

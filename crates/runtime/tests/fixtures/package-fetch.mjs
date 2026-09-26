@@ -9,6 +9,10 @@ if (!(response instanceof Response) || response.status !== 200 || !response.ok) 
 if (response.headers.get("content-type") !== "image/png") {
   throw new Error("packaged fetch lost its image media type");
 }
+const nullInit = await fetch("./checker.png", null);
+if (!(nullInit instanceof Response) || nullInit.status !== 200) {
+  throw new Error("null RequestInit was not treated as an empty dictionary");
+}
 const blob = await response.blob();
 if (!(blob instanceof Blob) || blob.type !== "image/png") {
   throw new Error("Response.blob did not preserve the packaged image type");
