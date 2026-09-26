@@ -116,7 +116,7 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
     const found = discover === analyzeProjectFiles
       ? await isolatedAnalysis('discover', [files], options.signal, analysisMilliseconds) : await discover(files);
     const requirements = [], uncertainties = [];
-    report.project = { ...report.project, ...found, imports: [], requirements: [], resources: [] };
+    report.project = { ...report.project, ...found, imports: [], requirements: [], resources: [], dependencyResolutions: [] };
     delete report.project.uncertainties;
     let findingCount = 0;
     let truncated = false;
@@ -126,6 +126,7 @@ export async function checkProject(options, { snapshot = snapshotTree, read = re
         target.push(row); findingCount++;
       }
     };
+    append(report.project.dependencyResolutions, found.dependencyResolutions);
     append(requirements, found.requirements);
     append(uncertainties, found.uncertainties);
     append(report.project.resources, found.resources);

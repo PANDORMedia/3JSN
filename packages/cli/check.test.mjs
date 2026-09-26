@@ -185,6 +185,24 @@ test('large finding arrays aggregate without argument spread and fail closed at 
   assert.ok(report.diagnostics.length < 10100);
 });
 
+test('lockfile resolutions and source findings share the project finding limit', async t => {
+  const f = await fixture(t);
+  const report = await checkProject(f.options, {
+    discover: () => ({ entryPages: [], packages: [], buildSystems: [], resources: [], requirements: [], uncertainties: [],
+      dependencyResolutions: Array.from({ length: 9999 }, (_, index) => ({ manager: 'npm', lockfile: 'package-lock.json',
+        packagePath: `node_modules/three-${index}`, name: 'three', version: '0.186.1' })) }),
+    analyze: () => ({ requirements: [], imports: Array.from({ length: 10 }, (_, index) => ({ kind: 'import', specifier: `module-${index}` })),
+      assets: [], uncertainties: [] }),
+  });
+  assert.equal(report.project.dependencyResolutions.length, 9999);
+  assert.equal(report.project.imports.length, 1);
+  assert.equal(report.project.dependencyResolutions.length + report.project.imports.length
+    + report.project.requirements.length + report.project.resources.length, 10000);
+  assert.ok(report.diagnostics.some(row => row.code === 'ANALYSIS_INCOMPLETE'));
+  assert.equal(report.exitCode, 1);
+  assert.equal(report.preservation.preserved, true);
+});
+
 test('parser deadline returns incomplete inventory with preservation, not a tool crash', async t => {
   const f = await fixture(t);
   const report = await checkProject(f.options, { analysisMilliseconds: 1 });

@@ -49,7 +49,9 @@ text. Excess and undecodable source files, plus unsupported `.vue`/`.svelte`
 inputs, are listed as skipped and cause an incomplete-analysis diagnostic.
 Dependency trees are excluded from both analysis and preservation, not walked or
 hashed. Discovery emits at most 10,000 findings; each JavaScript input emits at
-most 5,000 and project aggregation caps retained findings at 10,000. HTML traversal
+most 5,000 and project aggregation caps retained findings at 10,000 across
+requirements, uncertainties, resources, imports and locked dependency resolution
+candidates. HTML traversal
 is iterative, with depth 256 and 20,000 visited/queued nodes. Reaching a cap emits
 `ANALYSIS_INCOMPLETE`; missing findings cannot establish compatibility.
 
