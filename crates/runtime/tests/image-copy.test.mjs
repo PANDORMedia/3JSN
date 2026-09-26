@@ -24,18 +24,19 @@ class FixtureQueue {
 
 installImageBitmapTextureCopy({ GPUQueue: FixtureQueue, GPUTexture: FixtureTexture });
 
-test('external image copies preserve dictionary origins and convert typed-array sequences', () => {
+test('external image copies normalize origins, extents and WebIDL booleans', () => {
   const original = globalThis.ImageBitmap;
   globalThis.ImageBitmap = FixtureBitmap;
   try {
     const red = [255, 0, 0, 255], green = [0, 255, 0, 255];
-    const bitmap = new FixtureBitmap(2, 2, Uint8Array.from([...red, ...green, ...red, ...green]));
+    const blue = [0, 0, 255, 255], white = [255, 255, 255, 255];
+    const bitmap = new FixtureBitmap(2, 2, Uint8Array.from([...red, ...green, ...blue, ...white]));
     const texture = new FixtureTexture();
     const queue = new FixtureQueue();
     queue.copyExternalImageToTexture({ source: bitmap, origin: new Uint32Array([1, 0]) },
       { texture, origin: new Uint32Array([1, 0, 0]) }, new Uint32Array([1, 1]));
     assert.deepEqual([...queue.writes[0][1]], green);
-    assert.deepEqual(queue.writes[0][0].origin, new Uint32Array([1, 0, 0]));
+    assert.deepEqual(queue.writes[0][0].origin, { x: 1, y: 0, z: 0 });
 
     const dictionaryQueue = new FixtureQueue();
     dictionaryQueue.copyExternalImageToTexture({ source: bitmap, origin: { x: 1, y: 0 } },
@@ -52,6 +53,21 @@ test('external image copies preserve dictionary origins and convert typed-array 
       { texture }, { width: 1 });
     assert.deepEqual([...defaultHeightQueue.writes[0][1]], green);
     assert.deepEqual(defaultHeightQueue.writes[0][3], { width: 1, height: 1, depthOrArrayLayers: 1 });
+
+    const once = function* (values) { yield* values; };
+    const generatorQueue = new FixtureQueue();
+    generatorQueue.copyExternalImageToTexture({ source: bitmap, origin: once([1, 0]) },
+      { texture, origin: once([1, 0, 0]) }, once([1, 2]));
+    assert.deepEqual([...generatorQueue.writes[0][1]], [...green, ...white]);
+    assert.deepEqual(generatorQueue.writes[0][0].origin, { x: 1, y: 0, z: 0 });
+    assert.deepEqual(generatorQueue.writes[0][3], { width: 1, height: 2, depthOrArrayLayers: 1 });
+
+    const flipQueue = new FixtureQueue();
+    flipQueue.copyExternalImageToTexture({ source: bitmap, flipY: 1 },
+      { texture }, { width: 1, height: 2 });
+    assert.deepEqual([...flipQueue.writes[0][1]], [...blue, ...red]);
+    assert.throws(() => flipQueue.copyExternalImageToTexture({ source: bitmap },
+      { texture, premultipliedAlpha: 1 }, { width: 1 }), { name: 'NotSupportedError' });
   } finally {
     if (original === undefined) delete globalThis.ImageBitmap;
     else globalThis.ImageBitmap = original;

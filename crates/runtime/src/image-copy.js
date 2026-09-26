@@ -8,14 +8,23 @@ function sequenceValues(value) {
   return value && typeof value[Symbol.iterator] === "function" ? Array.from(value) : undefined;
 }
 
-function extentValue(size, name, index, fallback) {
+function extentValues(size) {
   const sequence = sequenceValues(size);
-  return integer((sequence ? sequence[index] : size?.[name]) ?? fallback, name);
+  const value = (name, index, fallback) => integer(
+    (sequence ? sequence[index] : size?.[name]) ?? fallback, name);
+  return {
+    width: value("width", 0, undefined),
+    height: value("height", 1, 1),
+    depth: value("depthOrArrayLayers", 2, 1),
+  };
 }
 
-function originValue(origin, key, index, label) {
+function originValues(origin, label, includeDepth) {
   const sequence = sequenceValues(origin);
-  return integer((sequence ? sequence[index] : origin?.[key]) ?? 0, label);
+  const value = (key, index) => integer((sequence ? sequence[index] : origin?.[key]) ?? 0, `${label} ${key}`);
+  const result = { x: value("x", 0), y: value("y", 1) };
+  if (includeDepth) result.z = value("z", 2);
+  return result;
 }
 
 export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
@@ -31,24 +40,21 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
       if (!(destination instanceof GPUTexture)) {
         throw new TypeError("copyExternalImageToTexture requires a GPUTexture destination");
       }
-      if ((destinationInfo.colorSpace ?? "srgb") !== "srgb" || destinationInfo.premultipliedAlpha === true) {
+      const premultipliedAlpha = Boolean(destinationInfo.premultipliedAlpha);
+      if ((destinationInfo.colorSpace ?? "srgb") !== "srgb" || premultipliedAlpha) {
         throw new DOMException("Only straight-alpha sRGB image copies are supported", "NotSupportedError");
       }
       if (destination.format !== "rgba8unorm" && destination.format !== "rgba8unorm-srgb") {
         throw new DOMException("Image copies require an rgba8unorm destination texture", "NotSupportedError");
       }
 
-      const sourceOrigin = sourceInfo.origin ?? {};
-      const destinationOrigin = destinationInfo.origin ?? {};
-      const sourceX = originValue(sourceOrigin, "x", 0, "source x");
-      const sourceY = originValue(sourceOrigin, "y", 1, "source y");
-      const destinationX = originValue(destinationOrigin, "x", 0, "destination x");
-      const destinationY = originValue(destinationOrigin, "y", 1, "destination y");
-      const destinationZ = originValue(destinationOrigin, "z", 2, "destination z");
+      const sourceOrigin = originValues(sourceInfo.origin, "source", false);
+      const destinationOrigin = originValues(destinationInfo.origin, "destination", true);
+      const { x: sourceX, y: sourceY } = sourceOrigin;
+      const { x: destinationX, y: destinationY, z: destinationZ } = destinationOrigin;
       const mipLevel = integer(destinationInfo.mipLevel ?? 0, "mip level");
-      const width = extentValue(copySize, "width", 0);
-      const height = extentValue(copySize, "height", 1, 1);
-      const depth = extentValue(copySize, "depthOrArrayLayers", 2, 1);
+      const { width, height, depth } = extentValues(copySize);
+      const flipY = Boolean(sourceInfo.flipY);
       if (mipLevel >= destination.mipLevelCount) {
         throw new DOMException("Image copy mip level is outside the destination texture", "OperationError");
       }
@@ -70,10 +76,10 @@ export function installImageBitmapTextureCopy({ GPUQueue, GPUTexture }) {
         throw new DOMException("ImageBitmap has no usable RGBA pixel data", "InvalidStateError");
       }
       let upload = rgba;
-      if (sourceX !== 0 || sourceY !== 0 || width !== bitmap.width || height !== bitmap.height || sourceInfo.flipY === true) {
+      if (sourceX !== 0 || sourceY !== 0 || width !== bitmap.width || height !== bitmap.height || flipY) {
         upload = new Uint8Array(width * height * 4);
         for (let y = 0; y < height; y++) {
-          const sourceRow = sourceY + (sourceInfo.flipY === true ? height - 1 - y : y);
+          const sourceRow = sourceY + (flipY ? height - 1 - y : y);
           const start = (sourceRow * bitmap.width + sourceX) * 4;
           upload.set(rgba.subarray(start, start + width * 4), y * width * 4);
         }
