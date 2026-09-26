@@ -29,6 +29,53 @@ const remoteUrl = value => {
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.hash) fail('FONT_URL_INVALID', 'Remote CSS/font URLs must be HTTP(S), without credentials or fragments.');
   return url.href;
 };
+const fontDataTypes = new Set(['font/woff', 'font/woff2', 'font/ttf', 'font/otf', 'application/font-woff',
+  'application/font-woff2', 'application/x-font-woff', 'application/x-font-woff2', 'application/x-font-ttf',
+  'application/x-font-truetype', 'application/x-font-opentype', 'application/vnd.ms-opentype', 'application/font-sfnt']);
+
+function decodeInlineFont(value, limit) {
+  const comma = value.indexOf(',');
+  if (comma < 5) fail('FONT_URL_INVALID', 'Malformed inline font data URL.');
+  const parts = value.slice(5, comma).split(';');
+  const mediaType = parts.shift()?.toLowerCase();
+  if (!fontDataTypes.has(mediaType)) fail('FONT_DATA_TYPE', 'Inline font data URL must declare a supported font MIME type.');
+  let base64 = false, charsetSeen = false;
+  for (let index = 0; index < parts.length; index++) {
+    const parameter = parts[index];
+    if (parameter.toLowerCase() === 'base64' && index === parts.length - 1 && !base64) { base64 = true; continue; }
+    if (/^charset=(?:utf-8|us-ascii)$/i.test(parameter) && !charsetSeen) { charsetSeen = true; continue; }
+    fail('FONT_URL_INVALID', 'Inline font data URL contains an unsupported or malformed parameter.');
+  }
+  const payload = value.slice(comma + 1);
+  let bytes;
+  if (base64) {
+    if (payload.length > Math.ceil(limit / 3) * 4 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(payload)) {
+      if (payload.length > Math.ceil(limit / 3) * 4) fail('FONT_RESOURCE_LIMIT', 'Inline font data exceeds the configured font byte limit.');
+      fail('FONT_URL_INVALID', 'Inline font data URL has malformed base64 payload.');
+    }
+    bytes = Buffer.from(payload, 'base64');
+    if (bytes.toString('base64') !== payload) fail('FONT_URL_INVALID', 'Inline font data URL has non-canonical base64 payload.');
+  } else {
+    if (payload.length > limit * 3) fail('FONT_RESOURCE_LIMIT', 'Inline font data exceeds the configured font byte limit.');
+    const octets = Buffer.alloc(Math.min(payload.length, limit));
+    let length = 0;
+    for (let index = 0; index < payload.length; index++) {
+      if (payload[index] === '%') {
+        const hex = payload.slice(index + 1, index + 3);
+        if (!/^[\da-f]{2}$/i.test(hex)) fail('FONT_URL_INVALID', 'Inline font data URL has malformed percent-encoding.');
+        octets[length++] = parseInt(hex, 16); index += 2;
+      } else {
+        const code = payload.charCodeAt(index);
+        if (code > 0x7f) fail('FONT_URL_INVALID', 'Inline font data URL must percent-encode non-ASCII bytes.');
+        octets[length++] = code;
+      }
+      if (length > limit) fail('FONT_RESOURCE_LIMIT', 'Inline font data exceeds the configured font byte limit.');
+    }
+    bytes = octets.subarray(0, length);
+  }
+  if (bytes.length > limit) fail('FONT_RESOURCE_LIMIT', 'Inline font data exceeds the configured font byte limit.');
+  return { bytes, contentType: mediaType };
+}
 
 async function futureRealpath(path) {
   try { return await realpath(path); } catch (error) {
@@ -196,10 +243,21 @@ export async function openWebFontCache({ projectRoot, outputDir, stateDir, offli
         if (!['font', 'stylesheet'].includes(kind)) fail('FONT_RESOURCE_INVALID', 'Unknown resource kind.');
         checkAbort(signal);
         const url = new URL(value);
-        if (url.protocol !== 'file:') remoteUrl(url.href);
         const key = `${kind}:${url.href}`;
         if (loaded.has(key)) return loaded.get(key);
         if (++resourceCount > limits.resources) fail('FONT_RESOURCE_LIMIT', 'CSS/font resource count exceeds the configured limit.');
+        if (url.protocol === 'data:') {
+          if (kind !== 'font') fail('FONT_URL_INVALID', 'Inline data URLs are supported only for font resources.');
+          const inline = decodeInlineFont(url.href, limits.fontBytes);
+          reserve(kind, inline.bytes.length);
+          const identity = { contentType: inline.contentType, bytes: inline.bytes.length, sha256: hash(inline.bytes) };
+          const result = { bytes: inline.bytes, finalUrl: `data:${inline.contentType};sha256=${identity.sha256}`,
+            provenance: { kind, inlineData: identity } };
+          totalBytes += inline.bytes.length;
+          loaded.set(key, result);
+          return result;
+        }
+        if (url.protocol !== 'file:') remoteUrl(url.href);
         const result = url.protocol === 'file:' ? await readLocal(url, kind) : await readRemote(url.href, kind);
         totalBytes += result.bytes.length;
         loaded.set(key, result);

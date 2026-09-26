@@ -15,6 +15,11 @@ Emitted font assets are identified by their container signature, so Vite output
 filenames need not use a font extension. Direct JavaScript URLs to those emitted
 fonts are rejected because this profile rewrites CSS references only; comments
 and unrelated strings that merely mention a font filename are not treated as URLs.
+CSS font `data:` URLs are decoded into ordinary packaged font resources, including
+Vite's default inline output for small fonts. Only recognized font MIME types with
+matching TTF/OTF/WOFF/WOFF2 bytes are accepted; base64 and percent-encoded bytes
+are supported within the same font and aggregate resource limits. Payloads are
+omitted from build provenance and lock files.
 
 ```sh
 node packages/cli/cli.mjs build fixtures/web-fonts \

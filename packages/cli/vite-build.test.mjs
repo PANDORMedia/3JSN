@@ -280,7 +280,7 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
     + '<link rel="stylesheet" href="/src/main.css"><script type="module" src="/src/main.js"></script></body></html>');
   await writeFile(join(f.project, 'vite.config.js'), 'export default { build: { modulePreload: { polyfill: false } } };');
   await writeFile(join(f.project, 'src/main.js'), "import * as THREE from 'three/webgpu'; console.log(THREE.REVISION);");
-  await writeFile(join(f.project, 'src/main.css'), '@font-face { font-family: Fixture; src: url(./fixture.woff2?no-inline) format("woff2"); } body { font-family: Fixture; }');
+  await writeFile(join(f.project, 'src/main.css'), '@font-face { font-family: Fixture; src: url(./fixture.woff2) format("woff2"); } body { font-family: Fixture; }');
   await writeFile(join(f.project, 'src/fixture.woff2'), sourceFont);
   await rm(join(f.project, 'public'), { recursive: true, force: true });
   const before = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
@@ -315,10 +315,12 @@ test('3jsn build localizes Vite webfonts only with the explicit font capability'
   assert.match(packagedHtml, /href="\.\/styles\/[a-f0-9]+\.css"/);
   const metadata = await readJson(result.metadata);
   assert.equal(metadata.vite.packagedStylesheets.length, 0);
-  assert.equal(metadata.webFonts.sourceInputs.some(input => input.path.endsWith('.woff2')), true);
+  assert.equal(metadata.webFonts.provenance.some(input => input.inlineData?.contentType === 'font/woff2'), true);
+  assert.equal(metadata.webFonts.requirements[0].sources[0].value.startsWith('data:font/woff2;sha256='), true);
   await assert.rejects(buildProject({ ...options, out: join(f.temporary, 'missing-capability') }, {
     describeRuntime: describe([]), fetchImpl: () => assert.fail('local font path must not fetch'),
   }), { code: 'INCOMPATIBLE_RUNTIME' });
+  await writeFile(join(f.project, 'src/main.css'), '@font-face { font-family: Fixture; src: url(./fixture.woff2?no-inline) format("woff2"); } body { font-family: Fixture; }');
   await writeFile(join(f.project, 'src/main.js'), "import fontUrl from './fixture.woff2?no-inline'; console.log(fontUrl);");
   const beforeJavaScriptFont = await snapshotTree(join(f.project, '..', '..'), { exclude: ['node_modules'] });
   const mixedFontOutput = join(f.temporary, 'vite-font-javascript-package');

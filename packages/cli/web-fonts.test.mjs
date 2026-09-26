@@ -90,6 +90,57 @@ test('ordinary TTF, OTF, WOFF and WOFF2 are recognized independently of URL exte
   }
 });
 
+test('inline font data URLs are decoded, MIME-checked and packaged without retaining payload URLs', async t => {
+  for (const format of ['woff2', 'woff', 'ttf', 'otf']) {
+    const bytes = font(format);
+    const dataUrl = `data:font/${format};base64,${bytes.toString('base64')}`;
+    const f = await fixture(t, `<style>@font-face{font-family:X;src:url("${dataUrl}")}</style>`);
+    const result = await f.run({ offline: true }, forbidNetwork);
+    assert.deepEqual(result.files.filter(file => file.kind === 'font').map(file => file.payload), [bytes]);
+    assert.equal(result.lock.entries.length, 0, 'inline bytes do not create remote cache pins');
+    assert.equal(result.provenance[0].inlineData.contentType, `font/${format}`);
+    assert.equal(result.provenance[0].inlineData.bytes, bytes.length);
+    assert.equal(result.requirements[0].sources[0].value, `data:font/${format};sha256=${hash(bytes)}`);
+    const serializable = JSON.stringify({ metadata: result.metadata, provenance: result.provenance, requirements: result.requirements,
+      sourceInputs: result.sourceInputs, lock: result.lock });
+    assert.equal(serializable.includes(bytes.toString('base64')), false, 'metadata omits the encoded payload');
+    assert.match(result.bytes.toString(),
+      new RegExp(`url\\("\\./fonts/${hash(bytes)}\\.${format}"\\)`));
+  }
+
+  const bytes = font();
+  const percentEncoded = [...bytes].map(byte => `%${byte.toString(16).padStart(2, '0')}`).join('');
+  const percentFixture = await fixture(t, `<style>${face(`data:font/woff2,${percentEncoded}`)}</style>`);
+  const percentResult = await percentFixture.run({ offline: true }, forbidNetwork);
+  assert.deepEqual(percentResult.files.find(file => file.kind === 'font').payload, bytes);
+});
+
+test('inline font data URLs reject unsupported MIME, mismatched signatures and malformed encodings', async t => {
+  const validPayload = font().toString('base64');
+  const cases = [
+    [`data:application/json;base64,${validPayload}`, 'FONT_DATA_TYPE'],
+    [`data:font/woff;base64,${validPayload}`, 'FONT_FORMAT_INVALID'],
+    ['data:font/woff2;base64,%%%not-base64%%%', 'FONT_URL_INVALID'],
+    ['data:font/woff2,%Q0%2', 'FONT_URL_INVALID'],
+    [`data:font/woff2;unknown=x;base64,${validPayload}`, 'FONT_URL_INVALID'],
+    ['data:font/woff2;base64', 'FONT_URL_INVALID'],
+    ['data:font/woff2;base64,', 'FONT_FORMAT_INVALID'],
+  ];
+  for (const [url, code] of cases) {
+    const f = await fixture(t, `<style>${face(url)}</style>`);
+    await assert.rejects(f.run({}, forbidNetwork), error => {
+      assert.equal(error.code, code, url);
+      assert.match(error.message, /font request data:/);
+      return true;
+    });
+    assert.equal((await readdir(f.options.stateDir)).includes('lock.json'), false);
+  }
+  const oversized = await fixture(t, `<style>${face(`data:font/woff2;base64,${validPayload}`)}</style>`);
+  await assert.rejects(oversized.run({ limits: { ...WEB_FONT_LIMITS, fontBytes: 10 } }, forbidNetwork), { code: 'FONT_RESOURCE_LIMIT' });
+  const stylesheetData = await fixture(t, '<style>@import "data:text/css,body%7Bcolor:red%7D";</style>');
+  await assert.rejects(stylesheetData.run({}, forbidNetwork), { code: 'FONT_URL_INVALID' });
+});
+
 test('generic localization preserves local(), multiple sources and conditions while native policy can reject them', async t => {
   const f = await fixture(t, '<style>@media (min-width:100px){@font-face{font-family:X;src:local("X"),url("https://fonts.test/a")}}</style>');
   const net = network({ 'https://fonts.test/a': { body: font() } });
